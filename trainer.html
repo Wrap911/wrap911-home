@@ -3,54 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WRAP911-HOME</title>
+  <title>WRAP911-HOME — Trainer</title>
   <style>
-    body { margin:0; background:#0b0d10; color:#e8edf4; font-family: Inter, system-ui, sans-serif; }
-    header { padding:16px 20px; border-bottom:1px solid #2a313c; display:flex; justify-content:space-between; }
-    main { max-width:900px; margin:0 auto; padding:20px; }
-    .card { background:#161a20; border:1px solid #2a313c; border-radius:14px; padding:16px; margin:12px 0; }
-    a { color:#3b82f6; }
-    .muted { color:#93a0b3; }
+    :root { --bg:#0b0d10; --card:#161a20; --line:#2a313c; --text:#e8edf4; --muted:#93a0b3; --accent:#3b82f6; --good:#34d399; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,system-ui,sans-serif; line-height:1.45; }
+    header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:var(--bg); z-index:5; }
+    header a { color:var(--accent); text-decoration:none; font-size:14px; }
+    main { max-width:920px; margin:0 auto; padding:16px 16px 80px; }
+    h1 { font-size:22px; margin:8px 0 16px; } h2 { font-size:16px; margin:0 0 8px; } h3 { font-size:15px; margin:0 0 6px; }
+    .muted { color:var(--muted); font-size:14px; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .tabs button { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:600; }
+    .tabs button.on { background:var(--accent); border-color:var(--accent); }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin:10px 0; }
+    .grid { display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+    .veh { background:#12161c; border:1px solid var(--line); border-radius:12px; padding:14px; cursor:pointer; text-align:left; color:inherit; }
+    .veh.on { border-color:var(--accent); }
+    .meta { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    .pill { font-size:12px; border:1px solid var(--line); border-radius:999px; padding:3px 8px; color:var(--muted); }
+    .fail,.pass { border-radius:10px; padding:10px; font-size:14px; }
+    .fail { background:#2a1518; border:1px solid #5c2328; }
+    .pass { background:#10261c; border:1px solid #1f6b4d; }
+    .photo { min-height:88px; border:1px dashed var(--line); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:13px; margin:8px 0; text-align:center; padding:8px; }
+    ol { margin:8px 0; padding-left:20px; }
+    .hidden { display:none; }
+    label { display:flex; gap:8px; align-items:flex-start; margin:8px 0; }
+    .go { display:inline-block; margin-top:12px; background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer; }
+    .go[disabled] { opacity:.4; cursor:not-allowed; }
   </style>
 </head>
 <body>
-  <header>
-    <strong>WRAP911-HOME</strong>
-    <a href="index.html">Pricing</a>
-  </header>
+  <header><strong>WRAP911-HOME</strong><a href="index.html">Pricing</a></header>
   <main>
-    <div class="card">
-      <h2>Path</h2>
-      <p>Accept rules → Pricing → WRAP911-HOME</p>
-      <p class="muted">Pictures: Trainer → vehicle (Van, Trailer…) → lesson card. Videos tab for Drive clips. Field home for solution photos.</p>
-      <p class="muted">Pull down to refresh after it loads so you get the new photos.</p>
+    <div class="tabs">
+      <button class="on" data-tab="rules">1. Rules</button>
+      <button data-tab="vehicles">2. Vehicles</button>
+      <button data-tab="cards">3. Lesson cards</button>
+      <button data-tab="field">4. Field home</button>
+      <button data-tab="videos">5. Videos</button>
     </div>
-    <div class="card">
-      <h3>1. Shop rules</h3>
-      <ul>
-        <li>Prep is not optional. If the panel is dirty, you do not wrap it.</li>
-        <li>Heat is a tool, not a habit. If you are cooking the film, stop.</li>
-        <li>Edges and returns decide if the job comes back.</li>
-        <li>Photograph the problem before you guess.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>2. Vehicles</h3>
-      <p>Van · Trailer · Box truck · Bumper / fascia · Hood / roof</p>
-      <p class="muted">Drop real photos and Drive links here. This page is the shell. Content is what shops pay for.</p>
-    </div>
-    <div class="card">
-      <h3>3. Lesson cards</h3>
-      <p>Each card: goal, tools, steps, fail photo, pass photo, time box.</p>
-    </div>
-    <div class="card">
-      <h3>4. Field home</h3>
-      <p>Solution photos only. What it looks like when it lifts, tunnels, overstretched, dirty edge, trapped dirt, post-heat burn.</p>
-    </div>
-    <div class="card">
-      <h3>5. Videos</h3>
-      <p>Link a Google Drive folder per module. Do not host giant files on this repo.</p>
-    </div>
+    <section id="rules">
+      <h1>Shop rules. Accept these or stay off the table.</h1>
+      <div class="card">
+        <label><input type="checkbox" class="rule"> Prep is not optional. If the panel is dirty, you do not wrap it.</label>
+        <label><input type="checkbox" class="rule"> Heat is a tool, not a habit. If you are cooking the film, stop.</label>
+        <label><input type="checkbox" class="rule"> Edges and returns decide if the job comes back.</label>
+        <label><input type="checkbox" class="rule"> Photograph the problem before you guess.</label>
+        <button class="go" id="accept" disabled>Accept rules and open vehicles</button>
+      </div>
+    </section>
+    <section id="vehicles" class="hidden">
+      <h1>Pick the job that is in the bay.</h1>
+      <p class="muted">Filter the lesson cards. Drop real photos later.</p>
+      <div class="grid">
+        <button class="veh on" data-veh="all">All jobs</button>
+        <button class="veh" data-veh="van">Cargo van</button>
+        <button class="veh" data-veh="trailer">Enclosed trailer</button>
+        <button class="veh" data-veh="box">Box truck</button>
+        <button class="veh" data-veh="bumper">Bumper / fascia</button>
+        <button class="veh" data-veh="hood">Hood / roof</button>
+      </div>
+    </section>
+    <section id="cards" class="hidden">
+      <h1>Lesson cards</h1>
+      <p class="muted">Goal. Tools. Steps. Fail look. Pass look. Time box.</p>
+      <article class="card lesson" data-veh="van box">
+        <h2>Van / box — side panel, no rivet line</h2>
+        <div class="meta"><span class="pill">45–70 min</span><span class="pill">1 tech</span><span class="pill">cast film</span></div>
+        <p><strong>Goal:</strong> One clean side. No tunnels. Returns tucked.</p>
+        <p><strong>Tools:</strong> magnets, hard card + felt, glove, heat gun, knifeless, isopropyl, tack rag.</p>
+        <ol>
+          <li>Wash, clay if needed, wipe. Panel cold and dry.</li>
+          <li>Hinge the panel. Set to the body line first, not the door gap.</li>
+          <li>Center out. Relieves only at relief points.</li>
+          <li>Conform, then post-heat edges. Do not chase gloss with more heat.</li>
+          <li>Photo four corners and the belt line before you call it done.</li>
+        </ol>
+        <div class="photo">FAIL PHOTO SLOT — tunnel at belt line</div>
+        <div class="fail"><strong>Fail:</strong> Tunnel at the character line, silvering at the door gap, cooked film near the slider.</div>
+        <div class="photo">PASS PHOTO SLOT — flat panel, tucked returns</div>
+        <div class="pass"><strong>Pass:</strong> Flat in raking light. Returns hold a fingernail. No lift after a 10-minute cool.</div>
+      </article>
+      <article class="card lesson" data-veh="van trailer">
+        <h2>Van / trailer — corrugated or rivet row</h2>
+        <div class="meta"><span class="pill">60–90 min</span><span class="pill">do not bridge rivets</span></div>
+        <p><strong>Goal:</strong> Film in the valleys. Rivets seated, not tented.</p>
+        <ol>
+          <li>Work one valley at a time.</li>
+          <li>Valley first, crown second, rivet last.</li>
+          <li>Heat, press, cool under pressure. If it tents, pick and reseat.</li>
+          <li>Overlap on a crown, never in a valley that holds water.</li>
+        </ol>
+        <div class="fail"><strong>Fail:</strong> White rings, bridging, slit off the rivet head.</div>
+        <div class="pass"><strong>Pass:</strong> Rivet heads look painted. No air halo.</div>
+      </article>
+      <article class="card lesson" data-veh="trailer">
+        <h2>Trailer — rear doors and continuous hinge</h2>
+        <div class="meta"><span class="pill">50–80 min</span></div>
+        <p><strong>Goal:</strong> Doors open and close without peeling the hinge.</p>
+        <ol>
+          <li>Align doors closed, finish edges open.</li>
+          <li>Never bury the hinge barrel. Relief at every knuckle.</li>
+          <li>Cut to paint, not onto moving rubber.</li>
+          <li>Check latch and cam before post-heat.</li>
+        </ol>
+        <div class="fail"><strong>Fail:</strong> Hinge bind, latch cam slices film, end-cap lift.</div>
+        <div class="pass"><strong>Pass:</strong> Full swing. End-cap return holds a slam test.</div>
+      </article>
+      <article class="card lesson" data-veh="bumper">
+        <h2>Bumper / fascia — recess and sensors</h2>
+        <div class="meta"><span class="pill">35–60 min</span><span class="pill">remove if you can</span></div>
+        <p><strong>Goal:</strong> Sensors clear. No thin corners.</p>
+        <ol>
+          <li>Pull the bumper if the shop allows it.</li>
+          <li>Map sensors and tow hook before film goes on.</li>
+          <li>Do not stretch across a recess. Cut and lay the pocket.</li>
+          <li>Post-heat the corners that take parking-lot hits.</li>
+        </ol>
+        <div class="fail"><strong>Fail:</strong> Thin corners, film over a sensor, lift in the license recess.</div>
+        <div class="pass"><strong>Pass:</strong> Even color, sensors clear, recess not bridged.</div>
+      </article>
+      <article class="card lesson" data-veh="hood">
+        <h2>Hood / roof — large panel, heat discipline</h2>
+        <div class="meta"><span class="pill">40–75 min</span></div>
+        <p><strong>Goal:</strong> No center stretch mark. No burned paint.</p>
+        <ol>
+          <li>Shade the bay. Hot panels lie.</li>
+          <li>Float the sheet. Set center. Do not drag grit.</li>
+          <li>Relieves only after the field is flat.</li>
+          <li>Post-heat, walk away, recheck after cool-down.</li>
+        </ol>
+        <div class="fail"><strong>Fail:</strong> Gloss change in the center, dirt comet, windshield-reveal lift.</div>
+        <div class="pass"><strong>Pass:</strong> Even gloss. Edge still down at ambient.</div>
+      </article>
+    </section>
+    <section id="field" class="hidden">
+      <h1>Field home — match the failure before you touch it</h1>
+      <p class="muted">This pack is why $29/mo exists. Swap dashed slots for real shop photos.</p>
+      <div class="card"><h3>Lifted edge</h3><div class="photo">PHOTO — edge standing after 48 hours</div><p class="muted">Dirty edge, no post-heat, or cut onto a moving seam. Lift, clean, reset, post-heat. Do not glue it.</p></div>
+      <div class="card"><h3>Tunnel / bridging</h3><div class="photo">PHOTO — air channel along a body line</div><p class="muted">Stretched over a line. Pick, relieve, lay the line.</p></div>
+      <div class="card"><h3>Overstretched thin spot</h3><div class="photo">PHOTO — color shift on a corner</div><p class="muted">Heat plus pull. Replace the piece. You cannot put vinyl back.</p></div>
+      <div class="card"><h3>Dirty edge / trapped grit</h3><div class="photo">PHOTO — silvering at the return</div><p class="muted">Skipped wipe. Lift the return, reclean, reset.</p></div>
+      <div class="card"><h3>Post-heat burn</h3><div class="photo">PHOTO — matte patch</div><p class="muted">Gun parked or too close. Stop. Photograph. Do not keep heating.</p></div>
+    </section>
+    <section id="videos" class="hidden">
+      <h1>Videos</h1>
+      <p class="muted">Do not host giant files here. One Drive folder per module.</p>
+      <div class="card"><h3>Van side panel</h3><p class="muted">Drive folder: add link</p></div>
+      <div class="card"><h3>Rivet / corrugation</h3><p class="muted">Drive folder: add link</p></div>
+      <div class="card"><h3>Trailer doors</h3><p class="muted">Drive folder: add link</p></div>
+      <div class="card"><h3>Bumper off the truck</h3><p class="muted">Drive folder: add link</p></div>
+      <div class="card"><h3>Hood and roof two-person set</h3><p class="muted">Drive folder: add link</p></div>
+    </section>
   </main>
+  <script>
+    const sections = ["rules","vehicles","cards","field","videos"];
+    const tabBtns = document.querySelectorAll(".tabs button");
+    function show(id) {
+      sections.forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
+      tabBtns.forEach(b => b.classList.toggle("on", b.dataset.tab === id));
+    }
+    tabBtns.forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
+    const checks = document.querySelectorAll(".rule");
+    const accept = document.getElementById("accept");
+    function sync() { accept.disabled = ![...checks].every(c => c.checked); }
+    checks.forEach(c => c.addEventListener("change", sync));
+    accept.addEventListener("click", () => show("vehicles"));
+    const vehBtns = document.querySelectorAll(".veh");
+    const lessons = document.querySelectorAll(".lesson");
+    vehBtns.forEach(btn => btn.addEventListener("click", () => {
+      vehBtns.forEach(b => b.classList.toggle("on", b === btn));
+      const v = btn.dataset.veh;
+      lessons.forEach(card => {
+        card.style.display = (v === "all" || card.dataset.veh.split(" ").includes(v)) ? "" : "none";
+      });
+      show("cards");
+    }));
+  </script>
 </body>
 </html>
