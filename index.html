@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wrap 911 — Shop Trainer for Vans, Trailers & Field Fixes</title>
+  <meta name="description" content="Train your wrap crew on vans, trailers, and field failures. $49/seat. Shop subscription $29/mo with new solution photos every month." />
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --card: #161a20;
+      --line: #2a313c;
+      --text: #e8edf4;
+      --muted: #93a0b3;
+      --accent: #3b82f6;
+      --good: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    a { color: var(--accent); }
+    header, main, footer { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
+    header { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; letter-spacing: .04em; }
+    .badge { font-size: 12px; color: var(--good); border: 1px solid #1f6b4d; padding: 4px 8px; border-radius: 999px; }
+    h1 { font-size: clamp(28px, 5vw, 48px); line-height: 1.1; margin: 16px 0; }
+    .sub { color: var(--muted); font-size: 18px; max-width: 640px; }
+    .row { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin: 28px 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .price { font-size: 32px; font-weight: 800; }
+    .price span { font-size: 14px; color: var(--muted); font-weight: 500; }
+    ul { padding-left: 18px; color: var(--muted); }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+    .btn.ghost { background: transparent; border: 1px solid var(--line); }
+    .warn { color: #fbbf24; font-size: 14px; }
+    footer { color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">WRAP 911</div>
+    <div class="badge">For wrap shops — not hobbyists</div>
+  </header>
+  <main>
+    <h1>Train the crew on the jobs that actually walk in.</h1>
+    <p class="sub">Vans. Trailers. Field failures. Lesson cards your new hire can follow without you standing over the table. This is not a 3,500-video dump. It is a shop trainer.</p>
+
+    <div class="row">
+      <div class="card">
+        <div>Seat</div>
+        <div class="price">$49 <span>one tech, 12 months</span></div>
+        <ul>
+          <li>Full trainer path</li>
+          <li>Lesson cards</li>
+          <li>Van / trailer modules</li>
+          <li>Drive clip library</li>
+        </ul>
+        <a class="btn" href="#buy">Buy 1 seat</a>
+        <p class="warn">Replace this button with your live Stripe Payment Link.</p>
+      </div>
+      <div class="card">
+        <div>Shop Pack</div>
+        <div class="price">$149 <span>5 seats, 12 months</span></div>
+        <ul>
+          <li>Five logins</li>
+          <li>Same trainer library</li>
+          <li>Hire-onboarding path (20 min)</li>
+          <li>Printable shop SOP cards</li>
+        </ul>
+        <a class="btn" href="#buy">Buy shop pack</a>
+      </div>
+      <div class="card">
+        <div>Field Subscription</div>
+        <div class="price">$29<span>/mo</span></div>
+        <ul>
+          <li>New solution-photo pack every month</li>
+          <li>One new vehicle or failure module</li>
+          <li>Unlimited seats while active</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a class="btn" href="#buy">Subscribe shop</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>What you get on day one</h2>
+      <p class="sub">Trainer → vehicle (van, trailer, box) → lesson card. Videos tab for Drive clips. Field home for solution photos. Pull-to-refresh after load so new photos show.</p>
+      <ol>
+        <li>Accept shop rules (no shortcuts, heat discipline, edge finish).</li>
+        <li>Open the vehicle module that matches the job.</li>
+        <li>Run the lesson card. Watch the clip only if stuck.</li>
+        <li>Check Field Home for the failure photo that matches what you are looking at.</li>
+      </ol>
+      <a class="btn ghost" href="trainer.html">Open WRAP911-HOME (demo)</a>
+    </div>
+
+    <div class="card" id="buy" style="margin-top:16px">
+      <h2>Checkout</h2>
+      <p>Stripe is not live on this page until you paste Payment Links below. Until those three things exist — stable URL, live checkout, you sending this to shops — this is inventory, not a product.</p>
+      <p><strong>Your stable URL:</strong> https://wrap911.github.io/wrap911-home/</p>
+      <p>Create three Stripe Payment Links and replace the Buy buttons:</p>
+      <ul>
+        <li>Seat $49 — one-time</li>
+        <li>Shop Pack $149 — one-time</li>
+        <li>Field $29/mo — recurring</li>
+      </ul>
+    </div>
+  </main>
+  <footer>
+    Wrap 911 — shop trainer. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.
+  </footer>
+</body>
+</html>
