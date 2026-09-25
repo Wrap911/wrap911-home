@@ -1,20 +1,17 @@
-# wrap911-home (public sales page)
+# wrap911-home
 
-Trainer source is private: https://github.com/Wrap911/WRAP-911
+Public sales page only. Trainer stays in private WRAP-911.
 
-This public repo is only for a live sales URL.
-Do not copy trainer/, cloudflare-coach-proxy/, license-gate, or Worker files here.
+## One click still required
 
-## Turn Pages back on
+This token cannot turn Pages on. You have to:
 
-1. This repo → Settings → Pages
-2. Deploy from branch: main / root
-3. Wait 1–2 minutes
-4. Open https://wrap911.github.io/wrap911-home/
+1. Open https://github.com/Wrap911/wrap911-home/settings/pages
+2. Build and deployment → Source: **GitHub Actions**
+3. Save
+4. Actions tab → Deploy Pages → Run workflow
 
-## Better option (keep one private repo)
+Live URL after that:
+https://wrap911.github.io/wrap911-home/
 
-Cloudflare Pages can publish from private WRAP-911.
-Source stays hidden. Site stays public.
-
-Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect Git → WRAP-911 → output root.
+Stripe live Payment Links are still not pasted. Buy buttons go to email until you drop the two URLs in `index.html`.
