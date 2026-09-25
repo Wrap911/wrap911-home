@@ -194,7 +194,7 @@
       src = String(item.src || "").replace(/^\.\//, "");
       html += '<article class="card video-card">' +
         '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(item.still || "") + '">' +
-        '<button type="button" class="video-play-btn">Play</button></div>' +
+        '<video controls playsinline preload="metadata" src="' + src + '" poster="' + (item.still || "") + '" style="width:100%;border-radius:10px;background:#000;display:block"></video></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
         '<div class="card-sub">' + esc(bucket(item.category)) + '</div></article>';
     }
