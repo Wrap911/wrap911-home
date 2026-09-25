@@ -479,7 +479,7 @@
     if (box) {
       box.innerHTML = (prac.quiz || []).map(function (q, qi) {
         var choices = (q.choices || []).map(function (ch, ci) {
-          return '<button type="button" class="choice" data-q="' + qi + '" data-c="' + ci + '">' + escapeHtml(ch) + "</button>";
+          return '<button type="button" class="quiz-choice" data-q="' + qi + '" data-c="' + ci + '">' + escapeHtml(ch) + "</button>";
         }).join("");
         return '<div class="quiz-item" data-qi="' + qi + '"><p>' + escapeHtml(q.q || "") + "</p>" + choices + "</div>";
       }).join("");
@@ -527,6 +527,13 @@
     for (var q = 0; q < items.length; q++) {
       var pick = items[q].getAttribute("data-pick");
       var answer = ((prac.quiz || [])[q] || {}).answer;
+      var buttons = items[q].querySelectorAll("[data-c]");
+      items[q].setAttribute("data-locked", "1");
+      for (var b = 0; b < buttons.length; b++) {
+        buttons[b].classList.remove("correct", "wrong");
+        if (b === answer) buttons[b].classList.add("correct");
+        else if (pick !== null && Number(pick) === b) buttons[b].classList.add("wrong");
+      }
       if (pick !== null && Number(pick) === answer) quizScore++;
     }
     var pct = Math.round(100 * ((checkScore / checkTotal) + (mistakeScore / mistakeTotal) + (quizScore / quizTotal)) / 3);

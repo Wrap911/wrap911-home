@@ -453,6 +453,28 @@ button.chip:hover {
   border: 1px solid #5a304c;
   box-shadow: inset 4px 0 0 #2ee6ff;
 }
+button.quiz-choice.correct {
+  background: #123d28;
+  border-color: #3dff9a;
+  box-shadow: inset 4px 0 0 #3dff9a;
+  color: #e9fff4;
+}
+button.quiz-choice.correct::after {
+  content: "  · RIGHT";
+  font-weight: 800;
+  color: #3dff9a;
+}
+button.quiz-choice.wrong {
+  background: #3d1218;
+  border-color: #ff4d6a;
+  box-shadow: inset 4px 0 0 #ff4d6a;
+  color: #ffe8ec;
+}
+button.quiz-choice.wrong::after {
+  content: "  · WRONG";
+  font-weight: 800;
+  color: #ff4d6a;
+}
 .photo-hero {
   border-radius: 14px;
   box-shadow: 0 0 0 3px #ff2d8c, 8px 8px 0 #ffb000;
