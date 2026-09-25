@@ -48,8 +48,10 @@
   function applyOwner() {
     try {
       localStorage.setItem("wrap911_owner", "1");
+      var now = Date.now();
       localStorage.setItem("wrap911_license", JSON.stringify({
-        code: "SHOP", plan: "pro", sku: "pack", seats: 5, unlockedAt: Date.now()
+        code: "SHOP", plan: "pro", sku: "pack", seats: 5,
+        crewCode: "SHOPCS", unlockedAt: now, expiresAt: now + 365 * 86400000
       }));
     } catch (e) {}
     var fb = document.getElementById("unlock-feedback");
