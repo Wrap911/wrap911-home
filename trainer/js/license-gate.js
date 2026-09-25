@@ -4,7 +4,10 @@
   var CREW = "ca397ba52c6efbd986f5cbd43f173cd3fd88a97e54cd4ae1fb723e6454479916";
   var TEASER_SCREENS = {
     rules: 1, home: 1, pricing: 1, contact: 1, coach: 1,
-    photos: 1, photo: 1, videos: 1
+    photos: 1, photo: 1, videos: 1,
+    lesson: 1, vehicle: 1, library: 1,
+    practice: 1, "practice-hub": 1, module: 1, drills: 1,
+    "drill-spot": 1, "drill-checklist": 1
   };
   var TEASER_PHOTO_MAX = 14;
   var TEASER_VIDEO_MAX = 2;
@@ -15,11 +18,15 @@
 
   function paid() {
     try {
+      if (localStorage.getItem("wrap911_owner") === "1") return true;
       var raw = localStorage.getItem("wrap911_license");
       if (!raw) return false;
       var lic = JSON.parse(raw);
       if (!lic || lic.expired) return false;
-      if (lic.plan === "free" || lic.plan === "pro" || lic.plan === "trial") return true;
+      if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
+      if (lic.plan === "free" || lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
+      if (lic.sku === "pack" || lic.sku === "seat") return true;
+      if (lic.code === "SHOP" || lic.code === "STRIPE") return true;
     } catch (e) {}
     return false;
   }
@@ -35,8 +42,9 @@
 
   function applyOwner() {
     try {
+      localStorage.setItem("wrap911_owner", "1");
       localStorage.setItem("wrap911_license", JSON.stringify({
-        code: "SHOP", plan: "free", unlockedAt: Date.now()
+        code: "SHOP", plan: "pro", sku: "pack", seats: 5, unlockedAt: Date.now()
       }));
     } catch (e) {}
     var fb = document.getElementById("unlock-feedback");
@@ -304,7 +312,20 @@
     showVideos();
   }, true);
 
+  function ownerFromUrl() {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      if (q.get("owner") === "1" || q.get("shop") === "1") {
+        applyOwner();
+        q.delete("owner"); q.delete("shop");
+        var qs = q.toString();
+        history.replaceState({}, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
+      }
+    } catch (e) {}
+  }
+
   function boot() {
+    ownerFromUrl();
     bind();
     setTimeout(function () {
       scrub(document.body);
