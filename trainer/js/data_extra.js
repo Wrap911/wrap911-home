@@ -640,7 +640,7 @@ window.WRAP911_DATA.trainingLessons = [
     "badgeId": "badge-sf-wet",
     "media": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
     "mediaType": "photo",
-    "practiceId": "prac-panel-align",
+    "practiceId": "prac-recess",
     "keyTechniques": [
       "Mist application fluid per the exact film TDS \u2014 don't invent a mix",
       "Soft-seat magenta film into the architectural recess/cubby with a felt squeegee",
