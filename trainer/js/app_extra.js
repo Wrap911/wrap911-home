@@ -14,7 +14,7 @@
   function escapeHtml(s) {
     var c = core();
     if (c) return c.escapeHtml(s);
-    return String(s).replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">").replace(/"/g,""");
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   }
 
   function data() { return window.WRAP911_DATA || {}; }
@@ -486,8 +486,8 @@
     }
 
     if ($("btn-new-job")) $("btn-new-job").addEventListener("click", function () { openJobEdit(null); });
-    if ($("btn-save-job")) $("btn-save-job").addEventListener("click", saveJob);
-    if ($("btn-delete-job")) $("btn-delete-job").addEventListener("click", deleteJob);
+    if ($("btn-save-job") && typeof saveJob === "function") $("btn-save-job").addEventListener("click", saveJob);
+    if ($("btn-delete-job") && typeof deleteJob === "function") $("btn-delete-job").addEventListener("click", deleteJob);
     if ($("job-type")) {
       $("job-type").addEventListener("change", function () {
         renderJobWorkflowChecks($("job-type").value, {});
@@ -497,12 +497,13 @@
     if ($("prac-redo")) $("prac-redo").addEventListener("click", function () {
       if (c.state.practiceId) openPractice(c.state.practiceId);
     });
-    if ($("prac-finish")) $("prac-finish").addEventListener("click", finishPractice);
+    if ($("prac-finish") && typeof finishPractice === "function") $("prac-finish").addEventListener("click", finishPractice);
 
-    if ($("btn-calc")) $("btn-calc").addEventListener("click", runCalc);
+    if ($("btn-calc") && typeof runCalc === "function") $("btn-calc").addEventListener("click", runCalc);
   };
 
   /* Fix new job: openJobEdit when id null */
+  if (typeof openJobEdit === "function") {
   var _openJobEdit = openJobEdit;
   openJobEdit = function (id) {
     if (!id) {
@@ -538,4 +539,5 @@
     _openJobEdit(id);
   };
 
+}
 })();
