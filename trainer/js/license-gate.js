@@ -60,9 +60,14 @@
     if (core && core.showScreen) core.showScreen("pricing");
   }
 
+  var mediaReady = false;
   function afterMedia() {
+    if (mediaReady) return;
+    mediaReady = true;
     var core = window.WRAP911_APP && window.WRAP911_APP.core;
-    if (core && core.renderPhotosList) core.renderPhotosList();
+    if (core && core.renderPhotosList) {
+      try { core.renderPhotosList(); } catch (e) {}
+    }
     setTimeout(limitPhotos, 50);
   }
 
@@ -282,15 +287,32 @@
     }
   }
 
-  bind();
-  document.addEventListener("DOMContentLoaded", bind);
-  setTimeout(bind, 200);
-  setTimeout(bind, 800);
-  setTimeout(bind, 1600);
-  var obs = new MutationObserver(function () {
-    scrub(document.body);
-    limitPhotos();
-    limitVideos();
-  });
-  if (document.body) obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+  function showVideos() {
+    setTimeout(function () {
+      var screen = document.getElementById("screen-videos");
+      if (!screen) return;
+      activateScreen("videos");
+      if (window.WRAP911_APP && window.WRAP911_APP.renderVideos) {
+        try { window.WRAP911_APP.renderVideos(); } catch (e) {}
+      }
+      limitVideos();
+    }, 0);
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.closest && e.target.closest("#goto-videos, #goto-videos-primary");
+    if (!t) return;
+    showVideos();
+  }, true);
+
+  function boot() {
+    bind();
+    setTimeout(function () {
+      scrub(document.body);
+      limitPhotos();
+      limitVideos();
+    }, 300);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+  setTimeout(boot, 1200);
 })();
