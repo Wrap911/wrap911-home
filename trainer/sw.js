@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.9.12-phone";
+var CACHE = "wrap911-trainer-2.9.15-phone";
 var ASSETS = [
   "./",
   "./index.html",
@@ -62,6 +62,7 @@ self.addEventListener("activate", function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
+        if (k === CACHE) return Promise.resolve();
         return caches.delete(k);
       }));
     }).then(function () {
@@ -119,8 +120,12 @@ self.addEventListener("fetch", function (event) {
     );
     return;
   }
+  var net = fetch(event.request);
+  var timed = new Promise(function (_, reject) {
+    setTimeout(function () { reject(new Error("slow")); }, 8000);
+  });
   event.respondWith(
-    fetch(event.request).then(function (res) {
+    Promise.race([net, timed]).then(function (res) {
       try {
         var url = new URL(event.request.url);
         if (url.origin === self.location.origin && res && res.ok && !isMediaRequest(event.request.url)) {
