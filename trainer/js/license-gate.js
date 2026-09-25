@@ -16,7 +16,12 @@
   var cfg = window.WRAP911_CONFIG || {};
   cfg.demoCodes = {};
 
+  function shopOpen() {
+    return !!(cfg && cfg.shopPhoneOpen);
+  }
+
   function paid() {
+    if (shopOpen()) return true;
     try {
       if (localStorage.getItem("wrap911_owner") === "1") return true;
       var raw = localStorage.getItem("wrap911_license");
@@ -228,14 +233,21 @@
     if (!core || core._teaserWrapped) return;
     core._teaserWrapped = true;
     var orig = core.showScreen;
+    if (shopOpen()) {
+      core.hasFullAccess = function () { return true; };
+    }
     if (typeof orig === "function") {
       core.showScreen = function (name) {
+        var wanted = name;
         if (!paid() && name && !TEASER_SCREENS[name]) name = "pricing";
         var r;
         try { r = orig.call(this, name); } catch (e) {}
-        if (!paid() && TEASER_SCREENS[name]) {
+        if (paid() && wanted && wanted !== "pricing") {
           var active = document.querySelector(".screen.active");
-          if (!active || active.id !== "screen-" + name) {
+          if (!active || active.id !== "screen-" + wanted) activateScreen(wanted);
+        } else if (!paid() && TEASER_SCREENS[name]) {
+          var active2 = document.querySelector(".screen.active");
+          if (!active2 || active2.id !== "screen-" + name) {
             if (name === "photos" && typeof core.renderPhotosList === "function") {
               try { core.renderPhotosList(); } catch (e2) {}
             }
@@ -325,6 +337,7 @@
   }
 
   function boot() {
+    if (shopOpen()) applyOwner();
     ownerFromUrl();
     bind();
     setTimeout(function () {
