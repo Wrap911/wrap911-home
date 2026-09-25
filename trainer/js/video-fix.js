@@ -134,6 +134,78 @@
     "media/videos/van/rear-vehicle-gate-wrap.mp4"
   ];
 
+
+  function isPaid() {
+    try {
+      var lic = JSON.parse(localStorage.getItem("wrap911_license") || "null");
+      return !!(lic && !lic.expired && (lic.plan === "pro" || lic.plan === "free" || lic.plan === "trial" || lic.sku === "seat" || lic.sku === "pack"));
+    } catch (e) { return false; }
+  }
+
+  function bucket(cat) {
+    cat = String(cat || "").toLowerCase();
+    if (cat.indexOf("arch") >= 0 || cat.indexOf("store") >= 0 || cat.indexOf("interior") >= 0 || cat.indexOf("prep") >= 0 || cat.indexOf("cabinet") >= 0) return "Interior";
+    return "Vehicles";
+  }
+
+  function esc(s) {
+    return String(s || "").replace(/[&<>"]/g, function (c) {
+      return ({ "&": "&", "<": "<", ">": ">", '"': """ })[c];
+    });
+  }
+
+  function renderVideos() {
+    var list = document.getElementById("video-list");
+    if (!list || !window.WRAP911_DATA) return;
+    var catalog = window.WRAP911_DATA.VIDEO_CATALOG || [];
+    var filterEl = document.getElementById("video-filter-cat");
+    var filter = filterEl ? (filterEl.value || "") : "";
+    var paid = isPaid();
+    var rows = [];
+    var i, item, src;
+    for (i = 0; i < catalog.length; i++) {
+      item = catalog[i];
+      src = String(item.src || "").replace(/^\.\//, "");
+      if (!REAL[src]) continue;
+      if (filter && bucket(item.category) !== filter && item.category !== filter) continue;
+      rows.push(item);
+    }
+    rows.sort(function (a, b) {
+      var as = String(a.src || "");
+      var bs = String(b.src || "");
+      var ai = FIRST.indexOf(as);
+      var bi = FIRST.indexOf(bs);
+      if (ai < 0) ai = 99;
+      if (bi < 0) bi = 99;
+      return ai - bi;
+    });
+    if (!paid) {
+      var free = [];
+      for (i = 0; i < rows.length; i++) {
+        if (FIRST.indexOf(String(rows[i].src || "")) >= 0) free.push(rows[i]);
+      }
+      rows = free.length ? free : rows.slice(0, 2);
+    }
+    var html = "";
+    for (i = 0; i < rows.length; i++) {
+      item = rows[i];
+      src = String(item.src || "").replace(/^\.\//, "");
+      html += '<article class="card video-card">' +
+        '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(item.still || "") + '">' +
+        '<button type="button" class="video-play-btn">Play</button></div>' +
+        '<div class="card-title">' + esc(item.title) + '</div>' +
+        '<div class="card-sub">' + esc(bucket(item.category)) + '</div></article>';
+    }
+    if (!paid) {
+      html += '<div class="card tap teaser-paywall"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 · Seat $49</div></div>';
+    }
+    if (!html) html = '<p class="muted">No clips in this category.</p>';
+    list.innerHTML = html;
+  }
+  window.renderVideos = renderVideos;
+  window.WRAP911_APP = window.WRAP911_APP || {};
+  window.WRAP911_APP.renderVideos = renderVideos;
+
   function tidyVideos() {
     var list = document.getElementById("video-list");
     if (!list) return;
@@ -168,9 +240,11 @@
 
   function arm() {
     bind();
+    renderVideos();
     tidyVideos();
     var n = 0;
     var timer = setInterval(function () {
+      if (!document.querySelector("#video-list .video-card")) renderVideos();
       tidyVideos();
       if (++n > 20) clearInterval(timer);
     }, 300);
