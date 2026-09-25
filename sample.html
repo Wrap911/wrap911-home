@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WRAP 911 — sample for review</title>
+  <link rel="stylesheet" href="assets/shop-face.css?v=302" />
+  <style>
+    .wrap { max-width: 880px; margin: 0 auto; padding: 8px 20px 48px; }
+    header { position: static; padding: 18px 0; background: transparent; border: 0; }
+    .row { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+    .photos { display: grid; gap: 12px; grid-template-columns: 1fr 1fr 1fr; }
+    ul, ol { margin: 8px 0; padding-left: 18px; color: var(--muted); }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+    .btn { margin-right: 8px; margin-top: 8px; }
+    @media (max-width: 700px) {
+      .row, .photos { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="logo" href="index.html">WRAP 911</a>
+      <div class="badge">Internal sample — not the live checkout</div>
+    </header>
+
+    <h1>Shop trainer for vans, trailers, and field failures.</h1>
+    <p class="sub">Not a YouTube dump. A new hire opens the job that is in the bay, runs the card, and only watches a clip if they get stuck.</p>
+
+    <div class="photos">
+      <figure>
+        <img src="assets/sales/edge-detail.jpg" alt="Edge return on a wrapped panel" />
+        <figcaption><strong>Edges</strong> Returns decide if the job comes back.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/sales/trailer-rivets.jpg" alt="Enclosed trailer in the bay" />
+        <figcaption><strong>Trailers</strong> Rivet rows. Do not bridge the heads.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/sales/pickup-panels.jpg" alt="Pickup side panel wrap in progress" />
+        <figcaption><strong>Panels</strong> Heat is a tool. Parked heat cooks film.</figcaption>
+      </figure>
+    </div>
+
+    <div class="card">
+      <h2>Sample lesson card — van / box side panel</h2>
+      <div class="meta">
+        <span class="pill">45–70 min</span>
+        <span class="pill">1 tech</span>
+        <span class="pill">Cast film</span>
+        <span class="pill">No rivet line</span>
+      </div>
+      <h3>Goal</h3>
+      <p class="sub">One clean side. Flat in raking light. Returns hold a fingernail after cool-down.</p>
+      <h3>Tools</h3>
+      <ul>
+        <li>Surface wipe + lint-free towels</li>
+        <li>Felt / nylon squeegee + wrap glove</li>
+        <li>Heat gun on a stable base</li>
+        <li>Fresh blades. Magnet tray.</li>
+      </ul>
+      <h3>Steps</h3>
+      <ol>
+        <li>Clean, then inspect seams, chips, and silicone. Do not wrap dirt.</li>
+        <li>Hinge the panel. Set the body line first. Do not chase gloss with heat.</li>
+        <li>Work the field flat. Relieve only after the field is down.</li>
+        <li>Tuck returns. Post-heat edges. Walk away.</li>
+        <li>Recheck after a 10-minute cool. Photo four corners and the belt line.</li>
+      </ol>
+      <div class="row">
+        <div>
+          <h3 class="fail">Fail</h3>
+          <ul>
+            <li>Tunnel at the character line</li>
+            <li>Silvering at the door gap</li>
+            <li>Cooked film near the slider</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="pass">Pass</h3>
+          <ul>
+            <li>Flat in raking light</li>
+            <li>Return holds a fingernail</li>
+            <li>No lift after cool-down</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <div>Seat</div>
+        <div class="price">$49 <span>one tech, 12 months</span></div>
+        <ul>
+          <li>Full trainer path</li>
+          <li>Lesson cards + clips</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div>Shop Pack — default sell</div>
+        <div class="price">$149 <span>5 seats, 12 months</span></div>
+        <ul>
+          <li>Same library</li>
+          <li>Hire-onboarding path</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>What this is</h2>
+      <ul>
+        <li>Internal shop SOP trainer</li>
+        <li>3M / Avery Dennison / Arlon only — follow the TDS, no invented temps</li>
+        <li>Not a manufacturer certification</li>
+        <li>Not an App Store app. Web trainer. Works offline after first load.</li>
+      </ul>
+      <p class="note">This page is a coworker walkthrough. Live checkout and gated trainer are separate.</p>
+      <a class="btn" href="index.html">Open live sales page</a>
+      <a class="btn ghost" href="trainer/">Open trainer (locked preview)</a>
+    </div>
+
+    <footer>
+      WRAP 911 — sample page. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.<br />
+      Live site: https://wrap911.github.io/wrap911-home/
+    </footer>
+  </div>
+</body>
+</html>

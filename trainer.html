@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WRAP 911 — Trainer</title>
+  <link rel="stylesheet" href="assets/shop-face.css?v=302" />
+  <style>
+    header { top: 0; }
+    main { max-width: 920px; margin: 0 auto; padding: 16px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tabs button {
+      width: auto;
+      background: #161018;
+      color: #fff6ee;
+      border: 1px solid #5a304c;
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: "Wrap Display", Impact, sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: none;
+    }
+    .tabs button.on { background: linear-gradient(100deg, #ff2d8c, #ffb000); border-color: transparent; }
+    .hidden { display: none; }
+    label { display: flex; gap: 8px; margin: 8px 0; align-items: center; }
+  </style>
+</head>
+<body>
+  <header><strong>WRAP 911</strong><a href="index.html">Pricing</a></header>
+  <main>
+    <div class="tabs">
+      <button class="on" data-tab="rules">1. Rules</button>
+      <button data-tab="photos">Photos</button>
+      <button data-tab="videos">Videos</button>
+    </div>
+    <section id="rules">
+      <h1>Shop rules</h1>
+      <div class="card">
+        <label><input type="checkbox" class="rule"> Prep is not optional.</label>
+        <label><input type="checkbox" class="rule"> Heat is a tool, not a habit.</label>
+        <label><input type="checkbox" class="rule"> Edges decide if the job comes back.</label>
+        <button class="go" id="accept" disabled>Accept rules</button>
+      </div>
+    </section>
+    <section id="photos" class="hidden">
+      <h1>Lesson photos</h1>
+      <p class="muted">Shop photos from Google Drive, grouped by job type.</p>
+      <p><a class="go" href="trainer/">Open the trainer</a></p>
+    </section>
+    <section id="videos" class="hidden">
+      <h1>Videos</h1>
+      <p class="muted">Open the trainer video library after checkout.</p>
+      <p><a class="go" href="trainer/">Open the trainer</a></p>
+    </section>
+  </main>
+  <script>
+    const sections = ["rules","photos","videos"];
+    const tabBtns = document.querySelectorAll(".tabs button");
+    function show(id) {
+      sections.forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
+      tabBtns.forEach(b => b.classList.toggle("on", b.dataset.tab === id));
+    }
+    tabBtns.forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
+    const checks = document.querySelectorAll(".rule");
+    const accept = document.getElementById("accept");
+    function sync() { accept.disabled = ![...checks].every(c => c.checked); }
+    checks.forEach(c => c.addEventListener("change", sync));
+    accept.addEventListener("click", () => { window.location.href = "trainer/"; });
+  </script>
+</body>
+</html>

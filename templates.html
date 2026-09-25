@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WRAP 911 — Commercial templates</title>
+  <link rel="stylesheet" href="assets/shop-face.css?v=302" />
+  <style>
+    header { top: 0; }
+    header a { font-family: "Wrap Text", system-ui, sans-serif; font-size: 14px; text-transform: none; letter-spacing: 0; }
+    main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 80px; }
+    h1 { font-size: clamp(36px, 5vw, 56px); }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 16px; }
+    .row button {
+      width: auto;
+      background: #161018;
+      color: #fff6ee;
+      border: 1px solid #5a304c;
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: "Wrap Text", system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+      box-shadow: none;
+    }
+    .row button.on { background: linear-gradient(100deg, #ff2d8c, #ffb000); border-color: transparent; color: #fff; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card h3 { margin: 0 0 6px; font-size: 16px; text-transform: none; letter-spacing: 0; font-family: "Wrap Text", system-ui, sans-serif; }
+    svg { width: 100%; height: auto; display: block; margin: 8px 0; }
+    .pkg { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .detail { display: none; margin-top: 16px; }
+    .detail.open { display: block; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #5a304c; }
+    th { color: #e7d0da; }
+    textarea { width: 100%; min-height: 140px; background: #110910; color: #fff6ee; border: 1px solid #5a304c; border-radius: 10px; padding: 10px; font-family: ui-monospace, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>WRAP 911 — Templates</strong>
+    <nav><a href="index.html">Pricing</a> · <a href="trainer.html">Trainer</a> · <a href="templates.html">Templates</a></nav>
+  </header>
+  <main>
+    <h1>Commercial vehicle templates</h1>
+    <p class="muted">Class templates for quoting, layout, and install planning. Not licensed year/make/model outlines. Measure the unit before you print.</p>
+    <p class="warn">Do not put phone numbers or logos across door gaps, handles, sensors, hinges, or rivet rows.</p>
+    <div class="row" id="filters">
+      <button class="on" data-cat="all">All</button>
+      <button data-cat="van">Cargo vans</button>
+      <button data-cat="sprinter">Sprinter class</button>
+      <button data-cat="box">Box trucks</button>
+      <button data-cat="trailer">Trailers</button>
+      <button data-cat="pickup">Work pickups</button>
+    </div>
+    <div class="grid" id="list"></div>
+    <div class="detail card" id="detail"></div>
+  </main>
+  <script src="templates.js"></script>
+</body>
+</html>

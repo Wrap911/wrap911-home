@@ -1,0 +1,54 @@
+/* Sales-page dark theme overlay for the trainer */
+:root {
+  --bg: #09070d;
+  --bg-card: #161018;
+  --bg-elevated: #24182a;
+  --text: #fff6ee;
+  --text-muted: #d7c4cc;
+  --accent: #ff2d8c;
+  --accent-dim: #ffb000;
+  --accent-glow: rgba(255, 45, 140, 0.28);
+  --ok: #3dffb0;
+  --bad: #ff5d73;
+  --border: #4a2a44;
+}
+
+.app-header {
+  background: rgba(9, 7, 13, 0.92);
+}
+.bottom-nav {
+  background: #09070d;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+  border-top: 3px solid transparent;
+  border-image: linear-gradient(90deg, #ff2d8c, #ffb000, #2ee6ff) 1;
+}
+.plan-chip.trial {
+  color: #ffb000;
+}
+.bottom-nav button.active {
+  color: #fff;
+  background: linear-gradient(100deg, #ff2d8c, #ffb000);
+}
+
+.coach-chat {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: none;
+}
+.coach-msg-role {
+  color: var(--text-muted);
+}
+.coach-msg-user .coach-msg-role {
+  color: var(--text-muted);
+}
+.coach-msg-user .coach-msg-body {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text);
+}
+.coach-msg-coach .coach-msg-body {
+  background: #2a1424;
+  border-color: #5a2848;
+  color: var(--text);
+}

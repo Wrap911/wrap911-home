@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d10">
+  <title>WRAP 911 Trainer</title>
+  <link rel="stylesheet" href="css/style.css?v=274">
+  <link rel="stylesheet" href="css/theme-dark.css?v=274">
+</head>
+<body style="background:#0b0d10;color:#e8edf4;font-family:system-ui,sans-serif;padding:24px">
+  <p>Loading WRAP 911 trainer…</p>
+  <script>
+  (function () {
+    var url = "https://cdn.jsdelivr.net/gh/Wrap911/wrap911-home@57d8b28bbe33d58c458562b3777b15aa89032db4/trainer/index.html";
+    fetch(url, { cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw new Error("fetch " + r.status);
+      return r.text();
+    }).then(function (html) {
+      html = html.replace("css/style.css?v=272", "css/style.css?v=274");
+      html = html.replace(/js\/(config|data|data_extra|app_extra|coach|app|video-fix)\.js\?v=\d+/g, "js/$1.js?v=278");
+      html = html.replace(/css\/(style|theme-dark)\.css\?v=\d+/g, "css/$1.css?v=278");
+      if (html.indexOf("theme-dark.css") === -1) {
+        html = html.replace(
+          "<link rel=\"stylesheet\" href=\"css/style.css?v=274\">",
+          "<link rel=\"stylesheet\" href=\"css/style.css?v=274\">\n  <link rel=\"stylesheet\" href=\"css/theme-dark.css?v=274\">"
+        );
+      }
+      html = html.replace("content=\"#f4f5f7\"", "content=\"#0b0d10\"");
+      var extra = document.createElement("div");
+      extra.setAttribute("data-fix", "video");
+      document.open();
+      document.write(html);
+      document.close();
+      var fix = document.createElement("script");
+      fix.textContent = "(function(){if(window.__wrap911LessonTap)return;window.__wrap911LessonTap=1;var last=0;function idFrom(card){if(!card)return'';var id=card.getAttribute('data-lesson')||'';if(id)return id;var te=card.querySelector('.card-title');var title=te?te.textContent.replace(/\\s+/g,' ').trim():'';var lessons=(window.WRAP911_DATA&&window.WRAP911_DATA.trainingLessons)||[];for(var i=0;i<lessons.length;i++){if(lessons[i].title===title)return lessons[i].id;}return'';}function openFrom(e){var t=e.target;if(!t||!t.closest)return;var card=t.closest('#vehicle-lessons .card.tap, #library-list .lib-card');if(!card||card.id==='goto-vehicle-workflow-shortcut')return;var id=idFrom(card);var app=window.WRAP911_APP;if(!id||!app||!app.openLesson)return;var now=Date.now();if(now-last<500)return;last=now;app.openLesson(id);}document.addEventListener('click',openFrom,true);document.addEventListener('touchend',openFrom,true);})();";
+      document.body.appendChild(fix);
+      var s = document.createElement("script");
+      s.src = "js/video-fix.js?v=278";
+      document.body.appendChild(s);
+    }).catch(function (err) {
+      document.body.insertAdjacentHTML("beforeend", "<p>Could not load trainer: " + err.message + "</p>");
+    });
+  })();
+  </script>
+</body>
+</html>
