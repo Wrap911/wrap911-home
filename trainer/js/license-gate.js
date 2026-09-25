@@ -49,7 +49,7 @@
     try {
       localStorage.setItem("wrap911_owner", "1");
       localStorage.setItem("wrap911_license", JSON.stringify({
-        code: "SHOP", plan: "pro", sku: "seat", seats: 1, unlockedAt: Date.now()
+        code: "SHOP", plan: "pro", sku: "pack", seats: 5, unlockedAt: Date.now()
       }));
     } catch (e) {}
     var fb = document.getElementById("unlock-feedback");
