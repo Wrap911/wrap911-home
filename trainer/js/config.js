@@ -25,7 +25,7 @@ window.WRAP911_CONFIG = {
   stripeFieldLink: "",
   stripeTestMode: false,
   /* Shop phone. Full trainer without a typed code. Turn off before selling seats. */
-  shopPhoneOpen: true,
+  shopPhoneOpen: false,
   /* Optional: paste your Cloudflare Worker URL here to receive problem uploads server-side.
      Leave empty to keep submissions in the device's local queue. */
   problemUploadEndpoint: "",

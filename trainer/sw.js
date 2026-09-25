@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.9.21-crew";
+var CACHE = "wrap911-trainer-2.9.22-free-look";
 var ASSETS = [
   "./",
   "./index.html",
