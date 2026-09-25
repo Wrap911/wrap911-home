@@ -149,9 +149,11 @@
   }
 
   function esc(s) {
-    return String(s || "").replace(/[&<>"]/g, function (c) {
-      return ({ "&": "&", "<": "<", ">": ">", '"': """ })[c];
-    });
+    return String(s || "")
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """);
   }
 
   function renderVideos() {
