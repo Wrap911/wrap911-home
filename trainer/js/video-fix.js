@@ -93,6 +93,67 @@
     });
   }
 
+
+  var REAL = {
+    "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-1.mp4": 1,
+    "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-2.mp4": 1,
+    "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.mp4": 1,
+    "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.mp4": 1,
+    "media/videos/architectural/architectural-wall-wrap.mp4": 1,
+    "media/videos/architectural/cabinet-done.mp4": 1,
+    "media/videos/architectural/vinyl-cabinet-installed.mp4": 1,
+    "media/videos/architectural/vinyl-oncabinet8.mp4": 1,
+    "media/videos/fleet/graphic-installation-1.mp4": 1,
+    "media/videos/fleet/pink-caddy-wrap3.mp4": 1,
+    "media/videos/fleet/pink-caddy-wrap4.mp4": 1,
+    "media/videos/fleet/pink-caddy-wrap5.mp4": 1,
+    "media/videos/fleet/pink-wrap-caddy-1.mp4": 1,
+    "media/videos/fleet/satin-wrap-cherokee.mp4": 1,
+    "media/videos/prep/cutting-vinyl-4.mp4": 1,
+    "media/videos/prep/cutting-vinyl-5.mp4": 1,
+    "media/videos/prep/cutting-vinyl-6.mp4": 1,
+    "media/videos/prep/cutting-vinyl3.mp4": 1,
+    "media/videos/prep/dull-blade-cut.mp4": 1,
+    "media/videos/prep/grey-overlay-peel-magenta-base-stack.mp4": 1,
+    "media/videos/prep/squeegee-strokes.mp4": 1,
+    "media/videos/prep/stroke-of-the-squeegee.mp4": 1,
+    "media/videos/prep/torch-in-vinyl-3.mp4": 1,
+    "media/videos/prep/torch-on-vinyl1.mp4": 1,
+    "media/videos/prep/torch-on-vinyl2.mp4": 1,
+    "media/videos/prep/translucent-vinyl.mp4": 1,
+    "media/videos/prep/vinyl-cutting1.mp4": 1,
+    "media/videos/prep/vinyl-removal.mp4": 1,
+    "media/videos/prep/vinyl-squeegee-sequence.mp4": 1,
+    "media/videos/qc/corngraphic.mp4": 1,
+    "media/videos/trailer/trailer-rivets-and-marker-lights.mp4": 1,
+    "media/videos/trailer/wrapping-around-trailer-marking-light.mp4": 1,
+    "media/videos/van/rear-vehicle-gate-wrap.mp4": 1
+  };
+  var FIRST = [
+    "media/videos/trailer/trailer-rivets-and-marker-lights.mp4",
+    "media/videos/van/rear-vehicle-gate-wrap.mp4"
+  ];
+
+  function tidyVideos() {
+    var list = document.getElementById("video-list");
+    if (!list) return;
+    var cards = list.querySelectorAll(".video-card, .card");
+    var i, card, host, src;
+    for (i = 0; i < cards.length; i++) {
+      card = cards[i];
+      if (card.classList.contains("teaser-paywall")) continue;
+      host = card.querySelector("[data-video-src]");
+      src = host ? (host.getAttribute("data-video-src") || "") : "";
+      src = src.replace(/^\.\//, "");
+      if (!src || !REAL[src]) card.remove();
+    }
+    for (i = FIRST.length - 1; i >= 0; i--) {
+      host = list.querySelector('[data-video-src="' + FIRST[i] + '"]');
+      card = host && (host.closest(".video-card") || host.closest(".card"));
+      if (card && card.parentNode === list) list.insertBefore(card, list.firstChild);
+    }
+  }
+
   function bind() {
     var list = document.getElementById("video-list");
     if (!list) return;
@@ -105,9 +166,18 @@
     }, true);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bind);
-  } else {
+  function arm() {
     bind();
+    tidyVideos();
+    var n = 0;
+    var timer = setInterval(function () {
+      tidyVideos();
+      if (++n > 20) clearInterval(timer);
+    }, 300);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", arm);
+  } else {
+    arm();
   }
 })();

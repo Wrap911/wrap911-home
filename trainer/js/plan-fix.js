@@ -94,6 +94,18 @@
   var token = (params.get("license") || "").trim().toUpperCase();
   var plan = pending();
   var missed = false;
+  var sessionId = params.get("session_id") || "";
+  var redirectStatus = (params.get("redirect_status") || "").toLowerCase();
+  if ((sessionId || redirectStatus === "succeeded") && !token) {
+    if (plan === "seat" || plan === "pack") {
+      write(plan, "");
+      clearPending();
+    } else {
+      missed = true;
+    }
+    strip("session_id");
+    strip("redirect_status");
+  }
   if (token === "STRIPE-SEAT" || token === "STRIPE-PACK") {
     write(token === "STRIPE-PACK" ? "pack" : "seat", "");
     clearPending();

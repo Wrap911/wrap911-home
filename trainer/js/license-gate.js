@@ -249,7 +249,7 @@
     var lead = home.querySelector(".lead");
     var p = document.createElement("p");
     p.className = "lead teaser-pitch";
-    p.textContent = "Free look: 14 shop photos and 2 bay videos. Pack $149 unlocks the full library.";
+    p.textContent = "Free look: shop rules, Coach, 14 photos, plus the trailer rivets clip and the van gate clip. Pack $149 unlocks the other movies.";
     if (lead && lead.parentNode) lead.parentNode.insertBefore(p, lead.nextSibling);
   }
 
