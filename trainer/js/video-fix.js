@@ -5,6 +5,8 @@
 (function () {
   function showMissing(host, btn) {
     if (!host) return;
+    var stillImg = host.querySelector(".video-still");
+    if (stillImg) stillImg.hidden = false;
     if (!host.querySelector(".video-play-error")) {
       var p = document.createElement("p");
       p.className = "muted video-play-error";
@@ -60,6 +62,8 @@
     var yid = youtubeId(src);
     if (yid) {
       btn.hidden = true;
+      var stillYt = host.querySelector(".video-still");
+      if (stillYt) stillYt.hidden = true;
       playYoutube(host, yid);
       return;
     }
@@ -68,6 +72,8 @@
       return;
     }
     btn.hidden = true;
+    var stillImg = host.querySelector(".video-still");
+    if (stillImg) stillImg.hidden = true;
     var open = document.querySelectorAll("#video-list video");
     for (var v = 0; v < open.length; v++) {
       try { open[v].pause(); } catch (e1) {}
@@ -200,9 +206,8 @@
       var still = item.still || "";
       html += '<article class="card video-card">' +
         '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(still) + '">' +
-        '<button type="button" class="video-play-btn" style="display:block;width:100%;padding:0;border:0;background:#141018;border-radius:10px;text-align:left">' +
-        (still ? '<img alt="" src="' + esc(still) + '" style="width:100%;display:block;border-radius:10px 10px 0 0;max-height:210px;object-fit:cover;background:#000">' : '') +
-        '<span style="display:block;padding:10px 12px;color:#ffb000">Play clip</span></button></div>' +
+        (still ? '<img class="video-still" alt="" src="' + esc(still) + '">' : '') +
+        '<button type="button" class="video-play-btn">Play clip</button></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
         '<div class="card-sub">' + esc(bucket(item.category)) + '</div></article>';
     }
@@ -238,17 +243,36 @@
 
   function bind() {
     var list = document.getElementById("video-list");
-    if (!list) return;
+    if (!list || list.getAttribute("data-play-bound")) return;
+    list.setAttribute("data-play-bound", "1");
     list.addEventListener("click", function (ev) {
       var btn = ev.target.closest(".video-play-btn");
-      if (!btn) return;
+      if (!btn) {
+        var host = ev.target.closest(".video-player-host");
+        if (!host || ev.target.closest("video, iframe")) return;
+        btn = host.querySelector(".video-play-btn");
+      }
+      if (!btn || btn.hidden) return;
       ev.preventDefault();
       ev.stopPropagation();
       playSafe(btn);
     }, true);
   }
 
+  function pinBack() {
+    var header = document.querySelector(".app-header");
+    if (!header) return;
+    var apply = function () {
+      var h = header.getBoundingClientRect().height;
+      if (h > 0) document.documentElement.style.setProperty("--header-h", Math.ceil(h) + "px");
+    };
+    apply();
+    window.addEventListener("resize", apply);
+    if (window.visualViewport) window.visualViewport.addEventListener("resize", apply);
+  }
+
   function arm() {
+    pinBack();
     bind();
     renderVideos();
   }

@@ -169,11 +169,17 @@ button.secondary {
 }
 .bottom-nav button.active { color: #fff; background: #7a3d00; }
 .back-link {
-  background: transparent;
-  color: var(--text-muted);
-  width: auto;
-  padding: 0.4rem 0;
+  position: sticky;
+  top: var(--header-h, 76px);
+  z-index: 19;
+  background: #09070d;
+  color: #ffb000;
+  width: 100%;
+  display: block;
+  padding: 0.55rem 0 0.35rem;
+  margin: 0 0 0.15rem;
   text-align: left;
+  box-shadow: 0 10px 14px #09070d;
 }
 .quiz-choice {
   display: block;
@@ -279,7 +285,7 @@ body {
   color: #2ee6ff;
   text-shadow: 0 0 16px rgba(46, 230, 255, 0.55);
 }
-button:not(.secondary):not(.chip):not(.back-link):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card) {
+button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card) {
   font-family: var(--display);
   font-weight: 400;
   letter-spacing: 0.06em;
@@ -289,6 +295,40 @@ button:not(.secondary):not(.chip):not(.back-link):not([data-nav]):not(.quiz-choi
 }
 .home-progress-fill {
   background: linear-gradient(90deg, #ff2d8c, #ffb000, #2ee6ff);
+}
+.video-card,
+.video-player-host,
+.video-still {
+  touch-action: pan-y;
+}
+.video-still {
+  width: 100%;
+  display: block;
+  max-height: 210px;
+  object-fit: cover;
+  background: #000;
+  border-radius: 10px 10px 0 0;
+}
+button.video-play-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0 0 10px 10px;
+  background: #141018;
+  color: #ffb000;
+  box-shadow: none;
+  text-align: left;
+  font-family: var(--font);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  touch-action: manipulation;
+}
+#video-list,
+#screen-videos {
+  overflow-anchor: none;
 }
 .card {
   box-shadow: inset 3px 0 0 #ff2d8c;
