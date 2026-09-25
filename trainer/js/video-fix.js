@@ -68,6 +68,11 @@
       return;
     }
     btn.hidden = true;
+    var open = document.querySelectorAll("#video-list video");
+    for (var v = 0; v < open.length; v++) {
+      try { open[v].pause(); } catch (e1) {}
+      if (open[v].parentNode) open[v].parentNode.removeChild(open[v]);
+    }
     fetch(src, { method: "HEAD", cache: "no-store" }).then(function (res) {
       var type = (res.headers.get("content-type") || "").toLowerCase();
       if (!res.ok || type.indexOf("video") === -1) throw new Error("not-video");
@@ -192,9 +197,12 @@
     for (i = 0; i < rows.length; i++) {
       item = rows[i];
       src = String(item.src || "").replace(/^\.\//, "");
+      var still = item.still || "";
       html += '<article class="card video-card">' +
-        '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(item.still || "") + '">' +
-        '<video controls playsinline preload="none" src="' + src + '" poster="' + (item.still || "") + '" style="width:100%;border-radius:10px;background:#000;display:block"></video></div>' +
+        '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(still) + '">' +
+        '<button type="button" class="video-play-btn" style="display:block;width:100%;padding:0;border:0;background:#141018;border-radius:10px;text-align:left">' +
+        (still ? '<img alt="" src="' + esc(still) + '" style="width:100%;display:block;border-radius:10px 10px 0 0;max-height:210px;object-fit:cover;background:#000">' : '') +
+        '<span style="display:block;padding:10px 12px;color:#ffb000">Play clip</span></button></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
         '<div class="card-sub">' + esc(bucket(item.category)) + '</div></article>';
     }
