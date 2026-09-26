@@ -82,6 +82,12 @@
     } catch (e) {}
   }
 
+  function defaultSku() {
+    var def = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.defaultSku) || "W911-PACK";
+    return /SEAT/i.test(def) ? "seat" : "pack";
+  }
+
+  var missed = false;
   var params;
   try { params = new URLSearchParams(window.location.search); } catch (e) { params = new URLSearchParams(); }
   var buy = (params.get("buy") || "").toLowerCase();
@@ -91,36 +97,43 @@
     return;
   }
 
-  var token = (params.get("license") || "").trim().toUpperCase();
-  var plan = pending();
-  var missed = false;
-  var sessionId = params.get("session_id") || "";
-  var redirectStatus = (params.get("redirect_status") || "").toLowerCase();
-  if ((sessionId || redirectStatus === "succeeded") && !token) {
-    if (plan === "seat" || plan === "pack") {
-      write(plan, "");
+  function applyReturn() {
+    var q;
+    try { q = new URLSearchParams(window.location.search); } catch (e) { q = new URLSearchParams(); }
+    var token = (q.get("license") || "").trim().toUpperCase();
+    var plan = pending();
+    var sessionId = q.get("session_id") || "";
+    var redirectStatus = (q.get("redirect_status") || "").toLowerCase();
+    var shopFlag = q.get("shop") === "1" || q.get("owner") === "1";
+
+    if (shopFlag) {
+      write("pack", "");
       clearPending();
-    } else {
-      missed = true;
+      strip("shop");
+      strip("owner");
     }
-    strip("session_id");
-    strip("redirect_status");
-  }
-  if (token === "STRIPE-SEAT" || token === "STRIPE-PACK") {
-    write(token === "STRIPE-PACK" ? "pack" : "seat", "");
-    clearPending();
-    strip("license");
-  } else if (token === "STRIPE" || token.indexOf("STRIPE-") === 0) {
-    if (plan === "seat" || plan === "pack") {
-      write(plan, "");
+
+    if ((sessionId || redirectStatus === "succeeded") && !token) {
+      var sku = (plan === "seat" || plan === "pack") ? plan : defaultSku();
+      write(sku, "");
       clearPending();
-    } else {
-      missed = true;
+      missed = false;
+      strip("session_id");
+      strip("redirect_status");
     }
-    strip("license");
-  } else if (crewOk(token)) {
-    write("pack", token.slice(5));
-    strip("license");
+    if (token === "STRIPE-SEAT" || token === "STRIPE-PACK") {
+      write(token === "STRIPE-PACK" ? "pack" : "seat", "");
+      clearPending();
+      strip("license");
+    } else if (token === "STRIPE" || token.indexOf("STRIPE-") === 0) {
+      var sku2 = (plan === "seat" || plan === "pack") ? plan : defaultSku();
+      write(sku2, "");
+      clearPending();
+      strip("license");
+    } else if (crewOk(token)) {
+      write("pack", token.slice(5));
+      strip("license");
+    }
   }
 
   function daysLeft(lic) {
@@ -144,7 +157,10 @@
       ? "Shop pack · 5 phones · " + left
       : "1 seat · this phone · " + left;
     var chip = document.getElementById("plan-chip");
-    if (chip && chip.textContent !== badge) chip.textContent = badge;
+    if (chip) {
+      chip.textContent = badge;
+      chip.classList.remove("locked");
+    }
     var homeBadge = document.getElementById("home-plan-badge");
     if (homeBadge && homeBadge.textContent !== badge) homeBadge.textContent = badge;
     var homeDetail = document.getElementById("home-plan-detail");
@@ -167,7 +183,6 @@
     } else {
       card.innerHTML = "<strong>1 seat</strong><p>This phone is unlocked for 12 months. It does not cover a second phone. A shop pack is $149 for five.</p>";
     }
-    return;
   }
 
   function payCard() {
@@ -182,12 +197,12 @@
       if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(card, anchor);
       else home.appendChild(card);
     }
+    var lic = read();
+    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack")) return;
     if (missed) {
       card.innerHTML = "<strong>Checkout did not stick to this phone</strong><p>Start again from the buy button on this same phone. A shared return link does not open the trainer by itself.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
       return;
     }
-    var lic = read();
-    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack")) return;
     card.innerHTML = "<strong>Two different buys</strong><p>$49 unlocks this phone only. $149 unlocks this phone and gives you a link for four more.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
   }
 
@@ -195,9 +210,15 @@
     var t = e.target;
     if (!t || !t.closest) return;
     if (t.closest("#btn-stripe-pay")) remember("pack");
+    var a = t.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (/buy=pack/i.test(href) || /3cI6oI3ML8WU2ZjdzP9ws03/.test(href)) remember("pack");
+    if (/buy=seat/i.test(href) || /eVq8wQ1EDc9643nanD9ws04/.test(href)) remember("seat");
   }, true);
 
   function arm() {
+    applyReturn();
     paint();
     payCard();
     var n = 0;
@@ -208,5 +229,5 @@
     }, 400);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", arm);
-  else arm();
+  else setTimeout(arm, 0);
 })();
