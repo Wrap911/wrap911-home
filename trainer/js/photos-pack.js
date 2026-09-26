@@ -4,10 +4,10 @@
   var d = window.WRAP911_DATA;
   if (!d) return;
 
+  /* 2.6.5: nothing maps to ../assets/sales/pickup-panels.jpg any more (sage-green film; no green wraps on Photos). */
   var MAP = {
     "media/videos/trailer/magenta-trailer-rivet-row-channel-detail.jpg": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
     "media/videos/trailer/magenta-rivet-field-tented-heads.jpg": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
-    "media/videos/fleet/finished-pickup-walkaround-red-sox-theme.jpg": "../assets/sales/pickup-panels.jpg",
     "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg": "media/videos/fleet/pink-caddy-wrap4.jpg",
     "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg": "../assets/sales/fleet-rv.jpg",
     "media/videos/architectural/hand-seat-corner-knife-trim.jpg": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
@@ -29,8 +29,7 @@
     "media/videos/architectural/architectural-vinyl-panel-pre-install-prep.jpg": "media/videos/architectural/architectural-wall-wrap.jpg",
     "media/videos/architectural/architectural-wall-panel-install-dust-tack.jpg": "media/videos/architectural/vinyl-cabinet-installed.jpg",
     "media/videos/rv-bus/blue-rv-wrap.jpg": "../assets/sales/fleet-rv.jpg",
-    "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg": "../assets/sales/fleet-rv.jpg",
-    "media/videos/rv-bus/smith-field-food-truck.jpg": "../assets/sales/pickup-panels.jpg"
+    "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg": "../assets/sales/fleet-rv.jpg"
   };
 
   var KEYS = ["still", "image", "poster", "thumb", "thumbnail", "photo", "hero", "media", "posterUrl", "imageUrl"];
@@ -68,11 +67,7 @@
       narration:"Tuck toward the housing. Fresh blade. Leave a hair to tuck, then heat-set per TDS.",
       checklist:["Tuck toward the housing","Fresh blade","Leave a small tuck","Heat-set per TDS"],
       quiz:{q:"Flush-cut at a marker lamp. Risk?",correct:"Cold shrink shows OEM color.",wrong:"The lamp gets brighter."} },
-    { id:"pk-pickup", title:"Pickup side panels in the bay", image:"../assets/sales/pickup-panels.jpg", module:"squeegee", jobType:"Fleet",
-      visual:"Pickup flanks mid-wrap.",
-      narration:"Long side panels want layout and a level hang. Do not chase heat down the bed.",
-      checklist:["Level the hang","Glass the door and bed","Watch the character line","Raking light at the end"],
-      quiz:{q:"First read on a pickup side?",correct:"Level hang and the character line.",wrong:"Heat the whole bed so the film goes soft."} },
+    /* 2.6.5: pk-pickup removed (pickup-panels.jpg, sage-green film). */
     { id:"pk-edge", title:"Edge and channel detail", image:"../assets/sales/edge-detail.jpg", module:"cutting", jobType:"Trailer",
       visual:"Channel and edge where film wants to bridge.",
       narration:"Feed the channel. Do not stretch across it. Finish-trim off the show face.",

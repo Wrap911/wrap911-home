@@ -14,10 +14,10 @@
   "free": true
  },
  {
-  "photoId": "prob-pickup-quarter",
-  "q": "What's wrong at the taillight?",
-  "right": "Film is bridged into the lamp pocket and fingered along the bed seam.",
-  "wrong": "Film is trimmed short and paint shows.",
+  "photoId": "bay-trailer-door",
+  "q": "What is standing against the orange panel at the door?",
+  "right": "A folding ladder, set right at the door.",
+  "wrong": "A film roll on a stand.",
   "free": true
  },
  {

@@ -1,4 +1,5 @@
-/* WRAP 911 Trainer — Games & exercises (2.6.3; 2.6.4 adds the extra Fix It Fast / Spot It sets in data/games/)
+/* WRAP 911 Trainer — Games & exercises (2.6.3; 2.6.4 adds the extra Fix It Fast / Spot It sets in data/games/;
+   2.6.5 hub badges show the real question pool per plan instead of the round-card count)
    Four touch games built ONLY from content already in the app:
    Step Order (lesson steps + vehicle workflow order), Fix It Fast (lesson / practice / scenario quizzes
    + Problems photo quizzes), Tool Match (workflow step tools, lesson tools), Spot It (photoLessons quiz text).
@@ -424,6 +425,20 @@
     show("games");
     if (EXTRA.state !== "ready") loadExtras().then(function () { if (S.view === "hub") renderHub(); });
   }
+  /* 2.6.5: question pool per game for the current plan. null until the extra sets have settled, so the hub
+     never shows a pre-extras number. One question = one sequence (Step Order), one quiz (Fix It Fast),
+     one tool-to-step pair (Tool Match), one photo question (Spot It). Only rounds this plan can open count. */
+  function poolSize(g, rounds, isPaid) {
+    if (EXTRA.state === "idle" || EXTRA.state === "loading") return null;
+    if (g.id === "fix") return fixPool(isPaid).length;
+    var open = rounds.filter(function (r) { return isPaid || !!r.free; });
+    if (g.id === "spot") {
+      var pick = open.filter(function (r) { return r.id === (isPaid ? "all" : "sample"); })[0];
+      return pick ? pick.photos.length : 0;
+    }
+    if (g.id === "tools") return open.reduce(function (t, r) { return t + buildPairs(r.entries).length; }, 0);
+    return open.length;
+  }
   function renderHub() {
     var list = $("games-list");
     if (!list) return;
@@ -433,7 +448,11 @@
     GAMES.forEach(function (g) {
       var rounds = g.rounds();
       var best = g.id === "fix" ? (st.best["fix:full"] || st.best["fix:sample"] || 0) : 0;
-      var badge = isPaid ? rounds.length + " rounds" : "Free sample · " + (rounds.length - 1) + " more in Pack";
+      /* 2.6.5: the badge is the real question pool for this plan (it said "N rounds": the number of round
+         cards, e.g. Fix It Fast "2 rounds" = Sample + Full, while the full pool is 100+ questions). */
+      var n = poolSize(g, rounds, isPaid);
+      var qs = n === null ? "" : n + (n === 1 ? " question" : " questions");
+      var badge = isPaid ? (qs || "All rounds open") : "Free sample · " + (qs ? qs + " · " : "") + "more in Pack";
       var card = document.createElement("div");
       card.className = "card tap gm-card";
       card.setAttribute("role", "button");
@@ -994,6 +1013,7 @@
   APP.openGames = openHub;
   APP.openGame = openGame;
   APP.games = { list: GAMES, rounds: function (id) { var g = findGame(id); return g ? g.rounds() : []; }, spotDistractors: spotDistractors, fixPool: fixPool,
+    poolSize: function (id, isPaid) { var g = findGame(id); return g ? poolSize(g, g.rounds(), isPaid === undefined ? paid() : !!isPaid) : null; },
     extras: function () { return { state: EXTRA.state, fix: EXTRA.fix.length, spot: EXTRA.spot.length, fixFree: extraFix(false).length, fixAll: extraFix(true).length, spotFree: extraSpot(true).length, spotAll: extraSpot(false).length }; },
     loadExtras: loadExtras };
 

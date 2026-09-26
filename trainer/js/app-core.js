@@ -616,8 +616,9 @@
     var stats = progressStats();
     var p = loadProgress();
     var pct = Math.round(((stats.modDone + stats.photoDone) / (stats.modTotal + stats.photoTotal)) * 100) || 0;
+    /* Hotfix 2.6.5: no photo total until the final list is ready (same rule as the Photos heading). */
     var detail = "Modules " + stats.modDone + "/" + stats.modTotal +
-      " · Photos " + stats.photoDone + "/" + stats.photoTotal;
+      " · Photos " + (photoTotalNow() === null ? "loading" : stats.photoDone + "/" + stats.photoTotal);
     var isPaid = paidNow();
     if (!isPaid) {
       /* Hotfix 2.6.1: free phones see the photos they can open, not the full pack count. */
@@ -1279,6 +1280,21 @@
   /* ---------- Photos ---------- */
   var photoJobFilter = "";
 
+  /* Hotfix 2.6.5: one photo total for the Photos heading and the Home line. null = not final yet. */
+  function photoTotalNow() {
+    if (window.WRAP911_PHOTOS_READY !== true) return null;
+    var total = data.photoLessons.length;
+    if (!paidNow()) total = Math.min(cfg.freePhotoSamples || 14, total) || 0;
+    return total;
+  }
+
+  function photoCountLabel(shown) {
+    var total = photoTotalNow();
+    if (total === null) return "Browse photos";
+    var unit = (paidNow() ? "" : "free ") + (total === 1 ? "photo" : "photos");
+    return photoJobFilter ? shown + " of " + total + " " + unit : total + " " + unit;
+  }
+
   function renderPhotosList() {
     var list = $("photo-list");
     var empty = $("photos-empty");
@@ -1321,6 +1337,11 @@
           "Tap <em>All</em> or another job type chip — or Home → Browse photos.";
       }
     }
+    /* Hotfix 2.6.5: the heading carries the count, from the same final deduped list as the Home line
+       (photoLessons after license-gate afterMedia). No number until WRAP911_PHOTOS_READY, so a slow
+       network never shows the pre-pack count. */
+    var head = $("photos-heading");
+    if (head) head.textContent = photoCountLabel(shown);
     var chips = document.querySelectorAll("#photo-filter-chips [data-photo-job]");
     for (var c = 0; c < chips.length; c++) {
       var v = chips[c].getAttribute("data-photo-job") || "";

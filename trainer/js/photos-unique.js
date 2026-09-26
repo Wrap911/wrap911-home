@@ -35,15 +35,16 @@
       quiz: { q: "Tape is still on the nose. Move?", correct: "Pull the tape low and slow, then seat the edge it was holding.", wrong: "Leave the tape. It holds the edge." }
     },
     {
-      id: "prob-pickup-quarter",
-      title: "Pickup quarter, fingers at the lamp",
-      image: "media/photos/gallery/pickup-bottle-quarter.jpg",
-      module: "squeegee",
-      jobType: "Problems",
-      visual: "Sage bottle-print film on a pickup quarter. Fingers stack at the taillight and the cap seam. A spray bottle is on the floor. LEER badge on the cap.",
-      narration: "Problem: film is bridged into the lamp pocket and fingered along the bed seam.\n\nSolution: glass the door flat first. Stop at the lamp. Relief-cut and feed the pocket. Do not stretch the bottle print across the opening.",
-      checklist: ["Glass the flat before the lamp", "Relief-cut the taillight pocket", "Do not stretch the print across the gap", "Keep the spray bottle off the film"],
-      quiz: { q: "Fingers at the taillight. First fix?", correct: "Lift, glass the flat, then feed the pocket.", wrong: "Torch the pocket and mash the fingers flat." }
+      /* 2.6.5: replaces prob-pickup-quarter (sage-green bottle-print film; no green wraps on Photos). */
+      id: "bay-trailer-door",
+      title: "Orange side, door outline at the ladder",
+      image: "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
+      module: "cutting",
+      jobType: "Vehicles",
+      visual: "Orange film on a tall side panel. A door with rounded top corners is outlined in the panel by a dark gap line. A folding ladder stands against the panel at the door, with a tool on a yellow cord hanging from it. An installer in a dark cap and ear protection stands at the ladder with a pencil in his mouth. A black coach with white stripes is parked on the right, and a cart with tape sits at the lower right.",
+      narration: "The orange film runs across the side and over the door. The dark outline is the door gap. The ladder is set right at the door, so the work is at the door edge, not a reach from the side.\n\nSeat the film into the door area before you cut. Cut into the gap with a sharp blade, not across the painted face. Leave a tuck margin where the trim allows. Any heat on the cut edge follows the film TDS. Cycle the door when you are done.",
+      checklist: ["Set the ladder at the door before you climb", "Seat the film before the cut", "Cut into the gap, not across the face", "Leave a tuck margin, then cycle the door"],
+      quiz: { q: "What is the dark outline in the orange film?", correct: "The gap around a side door, with the film running across it.", wrong: "A seam where two orange panels overlap." }
     },
     {
       id: "prob-rv-pink",

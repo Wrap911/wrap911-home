@@ -459,25 +459,26 @@ window.WRAP911_DATA = {
       }
     },
     {
+      /* 2.6.5: new still (was ../assets/sales/pickup-panels.jpg, sage-green bottle-print film; no green wraps on Photos). */
       id: "pl10",
-      title: "Crew-cab pickup — sage bottle print, liner hanging",
-      image: "../assets/sales/pickup-panels.jpg",
-      module: "commercial-sides",
+      title: "Box truck cab door — blue film going on",
+      image: "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
+      module: "squeegee",
       jobType: "Vehicles",
-      visual: "Crew-cab pickup in the bay. Sage-green film with repeating bottle silhouettes is on the doors and the bed side. Grey liner still hangs off the front door, the gap between cab and bed, and the rear door. Black door handle, black step bar, blue propane torch on the concrete, white van behind. This is the pickup. It is not an Escalade and not a black trailer.",
-      narration: "This is the pickup. Sage-green film carries a repeating bottle silhouette across the doors and the bedside. Grey liner is still hanging, so the panel is hinged, not finished. A black handle and a step bar break up the side. A blue torch stands on the floor. A white van is in the background.\n\nThe bottle rows have to read level from the front door, across the cab-bed gap, and onto the bed. Lock that alignment before you pull the rest of the liner. The hanging liner is your hinge. Do not glass it down crooked just to get the sheet out of the way.\n\nThe torch stays on the floor until the pattern is true. When you do warm an edge, use the film TDS. Do not invent a temperature, and do not call this truck an Escalade or a trailer.",
+      visual: "A white box truck in the bay, with the box body built out over the cab. Blue film covers the driver door and runs up around the window frame. An installer in a black T-shirt and jeans stands at the door with his head down near its rear edge. Along that rear edge the film is still wrinkled and catches the light. The side mirror sticks out on the left. Steel roof trusses and a shop light are overhead.",
+      narration: "This is a box truck cab door, not a pickup and not a trailer. Blue film is on the door and around the window frame. Along the rear edge of the door the film is still wrinkled, so that edge is not seated yet.\n\nGlass the flat of the door from the middle out, then work to the edges. Feed the film around the window frame and into the door gap. Do not stretch it across the gap to the body.\n\nSeat the wrinkled rear edge before you trim it. Heat only where an edge needs it, and only per the film TDS.",
       checklist: [
-        "Name the vehicle: crew-cab pickup with bottle-print film",
-        "Keep bottle rows level across door, gap, and bed",
-        "Treat hanging grey liner as a hinge, not as finished film",
-        "Leave the torch on the floor until registration is true",
-        "Feed the cab-bed gap after the pattern lines up",
-        "Heat only per product TDS — no invented number",
+        "Name it: box truck cab door in blue film",
+        "Glass the flat of the door from the middle out",
+        "Seat the wrinkled rear edge before you trim",
+        "Feed the window frame and the door gap",
+        "Do not bridge the gap to the body",
+        "Heat only per the film TDS",
       ],
       quiz: {
-        q: "Which vehicle is in this still, and what is still hanging?",
-        correct: "A crew-cab pickup in sage bottle-print film, with grey liner still hanging and a torch on the floor.",
-        wrong: "A black enclosed trailer with a white tire-tread graphic."
+        q: "What is still not seated on this blue cab door?",
+        correct: "The film along the rear edge of the door, where it is still wrinkled.",
+        wrong: "Nothing. The door is glassed and trimmed."
       }
     },
     {

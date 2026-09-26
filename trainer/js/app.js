@@ -37,7 +37,7 @@
 
   function loadLocal() {
     var s = document.createElement("script");
-    s.src = "js/app-core.js?v=264";
+    s.src = "js/app-core.js?v=265";
     s.onload = function () { after(); setTimeout(after, 200); };
     s.onerror = function () {
       var key = "wrap911_core_retry";

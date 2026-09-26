@@ -37,6 +37,14 @@
     "media/videos/van/rear-vehicle-gate-wrap.mp4": 1
   };
 
+  /* 2.6.5: real repo stills under media/videos/ that have no mp4 but are used as photo lessons.
+     Without this they read as "missing" and got swapped for a pool still at runtime. */
+  var STILL_OK = {
+    "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg": 1,
+    "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg": 1
+  };
+
+  /* 2.6.5: pickup-panels.jpg (sage-green film) removed from the Vehicles pool; no green wraps on Photos. */
   var POOL = {
     Vehicles: [
       "media/videos/fleet/pink-wrap-caddy-1.jpg",
@@ -45,7 +53,6 @@
       "media/videos/fleet/pink-caddy-wrap5.jpg",
       "media/videos/fleet/satin-wrap-cherokee.jpg",
       "media/videos/fleet/graphic-installation-1.jpg",
-      "../assets/sales/pickup-panels.jpg",
       "media/photos/gallery/front-bumper-wrap.jpg",
       "media/photos/gallery/front-bumper-wrap-caddy.jpg",
       "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
@@ -113,11 +120,14 @@
     });
   });
 
-  var VEH = {
-    van: { title: "Vehicles", summary: "Cars, pickups, trailers, and fleet work from the bay." },
-    storefront: { title: "Interior", summary: "Walls, cabinets, glass, fixtures." },
-    "rv-bus": { title: "Vehicles", summary: "Cars, pickups, trailers, and fleet work from the bay." }
+  /* Hotfix 2.6.5: vehicles with a complete workflow, in list order. rv-bus steps use the list schema
+     ({title, media, steps[]}); app_extra.js renders that as a checklist. */
+  var OPEN_VEHICLES = ["box-truck", "van", "trailer", "rv-bus", "fleet", "storefront"];
+  var VEH_LABEL = {
+    "box-truck": { title: "Box Truck", summary: "Rivet fields, oversized panels, roll-up and swing doors." },
+    storefront: { title: "Interior", summary: "Walls, cabinets, glass, fixtures." }
   };
+  window.WRAP911_OPEN_VEHICLES = OPEN_VEHICLES.slice();
 
   var CAT = {
     "Storefront/Architectural": "Interior",
@@ -147,6 +157,7 @@
     path = String(path);
     if (path.indexOf("data:") === 0) return false;
     if (/^https?:/i.test(path)) return false;
+    if (STILL_OK[path]) return false;
     if (/media\/photos\//.test(path)) return false;
     if (/media\/stock\//.test(path)) return false;
     if (/assets\//.test(path)) return false;
@@ -207,33 +218,23 @@
        photos-pack/boost duplicates whenever they landed first, so they escaped the dedupe. */
     var first = runs++ === 0;
     var i, v, src;
+    /* Hotfix 2.6.5: the vehicle list used to collapse to one "Vehicles" card (box-truck) + "Interior" (storefront),
+       so the van, trailer, RV and fleet workflows were unreachable. Every vehicle in OPEN_VEHICLES was checked
+       (workflow steps present, every step image in the repo) and keeps its own card. Storefront stays "Interior". */
     if (d.vehicles) {
-      for (i = 0; i < d.vehicles.length; i++) {
-        v = VEH[d.vehicles[i].id];
-        if (v) {
-          d.vehicles[i].title = v.title;
-          d.vehicles[i].summary = v.summary;
-        } else {
-          var raw = String(d.vehicles[i].title || d.vehicles[i].id || "").toLowerCase();
-          if (/interior|storefront|architect/.test(raw)) {
-            d.vehicles[i].title = "Interior";
-            d.vehicles[i].summary = "Walls, cabinets, glass, fixtures.";
-          } else {
-            d.vehicles[i].title = "Vehicles";
-            d.vehicles[i].summary = "Cars, pickups, trailers, and fleet work from the bay.";
-          }
+      var byId = {};
+      for (i = 0; i < d.vehicles.length; i++) byId[d.vehicles[i].id] = d.vehicles[i];
+      var open = [];
+      for (i = 0; i < OPEN_VEHICLES.length; i++) {
+        v = byId[OPEN_VEHICLES[i]];
+        if (!v) continue;
+        if (VEH_LABEL[v.id]) {
+          v.title = VEH_LABEL[v.id].title;
+          v.summary = VEH_LABEL[v.id].summary;
         }
+        open.push(v);
       }
-      var seen = {};
-      var slim = [];
-      for (i = 0; i < d.vehicles.length; i++) {
-        var name = d.vehicles[i].title;
-        if ((name === "Vehicles" || name === "Interior") && !seen[name]) {
-          seen[name] = 1;
-          slim.push(d.vehicles[i]);
-        }
-      }
-      d.vehicles = slim;
+      if (open.length) d.vehicles = open;
     }
     function relabel(list, allowCover) {
       if (!list) return;

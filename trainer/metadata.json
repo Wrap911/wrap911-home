@@ -2,7 +2,7 @@
  "app": {
   "name": "WRAP 911 Trainer",
   "shortName": "WRAP 911",
-  "version": "2.6.4",
+  "version": "2.6.5",
   "stripeTestMode": false,
   "generated": "2026-09-26",
   "canonical": "https://wrap911.github.io/wrap911-home/trainer/",

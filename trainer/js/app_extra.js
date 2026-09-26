@@ -264,14 +264,17 @@
       var checked = !!doneMap[st.id];
       html += '<div class="workflow-card' + (checked ? " done" : "") + '" data-step="' + escapeHtml(st.id) + '">';
       html += '<label class="wf-check"><input type="checkbox" data-wfid="' + escapeHtml(st.id) + '"' + (checked ? " checked" : "") + "> ";
-      html += "<strong>" + escapeHtml(st.title) + '</strong> <span class="type-pill">' + escapeHtml(st.type) + "</span></label>";
+      html += "<strong>" + escapeHtml(st.title) + "</strong>" + (st.type ? ' <span class="type-pill">' + escapeHtml(st.type) + "</span>" : "") + "</label>";
       if (st.media) html += '<img class="photo-hero" src="' + escapeHtml(st.media) + '" alt="" loading="lazy" decoding="async">';
       /* no step media: show nothing instead of a placeholder box */
-      html += "<p>" + escapeHtml(st.instructions) + "</p>";
-      html += "<p><strong>Tools:</strong> " + escapeHtml((st.tools || []).join(" · ")) + "</p>";
-      html += "<p><strong>Safety:</strong> " + escapeHtml((st.safety || []).join(" · ")) + "</p>";
-      html += "<p><strong>Technique:</strong> " + escapeHtml(st.technique || "") + "</p>";
-      html += "<p class=\"muted\"><strong>Watch for:</strong> " + escapeHtml((st.mistakes || []).join(" · ")) + "</p>";
+      /* Hotfix 2.6.5: the rv-bus workflow uses a step list ({title, media, steps[]}) instead of
+         instructions/tools/safety/technique/mistakes. Show the list, and skip empty lines (no "undefined"). */
+      if (st.instructions) html += "<p>" + escapeHtml(st.instructions) + "</p>";
+      if (st.steps && st.steps.length) html += listHtml(st.steps, true);
+      if (st.tools && st.tools.length) html += "<p><strong>Tools:</strong> " + escapeHtml(st.tools.join(" · ")) + "</p>";
+      if (st.safety && st.safety.length) html += "<p><strong>Safety:</strong> " + escapeHtml(st.safety.join(" · ")) + "</p>";
+      if (st.technique) html += "<p><strong>Technique:</strong> " + escapeHtml(st.technique) + "</p>";
+      if (st.mistakes && st.mistakes.length) html += "<p class=\"muted\"><strong>Watch for:</strong> " + escapeHtml(st.mistakes.join(" · ")) + "</p>";
       html += "</div>";
     }
     wrap.innerHTML = html;
@@ -779,7 +782,7 @@
       label.className = "cl-step" + (doneMap[st.id] ? " done" : "");
       label.style.display = "flex";
       label.innerHTML = '<input type="checkbox" data-jwf="' + escapeHtml(st.id) + '"' + (doneMap[st.id] ? " checked" : "") + "> <span>" +
-        escapeHtml(st.title) + ' <em class="muted">(' + escapeHtml(st.type) + ")</em></span>";
+        escapeHtml(st.title) + (st.type ? ' <em class="muted">(' + escapeHtml(st.type) + ")</em>" : "") + "</span>"; /* 2.6.5: rv-bus steps have no type */
       wrap.appendChild(label);
     }
   }
