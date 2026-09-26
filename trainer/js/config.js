@@ -9,7 +9,7 @@ window.WRAP911_CONFIG = {
   contactName: "Gerry",
   contactEmail: "Djavoo1975@icloud.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "Arlon"],
-  version: "2.6.2",
+  version: "2.6.3",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
@@ -36,13 +36,14 @@ window.WRAP911_CONFIG = {
   freeLessonIds: ["bt-rivet-mastery", "van-deep-recess", "sf-wet-install"],
   /* Hotfix 2.6.1: ONE list of screens a free phone may open. app-core.js showScreen and
      license-gate.js both read this. Paid content inside stays gated (photo cap, video cap,
-     lesson lock, practice lock). module, scenarios, flashcards, jobs, calc, badges stay paid. */
+     lesson lock, practice lock, game rounds). module, scenarios, flashcards, jobs, calc, badges stay paid. */
   freeScreens: [
     "rules", "home", "pricing", "contact", "coach", "about",
     "photos", "photo", "videos",
     "lesson", "vehicle", "library",
     "practice-hub", "practice",
-    "drills", "drill-spot", "drill-checklist", "drill-checklist-pick"
+    "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
+    "games", "game"
   ],
   plans: [
     {

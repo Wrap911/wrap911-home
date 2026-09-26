@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.6.2-ship";
+var CACHE = "wrap911-trainer-2.6.3-ship";
 var IMG_CACHE = "wrap911-img-v1"; /* photos the user already opened; videos are never cached */
 /* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
@@ -16,6 +16,7 @@ var ASSETS = [
   "./js/config.js",
   "./js/data.js",
   "./js/data_extra.js",
+  "./js/games.js",
   "./js/ios-license-bridge.js",
   "./js/jobs-trim.js",
   "./js/labels-fix.js",
