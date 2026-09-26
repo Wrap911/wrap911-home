@@ -27,8 +27,8 @@
       visual: "Rear door of the pink Escalade. Glossy pink film follows the recessed handle. The scoop has two open black cavities, and a chrome key cylinder sits at the back of the handle. The door edge and jamb are on the right.",
       narration: "The subject is the rear door handle on the Escalade. Film is already over the scoop. The key cylinder is still chrome. The black openings are the handle voids.\n\nSeat the scoop before you cut. Cut into the voids, off the paint, and leave a tuck the housing can hide. Finish the jamb after the pocket is down.",
       check: ["Name it: Escalade rear door handle", "Seat the scoop before cutting", "Keep the key cylinder free", "Cut into the black openings, not across the face"],
-      q: "What should you finish first on this door?",
-      correct: "The recessed handle and the chrome key cylinder.",
+      q: "What detail is the film following on this door?",
+      correct: "The recessed handle scoop and the chrome key cylinder.",
       wrong: "A bottle-print on a black pickup with a camper shell."
     },
     "pink-caddy-wrap5.jpg": {
@@ -131,7 +131,16 @@
       correct: "The front headlight of the pink Escalade, with film seated around the housing.",
       wrong: "A van taillight with an alcohol bottle in the frame."
     },
-    "front-bumper-wrap.jpg": null,
+    "front-bumper-wrap.jpg": {
+      title: "Escalade fog lamp and sensor",
+      jobType: "Vehicles",
+      visual: "Same pink Escalade front corner, read low. At the bottom of the frame, pink film wraps into the black fog lamp pocket. A small round parking sensor sits on the bumper above it. The headlight housing fills the top, and chrome shows at the right edge.",
+      narration: "Read the lower half of this frame. Pink film wraps into the fog lamp pocket, and a round parking sensor sits in the bumper face above it.\n\nFeed the film into the pocket before you cut, and leave a small tuck. Cut the sensor opening clean, and do not bury the sensor under film.",
+      check: ["Name the fog lamp pocket and the parking sensor", "Feed the pocket before the finish cut", "Leave a small tuck inside the pocket", "Keep the sensor face clear of film"],
+      q: "What sits low on this pink bumper, under the headlight?",
+      correct: "A fog lamp pocket, with a round parking sensor on the bumper just above it.",
+      wrong: "A trailer marker light under gold film."
+    },
     "office-wallpaper-wrap.jpg": {
       title: "Conference room walls",
       jobType: "Interior",
@@ -234,14 +243,14 @@
       wrong: "Marker lights on a trailer."
     },
     "trailer-rivets-and-marker-lights.jpg": {
-      title: "Marker light under gold film",
+      title: "Gold film peeled off its liner",
       jobType: "Vehicles",
-      visual: "Gold 3M Controltac film over a round cream marker light. A hand peels the printed liner. The dome under the film is the light, not a rivet.",
-      narration: "This is a marker light. The gold film is going over it, and that light gets cut out. It is not a rivet row.\n\nSeat the film around the housing. Do not bridge the light. Cut it out so the lamp is clear.",
-      check: ["Name the round marker light", "See gold Controltac, not a rivet row", "Cut the light out after the film is seated", "Do not bridge the housing"],
-      q: "What is the round piece under the gold film?",
-      correct: "A marker light that gets cut out.",
-      wrong: "A rivet head to press and purge."
+      visual: "Close-up of a hand holding the edge of a sheet of gold film, peeled back from a white printed liner. Soft creases and air marks show in the film. No light, rivet, or panel is in the frame.",
+      narration: "This frame is film handling, not an install. A hand holds gold film by its edge, just off the liner.\n\nHold the sheet by the edge so the adhesive stays clean. Do not let it fold onto itself or touch the floor. Keep the liner on the part you are not hanging yet.",
+      check: ["See gold film peeled back from its liner", "Hold the sheet by the edge", "Keep adhesive off fingers and the floor", "Do not let the film fold onto itself"],
+      q: "What is the hand doing in this frame?",
+      correct: "Holding gold film by its edge, peeled back off the liner.",
+      wrong: "Cutting a marker light out of seated film."
     },
     "wrapping-around-trailer-marking-light.jpg": {
       title: "Squeegee on gold Controltac film",
@@ -310,7 +319,7 @@
       narration: "The frame is filled with printed kernels. The bright rectangles are light reflections on the gloss, not holes in the print.\n\nQC this the way you QC any print: look for a lifted edge, a dirt speck, or a smear in the image. Do not read a reflection as damage.",
       check: ["See the printed corn filling the frame", "Read the bright rectangles as reflections", "Check the print for a real edge lift or speck", "Do not treat a reflection as a hole"],
       q: "What are the two bright rectangles?",
-      correct: "Light reflections on a glossy printed corn graphic.",
+      correct: "Shop-light reflections on the gloss over the corn.",
       wrong: "Holes cut for marker lights."
     },
     "architectural-panel-cutting-excess-vinyl-after-install-1.jpg": {
@@ -375,7 +384,6 @@
     }
   };
 
-  BY["front-bumper-wrap.jpg"] = BY["edge-detail.jpg"];
   BY["trailer-rivets.jpg"] = BY["trailer-spot-graphics.jpg"];
 
   function baseName(p) {
@@ -404,6 +412,8 @@
     for (var i = 0; i < d.photoLessons.length; i++) applyOne(d.photoLessons[i]);
   }
 
+  /* 2.6.4: license-gate calls this once more after photos-pack/boost land, so late items get their caption on every load. */
+  window.WRAP911_CAPTIONS_APPLY = apply;
   apply();
   document.addEventListener("DOMContentLoaded", apply);
   setTimeout(apply, 0);

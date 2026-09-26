@@ -178,7 +178,7 @@
     return want[0] || COVER;
   }
 
-  function uniquePhotos() {
+  function uniquePhotos(swapDupes) {
     var d = window.WRAP911_DATA;
     if (!d || !d.photoLessons) return;
     var used = {};
@@ -187,7 +187,7 @@
       var item = list[i];
       var img = item.image || item.still || "";
       var bn = basename(img);
-      var bad = missingStill(img) || isCover(img) || (bn && used[bn]);
+      var bad = missingStill(img) || isCover(img) || (swapDupes && bn && used[bn]);
       if (bad) {
         img = pickByTitle(item, used);
         item.image = img;
@@ -199,9 +199,13 @@
     }
   }
 
+  var runs = 0;
   function apply() {
     var d = window.WRAP911_DATA;
     if (!d) return;
+    /* Hotfix 2.6.4: swap duplicate stills only on the first (sync) run. The timer runs used to re-image
+       photos-pack/boost duplicates whenever they landed first, so they escaped the dedupe. */
+    var first = runs++ === 0;
     var i, v, src;
     if (d.vehicles) {
       for (i = 0; i < d.vehicles.length; i++) {
@@ -254,7 +258,7 @@
     relabel(d.photoLessons, false);
     relabel(d.gallery, false);
     relabel(d.practiceScenarios, false);
-    uniquePhotos();
+    uniquePhotos(first);
   }
 
   apply();

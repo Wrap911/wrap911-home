@@ -1,4 +1,4 @@
-/* WRAP 911 Trainer — Games & exercises (2.6.3)
+/* WRAP 911 Trainer — Games & exercises (2.6.3; 2.6.4 adds the extra Fix It Fast / Spot It sets in data/games/)
    Four touch games built ONLY from content already in the app:
    Step Order (lesson steps + vehicle workflow order), Fix It Fast (lesson / practice / scenario quizzes
    + Problems photo quizzes), Tool Match (workflow step tools, lesson tools), Spot It (photoLessons quiz text).
@@ -11,7 +11,12 @@
   var FIX_SECONDS = 60;
   var SPOT_SAMPLE = 5;
   /* Same trailer scene as pl21 and, after captions-fix, the same question. Asked once, as pl21. */
-  var SPOT_SKIP = { "prob-rivet-tent": 1 };
+  var SPOT_SKIP = { "prob-rivet-tent": 1,
+    /* 2.6.4 QA M6/M7: photo does not show what the question asks about */ "prob-tape-left": 1, "prob-short-lamp": 1,
+    /* QA S12: swapped stills in 2.6.3 (2.6.4 dedupe drops these ids; kept so they can never come back). pb-cab-on stays: in 2.6.4 it always carries its own still. */
+    "pb-caddy-5": 1, "pb-caddy-1": 1, "pb-cherokee": 1, "pb-cut-ex1": 1, "pb-office": 1, "pb-wall": 1, "pb-cab-done": 1,
+    /* QA S13-S16: pl18 = same frame as pl12; stock photo; social-media screenshot (pb-caddy-4 in 2.6.3, pb-removal in 2.6.4); bubbles vs reflections */
+    "pl18": 1, "pk-interior-sales": 1, "pb-caddy-4": 1, "pb-removal": 1, "prob-half-moon": 1 };
   var LOCK_MSG = "Full game rounds are in the pack. Free look has one sample round of each game. Pack $149 (5 seats) or seat $49.";
   var S = { game: null, round: null, timer: null, play: null };
 
@@ -104,6 +109,68 @@
     for (var i = 0; i < all.length; i++) if (all[i].practiceId === pid && lessonFree(all[i].id)) return true;
     return !freeLessonList().length;
   }
+
+  /* ---------- 2.6.4: extra sets (data/games/*.json) ----------
+     Fix It Fast {q, choices, answer, sourceId, free} · Spot It {photoId, q, right, wrong, free} (right = quiz.correct).
+     Rounds are built only after this settles. A failed fetch leaves the runtime-only rounds, with no error. */
+  var EXTRA = { fix: [], spot: [], state: "idle", p: null };
+  function getJson(url) {
+    return fetch(url).then(function (r) { return r.ok ? r.json() : []; }).then(function (a) { return Array.isArray(a) ? a : []; }, function () { return []; });
+  }
+  function loadExtras() {
+    if (EXTRA.p) return EXTRA.p;
+    if (typeof fetch !== "function" || typeof Promise === "undefined") { EXTRA.state = "none"; return { then: function (f) { f(); } }; }
+    EXTRA.state = "loading";
+    /* QA S21: Spot/Fix rounds read photoLessons, so also wait for the final photo pass (license-gate sets WRAP911_PHOTOS_READY). */
+    var photos = new Promise(function (ok) {
+      if (window.WRAP911_PHOTOS_READY) { ok(); return; }
+      document.addEventListener("wrap911:photos-ready", function () { ok(); });
+    });
+    var all = Promise.all([getJson("data/games/fix-it-fast.json"), getJson("data/games/spot-it.json"), photos]).then(function (res) {
+      EXTRA.fix = res[0]; EXTRA.spot = res[1]; EXTRA.state = "ready";
+    }, function () { EXTRA.state = "failed"; });
+    /* Never hold a game hostage to a stalled network: after 8 s, play the runtime rounds. */
+    var cap = new Promise(function (ok) { setTimeout(function () { if (EXTRA.state === "loading") EXTRA.state = "timeout"; ok(); }, 8000); });
+    EXTRA.p = Promise.race([all, cap]);
+    return EXTRA.p;
+  }
+  function findPhoto(id) { var a = data().photoLessons || []; for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
+  function findIn(list, id) { list = list || []; for (var i = 0; i < list.length; i++) if (list[i] && list[i].id === id) return list[i]; return null; }
+  /* sourceId → {src, tag, freeOk}. Checklist drills (cl03, cl04) open the drills hub. */
+  function extraSource(id) {
+    var d = data(), l = findLesson(id), p, c, pr;
+    if (l) return { src: { type: "lesson", id: l.id, title: l.title }, tag: "Lesson · " + l.title, freeOk: lessonFree(l.id) };
+    if ((p = findPhoto(id))) return { src: { type: "photo", id: p.id, title: p.title }, tag: "Photo · " + p.title, freeOk: !!freePhotoIdSet()[p.id] };
+    if ((c = findIn(d.drills && d.drills.checklistDrills, id))) return { src: { type: "drills", title: "Checklist drill" }, tag: "Checklist · " + (c.title || id), freeOk: true };
+    if ((pr = findIn(d.practiceScenarios, id))) return { src: { type: "practice", id: pr.id, title: pr.title || pr.id }, tag: "Practice · " + (pr.title || pr.id), freeOk: practiceFree(pr.id) };
+    return null;
+  }
+  function extraFix(full) {
+    var out = [];
+    EXTRA.fix.forEach(function (x) {
+      if (!quizOk(x)) return;
+      var s = extraSource(x.sourceId);
+      if (!s || (!full && !(x.free === true && s.freeOk))) return;
+      out.push({ q: x.q, choices: x.choices.slice(), answer: x.answer, tag: s.tag, src: s.src, extra: true });
+    });
+    return out;
+  }
+  /* Spot extras = a second question on a photo that is already in the app. Free sample: free items on free photos only. */
+  function extraSpot(freeOnly) {
+    var freeIds = freePhotoIdSet();
+    var out = [];
+    EXTRA.spot.forEach(function (x) {
+      var p = x && findPhoto(x.photoId);
+      if (!p || !p.image || SPOT_SKIP[p.id] || !x.q || !x.right || !x.wrong) return;
+      if (freeOnly && !(x.free === true && freeIds[p.id])) return;
+      var o = {};
+      for (var k in p) if (Object.prototype.hasOwnProperty.call(p, k)) o[k] = p[k];
+      o.quiz = { q: x.q, correct: x.right, wrong: x.wrong };
+      o.extra = true;
+      out.push(o);
+    });
+    return out;
+  }
   
   /* ---------- rounds ---------- */
   function orderRounds() {
@@ -116,7 +183,7 @@
     });
     vehicles().forEach(function (v) {
       var w = workflow(v.id);
-      if (w.length < 3) return;
+      if (w.length < 3 || v.id === "storefront") return; /* storefront steps are 4 separate lessons, not one job sequence */
       out.push({ id: "wf:" + v.id, title: (v.title || v.id) + " workflow", sub: "Job workflow · " + w.length + " steps",
         items: w.map(function (s) { return s.title; }), src: { type: "workflow", id: v.id, title: (v.title || v.id) + " workflow" }, free: false });
     });
@@ -139,6 +206,7 @@
     var pairs = [];
     entries.forEach(function (e, i) {
       var cands = (e.tools || []).filter(function (t) {
+        if (/\btds\b/i.test(t)) return false; /* "TDS sheet", "Heat per TDS", "Application fluid if TDS allows" fit every step */
         var toks = toolTokens(t);
         if (!toks.length) return false;
         for (var j = 0; j < entries.length; j++) {
@@ -191,8 +259,9 @@
   function spotRounds() {
     var all = spotPhotos();
     var freeIds = freePhotoIdSet();
-    var sample = all.filter(function (p) { return freeIds[p.id]; }).slice(0, SPOT_SAMPLE);
-    var out = [{ id: "sample", title: "Sample round", sub: sample.length + " free shop photos", photos: sample, free: true }];
+    var sample = all.filter(function (p) { return freeIds[p.id]; }).slice(0, SPOT_SAMPLE).concat(extraSpot(true));
+    var out = [{ id: "sample", title: "Sample round", sub: sample.length + " questions on free shop photos", photos: sample, free: true }];
+    all = all.concat(extraSpot(false));
     var groups = {};
     var order = [];
     all.forEach(function (p) {
@@ -201,9 +270,9 @@
       groups[g].push(p);
     });
     order.forEach(function (g) {
-      if (groups[g].length >= 3) out.push({ id: "type:" + g, title: g + " photos", sub: groups[g].length + " photos", photos: groups[g], free: false });
+      if (groups[g].length >= 3) out.push({ id: "type:" + g, title: g + " photos", sub: groups[g].length + " questions", photos: groups[g], free: false });
     });
-    out.push({ id: "all", title: "All photos", sub: all.length + " photos", photos: all, free: false });
+    out.push({ id: "all", title: "All photos", sub: all.length + " questions", photos: all, free: false });
     return out;
   }
 
@@ -353,6 +422,7 @@
     S.game = null; S.view = "hub";
     renderHub();
     show("games");
+    if (EXTRA.state !== "ready") loadExtras().then(function () { if (S.view === "hub") renderHub(); });
   }
   function renderHub() {
     var list = $("games-list");
@@ -391,6 +461,9 @@
   }
   function openGame(id) {
     stopTimer();
+    loadExtras().then(function () { openGameNow(id); });
+  }
+  function openGameNow(id) {
     var g = findGame(id);
     if (!g) { openHub(); return; }
     S.game = g; S.view = "setup";
@@ -422,6 +495,7 @@
   function startRound(g, r) {
     stopTimer();
     if (!roundOpen(r)) { goPricing(); return; }
+    if (EXTRA.state === "loading") { loadExtras().then(function () { startRound(g, r); }); return; }
     S.game = g; S.round = r; S.view = "play";
     bump(g.id + ":" + r.id);
     setHeader(g, r.title);
@@ -610,7 +684,7 @@
 
   /* ---------- 2. Fix It Fast ---------- */
   /* Questions that only make sense on the lesson page (they point at "this lesson/photo"). */
-  var CONTEXT_Q = /\bthis (lesson|photo|still|picture)\b|\bnot claim\b/i;
+  var CONTEXT_Q = /\bthis\b(?:\s+[\w\/-]+){0,4}\s+(lesson|photo|still|picture)\b|\bnot claim\b/i;
   function fixPool(full) {
     var items = [];
     var d = data();
@@ -644,6 +718,7 @@
         items.push({ setup: sc.setup, q: sc.question, choices: sc.choices.slice(), answer: sc.answer, tag: "Scenario · " + (sc.title || ""), why: sc.why, src: { type: "drills", title: "Scenario picker" } });
       });
     }
+    items = items.concat(extraFix(full));
     return shuffle(items);
   }
   function playFix(r) {
@@ -918,7 +993,9 @@
 
   APP.openGames = openHub;
   APP.openGame = openGame;
-  APP.games = { list: GAMES, rounds: function (id) { var g = findGame(id); return g ? g.rounds() : []; }, spotDistractors: spotDistractors, fixPool: fixPool };
+  APP.games = { list: GAMES, rounds: function (id) { var g = findGame(id); return g ? g.rounds() : []; }, spotDistractors: spotDistractors, fixPool: fixPool,
+    extras: function () { return { state: EXTRA.state, fix: EXTRA.fix.length, spot: EXTRA.spot.length, fixFree: extraFix(false).length, fixAll: extraFix(true).length, spotFree: extraSpot(true).length, spotAll: extraSpot(false).length }; },
+    loadExtras: loadExtras };
 
   function boot() {
     injectStyle();

@@ -32,7 +32,7 @@
       visual: "Blue and cream Airstream. Mountain and pine graphic is down. Blue tape is still on the nose curve. Rear wheels and a Toyota badge are in frame.",
       narration: "The graphic is seated. Tape is still on the nose curve. Pull that tape low and slow after the panel is glassed. Check the rivet line and the wheel-well edge before you call it done.",
       checklist: ["Confirm the graphic is glassed", "Pull the blue tape low and slow", "Check rivets and the wheel-well edge", "Do not heat a panel that is already down just to look busy"],
-      quiz: { q: "Tape is still on the nose. Move?", correct: "Squeegee it, then pull low and slow.", wrong: "Leave the tape. It holds the edge." }
+      quiz: { q: "Tape is still on the nose. Move?", correct: "Pull the tape low and slow, then seat the edge it was holding.", wrong: "Leave the tape. It holds the edge." }
     },
     {
       id: "prob-pickup-quarter",
@@ -54,7 +54,7 @@
       visual: "Tall RV or box side. Pink and red film is on the panel but wrinkled and not glassed. A ladder stands in front. The next bay section is still bare.",
       narration: "Problem: the sheet is stuck at the top and the field is still loose. A ladder in front is not a squeegee.\n\nSolution: hinge from the glassed top. Overlap strokes down the panel. Do not heat the loose field to hide wrinkles.",
       checklist: ["Work from the glassed top down", "Overlap every stroke", "No heat on a loose field", "Move the ladder when it blocks the panel"],
-      quiz: { q: "The pink field is still wrinkled. Move?", correct: "Squeegee from the glassed area down. Do not heat it first.", wrong: "Heat the whole sheet so the wrinkles fall out." }
+      quiz: { q: "The pink field is still wrinkled. Move?", correct: "Lift the loose film, then squeegee out from the glassed area. Do not heat it first.", wrong: "Heat the whole sheet so the wrinkles fall out." }
     },
     {
       id: "int-magenta-run",
@@ -63,9 +63,9 @@
       module: "architectural",
       jobType: "Interior",
       visual: "A run of magenta and red wall panels. Small metal clips and black pads are still on the faces.",
-      narration: "Clips and pads on a finished face will read as defects under shop lights. Pop them after the film is glassed. Do not squeegee over hardware.",
-      checklist: ["Glass the face first", "Remove clips and pads", "Check seams between panels", "Raking light before you walk"],
-      quiz: { q: "A clip is still on the show face. Move?", correct: "Take it off after the film is seated.", wrong: "Squeegee over it so the face stays smooth." }
+      narration: "Clips and pads on a show face read as defects under shop lights. Pull hardware before the film goes down, wrap the face, trim, then reinstall. Do not squeegee over hardware.",
+      checklist: ["Pull clips and pads before the hang", "Glass the face", "Trim, then reinstall hardware", "Raking light before you walk"],
+      quiz: { q: "Clips and pads are on the show face. Right call?", correct: "Pull the hardware before the film goes down. Reinstall after trim.", wrong: "Squeegee over it so the face stays smooth." }
     },
     {
       id: "int-panel-corner",
@@ -126,10 +126,8 @@
     d.photoLessons = dedupe(d.photoLessons);
   }
 
+  /* Hotfix 2.6.4: the timers raced photos-pack.js / photos-boost.js (paid count 47, 55 or 70 by load timing).
+     Now: one pass here (sync), and one final pass from license-gate.js once both scripts have run. */
+  window.WRAP911_PHOTOS_DEDUPE = apply;
   apply();
-  document.addEventListener("DOMContentLoaded", apply);
-  setTimeout(apply, 60);
-  setTimeout(apply, 500);
-  setTimeout(apply, 1600);
-  setTimeout(apply, 2800);
 })();

@@ -291,6 +291,11 @@
         detail: "Free look is open. Pack $149 or seat $49 unlocks the rest on this phone."
       };
     }
+    /* Hotfix 2.6.4: Seat/Pack/Field licenses use the same label plan-fix.js paints on Home (was PRO here). */
+    var skuLabel = window.WRAP911_PLAN_LABEL && window.WRAP911_PLAN_LABEL(lic);
+    if (skuLabel) {
+      return { plan: lic.plan, badge: skuLabel.badge, chipClass: "pro", detail: skuLabel.detail };
+    }
     if (lic.plan === "free") {
       return {
         plan: "free",
@@ -1247,8 +1252,11 @@
     $("flash-back").textContent = c.back;
     var card = $("flash-card");
     card.classList.toggle("flipped", state.flashFlipped);
+    /* Hotfix 2.6.4: the back was always visible (no CSS hid it). Hidden until tapped; reset on each card. */
+    $("flash-back").hidden = !state.flashFlipped;
+    card.setAttribute("aria-expanded", state.flashFlipped ? "true" : "false");
     var hint = $("flash-hint"); /* Hotfix 2.6.1: #flash-hint was missing from the markup; flashcards threw. */
-    if (hint) hint.textContent = state.flashFlipped ? "Technique tip" : "Tap to reveal technique tip";
+    if (hint) hint.textContent = state.flashFlipped ? "Technique tip · tap to hide" : "Tap to reveal technique tip";
   }
 
   function flipFlash() {

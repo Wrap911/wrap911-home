@@ -1,0 +1,156 @@
+[
+ {
+  "photoId": "int-magenta-run",
+  "q": "What will read as a defect on this run under shop lights?",
+  "right": "The metal clips and black pads still on the faces.",
+  "wrong": "The color change from magenta to red.",
+  "free": true
+ },
+ {
+  "photoId": "prob-rv-pink",
+  "q": "What's wrong on this panel?",
+  "right": "Only the top is stuck. The rest of the field is wrinkled and loose.",
+  "wrong": "Rivets are tented along a seam.",
+  "free": true
+ },
+ {
+  "photoId": "prob-pickup-quarter",
+  "q": "What's wrong at the taillight?",
+  "right": "Film is bridged into the lamp pocket and fingered along the bed seam.",
+  "wrong": "Film is trimmed short and paint shows.",
+  "free": true
+ },
+ {
+  "photoId": "bay-airstream-graphic",
+  "q": "Graphic is seated. What's left before you call it done?",
+  "right": "Pull the nose tape low and slow, then check the rivet line and wheel-well edge.",
+  "wrong": "Post-heat the whole graphic again to be safe.",
+  "free": false
+ },
+ {
+  "photoId": "prob-airstream-light",
+  "q": "Fix order at this marker light?",
+  "right": "Lift the fingers, glass toward the housing, then cut the light out.",
+  "wrong": "Cut the light out first, then chase the fingers.",
+  "free": true
+ },
+ {
+  "photoId": "prob-airstream-nose",
+  "q": "What's wrong with this nose panel?",
+  "right": "It's hung, not glassed. The crown seam is open and the lower edge is loose.",
+  "wrong": "It's glassed but the film is scorched.",
+  "free": false
+ },
+ {
+  "photoId": "pl03",
+  "q": "Where does the cut go on this door handle?",
+  "right": "Into the black voids, off the paint, leaving a tuck the housing can hide.",
+  "wrong": "Straight across the face of the scoop.",
+  "free": false
+ },
+ {
+  "photoId": "pl05",
+  "q": "Why check this satin hood in raking light?",
+  "right": "Satin shows every finger. No gloss reflection hides them.",
+  "wrong": "Satin can't take a relief cut.",
+  "free": false
+ },
+ {
+  "photoId": "pl07",
+  "q": "Why the felt edge on this printed film?",
+  "right": "It keeps the printed grain from getting scratched.",
+  "wrong": "It heats the film as it goes.",
+  "free": true
+ },
+ {
+  "photoId": "pl11",
+  "q": "Next move on this hatch?",
+  "right": "Glass the broad hatch, then feed up to the chrome. No bridge over the bar.",
+  "wrong": "Stretch over the chrome bar now and trim later.",
+  "free": false
+ },
+ {
+  "photoId": "pl16",
+  "q": "How do you finish this inside corner?",
+  "right": "Glass each wall, then tuck the corner.",
+  "wrong": "Stretch one sheet across the inside angle.",
+  "free": false
+ },
+ {
+  "photoId": "pl19",
+  "q": "How do you wrap these slats?",
+  "right": "Each slat on its own.",
+  "wrong": "One sheet stretched across all the openings.",
+  "free": false
+ },
+ {
+  "photoId": "pl21",
+  "q": "The torch is on the floor. When does it come up?",
+  "right": "After the nose panel is down, and only per the film TDS.",
+  "wrong": "Now, to relax the salmon panel before it's registered.",
+  "free": false
+ },
+ {
+  "photoId": "pl22",
+  "q": "The face is glassed. What still needs work?",
+  "right": "The raw plywood inside the round holes. Wrap or tuck each edge.",
+  "wrong": "The QR code needs a relief cut.",
+  "free": false
+ },
+ {
+  "photoId": "prob-bridge-intake",
+  "q": "Next move on this RV side?",
+  "right": "Move the ladder instead of overreaching. Hinge the panel, then glass it.",
+  "wrong": "Climb with the full sheet and stretch it on.",
+  "free": false
+ },
+ {
+  "photoId": "prob-fingers-wall",
+  "q": "Where does this blade stay?",
+  "right": "On the edge, cutting the waste. Not back into the finished face.",
+  "wrong": "Back into the face to square it up.",
+  "free": false
+ },
+ {
+  "photoId": "prob-dull-blade",
+  "q": "Next move on this cut?",
+  "right": "Relax the bunch, cut on a flat path, and snap a fresh blade if it drags.",
+  "wrong": "Keep sawing through the gather.",
+  "free": false
+ },
+ {
+  "photoId": "pk-cut4",
+  "q": "Where does this knife stay?",
+  "right": "In the corner, off the show face, with the white wall as the guide.",
+  "wrong": "Out on the show face for a straighter line.",
+  "free": false
+ },
+ {
+  "photoId": "pk-cut5",
+  "q": "What has to happen before this blade touches the film?",
+  "right": "Clean off the drop and the specks.",
+  "wrong": "Nothing. Cut right through them.",
+  "free": false
+ },
+ {
+  "photoId": "pk-grey",
+  "q": "What's the rule on this peel?",
+  "right": "Keep it low. Stop if the pink layer under it starts to lift.",
+  "wrong": "Pull straight up, fast.",
+  "free": false
+ },
+ {
+  "photoId": "pb-cab-on",
+  "q": "Next move in this box?",
+  "right": "Move the can, glass the sheet to the walls, then wrap or trim the bare plywood rim.",
+  "wrong": "Leave the rim bare. It's inside the box.",
+  "free": false
+ },
+ {
+  "photoId": "pb-torch",
+  "q": "Move on these finger rows?",
+  "right": "Lift a finger and chase it out.",
+  "wrong": "Squeegee them flat, hard.",
+  "free": false
+ }
+]

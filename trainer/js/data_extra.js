@@ -24,7 +24,7 @@ window.WRAP911_DATA.vehicles = [
     "id": "storefront",
     "title": "Storefront/Architectural",
     "icon": "🏪",
-    "summary": "Wet install, architectural panels, multi-pane, interior wraps."
+    "summary": "Soft-seat recesses, architectural panels, multi-pane, interior wraps."
   },
   {
     "id": "rv-bus",
@@ -69,7 +69,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "One rivet row seated head by head. No tents or silvering after cool-down.",
     "timeBox": "30 min drill: one rivet row on a scrap panel (starting target — set your own)",
     "badgeId": "badge-bt-rivet",
-    "media": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
+    "media": "media/photos/gallery/airstream-corner.jpg",
     "mediaType": "photo",
     "practiceId": "prac-rivet",
     "keyTechniques": [
@@ -137,14 +137,14 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Hang one tall panel level with two people. Nobody stretches off a ladder.",
     "timeBox": "45 min, two techs (starting target — set your own)",
     "badgeId": "badge-bt-panels",
-    "media": "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg",
+    "media": "../assets/sales/fleet-rv.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
       "Stage/hinge large panels from the ground when possible",
       "Two-person hang on tall sides; ladder stable before squeegee",
       "Glass the main field, then work excess to edges",
-      "Plan seams for water shed on vertical overlaps"
+      "Plan seams to shed water: upper panel laps over lower"
     ],
     "tools": [
       "Extension ladder (locked)",
@@ -160,9 +160,9 @@ window.WRAP911_DATA.trainingLessons = [
     ],
     "steps": [
       "Measure and dry-fit; mark hinge line.",
-      "Stage panel with hinge tape; clear floor of liner.",
-      "Climb only to squeegee — platform first.",
-      "Glass field, manage fingers laterally, set overlaps for water shed.",
+      "Stage the panel on a hinge-tape line; clear the floor under the ladder.",
+      "Set and lock the platform, then climb to squeegee.",
+      "Glass the field from the hinge; manage fingers laterally; lap seams upper over lower.",
       "QC level lines from a distance before committing recesses."
     ],
     "quiz": [
@@ -185,9 +185,9 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 1
       },
       {
-        "q": "Vertical panel overlaps should generally shed water which way?",
+        "q": "On a tall box side, a horizontal seam between two panels should lap which way?",
         "choices": [
-          "Upper panel over lower (water sheds down).",
+          "Upper panel over lower, so water runs over the seam, not into it.",
           "Lower over upper so wind cannot lift.",
           "Overlaps are optional on box trucks."
         ],
@@ -205,7 +205,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Walk a finished RV and log every lift, gap, and stripe break before it leaves.",
     "timeBox": "20 min walkaround (starting target — set your own)",
     "badgeId": "badge-bt-rollup",
-    "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
+    "media": "../assets/sales/fleet-rv.jpg",
     "mediaType": "photo",
     "practiceId": "prac-seam",
     "keyTechniques": [
@@ -215,11 +215,11 @@ window.WRAP911_DATA.trainingLessons = [
       "Photo QC against shop standard — follow film TDS for any rework heat"
     ],
     "tools": [
-      "Soft squeegee",
-      "Tucking tool",
-      "Fresh 30-degree blades",
-      "Heat per TDS",
-      "IPA"
+      "QC checklist",
+      "Camera",
+      "Flashlight",
+      "Microfiber",
+      "Heat per TDS"
     ],
     "commonMistakes": [
       "Calling architectural cubby trim an RV rear",
@@ -235,27 +235,27 @@ window.WRAP911_DATA.trainingLessons = [
     ],
     "quiz": [
       {
-        "q": "At a recessed license-plate area, what should you do?",
+        "q": "On a Class C walkaround, where do you look first for lift?",
         "choices": [
-          "Bridge, then feed and tuck with controlled tension (heat only as the film requires).",
-          "Stretch drum-tight so plate bolts pierce for alignment.",
-          "Leave a permanent bridge for airflow."
+          "Transitions: over-cab, hood and fender edges, door and hinge lines.",
+          "Only the flat center of each panel.",
+          "Nowhere. Post-heat already locked it."
         ],
         "answer": 0
       },
       {
-        "q": "When should you trim roll-up door film?",
+        "q": "Found a lifted edge on the walkaround. Rework rule?",
         "choices": [
-          "Before any squeegee work.",
-          "After the film is seated — not before.",
-          "Only after post-heat melts the edge."
+          "Lift, clean, reseat, and heat only per the film TDS.",
+          "Torch it down until it glosses.",
+          "Leave it. It settles on the road."
         ],
-        "answer": 1
+        "answer": 0
       },
       {
-        "q": "Why cycle the roll-up door during QC?",
+        "q": "Why cycle every door during the RV walkaround?",
         "choices": [
-          "To check for pinch, binding, and edge peel at seals.",
+          "To catch pinch, binding, and edge peel at seals before release.",
           "To stretch the vinyl tighter.",
           "Doors never need a cycle check."
         ],
@@ -373,7 +373,7 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "Most immediate risk from runoff streaks under hardware?",
         "choices": [
           "Residue that blocks adhesive bond on 3M / Avery Dennison / Arlon film.",
-          "Fresh paint means the job must wait no matter what.",
+          "Nothing. Post-heat burns the residue off.",
           "You must switch to calendared film only."
         ],
         "answer": 0
@@ -390,7 +390,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "When may you apply film?",
         "choices": [
-          "When surface is dry and residue-free.",
+          "When the surface is dry and residue-free, and any fresh paint has cured per the paint maker’s and film TDS guidance.",
           "While IPA is still pooling.",
           "Over visible silicone streaks if you heat harder."
         ],
@@ -408,7 +408,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Liftgate recess fed and seated. No bridge over the plate pocket.",
     "timeBox": "40 min per liftgate (starting target — set your own)",
     "badgeId": "badge-van-recess",
-    "media": "media/videos/van/white-liftgate-recess-tuck.jpg",
+    "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
@@ -475,7 +475,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Bands line up across the slider, door shut and open. Nothing binds in the track.",
     "timeBox": "45 min per side (starting target — set your own)",
     "badgeId": "badge-van-slide",
-    "media": "media/videos/fleet/fleet-van-seam-tuck.jpg",
+    "media": "media/videos/fleet/pink-caddy-wrap3.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -542,7 +542,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Tall work done from a locked platform, clear floor, two people. No top-cap standing.",
     "timeBox": "10 min setup check before every high hang (starting target — set your own)",
     "badgeId": "badge-van-roof",
-    "media": "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg",
+    "media": "../assets/sales/fleet-rv.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -566,7 +566,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Set platform on level ground; clear scraps.",
       "Stage film; climb only to install.",
       "Glass roof flats; feed channels with soft tools.",
-      "Keep heat tool base stable at height.",
+      "Post-heat channels and edges per the film TDS; heat tool back on a stable base.",
       "QC footing and film before teardown."
     ],
     "quiz": [
@@ -609,7 +609,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Rear doors registered before the full liner comes off. Hinge cuts planned, not torn.",
     "timeBox": "45 min per door pair (starting target — set your own)",
     "badgeId": "badge-van-hinge",
-    "media": "media/videos/van/d-pillar-taillight-mid-install.jpg",
+    "media": "",
     "mediaType": "photo",
     "practiceId": "prac-seam",
     "keyTechniques": [
@@ -672,21 +672,21 @@ window.WRAP911_DATA.trainingLessons = [
   {
     "id": "sf-wet-install",
     "vehicleId": "storefront",
-    "title": "Wet Soft-Seat Recess",
-    "goal": "Recess soft-seated wet. No trapped fluid, grit, or corner puddles.",
+    "title": "Dry Soft-Seat Recess",
+    "goal": "Recess soft-seated. No trapped air, grit, or edge lift.",
     "timeBox": "30 min per recess (starting target — set your own)",
     "badgeId": "badge-sf-wet",
     "media": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
-      "Mist application fluid per the exact film TDS — don't invent a mix",
+      "Apply by the method in the exact film TDS. 3M Controltac/Comply and Avery Dennison Supreme Wrapping Film are dry-apply.",
       "Soft-seat magenta film into the architectural recess/cubby with a felt squeegee",
-      "Chase fluid and air to open edges; don't trap puddles in corners",
-      "This is fixture/cubby wet seating — not storefront glass or silicone removal"
+      "Chase air to open edges; don't trap air in corners",
+      "This is fixture/cubby soft seating — not storefront glass or silicone removal"
     ],
     "tools": [
-      "Application fluid / spray bottle",
+      "Air-release tool",
       "Felt/soft squeegee",
       "Lint-free towels",
       "Detail brush",
@@ -694,41 +694,41 @@ window.WRAP911_DATA.trainingLessons = [
     ],
     "commonMistakes": [
       "Writing glass/silicone steps onto a wood cubby photo",
-      "Too little fluid causes snags; trapped excess causes corner bubbles",
-      "Hard-carding wet film into a crease before soft-seating"
+      "Wet-applying an air-release film the TDS says to apply dry",
+      "Hard-carding film into a crease before soft-seating"
     ],
     "steps": [
       "Clean the recess/cubby substrate; wipe dry.",
-      "Mist application fluid per film TDS.",
+      "Check the film TDS for the application method; air-release wrap films go on dry.",
       "Stage and soft-seat the panel into the recess.",
-      "Squeegee fluid out on overlapping strokes toward open edges.",
-      "QC for trapped grit, corner puddles, and edge lift."
+      "Squeegee on overlapping strokes toward open edges; feed corners, do not bridge.",
+      "QC for trapped air, grit, and edge lift."
     ],
     "quiz": [
       {
-        "q": "What does this wet soft-seat recess lesson actually cover?",
+        "q": "What does this soft-seat recess lesson actually cover?",
         "choices": [
-          "Application-fluid soft-seat into an architectural cubby/recess — not storefront glass.",
+          "Soft-seating film into an architectural cubby/recess — not storefront glass.",
           "Silicone removal from plate glass only.",
           "Outdoor wind staging for tall curtainwall."
         ],
         "answer": 0
       },
       {
-        "q": "Squeegee goal on a wet recess seat?",
+        "q": "Squeegee goal when soft-seating a recess?",
         "choices": [
-          "Evacuate fluid/air to open edges so adhesive can bond per TDS.",
-          "Leave standing fluid in every corner overnight.",
-          "Never squeegee wet architectural seats."
+          "Chase air to open edges so the adhesive bonds per the film TDS.",
+          "Leave air pockets in the corners to settle overnight.",
+          "Never squeegee architectural seats."
         ],
         "answer": 0
       },
       {
-        "q": "Where do wet-apply limits come from?",
+        "q": "Can you wet-apply an air-release wrap film into a recess?",
         "choices": [
-          "The exact film's TDS (3M, Avery Dennison, or Arlon).",
-          "A memorized shop myth temperature.",
-          "Social media comments."
+          "No. Follow the film TDS: 3M Comply and Avery Dennison Supreme Wrapping Film go on dry.",
+          "Yes. Fluid always buys more slide time.",
+          "Only if you add extra soap to the mix."
         ],
         "answer": 0
       }
@@ -744,7 +744,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Pattern lines match across panels. Returns seated before any trim.",
     "timeBox": "45 min per panel (starting target — set your own)",
     "badgeId": "badge-sf-perf",
-    "media": "media/videos/architectural/architectural-brick-film-stainless-panel-hang.jpg",
+    "media": "media/videos/architectural/architectural-wall-wrap.jpg",
     "mediaType": "photo",
     "practiceId": "prac-seam",
     "keyTechniques": [
@@ -878,7 +878,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Clean knife line in the crease. No chewed edge. No lift after cool-down.",
     "timeBox": "15 min drill: five corners (starting target — set your own)",
     "badgeId": "badge-sf-weather",
-    "media": "media/videos/architectural/hand-seat-corner-knife-trim.jpg",
+    "media": "media/videos/prep/cutting-vinyl-6.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
@@ -945,12 +945,12 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Rivet rows seated after alignment. No scorched transfer tape. No tents.",
     "timeBox": "30 min per row section (starting target — set your own)",
     "badgeId": "badge-tr-rivets",
-    "media": "media/videos/trailer/magenta-trailer-rivet-row-channel-detail.jpg",
+    "media": "media/photos/gallery/airstream-corner.jpg",
     "mediaType": "photo",
     "practiceId": "prac-rivet",
     "keyTechniques": [
       "Hinge dry-fit graphics across riveted panels",
-      "Squeegee field, then post-heat/set each rivet",
+      "Squeegee field, soften per TDS and set each rivet, then post-heat",
       "Keep torch off film until alignment is done",
       "Clear liner piles before post-heat passes"
     ],
@@ -961,22 +961,22 @@ window.WRAP911_DATA.trainingLessons = [
       "Rivet brush/pad"
     ],
     "commonMistakes": [
-      "Scorching transfer tape while still aligning",
+      "Scorching hinge tape while still aligning",
       "Skipping post-heat on rivet fields",
       "Bridging entire rivet rows"
     ],
     "steps": [
       "Dry-fit/hinge graphic to existing art.",
       "Peel in sections; squeegee thoroughly.",
-      "Remove tape; post-heat and set rivets.",
-      "Walk rows for tents.",
+      "Remove hinge tape; soften per the film TDS and set each rivet.",
+      "Post-heat rivets and edges per the film TDS; walk rows for tents.",
       "Final edge QC."
     ],
     "quiz": [
       {
         "q": "After squeegeeing over trailer rivet rows, why post-heat?",
         "choices": [
-          "Helps film conform and stay seated around rivets, reducing tenting.",
+          "Relieves stress in the stretched film so it does not lift or tent back off the rivets.",
           "Only to change pantone color.",
           "Post-heat replaces all squeegee work."
         ],
@@ -992,10 +992,10 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       },
       {
-        "q": "Torch use while transfer tape is still aligning?",
+        "q": "Torch use while hinge tape is still holding the alignment?",
         "choices": [
           "Keep heat off until alignment is done.",
-          "Max heat to shrink tape into rivets.",
+          "Max heat to shrink the tape into the rivets.",
           "Torch replaces hinge tape."
         ],
         "answer": 0
@@ -1012,7 +1012,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Top edge runs straight the full length. Seams shed water.",
     "timeBox": "20 min layout before the hang (starting target — set your own)",
     "badgeId": "badge-tr-roof",
-    "media": "media/videos/trailer/orange-99-month-ladder-roofline-seat.jpg",
+    "media": "media/photos/gallery/rv-pink-side.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1033,10 +1033,10 @@ window.WRAP911_DATA.trainingLessons = [
       "Seams that catch water at the roofline"
     ],
     "steps": [
-      "Mark roofline reference.",
+      "Mark the roofline reference and plan seams to shed water.",
       "Stage panels safely.",
-      "Hang to the line; glass upper field.",
-      "Set overlaps to shed water.",
+      "Hang lower panels first, stopping at the overlap line.",
+      "Hang the top panel to the roofline, lapping over the lower panel.",
       "Distance QC of the top edge."
     ],
     "quiz": [
@@ -1146,7 +1146,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Segments line up. No logo cut through a seam. QC between every segment.",
     "timeBox": "15 min planning, then QC after each segment (starting target — set your own)",
     "badgeId": "badge-tr-seg",
-    "media": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.jpg",
+    "media": "media/photos/gallery/trailer-spot-graphics.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1213,7 +1213,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Unit 2 matches unit 1 on your fleet sheet. Photo proof.",
     "timeBox": "15 min measure card per unit (starting target — set your own)",
     "badgeId": "badge-fl-align",
-    "media": "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg",
+    "media": "media/videos/fleet/pink-caddy-wrap5.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1347,7 +1347,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Same checklist, same photos, every unit. Lead signs off.",
     "timeBox": "15 min per unit (starting target — set your own)",
     "badgeId": "badge-fl-qc",
-    "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
+    "media": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
     "mediaType": "photo",
     "practiceId": "prac-rivet",
     "keyTechniques": [
@@ -1411,6 +1411,27 @@ window.WRAP911_DATA.trainingLessons = [
 window.WRAP911_DATA.workflowSteps = {
   "box-truck": [
     {
+      "id": "btw-measure",
+      "title": "Panel Measurement",
+      "type": "Layout",
+      "media": "media/photos/gallery/cabinet-measure.jpg",
+      "instructions": "Measure panel heights/widths, note rivet rows and door type. Mark hinge lines and seam plan for water shed. Confirm roll width (54 or 60) vs panel.",
+      "tools": [
+        "Tape measure",
+        "Notepad",
+        "Level",
+        "Straightedge"
+      ],
+      "safety": [
+        "Three points of contact if measuring high"
+      ],
+      "technique": "Write measurements on the job ticket; don't trust memory on oversized sides.",
+      "mistakes": [
+        "Assuming factory sides are square",
+        "No seam plan"
+      ]
+    },
+    {
       "id": "btw-prep",
       "title": "Prep & Cleaning",
       "type": "Prep",
@@ -1433,32 +1454,11 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     },
     {
-      "id": "btw-measure",
-      "title": "Panel Measurement",
-      "type": "Layout",
-      "media": "media/videos/box-truck/panel-measurement-3134-in.jpg",
-      "instructions": "Measure panel heights/widths, note rivet rows and door type. Mark hinge lines and seam plan for water shed. Confirm roll width (54 or 60) vs panel.",
-      "tools": [
-        "Tape",
-        "Notepad",
-        "Level",
-        "Hinge tape"
-      ],
-      "safety": [
-        "Three points of contact if measuring high"
-      ],
-      "technique": "Write measurements on the job ticket; don't trust memory on oversized sides.",
-      "mistakes": [
-        "Assuming factory sides are square",
-        "No seam plan"
-      ]
-    },
-    {
       "id": "btw-side",
       "title": "Side Panel Install",
       "type": "Install",
       "media": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
-      "instructions": "Stage/hinge oversized panel. Glass main field. Walk fingers out. Set vertical overlaps to shed water. Keep horizontal graphics level.",
+      "instructions": "Stage/hinge oversized panel. Glass main field. Walk fingers out. Lap seams upper over lower to shed water. Keep horizontal graphics level.",
       "tools": [
         "Soft squeegee",
         "Magnets",
@@ -1479,7 +1479,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "btw-rivets",
       "title": "Rivet Row Install",
       "type": "Heat",
-      "media": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
+      "media": "media/photos/gallery/airstream-corner.jpg",
       "instructions": "Soften per product TDS. Set each rivet: press and purge air. Work flat into seam. Soft tools around texture.",
       "tools": [
         "Heat gun/torch",
@@ -1500,7 +1500,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "btw-rear",
       "title": "Rear Door Workflow",
       "type": "Cut",
-      "media": "media/videos/van/white-liftgate-recess-tuck.jpg",
+      "media": "",
       "instructions": "Glass rear field. Feed plate recess and channels. Planned cuts at roll-up slats or swing hinges. Trim after seating.",
       "tools": [
         "Tucking tool",
@@ -1521,7 +1521,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "btw-qc",
       "title": "Post-Heat & QC",
       "type": "Post-Heat",
-      "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
+      "media": "media/photos/gallery/airstream-graphic.jpg",
       "instructions": "Post-heat edges and rivets per TDS. Walk for tents/silvering. Door cycle. Photo for job ticket.",
       "tools": [
         "Heat tool",
@@ -1543,7 +1543,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "vw-recess",
       "title": "Deep Recess Heating",
       "type": "Heat",
-      "media": "media/videos/van/white-liftgate-recess-tuck.jpg",
+      "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
       "instructions": "Glass ridges first. Foam-roll channels. Heat only to pliable per TDS. Feed, don't bridge-and-stretch.",
       "tools": [
         "Foam roller",
@@ -1564,7 +1564,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "vw-slide",
       "title": "Sliding Door Alignment",
       "type": "Layout",
-      "media": "media/videos/fleet/fleet-van-seam-tuck.jpg",
+      "media": "media/videos/fleet/pink-caddy-wrap3.jpg",
       "instructions": "Mark horizontal references across body and slider. Dry-fit. Install; manage seals. Cycle before final lock.",
       "tools": [
         "Level",
@@ -1584,7 +1584,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "vw-roof",
       "title": "Roof Wrap Safety",
       "type": "Prep",
-      "media": "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg",
+      "media": "../assets/sales/fleet-rv.jpg",
       "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
       "tools": [
         "Ladder/scaffold",
@@ -1606,7 +1606,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "vw-hinge",
       "title": "Rear Hinge Workflow",
       "type": "Cut",
-      "media": "media/videos/van/d-pillar-taillight-mid-install.jpg",
+      "media": "",
       "instructions": "Hinge dry-fit. Peel in sections. Cut/tuck hinge line. Post-heat edges. Slam-cycle QC.",
       "tools": [
         "Hinge tape",
@@ -1626,24 +1626,24 @@ window.WRAP911_DATA.workflowSteps = {
   "storefront": [
     {
       "id": "sw-wet",
-      "title": "Wet Soft-Seat Recess",
+      "title": "Dry Soft-Seat Recess",
       "type": "Prep",
       "media": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
-      "instructions": "Clean the architectural recess/cubby. Mist application fluid per film TDS. Stage the magenta panel, soft-seat into the recess with a felt squeegee, and chase fluid/air to open edges. No glass or silicone claims \u2014 this is fixture/cubby wet seating.",
+      "instructions": "Clean the architectural recess/cubby. Apply by the method in the film TDS (air-release wrap films go on dry). Stage the magenta panel, soft-seat into the recess with a felt squeegee, and chase air to open edges. No glass or silicone claims \u2014 this is fixture/cubby soft seating.",
       "tools": [
-        "Application fluid",
+        "Air-release tool",
         "Felt/soft squeegee",
         "Towels",
         "Detail brush"
       ],
       "safety": [
-        "Wet floor slip awareness",
+        "Floor clear of liner scraps",
         "Keep blades clear while seating"
       ],
-      "technique": "Wet soft-seat buys slide time in deep recesses \u2014 evacuate fluid before the adhesive grabs.",
+      "technique": "Soft-seat and feed deep recesses \u2014 chase air to an open edge before the adhesive grabs.",
       "mistakes": [
         "Claiming glass/silicone prep on a wood cubby job",
-        "Trapping fluid in the recess corner"
+        "Trapping air in the recess corner"
       ]
     },
     {
@@ -1671,7 +1671,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "sw-perf",
       "title": "Architectural Panel Hang",
       "type": "Install",
-      "media": "media/videos/architectural/architectural-brick-film-stainless-panel-hang.jpg",
+      "media": "media/videos/architectural/architectural-wall-wrap.jpg",
       "instructions": "Stage architectural sheet. Register pattern across panels. Glass field then seat returns. Trim to reveal.",
       "tools": [
         "Soft squeegee",
@@ -1691,7 +1691,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "sw-weather",
       "title": "Corner Trim / Edge Finish",
       "type": "Cut",
-      "media": "media/videos/architectural/hand-seat-corner-knife-trim.jpg",
+      "media": "media/videos/prep/cutting-vinyl-6.jpg",
       "instructions": "Hand-seat film into the interior corner, then knife-trim the crease clean. Remove curled scrap. Lock the edge per film TDS. This is corner/edge finish craft \u2014 not ambient weather or outdoor glass conditions.",
       "tools": [
         "Fresh blades",
@@ -1713,8 +1713,8 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "tw-rivets",
       "title": "Rivet Row Workflow",
       "type": "Heat",
-      "media": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
-      "instructions": "Hinge dry-fit. Squeegee field. Post-heat and set rivets individually per TDS.",
+      "media": "media/photos/gallery/airstream-corner.jpg",
+      "instructions": "Hinge dry-fit. Squeegee field. Soften per TDS and set rivets individually, then post-heat per TDS.",
       "tools": [
         "Hinge tape",
         "Heat",
@@ -1725,7 +1725,7 @@ window.WRAP911_DATA.workflowSteps = {
       ],
       "technique": "Alignment first, heat second.",
       "mistakes": [
-        "Heating through transfer tape while aligning"
+        "Heating through hinge tape while aligning"
       ]
     },
     {
@@ -1801,7 +1801,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-ladder",
       "title": "Height & ladder safety",
-      "media": "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg",
+      "media": "../assets/sales/fleet-rv.jpg",
       "steps": [
         "Level locked ladder; three points of contact",
         "Stage or hinge large panels from the ground when possible",
@@ -1812,7 +1812,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-side",
       "title": "Tall side hang",
-      "media": "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg",
+      "media": "media/photos/gallery/rv-pink-side.jpg",
       "steps": [
         "Glass the large print field before recesses",
         "Manage vertical seam overlaps for water shed",
@@ -1838,7 +1838,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "fw-brand",
       "title": "Brand Alignment",
       "type": "Layout",
-      "media": "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg",
+      "media": "media/videos/fleet/pink-caddy-wrap5.jpg",
       "instructions": "Build measurement card from unit #1. Same OEM reference points on every vehicle. Photo the standard.",
       "tools": [
         "Measurement card",
@@ -1876,7 +1876,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "fw-qc",
       "title": "Fleet QC",
       "type": "QC",
-      "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
+      "media": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
       "instructions": "Same checklist every unit. Distance + close inspection. Door cycles. Photo archive + lead sign-off.",
       "tools": [
         "Checklist",
@@ -1898,7 +1898,7 @@ window.WRAP911_DATA.practiceScenarios = [
     "id": "prac-rivet",
     "title": "Rivet Practice",
     "icon": "🔩",
-    "media": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
+    "media": "media/photos/gallery/airstream-corner.jpg",
     "panelDesc": "Virtual panel: commercial side with a vertical weld/rivet seam and horizontal step. Film is glassed on the flat but tented over the rivet line.",
     "skills": [
       "Identify tents",
@@ -2038,7 +2038,7 @@ window.WRAP911_DATA.practiceScenarios = [
     "id": "prac-panel-align",
     "title": "Panel Alignment",
     "icon": "📐",
-    "media": "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg",
+    "media": "media/videos/fleet/pink-caddy-wrap3.jpg",
     "panelDesc": "Virtual multi-panel side: grey upper band and patterned lower must read continuous across door and body gaps.",
     "skills": [
       "Horizontal registration",
@@ -2232,7 +2232,7 @@ window.WRAP911_DATA.badges = [
   },
   {
     "id": "badge-sf-wet",
-    "title": "Wet Soft-Seat",
+    "title": "Dry Soft-Seat",
     "icon": "💧",
     "lessonId": "sf-wet-install"
   },
@@ -2330,7 +2330,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Doors",
     "type": "clip",
     "src": "media/videos/van/d-pillar-taillight-mid-install.mp4",
-    "still": "media/videos/van/d-pillar-taillight-mid-install.jpg",
+    "still": "",
     "driveId": "1V1MktyAZKFfoGLar8pmhhVuHR0or2aCx",
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "vw-hinge",
@@ -2345,7 +2345,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Seams",
     "type": "clip",
     "src": "media/videos/fleet/fleet-van-seam-tuck.mp4",
-    "still": "media/videos/fleet/fleet-van-seam-tuck.jpg",
+    "still": "",
     "driveId": "1w4unGpH5qhXNpGUGFXYFbe0rtW1k_Lfq",
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "fw-brand",
@@ -2360,7 +2360,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/architectural/pink-box-interior-edge-knife-trim.mp4",
-    "still": "media/videos/architectural/pink-box-interior-edge-knife-trim.jpg",
+    "still": "",
     "driveId": "1dF15MSsV-cJZBVghBQzoVs8YI59vc34O",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
@@ -2375,7 +2375,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Material Prep",
     "type": "clip",
     "src": "media/videos/prep/magenta-strip-prep-alcohol-wipe-ready.mp4",
-    "still": "media/videos/prep/magenta-strip-prep-alcohol-wipe-ready.jpg",
+    "still": "",
     "driveId": "1Bpo2VGD9RNCpBtSNibz73UFbbEbfr5j2",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
@@ -2390,7 +2390,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/controltac-liner-peel-box-floor-hang.mp4",
-    "still": "media/videos/architectural/controltac-liner-peel-box-floor-hang.jpg",
+    "still": "",
     "driveId": "1BTZTwmd1vGody0rFOEzwwDaUVLKOxPNj",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
@@ -2405,7 +2405,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Recesses",
     "type": "clip",
     "src": "media/videos/architectural/deep-corner-tuck-felt-squeegee.mp4",
-    "still": "media/videos/architectural/deep-corner-tuck-felt-squeegee.jpg",
+    "still": "",
     "driveId": "1ailT4zp3UJNXfVuw98dgtkf9P3U7FDZO",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
@@ -2420,7 +2420,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/inner-wall-squeegee-3m-controltac-scraps.mp4",
-    "still": "media/videos/architectural/inner-wall-squeegee-3m-controltac-scraps.jpg",
+    "still": "",
     "driveId": "1_vTv8TBdX-xJya8HqWO07L1lLQARkTCy",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
@@ -2450,7 +2450,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Material Prep",
     "type": "clip",
     "src": "media/videos/prep/strip-handling-weeding-stage.mp4",
-    "still": "media/videos/prep/strip-handling-weeding-stage.jpg",
+    "still": "",
     "driveId": "1CmM6RjkyqdUMAWCEugLdRS5vyfqxzKnV",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
@@ -2480,7 +2480,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/architectural/corner-tuck-relief-knife.mp4",
-    "still": "media/videos/architectural/corner-tuck-relief-knife.jpg",
+    "still": "",
     "driveId": "1YypDVQ4thFuJF8pXOoCuepm3TtYOqphG",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
@@ -2495,7 +2495,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/architectural/hand-seat-corner-knife-trim.mp4",
-    "still": "media/videos/architectural/hand-seat-corner-knife-trim.jpg",
+    "still": "",
     "driveId": "1fMmraoQk710YJ57tyyoM4SpAkuAXS8cJ",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
@@ -2525,7 +2525,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Rivets",
     "type": "clip",
     "src": "media/videos/trailer/magenta-rivet-field-tented-heads.mp4",
-    "still": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
+    "still": "",
     "driveId": "1kl1IJtrS_u21qfn8E1GevF0rtrMOBq1T",
     "recommendedModule": "bt-rivet-mastery",
     "recommendedWorkflow": "tw-rivets",
@@ -2540,7 +2540,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Doors",
     "type": "clip",
     "src": "media/videos/van/white-liftgate-recess-tuck.mp4",
-    "still": "media/videos/van/white-liftgate-recess-tuck.jpg",
+    "still": "",
     "driveId": "13B_2gyGkHI9AHAHlea6XwyipLhRQ1tf8",
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "vw-hinge",
@@ -2555,7 +2555,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Doors",
     "type": "clip",
     "src": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.mp4",
-    "still": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
+    "still": "",
     "driveId": "1bFtjkKr3iGsnReQXsjgq6Pvgjf8gcnlD",
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "vw-hinge",
@@ -2570,7 +2570,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "QC",
     "type": "clip",
     "src": "media/videos/fleet/dusty-rose-gmc-chrome-trim-finish.mp4",
-    "still": "media/videos/fleet/dusty-rose-gmc-chrome-trim-finish.jpg",
+    "still": "",
     "driveId": "1nQxaU--wDlpyK4OpmziUhOeo1w96NjKV",
     "recommendedModule": "fl-qc",
     "recommendedWorkflow": "fw-qc",
@@ -2585,7 +2585,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Recesses",
     "type": "clip",
     "src": "media/videos/van/carbon-fiber-pattern-bumper-recess-seat.mp4",
-    "still": "media/videos/van/carbon-fiber-pattern-bumper-recess-seat.jpg",
+    "still": "",
     "driveId": "1_QfEua--lFYmYsdwDQIBfvqczwNj79Km",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
@@ -2600,7 +2600,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.mp4",
-    "still": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.jpg",
+    "still": "",
     "driveId": "1bI7vgCEz4yt7vfcGUz8s5BkrTqYAJlBe",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "tw-seg",
@@ -2615,7 +2615,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/trailer/orange-99-month-ladder-tall-side-hang.mp4",
-    "still": "media/videos/trailer/orange-99-month-ladder-tall-side-hang.jpg",
+    "still": "",
     "driveId": "17GSt98CbB22u6IXx3SW15OA4OMYdf_sX",
     "recommendedModule": "tr-roofline",
     "recommendedWorkflow": "tw-roof",
@@ -2630,7 +2630,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Doors",
     "type": "clip",
     "src": "media/videos/trailer/orange-side-door-recess-ladder-trim.mp4",
-    "still": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
+    "still": "",
     "driveId": "1K9efD7TOOoJQKv4-974pAe0XrjpvhfiF",
     "recommendedModule": "tr-door-hinge",
     "recommendedWorkflow": "tw-hinge",
@@ -2645,7 +2645,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "QC",
     "type": "clip",
     "src": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4",
-    "still": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
+    "still": "",
     "driveId": "1j729uUuKImAECzbpusZpYGY-qT7UcYO7",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "tw-seg",
@@ -2660,7 +2660,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/trailer/magenta-series-hardware-cutout-edge-tuck.mp4",
-    "still": "media/videos/trailer/magenta-series-hardware-cutout-edge-tuck.jpg",
+    "still": "",
     "driveId": "13sqysxygzWtiBkIdo4KyUqpWptPeY24x",
     "recommendedModule": "tr-door-hinge",
     "recommendedWorkflow": "tw-hinge",
@@ -2675,7 +2675,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/trailer/orange-99-month-ladder-roofline-seat.mp4",
-    "still": "media/videos/trailer/orange-99-month-ladder-roofline-seat.jpg",
+    "still": "",
     "driveId": "1yRVtPu5rYxpbs54zQxCmpFeltJsSapnL",
     "recommendedModule": "tr-roofline",
     "recommendedWorkflow": "tw-roof",
@@ -2735,7 +2735,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Technique",
     "type": "clip",
     "src": "media/videos/prep/handling-vinyl.mp4",
-    "still": "media/videos/prep/handling-vinyl.jpg",
+    "still": "",
     "driveId": "1riO1qZAibX3kG_KRJ04qe2X4FvHIfNl0",
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
@@ -2765,7 +2765,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/trailer/showing-rivets.mp4",
-    "still": "media/videos/trailer/showing-rivets.jpg",
+    "still": "",
     "driveId": "1r6aYArm88fTRRBjUuYKddXp1XAQnETWA",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
@@ -2780,7 +2780,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/rv-bus/smith-field-food-truck.mp4",
-    "still": "media/videos/rv-bus/smith-field-food-truck.jpg",
+    "still": "",
     "driveId": "12d1m0bWje4zwlutN7oJ0SWTNPV1PiXQF",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
@@ -2795,7 +2795,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/rv-bus/blue-rv-wrap.mp4",
-    "still": "media/videos/rv-bus/blue-rv-wrap.jpg",
+    "still": "",
     "driveId": "1CkzyvCjuVVYlp8ZYRdv8F5tkz2ATPMnP",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
@@ -3170,7 +3170,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-vinyl-panel-pre-install-prep.mp4",
-    "still": "media/videos/architectural/architectural-vinyl-panel-pre-install-prep.jpg",
+    "still": "",
     "driveId": "13pihmIzFSlmdKA3wVOjBfXOmQVF3MEY8",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3230,7 +3230,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wrap-cutting-around-hinges.mp4",
-    "still": "media/videos/architectural/architectural-wrap-cutting-around-hinges.jpg",
+    "still": "",
     "driveId": "1otK4E0_yIUhe5dvSZ03mpXjhhuhlc5vY",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3245,7 +3245,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wall-panel-wrap-post-heat-2.mp4",
-    "still": "media/videos/architectural/architectural-wall-panel-wrap-post-heat-2.jpg",
+    "still": "",
     "driveId": "1mdavrLKPxaPII3KpiKVpa3cPDsfO-uw8",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3275,7 +3275,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-post-heating-vinyl-2.mp4",
-    "still": "media/videos/architectural/architectural-post-heating-vinyl-2.jpg",
+    "still": "",
     "driveId": "1FFpMabcX9LxxSkJjhKdgy2SwE_46Wsqt",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3290,7 +3290,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/post-heat-panel-1.mp4",
-    "still": "media/videos/architectural/post-heat-panel-1.jpg",
+    "still": "",
     "driveId": "10LIlU-xcVB5j3FqBuxBPF4lmXZoxnk9O",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3305,7 +3305,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-cutting-vinyl-around-hinges.mp4",
-    "still": "media/videos/architectural/architectural-cutting-vinyl-around-hinges.jpg",
+    "still": "",
     "driveId": "1NXkcT7HqQeJB7VlNK_81S2TtPp2Dtz57",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3320,7 +3320,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.mp4",
-    "still": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.jpg",
+    "still": "",
     "driveId": "1dNBb49FDPg34i5ppfEy_22VwhV1EYTRp",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
@@ -3335,7 +3335,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wall-panel-install-dust-tack.mp4",
-    "still": "media/videos/architectural/architectural-wall-panel-install-dust-tack.jpg",
+    "still": "",
     "driveId": "1V50KW_CC1gt5mwJ2COcEh2rvJXqHW8qt",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",

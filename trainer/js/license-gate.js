@@ -101,29 +101,42 @@
   function afterMedia() {
     if (mediaReady) return;
     mediaReady = true;
+    /* Hotfix 2.6.4: the one final dedupe, after photos-pack.js and photos-boost.js have both run. */
+    try { if (window.WRAP911_CAPTIONS_APPLY) window.WRAP911_CAPTIONS_APPLY(); } catch (e00) {}
+    try { if (window.WRAP911_PHOTOS_DEDUPE) window.WRAP911_PHOTOS_DEDUPE(); } catch (e0) {}
+    window.WRAP911_PHOTOS_READY = true;
     var core = window.WRAP911_APP && window.WRAP911_APP.core;
     if (core && core.renderPhotosList) {
       try { core.renderPhotosList(); } catch (e) {}
     }
+    /* Home progress "Photos x/N" uses the same deduped total. */
+    if (core && core.renderHome) {
+      try { core.renderHome(); } catch (e1) {}
+    }
     setTimeout(limitPhotos, 50);
+    try { document.dispatchEvent(new CustomEvent("wrap911:photos-ready")); } catch (e2) {}
   }
 
-  function loadBoost() {
-    if (window.WRAP911_BOOST) { afterMedia(); return; }
-    var s = document.createElement("script");
-    s.src = "js/photos-boost.js?v=263";
-    s.onload = afterMedia;
-    s.onerror = afterMedia;
-    document.head.appendChild(s);
-  }
-
+  /* Hotfix 2.6.4: both files load in parallel but run in a fixed order (async=false: pack, then boost),
+     once each. boot() runs twice, and a slow phone used to inject photos-pack.js twice. */
+  var mediaAsked = false;
   function loadPack() {
-    if (window.WRAP911_PACK) { loadBoost(); return; }
-    var s = document.createElement("script");
-    s.src = "js/photos-pack.js?v=263";
-    s.onload = loadBoost;
-    s.onerror = loadBoost;
-    document.head.appendChild(s);
+    if (mediaAsked) return;
+    mediaAsked = true;
+    var srcs = [];
+    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=264");
+    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=264");
+    var left = srcs.length;
+    if (!left) { afterMedia(); return; }
+    function done() { if (--left === 0) afterMedia(); }
+    for (var i = 0; i < srcs.length; i++) {
+      var s = document.createElement("script");
+      s.src = srcs[i];
+      s.async = false;
+      s.onload = done;
+      s.onerror = done;
+      document.head.appendChild(s);
+    }
   }
 
   function wipePayCopy() {

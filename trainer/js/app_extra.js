@@ -221,7 +221,7 @@
         card.setAttribute("tabindex", "0");
         card.setAttribute("data-lesson", lesson.id);
         card.innerHTML =
-          '<img class="thumb" src="' + escapeHtml(lesson.media) + '" alt="" loading="lazy" decoding="async" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
+          (lesson.media ? '<img class="thumb" src="' + escapeHtml(lesson.media) + '" alt="" loading="lazy" decoding="async" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' : '') +
           '<div class="card-body"><div class="card-title">' + escapeHtml(lesson.title) + "</div>" +
           '<div class="card-sub">' + escapeHtml(lesson.timeBox ? lesson.timeBox + " · 3-question quiz" : "3-question quiz · badge on pass") + '</div>' +
           lessonBadgeHtml(lesson, done) +

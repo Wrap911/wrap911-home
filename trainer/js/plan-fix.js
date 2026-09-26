@@ -159,18 +159,31 @@
     return origin + "?license=CREW-" + lic.crewCode;
   }
 
+  /* Hotfix 2.6.4: one plan label for every chip. app-core planMeta() calls this too, so the header chip
+     no longer flips between PACK (painted here) and PRO (painted by app-core on other screens). */
+  function planLabel(lic) {
+    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack" && lic.sku !== "field")) return null;
+    if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return null;
+    var left = daysLeft(lic);
+    return {
+      badge: lic.sku === "pack" ? "PACK" : (lic.sku === "field" ? "FIELD" : "SEAT"),
+      detail: lic.sku === "pack"
+        ? "Shop pack · 5 phones · " + left
+        : (lic.sku === "field" ? "Field monthly · this phone · " + left : "1 seat · this phone · " + left)
+    };
+  }
+  window.WRAP911_PLAN_LABEL = planLabel;
+
   function paint() {
     var lic = read();
-    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack" && lic.sku !== "field")) return;
-    var badge = lic.sku === "pack" ? "PACK" : (lic.sku === "field" ? "FIELD" : "SEAT");
-    var left = daysLeft(lic);
-    var detail = lic.sku === "pack"
-      ? "Shop pack · 5 phones · " + left
-      : (lic.sku === "field" ? "Field monthly · this phone · " + left : "1 seat · this phone · " + left);
+    var label = planLabel(lic);
+    if (!label) return;
+    var badge = label.badge;
+    var detail = label.detail;
     var chip = document.getElementById("plan-chip");
     if (chip) {
-      chip.textContent = badge;
-      chip.classList.remove("locked");
+      if (chip.textContent !== badge) chip.textContent = badge;
+      chip.className = "plan-chip pro";
     }
     var homeBadge = document.getElementById("home-plan-badge");
     if (homeBadge && homeBadge.textContent !== badge) homeBadge.textContent = badge;

@@ -1,0 +1,442 @@
+[
+ {
+  "q": "Box truck side. Rivet rows are marked and the film is ready. What do you glass first?",
+  "choices": [
+   "The flat field. Leave the rivet lines staged, not crushed.",
+   "The rivet rows, one head at a time, before the flat.",
+   "The whole rivet field in one long stretch."
+  ],
+  "answer": 0,
+  "sourceId": "bt-rivet-mastery",
+  "free": true
+ },
+ {
+  "q": "Rivets are set. What comes next before QC?",
+  "choices": [
+   "Roll the truck out and let the sun finish it.",
+   "Post-heat edges and rivets so the film remembers the shape.",
+   "Pierce each rivet head so trapped air can escape."
+  ],
+  "answer": 1,
+  "sourceId": "bt-rivet-mastery",
+  "free": false
+ },
+ {
+  "q": "Walking the rivet row for QC. What are you looking for?",
+  "choices": [
+   "Gloss level across the panel only.",
+   "Nothing. A set rivet can't lift later.",
+   "Tents, silvering, and dirty bases."
+  ],
+  "answer": 2,
+  "sourceId": "bt-rivet-mastery",
+  "free": true
+ },
+ {
+  "q": "Tall box side. You're on the ladder and the panel edge is just out of reach. Fix?",
+  "choices": [
+   "Lean out and grab it. It's one reach.",
+   "Step up on the top cap for the extra height.",
+   "Climb down and move the ladder."
+  ],
+  "answer": 2,
+  "sourceId": "bt-oversized-panels",
+  "free": false
+ },
+ {
+  "q": "Tall graphic, field is glassed. What do you check before you commit the recesses?",
+  "choices": [
+   "Nothing. Recesses come first anyway.",
+   "Level lines, from a distance.",
+   "Just the rivet heads, up close."
+  ],
+  "answer": 1,
+  "sourceId": "bt-oversized-panels",
+  "free": false
+ },
+ {
+  "q": "Liner is piled on the floor where you're about to stage a big panel. Move?",
+  "choices": [
+   "Clear the liner off the floor, then stage the panel with hinge tape.",
+   "Leave it. Clean up after the hang.",
+   "Stand on it. Keeps your boots off the concrete."
+  ],
+  "answer": 0,
+  "sourceId": "bt-oversized-panels",
+  "free": false
+ },
+ {
+  "q": "About to make post-heat passes on a trailer. Liner scraps are piled at the base. Move?",
+  "choices": [
+   "Heat carefully around them.",
+   "Clear the liner piles first.",
+   "Kick them under the trailer."
+  ],
+  "answer": 1,
+  "sourceId": "tr-rivet-rows",
+  "free": false
+ },
+ {
+  "q": "Swing doors, before any film. First step?",
+  "choices": [
+   "Dry-fit the graphic with the doors shut.",
+   "Heat-set the door edges.",
+   "Open the doors and clean the hinge barrels and latch faces."
+  ],
+  "answer": 2,
+  "sourceId": "bt-swing-door",
+  "free": false
+ },
+ {
+  "q": "Your IPA wipe beads up near a door seal. What's that telling you?",
+  "choices": [
+   "Normal. The film will cover it.",
+   "Silicone. Resolve it before you hang.",
+   "The surface is too clean for the adhesive."
+  ],
+  "answer": 1,
+  "sourceId": "bt-prep-cleaning",
+  "free": false
+ },
+ {
+  "q": "A helper wants to spray a glide product so the squeegee slides easier. Answer?",
+  "choices": [
+   "No. Nothing oily goes under the adhesive.",
+   "Fine on commercial sides.",
+   "Fine, if you heat harder after."
+  ],
+  "answer": 0,
+  "sourceId": "bt-prep-cleaning",
+  "free": false
+ },
+ {
+  "q": "You're up on an RV roof and a forklift starts moving through the bay. Move?",
+  "choices": [
+   "Keep working. The driver will go around.",
+   "Speed up and finish before it gets close.",
+   "Stop and coordinate around the bay traffic."
+  ],
+  "answer": 2,
+  "sourceId": "van-roof-safety",
+  "free": false
+ },
+ {
+  "q": "Roof flats are glassed. How do you work the channels?",
+  "choices": [
+   "Hard-card them flat in one stroke.",
+   "Feed them with soft tools.",
+   "Torch the film until it drops in."
+  ],
+  "answer": 1,
+  "sourceId": "van-roof-safety",
+  "free": false
+ },
+ {
+  "q": "Class C is wrapped. How do you walk it before release?",
+  "choices": [
+   "Front, side, rear for stripe and panel continuity, plus a distance look at the tall sides.",
+   "Up close on the cab only.",
+   "Skip the walk if the hang went clean."
+  ],
+  "answer": 0,
+  "sourceId": "bt-rollup-door",
+  "free": false
+ },
+ {
+  "q": "Plate recess isn't seated yet. Trim now?",
+  "choices": [
+   "Yes. Trimming first makes the feed easier.",
+   "Yes, then heat the edge so it shrinks in.",
+   "No. Seat the recess first, then trim into the voids."
+  ],
+  "answer": 2,
+  "sourceId": "van-deep-recess",
+  "free": true
+ },
+ {
+  "q": "Liftgate with a deep plate pocket. What goes first?",
+  "choices": [
+   "Feed the plate pocket, then the field.",
+   "Hang and glass the main rear field.",
+   "Trim the voids, then hang."
+  ],
+  "answer": 1,
+  "sourceId": "van-deep-recess",
+  "free": true
+ },
+ {
+  "q": "Slider is wrapped. Film catches when the door runs. What went wrong?",
+  "choices": [
+   "Gap and seal cuts weren't managed. Film is binding in the track.",
+   "Not enough heat on the field.",
+   "The door got cycled before post-heat."
+  ],
+  "answer": 0,
+  "sourceId": "van-sliding-door",
+  "free": false
+ },
+ {
+  "q": "Checking the band level across the slider. Door open or shut?",
+  "choices": [
+   "Shut only.",
+   "Open only.",
+   "Both. Shut and open."
+  ],
+  "answer": 2,
+  "sourceId": "van-sliding-door",
+  "free": false
+ },
+ {
+  "q": "Film is bunching at a rear-door hinge. When do the relief cuts go in?",
+  "choices": [
+   "Early, to release the bunching.",
+   "After the film tears, to clean it up.",
+   "Never. Stretch through it."
+  ],
+  "answer": 0,
+  "sourceId": "van-rear-hinge",
+  "free": false
+ },
+ {
+  "q": "Rear-door registration is confirmed. How does the liner come off?",
+  "choices": [
+   "All at once to save time.",
+   "In sections, squeegeeing the field as you go.",
+   "Leave it on and heat through it."
+  ],
+  "answer": 1,
+  "sourceId": "van-rear-hinge",
+  "free": false
+ },
+ {
+  "q": "Trailer rivet graphic is squeegeed, hinge tape still on. When do the rivets get post-heated?",
+  "choices": [
+   "After the tape comes off and each rivet is set.",
+   "Now, while the tape holds everything.",
+   "Before the squeegee, to soften the rivets."
+  ],
+  "answer": 0,
+  "sourceId": "tr-rivet-rows",
+  "free": false
+ },
+ {
+  "q": "Hinge cut came out flush-short. What's the risk?",
+  "choices": [
+   "None. Flush looks cleaner.",
+   "Substrate shows after the film shrinks.",
+   "The door won't close."
+  ],
+  "answer": 1,
+  "sourceId": "tr-door-hinge",
+  "free": false
+ },
+ {
+  "q": "Score marks on the hinge face after cutting. What went wrong?",
+  "choices": [
+   "The film wasn't heated enough.",
+   "The blade was too fresh.",
+   "The blade crossed the paint instead of cutting into the void."
+  ],
+  "answer": 2,
+  "sourceId": "tr-door-hinge",
+  "free": false
+ },
+ {
+  "q": "Long trailer, before the first segment goes up. First step?",
+  "choices": [
+   "Plan the segment map on paper or photos.",
+   "Hang the middle segment and work out.",
+   "Order one full-length sheet."
+  ],
+  "answer": 0,
+  "sourceId": "tr-panel-seg",
+  "free": false
+ },
+ {
+  "q": "Trailer nose graphic is still under transfer tape. When does heat come in?",
+  "choices": [
+   "Before registering, to relax the film.",
+   "While it's still under the tape.",
+   "After you squeegee and pull the tape, and only per the film TDS."
+  ],
+  "answer": 2,
+  "sourceId": "cl03",
+  "free": false
+ },
+ {
+  "q": "Film snags as you feed it into a cubby. Likely cause?",
+  "choices": [
+   "It is bridging the opening. Feed the corners; do not bridge.",
+   "The cubby is too clean.",
+   "The squeegee has a felt edge."
+  ],
+  "answer": 0,
+  "sourceId": "sf-wet-install",
+  "free": true
+ },
+ {
+  "q": "Bubbles in the corners of a soft-seated recess. What caused them?",
+  "choices": [
+   "Not enough application fluid.",
+   "Air trapped in the corners. Chase it out toward the open edges.",
+   "Using a felt squeegee."
+  ],
+  "answer": 1,
+  "sourceId": "sf-wet-install",
+  "free": false
+ },
+ {
+  "q": "Architectural panel hang. First step?",
+  "choices": [
+   "Knife-trim the reveals.",
+   "Seat the corners and returns.",
+   "Survey the panel layout and pattern direction."
+  ],
+  "answer": 2,
+  "sourceId": "sf-perf-film",
+  "free": false
+ },
+ {
+  "q": "Multi-bay cubby run. What keeps every bay on the same line?",
+  "choices": [
+   "Shared baselines marked on the returns and floors.",
+   "Eyeballing each bay as you go.",
+   "Trimming each bay to fit afterward."
+  ],
+  "answer": 0,
+  "sourceId": "sf-multipane",
+  "free": false
+ },
+ {
+  "q": "Knife is chewing the edge at an interior corner. Fix?",
+  "choices": [
+   "Snap a fresh blade.",
+   "Press harder.",
+   "Heat the corner, then cut."
+  ],
+  "answer": 0,
+  "sourceId": "sf-weather",
+  "free": false
+ },
+ {
+  "q": "Cutting in the corner crease. Which way does the blade travel?",
+  "choices": [
+   "Toward your body for control.",
+   "Away from your body.",
+   "Across the show face."
+  ],
+  "answer": 1,
+  "sourceId": "sf-weather",
+  "free": false
+ },
+ {
+  "q": "Inside corner on an interior panel. Where does the relief cut go?",
+  "choices": [
+   "Off the show face.",
+   "Dead center on the show face.",
+   "No relief. Stretch one sheet around."
+  ],
+  "answer": 0,
+  "sourceId": "int-panel-corner",
+  "free": true
+ },
+ {
+  "q": "How deep does a half-moon relief go?",
+  "choices": [
+   "All the way to the panel edge.",
+   "Skip it. A straight slash across the face works.",
+   "Only as deep as the bunch."
+  ],
+  "answer": 2,
+  "sourceId": "pl15",
+  "free": false
+ },
+ {
+  "q": "Long wood-grain wall and the boards start to stair-step. Fix?",
+  "choices": [
+   "Stretch the next panel to catch the line.",
+   "Register each panel to the last one before you glass it. Sight the seam from the far end.",
+   "Heat the seam straight."
+  ],
+  "answer": 1,
+  "sourceId": "pl09",
+  "free": false
+ },
+ {
+  "q": "A finished unit doesn't match the fleet card. Besides fixing it, what's the step?",
+  "choices": [
+   "Log the deviation.",
+   "Change the card to match this unit.",
+   "Nothing, if it's close."
+  ],
+  "answer": 0,
+  "sourceId": "fl-alignment",
+  "free": false
+ },
+ {
+  "q": "Unit 5 is finished and unit 1 still hasn't been QC'd. Problem?",
+  "choices": [
+   "No. QC the whole fleet at the end.",
+   "No. Unit 1 was just the sample.",
+   "Yes. QC unit 1 before you finish more units."
+  ],
+  "answer": 2,
+  "sourceId": "fl-multi-vehicle",
+  "free": false
+ },
+ {
+  "q": "Two crews keep waiting on the same tools. Fix?",
+  "choices": [
+   "Stagger the crews so no vehicle is starved of tools.",
+   "Put both crews on one vehicle.",
+   "Skip the steps that need the missing tool."
+  ],
+  "answer": 0,
+  "sourceId": "fl-multi-vehicle",
+  "free": false
+ },
+ {
+  "q": "How do you inspect a fleet unit at QC?",
+  "choices": [
+   "Distance view only.",
+   "Distance view, plus a close rivet and edge inspection.",
+   "Close up only."
+  ],
+  "answer": 1,
+  "sourceId": "fl-qc",
+  "free": false
+ },
+ {
+  "q": "Who signs off before a fleet unit goes out?",
+  "choices": [
+   "Whoever finished it.",
+   "Nobody, if the checklist looks good.",
+   "The lead."
+  ],
+  "answer": 2,
+  "sourceId": "fl-qc",
+  "free": false
+ },
+ {
+  "q": "Headlight pocket, film is seated. Next move?",
+  "choices": [
+   "Cut flush on the lens face.",
+   "Fresh blade, cut into the gap, leave a small tuck behind the housing.",
+   "Score the paint so the cut tracks."
+  ],
+  "answer": 1,
+  "sourceId": "cl04",
+  "free": false
+ },
+ {
+  "q": "Pulling the liner on a big sheet. When do you squeegee?",
+  "choices": [
+   "As you pull the liner.",
+   "After the whole liner is off.",
+   "Only once the sheet is trimmed."
+  ],
+  "answer": 0,
+  "sourceId": "prob-sensor-dirt",
+  "free": false
+ }
+]

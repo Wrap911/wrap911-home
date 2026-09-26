@@ -136,23 +136,23 @@
     },
     {
       id: "prob-tape-left",
-      title: "Problem: tape still on the graphic — Solution: pull low and slow",
-      image: "media/photos/gallery/trailer-spot-graphics.jpg",
+      title: "Problem: waste strip lifting a seam edge — Solution: pull low and slow",
+      image: "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-2.jpg",
       module: "post-heat",
       jobType: "Problems",
-      visual: "Spot graphic under transfer tape at a hinge.",
-      narration: "Problem: transfer tape left on a graphic, or yanked straight up. Lifts the print, leaves haze, or pulls an edge at the hinge.\n\nSolution: squeegee the tape down once more. Pull low and slow, 180 degrees, back over itself. If a corner lifts, stop, reseat, warm slightly, then finish the pull. Trim hinge gaps after the tape is off, not before.",
+      visual: "Grey wood-grain film on wall panels. A dark vertical seam runs down the middle. At the lower left, a hand peels a white strip back off the panel face next to the seam.",
+      narration: "Problem: the trimmed waste strip gets yanked straight out. It can drag the seated edge up with it and open the seam.\n\nSolution: finish the cut first. Peel the waste low and slow, back along the cut line, and keep the seated edge held down. If the edge lifts, stop, reseat it, then finish the pull. Any heat follows the film TDS.",
       checklist: [
-        "Squeegee tape down before the pull",
-        "Low and slow, 180 degrees",
-        "Stop if a corner lifts — reseat, then continue",
-        "Trim hinges after tape is off",
-        "Bag the tape. Do not stick it to the next panel"
+        "Finish the cut before you pull the waste",
+        "Peel low and slow, back along the cut",
+        "Hold the seated edge down while you pull",
+        "Stop if the seam edge lifts — reseat, then continue",
+        "Bag the waste. Do not leave it on the floor"
       ],
       quiz: {
-        q: "How do you pull transfer tape off a graphic?",
-        correct: "Low and slow, back over itself. Stop and reseat if an edge lifts.",
-        wrong: "Snap it straight up so the adhesive breaks clean."
+        q: "How do you pull a trimmed waste strip off next to a seam?",
+        correct: "Low and slow, back along the cut, with the seated edge held down.",
+        wrong: "Snap it straight out so the cut breaks clean."
       }
     },
     {

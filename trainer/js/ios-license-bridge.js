@@ -178,16 +178,27 @@
     else home.insertBefore(box, home.firstChild);
   }
   window.WRAP911_LICENSE_BRIDGE = { save: save, restore: restore, valid: valid, packLicense: packLicense };
+  /* Hotfix 2.6.4: `localStorage.setItem = fn` / `localStorage.removeItem = fn` assigned onto the Storage
+     object itself, so every phone got junk keys named "setItem" and "removeItem" (Object.keys shows them,
+     value null; spec-following engines store them as real items). Hook Storage.prototype instead, for
+     localStorage only. Same cookie mirroring as before, no keys on the store. */
   try {
-    var origSet = localStorage.setItem.bind(localStorage);
-    var origRemove = localStorage.removeItem.bind(localStorage);
-    localStorage.setItem = function (k, v) {
-      origSet(k, v);
+    var SP = window.Storage && window.Storage.prototype;
+    var origSet = SP.setItem;
+    var origRemove = SP.removeItem;
+    /* Cleanup: drop the two junk keys (only these exact names) left by earlier builds. Acts once; a no-op after. */
+    ["setItem", "removeItem"].forEach(function (junk) {
+      try { if (localStorage.getItem(junk) !== null) origRemove.call(localStorage, junk); } catch (e5) {}
+    });
+    SP.setItem = function (k, v) {
+      origSet.call(this, k, v);
+      if (this !== localStorage) return;
       if (k === LS) { try { writeCookie(JSON.parse(v)); } catch (e) {} }
       if (k === OWNER && String(v) === "1") writeCookie(restore() || packLicense());
     };
-    localStorage.removeItem = function (k) {
-      origRemove(k);
+    SP.removeItem = function (k) {
+      origRemove.call(this, k);
+      if (this !== localStorage) return;
       if (k === LS || k === OWNER) clearCookie();
     };
   } catch (e3) {}
