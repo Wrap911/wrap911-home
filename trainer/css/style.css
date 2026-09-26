@@ -190,7 +190,7 @@ button.secondary {
   border: 1px solid var(--border);
   margin: 0.35rem 0;
 }
-.photo-hero, .thumb { width: 100%; border-radius: 10px; }
+.photo-hero, .thumb { width: 100%; height: auto; border-radius: 10px; object-fit: contain; }
 
 .filter-chips, .coach-prompts {
   display: flex;
@@ -231,8 +231,8 @@ button.chip:hover {
 }
 .thumb-card .thumb {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   margin-bottom: 0.55rem;
   border-radius: 10px;
   background: var(--bg-elevated);
@@ -249,7 +249,7 @@ button.chip:hover {
   color: var(--text-muted);
 }
 @media (min-width: 560px) {
-  .thumb-card .thumb { height: 200px; }
+  .thumb-card .thumb { height: auto; }
 }
 @media (min-width: 900px) {
   .thumb-grid { grid-template-columns: 1fr 1fr 1fr; }
@@ -305,9 +305,9 @@ button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data
   width: 100%;
   display: block;
   height: auto;
-  aspect-ratio: auto 720 / 1280; /* 2.6.2: reserve space before the still loads */
-  max-height: 210px;
-  object-fit: cover;
+  aspect-ratio: auto;
+  max-height: none;
+  object-fit: contain;
   background: #000;
   border-radius: 10px 10px 0 0;
 }
