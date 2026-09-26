@@ -186,7 +186,8 @@
     for (var i = 0; i < list.length; i++) {
       var item = list[i];
       var img = item.image || item.still || "";
-      var bad = missingStill(img) || isCover(img);
+      var bn = basename(img);
+      var bad = missingStill(img) || isCover(img) || (bn && used[bn]);
       if (bad) {
         img = pickByTitle(item, used);
         item.image = img;
