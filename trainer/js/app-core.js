@@ -263,9 +263,9 @@
     if (!lic || lic.expired) {
       return {
         plan: "locked",
-        badge: "LOCKED",
-        chipClass: "locked",
-        detail: "Training is locked. Buy W911-PACK $149 (default shop pack, 5 seats) or W911-SEAT $49 (one phone)."
+        badge: "FREE",
+        chipClass: "",
+        detail: "Free look is open. Pack $149 or seat $49 unlocks the rest on this phone."
       };
     }
     if (lic.plan === "free") {
@@ -514,7 +514,7 @@
       var fb = $("unlock-feedback");
       if (fb) {
         fb.className = "quiz-feedback bad";
-        fb.textContent = "That section is locked. Shop pack $149 or seat $49. Buy on this phone.";
+        fb.textContent = "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
       }
       name = "pricing";
       renderPricingPlans();

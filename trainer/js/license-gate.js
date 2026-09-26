@@ -105,14 +105,18 @@
   }
 
   function wipePayCopy() {
-    var locked = "That section is locked. Shop pack $149 or seat $49. Buy on this phone.";
+    var locked = "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
     var none = "No license. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone). Buy on this same phone.";
+    var chip = document.getElementById("plan-chip");
+    if (chip && /LOCKED/i.test(chip.textContent || "")) chip.textContent = "FREE";
+    var badge = document.getElementById("home-plan-badge");
+    if (badge && /LOCKED/i.test(badge.textContent || "")) badge.textContent = "FREE";
     var el = document.getElementById("license-status-text");
     if (el && /forever|WRAP911-HOME|No license|\\?license=STRIPE/i.test(el.textContent || "")) el.textContent = none;
     var fb = document.getElementById("unlock-feedback");
     if (fb && /forever|WRAP911-HOME|That section is locked/i.test(fb.textContent || "")) fb.textContent = locked;
     var detail = document.getElementById("home-plan-detail");
-    if (detail && /forever|WRAP911-HOME/i.test(detail.textContent || "")) detail.textContent = "Training is locked. Shop pack $149 or seat $49.";
+    if (detail && /forever|WRAP911-HOME|Training is locked/i.test(detail.textContent || "")) detail.textContent = "Free look is open. Pack $149 or seat $49 unlocks the rest.";
     var nodes = document.querySelectorAll(".plan-status-detail, #unlock-feedback, #license-status-text, #home-plan-detail");
     for (var i = 0; i < nodes.length; i++) {
       var txt = nodes[i].textContent || "";
