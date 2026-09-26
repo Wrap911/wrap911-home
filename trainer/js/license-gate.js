@@ -23,6 +23,11 @@
   function paid() {
     if (shopOpen()) return true;
     try {
+      var bridge = window.WRAP911_LICENSE_BRIDGE;
+      if (bridge && bridge.restore) {
+        var restored = bridge.restore();
+        if (restored && bridge.valid(restored)) return true;
+      }
       if (localStorage.getItem("wrap911_owner") === "1") return true;
       var raw = localStorage.getItem("wrap911_license");
       if (!raw) return false;
@@ -46,14 +51,18 @@
   }
 
   function applyOwner() {
+    var now = Date.now();
+    var lic = {
+      code: "SHOP", plan: "pro", sku: "pack", seats: 5,
+      crewCode: "SHOPCS", unlockedAt: now, expiresAt: now + 365 * 86400000
+    };
     try {
       localStorage.setItem("wrap911_owner", "1");
-      var now = Date.now();
-      localStorage.setItem("wrap911_license", JSON.stringify({
-        code: "SHOP", plan: "pro", sku: "pack", seats: 5,
-        crewCode: "SHOPCS", unlockedAt: now, expiresAt: now + 365 * 86400000
-      }));
+      localStorage.setItem("wrap911_license", JSON.stringify(lic));
     } catch (e) {}
+    if (window.WRAP911_LICENSE_BRIDGE && window.WRAP911_LICENSE_BRIDGE.save) {
+      window.WRAP911_LICENSE_BRIDGE.save(lic);
+    }
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
       fb.className = "quiz-feedback ok";
@@ -117,11 +126,6 @@
     if (fb && /forever|WRAP911-HOME|That section is locked/i.test(fb.textContent || "")) fb.textContent = locked;
     var detail = document.getElementById("home-plan-detail");
     if (detail && /forever|WRAP911-HOME|Training is locked/i.test(detail.textContent || "")) detail.textContent = "Free look is open. Pack $149 or seat $49 unlocks the rest.";
-    var nodes = document.querySelectorAll(".plan-status-detail, #unlock-feedback, #license-status-text, #home-plan-detail");
-    for (var i = 0; i < nodes.length; i++) {
-      var txt = nodes[i].textContent || "";
-      if (/free forever/i.test(txt)) nodes[i].textContent = txt.replace(/[^.]*free forever[^.]*\.?/gi, " Paid pack or seat.").trim();
-    }
   }
 
   function hideCodeBlocks() {
@@ -129,7 +133,6 @@
     for (var i = 0; i < nodes.length; i++) {
       var t = nodes[i].textContent || "";
       if (/Codes \(shop|WRAP911-HOME|WRAP911-DEMO|WRAP911-PRO|WRAP911-CREW|enter `WRAP911/i.test(t)) {
-        var block = nodes[i].closest("ul, ol, .card, .license-card") || nodes[i];
         if (/Codes \(shop/i.test(t) && nodes[i].nextElementSibling) {
           var sib = nodes[i].nextElementSibling;
           if (sib.tagName === "UL" || sib.tagName === "OL") sib.remove();
@@ -354,9 +357,9 @@
   function ownerFromUrl() {
     try {
       var q = new URLSearchParams(window.location.search);
-      if (q.get("owner") === "1" || q.get("shop") === "1") {
+      if (q.get("owner") === "1" || q.get("shop") === "1" || q.get("license") === "STRIPE") {
         applyOwner();
-        q.delete("owner"); q.delete("shop");
+        q.delete("owner"); q.delete("shop"); q.delete("license");
         var qs = q.toString();
         history.replaceState({}, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
       }
