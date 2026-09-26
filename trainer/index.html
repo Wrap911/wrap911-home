@@ -13,10 +13,189 @@
   <title>WRAP 911 Trainer</title>
   <link rel="stylesheet" href="css/style.css?v=324">
   <link rel="stylesheet" href="css/theme-dark.css?v=316">
+  <style>
+    .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
+    .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
+    .passion-note p { margin: 0; color: inherit; line-height: 1.4; }
+    .brand-logo { display: block; height: 42px; width: auto; }
+    .app-header .brand { line-height: 0; }
+    .pu-preview { margin: .6rem 0; }
+    .pu-preview img { display:block; }
+  </style>
 </head>
 <body>
-  <p>Trainer shell restoring. Open this backup while Pages updates:</p>
-  <p><a href="https://cdn.jsdelivr.net/gh/Wrap911/wrap911-home@2222bfbb5c8a0d2a737c4cda4a0ed83ae1327bf7/trainer/">Backup trainer</a></p>
+  <header class="app-header">
+    <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911"></a></div>
+    <div class="header-meta">
+      <div class="header-chips">
+        <span id="plan-chip" class="plan-chip">Free</span>
+        <span id="xp-chip" class="xp-chip">0 XP</span>
+      </div>
+      <span class="header-sub">Offline shop trainer</span>
+    </div>
+  </header>
+  <section id="screen-rules" class="screen" aria-label="Shop rules">
+    <h1>Shop rules</h1>
+    <p class="lead">Read and accept before training.</p>
+    <div class="passion-note" id="install-note">
+      <strong>Put WRAP 911 on this phone</strong>
+      <p id="install-copy">iPhone: Safari, Share, Add to Home Screen. Android: Chrome menu, Add to Home screen. It is not in the App Store or Play Store.</p>
+      <p style="margin-top:0.45rem"><button type="button" id="install-btn" hidden>Install</button></p>
+    </div>
+    <ul class="rules-list">
+      <li><strong>Who may wrap:</strong> Only trained WRAP 911 crew under shop direction.</li>
+      <li><strong>Brands only:</strong> 3M, Avery Dennison, Arlon as specified for the job.</li>
+      <li><strong>Follow the TDS:</strong> Do not invent temperatures or chemical recipes.</li>
+      <li><strong>Safety:</strong> Ladders, heat, knives. Soften film. Do not melt it.</li>
+    </ul>
+    <div class="accept-row">
+      <input type="checkbox" id="rules-checkbox" name="rules">
+      <label for="rules-checkbox">I have read these shop rules and agree to follow them.</label>
+    </div>
+    <button type="button" id="btn-accept-rules" disabled>Accept & continue</button>
+  </section>
+  <section id="screen-home" class="screen" aria-label="Home">
+    <h1>WRAP 911 Trainer</h1>
+    <p class="lead">Shop training for real jobs.</p>
+    <div class="passion-note">
+      <strong>This is the passion</strong>
+      <p>The world wants a perfect wrap. We still miss. This is the wrinkle that never made the photo, and the panel that would not line up, so you are not alone on a bad wrap day.</p>
+      <p style="margin-top:0.45rem">Install videos keep the live mistake when it happens, and you watch it get fixed. No hidden footage.</p>
+    </div>
+    <div class="gamify-bar" id="home-gamify">
+      <div class="gamify-stat"><span class="gamify-val" id="home-xp">0</span><span class="gamify-lbl">XP</span></div>
+      <div class="gamify-stat"><span class="gamify-val" id="home-streak">0</span><span class="gamify-lbl">Day streak</span></div>
+      <div class="gamify-stat"><span class="gamify-val" id="home-drills-done">0</span><span class="gamify-lbl">Drills done</span></div>
+    </div>
+    <div class="home-progress" id="home-progress-wrap">
+      <div class="home-progress-label" id="home-progress-label">0% overall</div>
+      <div class="home-progress-track"><div class="home-progress-fill" id="home-progress-fill"></div></div>
+      <div class="home-progress-detail" id="home-progress-detail"></div>
+    </div>
+    <div class="home-primary" id="home-primary-actions">
+      <div class="card tap primary-action" id="goto-learn-job" role="button" tabindex="0">
+        <div class="card-body"><div class="card-title">Learn a job</div><div class="card-sub">Vehicles · Interior</div></div>
+      </div>
+      <div class="card tap primary-action" id="goto-coach" role="button" tabindex="0">
+        <div class="card-body"><div class="card-title">Ask Coach</div></div>
+      </div>
+      <div class="card tap primary-action" id="goto-photos" role="button" tabindex="0">
+        <div class="card-body"><div class="card-title">Browse photos</div></div>
+      </div>
+      <div class="card tap primary-action" id="goto-videos-primary" role="button" tabindex="0">
+        <div class="card-body"><div class="card-title">Videos</div></div>
+      </div>
+    </div>
+    <div class="home-job-types hidden" id="home-job-types">
+      <h2>Job types</h2>
+      <div class="job-type-grid" id="job-type-grid"></div>
+      <button type="button" class="secondary" id="btn-hide-job-types">Hide job types</button>
+    </div>
+    <div id="home-nav-cards" class="home-nav-grid hidden"></div>
+    <details class="home-secondary" id="home-more-tools">
+      <summary>More tools</summary>
+      <div id="module-list"></div>
+      <div class="card tap" id="goto-drills" role="button" tabindex="0"><div class="card-body"><div class="card-title">Drills</div></div></div>
+      <div class="card tap" id="goto-videos" role="button" tabindex="0"><div class="card-body"><div class="card-title">Videos</div></div></div>
+      <div class="card tap" id="goto-calc" role="button" tabindex="0"><div class="card-body"><div class="card-title">Material calculator</div></div></div>
+      <div class="card tap" id="goto-problem-upload" role="button" tabindex="0"><div class="card-body"><div class="card-title">Report a problem</div><div class="card-sub">Show the mistake the before/after hides</div></div></div>
+    </details>
+    <details class="home-secondary" id="home-pricing-collapse">
+      <summary>Unlock & pricing</summary>
+      <div class="plan-status-card" id="home-plan-status"><span class="plan-badge" id="home-plan-badge">Free</span><p class="plan-status-detail" id="home-plan-detail">Pack $149</p></div>
+      <div class="card tap" id="goto-pricing" role="button" tabindex="0"><div class="card-body"><div class="card-title">Pricing & unlock</div></div></div>
+    </details>
+  </section>
+  <section id="screen-vehicle" class="screen">
+    <button type="button" class="back-link" id="btn-back-vehicle">← Back to home</button>
+    <p class="module-tag" id="vehicle-tag">Vehicle</p>
+    <h1 id="vehicle-title">Vehicle</h1>
+    <p id="vehicle-summary" class="lead"></p>
+    <div class="mode-tabs" id="vehicle-tabs">
+      <button type="button" class="mode-tab active" data-vtab="lessons">Lessons</button>
+      <button type="button" class="mode-tab" data-vtab="workflow">Workflow</button>
+    </div>
+    <div id="vehicle-lessons"></div>
+    <div id="vehicle-workflow" class="hidden"></div>
+  </section>
+  <section id="screen-lesson" class="screen">
+    <button type="button" class="back-link" id="btn-back-lesson">← Back</button>
+    <p class="module-tag" id="lesson-vehicle-tag"></p>
+    <h1 id="lesson-title">Lesson</h1>
+    <div id="lesson-media" class="lesson-media"></div>
+    <h3>Key techniques</h3><ul class="checklist" id="lesson-techniques"></ul>
+    <h3>Tools needed</h3><ul class="checklist" id="lesson-tools"></ul>
+    <h3>Common mistakes</h3><ul class="checklist mistakes" id="lesson-mistakes"></ul>
+    <h3>Step-by-step</h3><ol class="steps-list" id="lesson-steps"></ol>
+    <div class="quiz-box" id="lesson-quiz"></div>
+    <div id="lesson-badge-msg" class="quiz-feedback hidden"></div>
+    <div class="quiz-nav"><button type="button" class="secondary" id="lesson-to-practice">Open linked practice</button></div>
+  </section>
+  <section id="screen-library" class="screen"><button type="button" class="back-link" id="btn-back-library">← Back to home</button><h1>Training library</h1><div id="cert-levels" class="cert-row"></div><div id="library-list"></div></section>
+  <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
+  <section id="screen-practice" class="screen"><button type="button" class="back-link" id="btn-back-practice">← Practice hub</button><h1 id="prac-title">Practice</h1><img class="photo-hero" id="prac-image" src="" alt=""><p class="lead" id="prac-desc"></p><div id="prac-checklist" class="cl-steps"></div><div id="prac-mistakes"></div><div class="quiz-box" id="prac-quiz"></div><div class="quiz-nav"><button type="button" class="secondary" id="prac-redo">Redo</button><button type="button" id="prac-finish">Score & save</button></div><div class="quiz-feedback" id="prac-fb"></div></section>
+  <section id="screen-jobs" class="screen"><button type="button" class="back-link" id="btn-back-jobs">← Back to home</button><h1>Job manager</h1><button type="button" id="btn-new-job">+ New job</button><div id="jobs-list" class="jobs-list"></div></section>
+  <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>Arlon</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
+  <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
+  <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row"><label>Category<select id="video-filter-cat"><option value="">All</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
+  <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
+  <section id="screen-module" class="screen"><button type="button" class="back-link" id="btn-back-module">← Back to home</button><h1 id="module-title">Module</h1><div class="lesson-body" id="module-lesson"></div><div class="mode-tabs" id="module-mode-tabs"><button type="button" class="mode-tab active" data-mode="quiz">Quiz</button><button type="button" class="mode-tab" data-mode="practice">Practice mode</button></div><div class="quiz-box" id="module-quiz"></div><div id="module-practice" class="practice-wrap hidden"></div></section>
+  <section id="screen-drills" class="screen"><h1>Drills hub</h1><div id="drills-hub-list"></div></section>
+  <section id="screen-drill-spot" class="screen"><button type="button" class="back-link" id="btn-back-spot">← Back</button><h1 id="spot-title">What's wrong?</h1><div id="spot-progress"></div><img class="photo-hero" id="spot-image" src="" alt=""><p class="lead" id="spot-question"></p><div id="spot-choices"></div><div class="quiz-feedback" id="spot-fb"></div><button type="button" class="secondary" id="spot-next" disabled>Next</button></section>
+  <section id="screen-drill-checklist" class="screen"><button type="button" class="back-link" id="btn-back-checklist">← Back</button><h1 id="cl-title">Checklist</h1><p id="cl-intro" class="lead"></p><img class="photo-hero" id="cl-image" src="" alt=""><div id="cl-steps" class="cl-steps"></div><div class="quiz-feedback" id="cl-fb"></div><button type="button" class="secondary" id="cl-reset">Reset</button><button type="button" id="cl-done" class="hidden">Done</button></section>
+  <section id="screen-drill-checklist-pick" class="screen"><button type="button" class="back-link" id="btn-back-cl-pick">← Back</button><h1>Checklist drills</h1><div id="cl-pick-list"></div></section>
+  <section id="screen-drill-scenarios" class="screen"><button type="button" class="back-link" id="btn-back-scenarios">← Back</button><h1>Scenario picker</h1><div id="scenario-list"></div></section>
+  <section id="screen-drill-scenario" class="screen"><button type="button" class="back-link" id="btn-back-scenario">← Back</button><p class="module-tag" id="sc-icon-title"></p><h1 id="sc-title">Scenario</h1><div class="narration" id="sc-setup"></div><p class="lead" id="sc-question"></p><div id="sc-choices"></div><div class="quiz-feedback" id="sc-fb"></div><button type="button" class="secondary" id="sc-again" disabled>Try another</button></section>
+  <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
+  <section id="screen-photos" class="screen"><h1>Browse photos</h1><div class="filter-chips" id="photo-filter-chips"></div><div class="thumb-grid" id="photo-list"></div><div class="photos-empty hidden" id="photos-empty"></div></section>
+  <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt=""><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
+  <section id="screen-problem-upload" class="screen">
+    <button type="button" class="back-link" id="btn-back-problem-upload">← Back to home</button>
+    <h1>Report a problem</h1>
+    <div class="quiz-feedback" id="problem-upload-fb"></div>
+    <div id="problem-upload-wrap"></div>
+  </section>
+  <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 · Seat $49.</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Open payment link</button></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
+  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button></div><div class="card coach-media-panel"><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
+  <section id="screen-contact" class="screen"><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p></div></section>
+  <div id="xp-modal" class="modal hidden" role="dialog"><div class="modal-card"><div class="modal-emoji" id="xp-modal-emoji">🎉</div><h2 id="xp-modal-title">Drill complete!</h2><p id="xp-modal-msg">+25 XP</p><button type="button" id="xp-modal-ok">Nice</button></div></div>
+  <nav class="bottom-nav hidden" id="bottom-nav">
+    <button type="button" data-nav="home">Home</button>
+    <button type="button" data-nav="photos">Photos</button>
+    <button type="button" data-nav="jobs">Jobs</button>
+    <button type="button" data-nav="practice-hub">Practice</button>
+    <button type="button" data-nav="coach">Coach</button>
+  </nav>
+  <script>
+    (function () {
+      var note = document.getElementById("install-note");
+      var btn = document.getElementById("install-btn");
+      var copy = document.getElementById("install-copy");
+      var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone;
+      if (standalone && note) { note.hidden = true; }
+      else if (copy) {
+        var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        copy.textContent = ios
+          ? "iPhone: tap Share, then Add to Home Screen. It opens full screen. Not in the App Store."
+          : "Android: tap Install, or the Chrome menu, then Add to Home screen. Not in the Play Store.";
+      }
+      var deferred = null;
+      window.addEventListener("beforeinstallprompt", function (e) {
+        e.preventDefault();
+        deferred = e;
+        if (btn) btn.hidden = false;
+      });
+      if (btn) btn.addEventListener("click", function () {
+        if (!deferred) return;
+        deferred.prompt();
+        deferred = null;
+        btn.hidden = true;
+      });
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      }
+    })();
+  </script>
   <script src="js/plan-fix.js?v=325"></script>
   <script src="js/config.js?v=324"></script>
   <script src="js/data.js?v=304"></script>
