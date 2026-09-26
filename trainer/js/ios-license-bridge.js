@@ -1,8 +1,9 @@
-/* Mirror paid license to a first-party cookie so the Home Screen app can restore Pack. */
+/* Mirror paid license, and show the one code that unlocks the Home Screen icon. */
 (function () {
   var COOKIE = "wrap911_lic";
   var LS = "wrap911_license";
   var OWNER = "wrap911_owner";
+  var SEAT = "RIVET-149";
 
   function packLicense() {
     var now = Date.now();
@@ -82,7 +83,29 @@
     try { if (core.renderHome) core.renderHome(); } catch (e2) {}
   }
 
-  window.WRAP911_LICENSE_BRIDGE = { save: save, restore: restore, valid: valid, packLicense: packLicense };
+  function standalone() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  }
+
+  function showSeatCard() {
+    var home = document.getElementById("screen-home");
+    if (!home || home.querySelector(".seat-carry")) return;
+    var paid = !!restore();
+    var box = document.createElement("div");
+    box.className = "passion-note seat-carry";
+    if (!paid) {
+      box.innerHTML = "<strong>Icon says Free</strong><p>Open Unlock and type the Home Screen code from the Safari tab that already says Pack. Then tap Unlock.</p>";
+    } else if (!standalone()) {
+      box.innerHTML = "<strong>Home Screen code</strong><p>If the icon says Free, open it and type <b>" + SEAT + "</b> in Unlock. Do not copy the address bar.</p>";
+    } else {
+      return;
+    }
+    var lead = home.querySelector(".lead");
+    if (lead && lead.parentNode) lead.parentNode.insertBefore(box, lead.nextSibling);
+    else home.insertBefore(box, home.firstChild);
+  }
+
+  window.WRAP911_LICENSE_BRIDGE = { save: save, restore: restore, valid: valid, packLicense: packLicense, seatCode: SEAT };
 
   var origSet = localStorage.setItem.bind(localStorage);
   var origRemove = localStorage.removeItem.bind(localStorage);
@@ -100,9 +123,40 @@
     };
   } catch (e3) {}
 
+  document.addEventListener("click", function (e) {
+    var btn = e.target && e.target.closest && e.target.closest("#btn-unlock");
+    if (!btn) return;
+    var inp = document.getElementById("unlock-code");
+    var code = String((inp && inp.value) || "").trim().toUpperCase().replace(/\s+/g, "");
+    if (code !== SEAT) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    save(packLicense());
+    var fb = document.getElementById("unlock-feedback");
+    if (fb) {
+      fb.className = "quiz-feedback ok";
+      fb.textContent = "Pack is on this icon. Full trainer is open.";
+    }
+    refreshUi();
+    setTimeout(function () { location.reload(); }, 400);
+  }, true);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
+    var inp = document.getElementById("unlock-code");
+    if (!inp || e.target !== inp) return;
+    var code = String(inp.value || "").trim().toUpperCase().replace(/\s+/g, "");
+    if (code !== SEAT) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    save(packLicense());
+    setTimeout(function () { location.reload(); }, 400);
+  }, true);
+
   function boot() {
     var lic = restore();
     if (lic) refreshUi();
+    showSeatCard();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
