@@ -41,14 +41,14 @@ window.WRAP911_DATA = {
       lesson: [
         "Adhesive fails on residue. Commercial sides under awnings collect soap, rain runoff, and migrating silicone. Vertical streaks and oily slick spots are bond killers—lay 3M, Avery Dennison, or Arlon wrap over that and you are scheduling a peel.",
         "Work top to bottom. Degrease the face, then detail-clean dirt traps: brackets, mounts, rivet bases, wheel-well lips, and light pockets. Gravity feeds contamination down tall panels.",
-        "Finish with a proper two-cloth 70% IPA wipe—wet cloth, then dry cloth—until microfiber comes away clean. If IPA beads or feels oily near awning rails or silicone seals, stop and address silicone with an appropriate remover before layout.",
+        "Finish with a proper two-cloth IPA wipe (mix per the film maker's cleaning guide)—wet cloth, then dry cloth—until microfiber comes away clean. If IPA beads or feels oily near awning rails or silicone seals, stop and address silicone with an appropriate remover before layout.",
         "Do not apply film until the surface is dry and residue-free. Prep is not glamorous, but every glossy reflection will show trapped residue as silvering or lift once the film is down. Follow each film maker’s TDS for approved cleaners on that product."
       ],
       quiz: [
         {
           q: "What is the most immediate risk from visible runoff streaks under an awning?",
           choices: [
-            "The paint is too fresh and needs a mandatory 30-day outgas wait.",
+            "The paint is too fresh, so the job must wait no matter what.",
             "Chemical or water residue that will block adhesive bond.",
             "The streaks mean you must switch from cast to calendared film."
           ],
@@ -57,7 +57,7 @@ window.WRAP911_DATA = {
         {
           q: "What is the preferred final wipe sequence before layout?",
           choices: [
-            "Two-cloth 70% IPA: wet cloth, then dry cloth, until the wipe is clean.",
+            "Two-cloth IPA wipe (mix per the film maker's guide): wet cloth, then dry cloth, until the wipe is clean.",
             "A single damp shop rag with dishwashing soap left to air-dry.",
             "Spray WD-40 lightly so the squeegee glides easier."
           ],
@@ -153,7 +153,7 @@ window.WRAP911_DATA = {
         {
           q: "What temperature should you use when the TDS is not memorized?",
           choices: [
-            "Always 250°F regardless of brand.",
+            "Use one heat setting for every brand.",
             "Consult the film maker’s TDS for that exact product—never invent a number.",
             "Hold the torch until the film looks wet and glossy."
           ],
@@ -872,7 +872,7 @@ window.WRAP911_DATA.drills = {
       choices: [
         "Treat it as a silver F-150 with green bottle film and a torch.",
         "Confirm the white hexes match on the door and the glass. The open hood means you are still in the bay.",
-        "Set the film to 250 degrees because every graphic uses that number."
+        "Use the same heat setting on every graphic because it worked last time."
       ],
       answer: 1,
       feedback: {
@@ -1030,7 +1030,7 @@ window.WRAP911_DATA.drills = {
 
   flashcards: [
     { id: "fc01", moduleId: "safety", front: "Ladder rule of thumb", back: "Level ground, locked spreaders, three points of contact. Never stand on the top cap. Move the ladder — don’t overreach." },
-    { id: "fc02", moduleId: "prep", front: "Final wipe before layout", back: "Two-cloth 70% IPA: wet cloth, then dry cloth, until the microfiber comes away clean." },
+    { id: "fc02", moduleId: "prep", front: "Final wipe before layout", back: "Two-cloth IPA wipe (mix per the film maker's guide): wet cloth, then dry cloth, until the microfiber comes away clean." },
     { id: "fc03", moduleId: "film-types", front: "WRAP 911 brand families", back: "3M, Avery Dennison, and Arlon only. Read the TDS for the exact product — no invented specs." },
     { id: "fc04", moduleId: "squeegee", front: "Deep corrugated channels", back: "Glass highs first, walk fingers out, then foam roller / soft pad into each recess — don’t hard-squeegee tunnels flat." },
     { id: "fc05", moduleId: "heat", front: "What temperature?", back: "Consult the film maker’s TDS for that exact 3M, Avery Dennison, or Arlon product. Never invent a number." },

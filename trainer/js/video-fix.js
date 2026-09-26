@@ -148,9 +148,16 @@
 
   function isPaid() {
     try {
+      if (window.WRAP911_GATE && window.WRAP911_GATE.paid) return !!window.WRAP911_GATE.paid();
       var lic = JSON.parse(localStorage.getItem("wrap911_license") || "null");
-      return !!(lic && !lic.expired && (lic.plan === "pro" || lic.plan === "free" || lic.plan === "trial" || lic.sku === "seat" || lic.sku === "pack"));
+      if (!lic || lic.expired) return false;
+      if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
+      return lic.plan === "pro" || lic.plan === "free" || lic.plan === "trial" || lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field";
     } catch (e) { return false; }
+  }
+  function freeMax() {
+    var c = window.WRAP911_CONFIG || {};
+    return c.freeVideoSamples || 8;
   }
 
   function bucket(cat) {
@@ -192,27 +199,31 @@
       if (bi < 0) bi = 99;
       return ai - bi;
     });
+    /* Free look = catalog items flagged access:"free" (8 samples). Pack/Seat/HOME = everything playable. */
     if (!paid) {
       var free = [];
       for (i = 0; i < rows.length; i++) {
-        if (FIRST.indexOf(String(rows[i].src || "")) >= 0) free.push(rows[i]);
+        if (rows[i].access === "free") free.push(rows[i]);
       }
-      rows = free.length ? free : rows.slice(0, 2);
+      if (!free.length) {
+        for (i = 0; i < rows.length; i++) if (FIRST.indexOf(String(rows[i].src || "")) >= 0) free.push(rows[i]);
+      }
+      rows = free.slice(0, freeMax());
     }
     var html = "";
     for (i = 0; i < rows.length; i++) {
       item = rows[i];
       src = String(item.src || "").replace(/^\.\//, "");
       var still = item.still || "";
-      html += '<article class="card video-card">' +
+      html += '<article class="card video-card" data-access="' + (item.access === "free" ? "free" : "paid") + '">' +
         '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(still) + '">' +
         (still ? '<img class="video-still" alt="" src="' + esc(still) + '">' : '') +
         '<button type="button" class="video-play-btn">Play clip</button></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
-        '<div class="card-sub">' + esc(bucket(item.category)) + '</div></article>';
+        '<div class="card-sub">' + esc(bucket(item.category)) + (!paid && item.access === "free" ? ' · Free sample' : '') + '</div></article>';
     }
     if (!paid) {
-      html += '<div class="card tap teaser-paywall"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 · Seat $49</div></div>';
+      html += '<div class="card tap teaser-paywall" role="button" tabindex="0"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div></div>';
     }
     if (!html) html = '<p class="muted">No clips in this category.</p>';
     list.innerHTML = html;

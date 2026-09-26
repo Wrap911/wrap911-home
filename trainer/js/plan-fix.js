@@ -2,8 +2,13 @@
 (function () {
   var KEY = "wrap911_license";
   var PENDING = "wrap911_pending_plan";
-  var SEAT_URL = "https://buy.stripe.com/eVq8wQ1EDc9643nanD9ws04";
-  var PACK_URL = "https://buy.stripe.com/3cI6oI3ML8WU2ZjdzP9ws03";
+  /* Audit 2026-09-26: links come from config.js. In stripeTestMode only test-mode links are used, so the
+     sandbox can never send a real card to live checkout. */
+  var CFG = window.WRAP911_CONFIG || {};
+  var TEST = CFG.stripeTestMode === true;
+  var SEAT_URL = TEST ? (CFG.stripeTestSeatLink || "") : (CFG.stripeSeatLink || "https://buy.stripe.com/eVq8wQ1EDc9643nanD9ws04");
+  var PACK_URL = TEST ? (CFG.stripeTestPackLink || "") : (CFG.stripePaymentLink || "https://buy.stripe.com/3cI6oI3ML8WU2ZjdzP9ws03");
+  var FIELD_URL = CFG.fieldSkuLive ? (TEST ? (CFG.stripeTestFieldLink || "") : (CFG.stripeFieldLink || "")) : "";
   var YEAR = 365 * 86400000;
 
   function pending() {
@@ -63,7 +68,7 @@
       code: "STRIPE",
       plan: "pro",
       unlockedAt: now,
-      expiresAt: now + YEAR,
+      expiresAt: now + (sku === "field" ? 31 * 86400000 : YEAR),
       source: "stripe-payment-link",
       sku: sku,
       seats: sku === "pack" ? 5 : 1,
@@ -91,10 +96,16 @@
   var params;
   try { params = new URLSearchParams(window.location.search); } catch (e) { params = new URLSearchParams(); }
   var buy = (params.get("buy") || "").toLowerCase();
-  if (buy === "seat" || buy === "pack") {
+  if (buy === "seat" || buy === "pack" || buy === "field") {
     remember(buy);
-    window.location.replace(buy === "pack" ? PACK_URL : SEAT_URL);
-    return;
+    var target = buy === "pack" ? PACK_URL : (buy === "field" ? FIELD_URL : SEAT_URL);
+    if (target) {
+      window.location.replace(target);
+      return;
+    }
+    /* Sandbox with no test link: stay here and say so. */
+    window.WRAP911_SANDBOX_NO_CHECKOUT = buy;
+    strip("buy");
   }
 
   function applyReturn() {
@@ -106,15 +117,15 @@
     var redirectStatus = (q.get("redirect_status") || "").toLowerCase();
     var shopFlag = q.get("shop") === "1" || q.get("owner") === "1";
 
+    /* Audit 2026-09-26: ?shop=1 / ?owner=1 used to write a full Pack license for anyone. Now they are just removed. */
     if (shopFlag) {
-      write("pack", "");
-      clearPending();
       strip("shop");
       strip("owner");
     }
 
-    if ((sessionId || redirectStatus === "succeeded") && !token) {
-      var sku = (plan === "seat" || plan === "pack") ? plan : defaultSku();
+    /* Honor system (no server check yet): only a Stripe-shaped id counts. Fake ?session_id=1 does nothing. */
+    if (/^cs_(live|test)_[A-Za-z0-9]{10,}$/.test(sessionId) && !token) {
+      var sku = (plan === "seat" || plan === "pack" || plan === "field") ? plan : defaultSku();
       write(sku, "");
       clearPending();
       missed = false;
@@ -126,7 +137,7 @@
       clearPending();
       strip("license");
     } else if (token === "STRIPE" || token.indexOf("STRIPE-") === 0) {
-      var sku2 = (plan === "seat" || plan === "pack") ? plan : defaultSku();
+      var sku2 = (plan === "seat" || plan === "pack" || plan === "field") ? plan : defaultSku();
       write(sku2, "");
       clearPending();
       strip("license");
@@ -150,12 +161,12 @@
 
   function paint() {
     var lic = read();
-    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack")) return;
-    var badge = lic.sku === "pack" ? "PACK" : "SEAT";
+    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack" && lic.sku !== "field")) return;
+    var badge = lic.sku === "pack" ? "PACK" : (lic.sku === "field" ? "FIELD" : "SEAT");
     var left = daysLeft(lic);
     var detail = lic.sku === "pack"
       ? "Shop pack · 5 phones · " + left
-      : "1 seat · this phone · " + left;
+      : (lic.sku === "field" ? "Field monthly · this phone · " + left : "1 seat · this phone · " + left);
     var chip = document.getElementById("plan-chip");
     if (chip) {
       chip.textContent = badge;
@@ -180,6 +191,8 @@
     if (lic.sku === "pack") {
       var link = crewLink(lic);
       card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. Send this link to the other four. Each phone that opens it gets the same 12 months.</p><p><a href=\"" + link + "\">" + link + "</a></p>";
+    } else if (lic.sku === "field") {
+      card.innerHTML = "<strong>Field monthly</strong><p>This phone is unlocked month to month. A shop pack is $149 one-time for five phones, 12 months.</p>";
     } else {
       card.innerHTML = "<strong>1 seat</strong><p>This phone is unlocked for 12 months. It does not cover a second phone. A shop pack is $149 for five.</p>";
     }
@@ -198,7 +211,12 @@
       else home.appendChild(card);
     }
     var lic = read();
-    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack")) return;
+    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field")) return;
+    if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
+    if (window.WRAP911_SANDBOX_NO_CHECKOUT) {
+      card.innerHTML = "<strong>Sandbox: checkout is off</strong><p>This is the local test copy. Add a Stripe test-mode link in config.js (stripeTestPackLink / stripeTestSeatLink) to test checkout. No live charge was started.</p>";
+      return;
+    }
     if (missed) {
       card.innerHTML = "<strong>Checkout did not stick to this phone</strong><p>Start again from the buy button on this same phone. A shared return link does not open the trainer by itself.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
       return;

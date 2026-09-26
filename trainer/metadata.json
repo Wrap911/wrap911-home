@@ -1,0 +1,3735 @@
+{
+ "app": {
+  "name": "WRAP 911 Trainer",
+  "shortName": "WRAP 911",
+  "version": "2.6.0",
+  "stripeTestMode": false,
+  "generated": "2026-09-26",
+  "canonical": "https://wrap911.github.io/wrap911-home/trainer/",
+  "salesPage": "https://wrap911.github.io/wrap911-home/",
+  "operator": "Gerardo (Gerry), commercial vinyl wrap installer, Worcester MA \u2014 8 years. Installer, not a shop owner.",
+  "notAffiliatedWith": [
+   "Wrap Technologies",
+   "Wrap Campus",
+   "The Wrap Institute"
+  ],
+  "certifications": "None. Internal shop training only."
+ },
+ "offer": [
+  {
+   "sku": "W911-PACK",
+   "price": 149,
+   "currency": "USD",
+   "billing": "one-time",
+   "seats": 5,
+   "termMonths": 12,
+   "default": true,
+   "buyParam": "?buy=pack"
+  },
+  {
+   "sku": "W911-SEAT",
+   "price": 49,
+   "currency": "USD",
+   "billing": "one-time",
+   "seats": 1,
+   "termMonths": 12,
+   "buyParam": "?buy=seat"
+  },
+  {
+   "sku": "W911-FIELD",
+   "price": 29,
+   "currency": "USD",
+   "billing": "monthly",
+   "seats": 1,
+   "buyParam": "?buy=field",
+   "note": "Sold in the trainer only (fieldSkuLive). Not shown on the sales page or its JSON-LD (operator, 2026-09-26)."
+  }
+ ],
+ "unlock": {
+  "home": {
+   "code": "WRAP911-HOME",
+   "term": "forever",
+   "who": "operator"
+  },
+  "buyer": {
+   "param": "?license=STRIPE",
+   "termDays": 365,
+   "note": "Stripe success return adds ?license=STRIPE. Honor system until the license Worker ships."
+  },
+  "freeLook": {
+   "lessons": [
+    "bt-rivet-mastery",
+    "van-deep-recess",
+    "sf-wet-install"
+   ],
+   "videos": 8,
+   "photos": 14
+  }
+ },
+ "brands": [
+  "3M",
+  "Avery Dennison",
+  "Arlon"
+ ],
+ "rules": [
+  "Follow the film maker's TDS",
+  "No invented temperatures or heat numbers",
+  "No certification claims"
+ ],
+ "modules": [
+  {
+   "id": "safety",
+   "title": "Safety",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "prep",
+   "title": "Surface Prep",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "film-types",
+   "title": "Film Types",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "squeegee",
+   "title": "Squeegee & Soft Tools",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "heat",
+   "title": "Heat Control",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "cutting",
+   "title": "Cutting & Edge Finish",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "seams-rivets",
+   "title": "Seams & Rivets",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  },
+  {
+   "id": "post-heat",
+   "title": "Post-Heat & Lock-Down",
+   "category": "module",
+   "access": "paid",
+   "paragraphs": 4,
+   "quiz": 2
+  }
+ ],
+ "lessons": [
+  {
+   "id": "bt-rivet-mastery",
+   "title": "Rivet Mastery",
+   "category": "box-truck",
+   "access": "free",
+   "goal": "One rivet row seated head by head. No tents or silvering after cool-down.",
+   "timeBox": "30 min drill: one rivet row on a scrap panel (starting target \u2014 set your own)",
+   "tools": 5,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "box-truck",
+    "practice": "prac-rivet",
+    "badge": "badge-bt-rivet",
+    "video": "v-mid-6788"
+   }
+  },
+  {
+   "id": "bt-oversized-panels",
+   "title": "Oversized Panel Handling",
+   "category": "box-truck",
+   "access": "paid",
+   "goal": "Hang one tall panel level with two people. Nobody stretches off a ladder.",
+   "timeBox": "45 min, two techs (starting target \u2014 set your own)",
+   "tools": 5,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "box-truck",
+    "practice": "prac-panel-align",
+    "badge": "badge-bt-panels",
+    "video": "v-mid-8962"
+   }
+  },
+  {
+   "id": "bt-rollup-door",
+   "title": "Class C RV Panel Walkaround",
+   "category": "rv-bus",
+   "access": "paid",
+   "goal": "Walk a finished RV and log every lift, gap, and stripe break before it leaves.",
+   "timeBox": "20 min walkaround (starting target \u2014 set your own)",
+   "tools": 5,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/architectural.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "rv-bus",
+    "practice": "prac-seam",
+    "badge": "badge-bt-rollup",
+    "video": "v-mid-1039"
+   }
+  },
+  {
+   "id": "bt-swing-door",
+   "title": "Swing Door Workflow",
+   "category": "box-truck",
+   "access": "paid",
+   "goal": "Graphic lines up across both doors. Hinge cuts are clean. Doors slam without lift.",
+   "timeBox": "45 min per door pair (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
+    "local": true,
+    "live": false
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "box-truck",
+    "practice": "prac-seam",
+    "badge": "badge-bt-swing",
+    "video": "v-named-architectural-wrap-cutting-a-1otK4E"
+   }
+  },
+  {
+   "id": "bt-prep-cleaning",
+   "title": "Prep & Cleaning \u2014 Dirt Traps",
+   "category": "rv-bus",
+   "access": "paid",
+   "goal": "A fresh white towel comes back clean. No residue at rivets, seals, or hardware.",
+   "timeBox": "20\u201330 min per side (starting target \u2014 set your own)",
+   "tools": 5,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "rv-bus",
+    "practice": "prac-recess",
+    "badge": "badge-bt-prep",
+    "video": "v-mid-7694"
+   }
+  },
+  {
+   "id": "van-deep-recess",
+   "title": "Deep Recess / Liftgate Tuck",
+   "category": "van",
+   "access": "free",
+   "goal": "Liftgate recess fed and seated. No bridge over the plate pocket.",
+   "timeBox": "40 min per liftgate (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "van",
+    "practice": "prac-recess",
+    "badge": "badge-van-recess",
+    "video": "v-mid-0020"
+   }
+  },
+  {
+   "id": "van-sliding-door",
+   "title": "Sliding Door Alignment",
+   "category": "van",
+   "access": "paid",
+   "goal": "Bands line up across the slider, door shut and open. Nothing binds in the track.",
+   "timeBox": "45 min per side (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "van",
+    "practice": "prac-panel-align",
+    "badge": "badge-van-slide",
+    "video": "v-mid-697405"
+   }
+  },
+  {
+   "id": "van-roof-safety",
+   "title": "RV/Bus Roof & Ladder Safety",
+   "category": "rv-bus",
+   "access": "paid",
+   "goal": "Tall work done from a locked platform, clear floor, two people. No top-cap standing.",
+   "timeBox": "10 min setup check before every high hang (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "rv-bus",
+    "practice": "prac-panel-align",
+    "badge": "badge-van-roof",
+    "video": "v-mid-8962"
+   }
+  },
+  {
+   "id": "van-rear-hinge",
+   "title": "Rear Hinge Mapping",
+   "category": "van",
+   "access": "paid",
+   "goal": "Rear doors registered before the full liner comes off. Hinge cuts planned, not torn.",
+   "timeBox": "45 min per door pair (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "van",
+    "practice": "prac-seam",
+    "badge": "badge-van-hinge",
+    "video": "v-mid-3886"
+   }
+  },
+  {
+   "id": "sf-wet-install",
+   "title": "Wet Soft-Seat Recess",
+   "category": "storefront",
+   "access": "free",
+   "goal": "Recess soft-seated wet. No trapped fluid, grit, or corner puddles.",
+   "timeBox": "30 min per recess (starting target \u2014 set your own)",
+   "tools": 5,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
+    "local": true,
+    "live": false
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "storefront",
+    "practice": "prac-recess",
+    "badge": "badge-sf-wet",
+    "video": "v-mid-7696"
+   }
+  },
+  {
+   "id": "sf-perf-film",
+   "title": "Architectural Panel Hang",
+   "category": "storefront",
+   "access": "paid",
+   "goal": "Pattern lines match across panels. Returns seated before any trim.",
+   "timeBox": "45 min per panel (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "storefront",
+    "practice": "prac-seam",
+    "badge": "badge-sf-perf",
+    "video": "v-named-architectural-wall-wrap-18yx_q"
+   }
+  },
+  {
+   "id": "sf-multipane",
+   "title": "Cubby / Recess Registration",
+   "category": "storefront",
+   "access": "paid",
+   "goal": "Every bay matches the next: same reveal, same edge, same baseline.",
+   "timeBox": "15 min survey, then 20 min per bay (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/architectural/cubbies-compare-magenta-vs-white-liners.jpg",
+    "local": true,
+    "live": false
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "storefront",
+    "practice": "prac-panel-align",
+    "badge": "badge-sf-multipane",
+    "video": "v-mid-7701"
+   }
+  },
+  {
+   "id": "sf-weather",
+   "title": "Corner Trim / Edge Finish",
+   "category": "storefront",
+   "access": "paid",
+   "goal": "Clean knife line in the crease. No chewed edge. No lift after cool-down.",
+   "timeBox": "15 min drill: five corners (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "storefront",
+    "practice": "prac-recess",
+    "badge": "badge-sf-weather",
+    "video": "v-mid-7699"
+   }
+  },
+  {
+   "id": "tr-rivet-rows",
+   "title": "Trailer Rivet Rows",
+   "category": "trailer",
+   "access": "paid",
+   "goal": "Rivet rows seated after alignment. No scorched transfer tape. No tents.",
+   "timeBox": "30 min per row section (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "trailer",
+    "practice": "prac-rivet",
+    "badge": "badge-tr-rivets",
+    "video": "v-mid-6788"
+   }
+  },
+  {
+   "id": "tr-roofline",
+   "title": "Trailer Tall-Side Roofline",
+   "category": "trailer",
+   "access": "paid",
+   "goal": "Top edge runs straight the full length. Seams shed water.",
+   "timeBox": "20 min layout before the hang (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/edge-detail.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "trailer",
+    "practice": "prac-panel-align",
+    "badge": "badge-tr-roof",
+    "video": "v-mid-8971"
+   }
+  },
+  {
+   "id": "tr-door-hinge",
+   "title": "Door Hinge Cutting",
+   "category": "trailer",
+   "access": "paid",
+   "goal": "Hinge cuts land in the void. No paint scores. Door cycles clean.",
+   "timeBox": "20 min per hinge set (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "trailer",
+    "practice": "prac-seam",
+    "badge": "badge-tr-hinge",
+    "video": "v-mid-8974"
+   }
+  },
+  {
+   "id": "tr-panel-seg",
+   "title": "Panel Segmentation",
+   "category": "trailer",
+   "access": "paid",
+   "goal": "Segments line up. No logo cut through a seam. QC between every segment.",
+   "timeBox": "15 min planning, then QC after each segment (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "../assets/sales/trailer-rivets.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "trailer",
+    "practice": "prac-panel-align",
+    "badge": "badge-tr-seg",
+    "video": "v-mid-6790"
+   }
+  },
+  {
+   "id": "fl-alignment",
+   "title": "Fleet Alignment Rules",
+   "category": "fleet",
+   "access": "paid",
+   "goal": "Unit 2 matches unit 1 on your fleet sheet. Photo proof.",
+   "timeBox": "15 min measure card per unit (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "fleet",
+    "practice": "prac-panel-align",
+    "badge": "badge-fl-align",
+    "video": "v-named-graphic-installation-1-1gNZhI"
+   }
+  },
+  {
+   "id": "fl-multi-vehicle",
+   "title": "Multi-Vehicle Workflow",
+   "category": "fleet",
+   "access": "paid",
+   "goal": "Every panel labeled by unit. Nothing leaves without QC sign-off.",
+   "timeBox": "10 min intake per vehicle (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/qc/corngraphic.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "fleet",
+    "practice": "prac-panel-align",
+    "badge": "badge-fl-multi",
+    "video": "v-mid-697405"
+   }
+  },
+  {
+   "id": "fl-qc",
+   "title": "Fleet Quality Control",
+   "category": "fleet",
+   "access": "paid",
+   "goal": "Same checklist, same photos, every unit. Lead signs off.",
+   "timeBox": "15 min per unit (starting target \u2014 set your own)",
+   "tools": 4,
+   "steps": 5,
+   "quiz": 3,
+   "media": {
+    "path": "media/videos/qc/corngraphic.jpg",
+    "local": true,
+    "live": true
+   },
+   "failPhoto": null,
+   "passPhoto": null,
+   "missing": [
+    "failPhoto",
+    "passPhoto"
+   ],
+   "related": {
+    "vehicle": "fleet",
+    "practice": "prac-rivet",
+    "badge": "badge-fl-qc",
+    "video": "v-named-corngraphic-1_ycBu"
+   }
+  }
+ ],
+ "workflows": [
+  {
+   "id": "box-truck",
+   "title": "Box Truck",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Rivet fields, oversized panels, roll-up and swing doors.",
+   "steps": [
+    {
+     "id": "btw-prep",
+     "title": "Prep & Cleaning"
+    },
+    {
+     "id": "btw-measure",
+     "title": "Panel Measurement"
+    },
+    {
+     "id": "btw-side",
+     "title": "Side Panel Install"
+    },
+    {
+     "id": "btw-rivets",
+     "title": "Rivet Row Install"
+    },
+    {
+     "id": "btw-rear",
+     "title": "Rear Door Workflow"
+    },
+    {
+     "id": "btw-qc",
+     "title": "Post-Heat & QC"
+    }
+   ],
+   "lessons": [
+    "bt-rivet-mastery",
+    "bt-oversized-panels",
+    "bt-swing-door"
+   ]
+  },
+  {
+   "id": "van",
+   "title": "Van",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Deep recesses, sliding doors, roof safety, rear hinges.",
+   "steps": [
+    {
+     "id": "vw-recess",
+     "title": "Deep Recess Heating"
+    },
+    {
+     "id": "vw-slide",
+     "title": "Sliding Door Alignment"
+    },
+    {
+     "id": "vw-roof",
+     "title": "Roof Wrap Safety"
+    },
+    {
+     "id": "vw-hinge",
+     "title": "Rear Hinge Workflow"
+    }
+   ],
+   "lessons": [
+    "van-deep-recess",
+    "van-sliding-door",
+    "van-rear-hinge"
+   ]
+  },
+  {
+   "id": "trailer",
+   "title": "Trailer",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Rivet rows, roofline, door hinges, panel segmentation.",
+   "steps": [
+    {
+     "id": "tw-rivets",
+     "title": "Rivet Row Workflow"
+    },
+    {
+     "id": "tw-roof",
+     "title": "Roofline Alignment"
+    },
+    {
+     "id": "tw-hinge",
+     "title": "Door Hinge Workflow"
+    },
+    {
+     "id": "tw-seg",
+     "title": "Panel Segmentation"
+    }
+   ],
+   "lessons": [
+    "tr-rivet-rows",
+    "tr-roofline",
+    "tr-door-hinge",
+    "tr-panel-seg"
+   ]
+  },
+  {
+   "id": "storefront",
+   "title": "Storefront/Architectural",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Wet install, architectural panels, multi-pane, interior wraps.",
+   "steps": [
+    {
+     "id": "sw-wet",
+     "title": "Wet Soft-Seat Recess"
+    },
+    {
+     "id": "sw-pane",
+     "title": "Cubby / Recess Registration"
+    },
+    {
+     "id": "sw-perf",
+     "title": "Architectural Panel Hang"
+    },
+    {
+     "id": "sw-weather",
+     "title": "Corner Trim / Edge Finish"
+    }
+   ],
+   "lessons": [
+    "sf-wet-install",
+    "sf-perf-film",
+    "sf-multipane",
+    "sf-weather"
+   ]
+  },
+  {
+   "id": "rv-bus",
+   "title": "RV/Bus",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Tall sides, awnings, ladders, large-panel hang.",
+   "steps": [
+    {
+     "id": "rw-prep",
+     "title": "IPA wipe & strip staging"
+    },
+    {
+     "id": "rw-ladder",
+     "title": "Height & ladder safety"
+    },
+    {
+     "id": "rw-side",
+     "title": "Tall side hang"
+    },
+    {
+     "id": "rw-rear",
+     "title": "Rear panel & recesses"
+    }
+   ],
+   "lessons": [
+    "bt-rollup-door",
+    "bt-prep-cleaning",
+    "van-roof-safety"
+   ]
+  },
+  {
+   "id": "fleet",
+   "title": "Fleet",
+   "category": "workflow",
+   "access": "paid",
+   "summary": "Pickups, SUVs, multi-vehicle alignment & QC.",
+   "steps": [
+    {
+     "id": "fw-brand",
+     "title": "Brand Alignment"
+    },
+    {
+     "id": "fw-multi",
+     "title": "Multi-Vehicle Workflow"
+    },
+    {
+     "id": "fw-qc",
+     "title": "Fleet QC"
+    }
+   ],
+   "lessons": [
+    "fl-alignment",
+    "fl-multi-vehicle",
+    "fl-qc"
+   ]
+  }
+ ],
+ "practice": [
+  {
+   "id": "prac-rivet",
+   "title": "Rivet Practice",
+   "category": "practice",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
+    "local": true,
+    "live": true
+   },
+   "checklist": 5,
+   "quiz": 3,
+   "lessons": [
+    "bt-rivet-mastery",
+    "tr-rivet-rows",
+    "fl-qc"
+   ]
+  },
+  {
+   "id": "prac-seam",
+   "title": "Seam Cutting",
+   "category": "practice",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "checklist": 5,
+   "quiz": 3,
+   "lessons": [
+    "bt-rollup-door",
+    "bt-swing-door",
+    "van-rear-hinge",
+    "sf-perf-film",
+    "tr-door-hinge"
+   ]
+  },
+  {
+   "id": "prac-panel-align",
+   "title": "Panel Alignment",
+   "category": "practice",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.jpg",
+    "local": true,
+    "live": true
+   },
+   "checklist": 5,
+   "quiz": 3,
+   "lessons": [
+    "bt-oversized-panels",
+    "van-sliding-door",
+    "van-roof-safety",
+    "sf-multipane",
+    "tr-roofline",
+    "tr-panel-seg",
+    "fl-alignment",
+    "fl-multi-vehicle"
+   ]
+  },
+  {
+   "id": "prac-recess",
+   "title": "Recess Practice",
+   "category": "practice",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
+    "local": true,
+    "live": false
+   },
+   "checklist": 5,
+   "quiz": 3,
+   "lessons": [
+    "bt-prep-cleaning",
+    "van-deep-recess",
+    "sf-wet-install",
+    "sf-weather"
+   ]
+  }
+ ],
+ "photoLessons": [
+  {
+   "id": "pl01",
+   "title": "Escalade front fender \u2014 heat gun on the floor",
+   "category": "Vehicles",
+   "module": "heat",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-wrap-caddy-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl02",
+   "title": "Escalade door and fender \u2014 smooth gloss, no rivets",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap3.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl03",
+   "title": "Escalade rear door \u2014 handle pocket and key",
+   "category": "Vehicles",
+   "module": "cutting",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl04",
+   "title": "Escalade side \u2014 white hex graphic, hood open",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap5.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl05",
+   "title": "Satin Jeep \u2014 hood vents and chrome grille",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/satin-wrap-cherokee.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl06",
+   "title": "Just Ice Tea graphic on the bench",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl07",
+   "title": "Squeegee on grey wood-grain wall film",
+   "category": "Interior",
+   "module": "squeegee",
+   "access": "free",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl08",
+   "title": "Hand lifts a wood-grain seam",
+   "category": "Interior",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl09",
+   "title": "Long wood-grain wall down the hall",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl10",
+   "title": "Crew-cab pickup \u2014 sage bottle print, liner hanging",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/pickup-panels.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl11",
+   "title": "White SUV rear hatch \u2014 hands on the chrome bar",
+   "category": "Vehicles",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl12",
+   "title": "Escalade headlight pocket",
+   "category": "Vehicles",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/edge-detail.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl13",
+   "title": "Office wallpaper wrap \u2014 conference wall finish",
+   "category": "Storefront/Architectural",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/office-wallpaper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl14",
+   "title": "Measuring bleed on wood-grain architectural film",
+   "category": "Storefront/Architectural",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/measuring-bleed2.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl15",
+   "title": "Half-moon relief on wood-grain wrap",
+   "category": "Storefront/Architectural",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/demonstration-of-a-half-moon.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl16",
+   "title": "Cabinet interior sides \u2014 pink corner glass",
+   "category": "Storefront/Architectural",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/cabinet-pic-sides.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl17",
+   "title": "Cabinet measure \u2014 box height before cut",
+   "category": "Storefront/Architectural",
+   "module": "prep",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/cabinet-measure.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl18",
+   "title": "Escalade headlight \u2014 film seated in the lamp gap",
+   "category": "Fleet",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl19",
+   "title": "Pink caddy bumper \u2014 grille and sensor detail",
+   "category": "Fleet",
+   "module": "commercial-sides",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl20",
+   "title": "Front bumper wrap caddy \u2014 lower intake & tools",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl21",
+   "title": "Black enclosed trailer \u2014 white slash down, nose still taped",
+   "category": "Vehicles",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/trailer-spot-graphics.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pl22",
+   "title": "Kiosk box \u2014 multi-panel face with cutouts",
+   "category": "Storefront/Architectural",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/kiosk-box.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-rivet-tent",
+   "title": "Problem: reading the wrong job \u2014 Solution: name the trailer in frame",
+   "category": "Problems",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/trailer-rivets.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-short-lamp",
+   "title": "Problem: short lamp trim \u2014 Solution: 1\u20132 mm tuck",
+   "category": "Problems",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-sensor-dirt",
+   "title": "Problem: lift at sensor / grille \u2014 Solution: clean, relief, no stretch",
+   "category": "Problems",
+   "module": "prep",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-bridge-intake",
+   "title": "Problem: bridged intake \u2014 Solution: feed the recess",
+   "category": "Problems",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-fingers-wall",
+   "title": "Problem: wall finger \u2014 Solution: lift it, do not mash it",
+   "category": "Problems",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-dull-blade",
+   "title": "Problem: chewed cut \u2014 Solution: fresh blade, light pass",
+   "category": "Problems",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/dull-blade-cut.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-tape-left",
+   "title": "Problem: tape still on the graphic \u2014 Solution: pull low and slow",
+   "category": "Problems",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/trailer-spot-graphics.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "prob-half-moon",
+   "title": "Problem: corner bunch \u2014 Solution: half-moon relief",
+   "category": "Problems",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/demonstration-of-a-half-moon.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
+   "id": "pk-rivet-row",
+   "title": "Marker light under gold film",
+   "category": "Trailer",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-lamp-wrap",
+   "title": "Wrapping around a trailer marker light",
+   "category": "Trailer",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-pickup",
+   "title": "Pickup side panels in the bay",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/pickup-panels.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-edge",
+   "title": "Edge and channel detail",
+   "category": "Trailer",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/edge-detail.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-tall",
+   "title": "Tall side \u2014 height and long panel",
+   "category": "Tall side",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-interior-sales",
+   "title": "Interior wall \u2014 finished face",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/architectural.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-cut4",
+   "title": "Table cut \u2014 square the sheet",
+   "category": "Fleet",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/cutting-vinyl-4.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-cut5",
+   "title": "Relief cut before the hang",
+   "category": "Fleet",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/cutting-vinyl-5.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-grey",
+   "title": "Overlay peel \u2014 two-color stack",
+   "category": "Fleet",
+   "module": "film-types",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-corn",
+   "title": "Printed graphic QC",
+   "category": "Fleet",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/qc/corngraphic.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-cab-inst",
+   "title": "Cabinet face installed",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/vinyl-cabinet-installed.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pk-heat-fingers",
+   "title": "Heat fingers on an interior panel",
+   "category": "Interior",
+   "module": "heat",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-pack.js"
+  },
+  {
+   "id": "pb-caddy-3",
+   "title": "Pink caddy \u2014 side hang in the bay",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap3.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-caddy-4",
+   "title": "Pink caddy \u2014 bumper to fender seam",
+   "category": "Fleet",
+   "module": "seams-rivets",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-caddy-5",
+   "title": "Pink caddy \u2014 rear quarter finish",
+   "category": "Fleet",
+   "module": "post-heat",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-caddy-wrap5.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-caddy-1",
+   "title": "Pink wrap caddy \u2014 first hang",
+   "category": "Fleet",
+   "module": "prep",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/pink-wrap-caddy-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cherokee",
+   "title": "Satin Cherokee \u2014 full-side read",
+   "category": "Fleet",
+   "module": "film-types",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/satin-wrap-cherokee.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-graphic",
+   "title": "Printed graphic install",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-wall",
+   "title": "Interior wall wrap",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-wall-sq",
+   "title": "Wall squeegee sequence",
+   "category": "Interior",
+   "module": "squeegee",
+   "access": "free",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cut-ex1",
+   "title": "Cut excess after the wall is down",
+   "category": "Interior",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cab-done",
+   "title": "Cabinet wrap \u2014 faces done",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/cabinet-done.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cab-on",
+   "title": "Vinyl on cabinet",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/vinyl-oncabinet8.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-office",
+   "title": "Office wall finish",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/office-wallpaper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-bleed",
+   "title": "Measure bleed on wood-grain",
+   "category": "Interior",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/measuring-bleed2.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cab-side",
+   "title": "Cabinet interior side",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/cabinet-pic-sides.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-cab-measure",
+   "title": "Cabinet measure before the cut",
+   "category": "Interior",
+   "module": "prep",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/cabinet-measure.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-kiosk",
+   "title": "Kiosk box \u2014 multi-panel face",
+   "category": "Interior",
+   "module": "architectural",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/kiosk-box.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-spot",
+   "title": "Trailer spot graphic at the hinge",
+   "category": "Trailer",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/trailer-spot-graphics.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-gate",
+   "title": "Work van \u2014 rear gate wrap",
+   "category": "Work van",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-squeegee",
+   "title": "Squeegee strokes on the table",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/squeegee-strokes.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-torch",
+   "title": "Heat on vinyl \u2014 keep it moving",
+   "category": "Fleet",
+   "module": "heat",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/torch-on-vinyl1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-removal",
+   "title": "Vinyl removal",
+   "category": "Fleet",
+   "module": "prep",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/vinyl-removal.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  }
+ ],
+ "problemLessons": [
+  {
+   "id": "prob-rivet-tent",
+   "title": "Problem: reading the wrong job \u2014 Solution: name the trailer in frame",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "../assets/sales/trailer-rivets.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-short-lamp",
+   "title": "Problem: short lamp trim \u2014 Solution: 1\u20132 mm tuck",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-sensor-dirt",
+   "title": "Problem: lift at sensor / grille \u2014 Solution: clean, relief, no stretch",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-bridge-intake",
+   "title": "Problem: bridged intake \u2014 Solution: feed the recess",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-fingers-wall",
+   "title": "Problem: wall finger \u2014 Solution: lift it, do not mash it",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-dull-blade",
+   "title": "Problem: chewed cut \u2014 Solution: fresh blade, light pass",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/dull-blade-cut.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-tape-left",
+   "title": "Problem: tape still on the graphic \u2014 Solution: pull low and slow",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/trailer-spot-graphics.jpg",
+    "local": true,
+    "live": true
+   }
+  },
+  {
+   "id": "prob-half-moon",
+   "title": "Problem: corner bunch \u2014 Solution: half-moon relief",
+   "category": "Problems",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/demonstration-of-a-half-moon.jpg",
+    "local": true,
+    "live": true
+   }
+  }
+ ],
+ "badges": [
+  {
+   "id": "badge-bt-rivet",
+   "title": "Rivet Master",
+   "lessonId": "bt-rivet-mastery"
+  },
+  {
+   "id": "badge-bt-panels",
+   "title": "Panel Handler",
+   "lessonId": "bt-oversized-panels"
+  },
+  {
+   "id": "badge-bt-rollup",
+   "title": "Class C Walkaround",
+   "lessonId": "bt-rollup-door"
+  },
+  {
+   "id": "badge-bt-swing",
+   "title": "Swing Door Pro",
+   "lessonId": "bt-swing-door"
+  },
+  {
+   "id": "badge-bt-prep",
+   "title": "Prep Surgeon",
+   "lessonId": "bt-prep-cleaning"
+  },
+  {
+   "id": "badge-van-recess",
+   "title": "Recess Feeder",
+   "lessonId": "van-deep-recess"
+  },
+  {
+   "id": "badge-van-slide",
+   "title": "Slider Aligned",
+   "lessonId": "van-sliding-door"
+  },
+  {
+   "id": "badge-van-roof",
+   "title": "Roof Safe",
+   "lessonId": "van-roof-safety"
+  },
+  {
+   "id": "badge-van-hinge",
+   "title": "Hinge Mapper",
+   "lessonId": "van-rear-hinge"
+  },
+  {
+   "id": "badge-sf-wet",
+   "title": "Wet Soft-Seat",
+   "lessonId": "sf-wet-install"
+  },
+  {
+   "id": "badge-sf-perf",
+   "title": "Architectural Panel",
+   "lessonId": "sf-perf-film"
+  },
+  {
+   "id": "badge-sf-multipane",
+   "title": "Cubby Registration",
+   "lessonId": "sf-multipane"
+  },
+  {
+   "id": "badge-sf-weather",
+   "title": "Corner Trim",
+   "lessonId": "sf-weather"
+  },
+  {
+   "id": "badge-tr-rivets",
+   "title": "Trailer Rivets",
+   "lessonId": "tr-rivet-rows"
+  },
+  {
+   "id": "badge-tr-roof",
+   "title": "Roofline True",
+   "lessonId": "tr-roofline"
+  },
+  {
+   "id": "badge-tr-hinge",
+   "title": "Hinge Cutter",
+   "lessonId": "tr-door-hinge"
+  },
+  {
+   "id": "badge-tr-seg",
+   "title": "Segment Planner",
+   "lessonId": "tr-panel-seg"
+  },
+  {
+   "id": "badge-fl-align",
+   "title": "Fleet Aligner",
+   "lessonId": "fl-alignment"
+  },
+  {
+   "id": "badge-fl-multi",
+   "title": "Multi-Unit Flow",
+   "lessonId": "fl-multi-vehicle"
+  },
+  {
+   "id": "badge-fl-qc",
+   "title": "Fleet QC",
+   "lessonId": "fl-qc"
+  },
+  {
+   "id": "badge-prac-rivet",
+   "title": "Rivet Drilled",
+   "lessonId": null
+  },
+  {
+   "id": "badge-prac-seam",
+   "title": "Seam Sharp",
+   "lessonId": null
+  },
+  {
+   "id": "badge-prac-align",
+   "title": "Alignment Drilled",
+   "lessonId": null
+  },
+  {
+   "id": "badge-prac-recess",
+   "title": "Recess Drilled",
+   "lessonId": null
+  }
+ ],
+ "videos": [
+  {
+   "id": "v-mid-3886",
+   "title": "D-pillar and taillight, mid-install",
+   "category": "Van",
+   "subcategory": "Doors",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/van/d-pillar-taillight-mid-install.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "van-rear-hinge",
+    "workflowStep": "vw-hinge",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-697405",
+   "title": "Fleet van seam tuck",
+   "category": "Fleet",
+   "subcategory": "Seams",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/fleet/fleet-van-seam-tuck.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": "fw-brand",
+    "practice": "prac-seam"
+   }
+  },
+  {
+   "id": "v-mid-7685",
+   "title": "Box interior \u2014 edge knife trim",
+   "category": "Storefront/Architectural",
+   "subcategory": "Trim",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/pink-box-interior-edge-knife-trim.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/pink-box-interior-edge-knife-trim.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": "prac-seam"
+   }
+  },
+  {
+   "id": "v-mid-7688",
+   "title": "Strip prep \u2014 alcohol wipe, ready to lay",
+   "category": "Prep",
+   "subcategory": "Material Prep",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/prep/magenta-strip-prep-alcohol-wipe-ready.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/prep/translucent-vinyl.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": null
+   }
+  },
+  {
+   "id": "v-mid-7689",
+   "title": "Liner peel \u2014 box floor hang",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/controltac-liner-peel-box-floor-hang.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/controltac-liner-peel-box-floor-hang.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-mid-7690",
+   "title": "Deep corner tuck with felt squeegee",
+   "category": "Storefront/Architectural",
+   "subcategory": "Recesses",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/deep-corner-tuck-felt-squeegee.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/deep-corner-tuck-felt-squeegee.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "van-deep-recess",
+    "workflowStep": "vw-recess",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-7692",
+   "title": "Inner wall squeegee \u2014 3M Controltac",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/inner-wall-squeegee-3m-controltac-scraps.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/inner-wall-squeegee-3m-controltac-scraps.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-7694",
+   "title": "Overlay peel on a base layer stack",
+   "category": "Prep",
+   "subcategory": "Material Prep",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/grey-overlay-peel-magenta-base-stack.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": null
+   }
+  },
+  {
+   "id": "v-mid-7695",
+   "title": "Strip handling \u2014 weeding stage",
+   "category": "Prep",
+   "subcategory": "Material Prep",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/prep/strip-handling-weeding-stage.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": null
+   }
+  },
+  {
+   "id": "v-mid-7696",
+   "title": "Gloss recess \u2014 glass it out",
+   "category": "Storefront/Architectural",
+   "subcategory": "Recesses",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
+    "local": true,
+    "live": false
+   },
+   "related": {
+    "lesson": "van-deep-recess",
+    "workflowStep": "vw-recess",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-7697",
+   "title": "Corner tuck with relief cut",
+   "category": "Storefront/Architectural",
+   "subcategory": "Trim",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/corner-tuck-relief-knife.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/corner-tuck-relief-knife.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "van-deep-recess",
+    "workflowStep": "vw-recess",
+    "practice": "prac-seam"
+   }
+  },
+  {
+   "id": "v-mid-7699",
+   "title": "Hand-seat the corner, knife trim",
+   "category": "Storefront/Architectural",
+   "subcategory": "Trim",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/hand-seat-corner-knife-trim.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "van-deep-recess",
+    "workflowStep": "vw-recess",
+    "practice": "prac-seam"
+   }
+  },
+  {
+   "id": "v-mid-7701",
+   "title": "Cubbies \u2014 compare liners, finished",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/cubbies-compare-magenta-vs-white-liners.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/cubbies-compare-magenta-vs-white-liners.jpg",
+    "local": true,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": "sw-pane",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-mid-6788",
+   "title": "Magenta Rivet Field \u2014 Tented Heads",
+   "category": "Trailer",
+   "subcategory": "Rivets",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/magenta-rivet-field-tented-heads.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-rivet-mastery",
+    "workflowStep": "tw-rivets",
+    "practice": "prac-rivet"
+   }
+  },
+  {
+   "id": "v-mid-0020",
+   "title": "Liftgate recess tuck",
+   "category": "Van",
+   "subcategory": "Doors",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/van/white-liftgate-recess-tuck.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "van-rear-hinge",
+    "workflowStep": "vw-hinge",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-3884",
+   "title": "GMC C-pillar tuck from the ladder",
+   "category": "Fleet",
+   "subcategory": "Doors",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "van-rear-hinge",
+    "workflowStep": "vw-hinge",
+    "practice": "prac-seam"
+   }
+  },
+  {
+   "id": "v-mid-3885",
+   "title": "GMC chrome trim finish",
+   "category": "Fleet",
+   "subcategory": "QC",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/fleet/dusty-rose-gmc-chrome-trim-finish.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/fleet/dusty-rose-gmc-chrome-trim-finish.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "fl-qc",
+    "workflowStep": "fw-qc",
+    "practice": null
+   }
+  },
+  {
+   "id": "v-mid-5540",
+   "title": "Carbon-pattern bumper recess seat",
+   "category": "Van",
+   "subcategory": "Recesses",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/van/carbon-fiber-pattern-bumper-recess-seat.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "van-deep-recess",
+    "workflowStep": "vw-recess",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-6790",
+   "title": "Trailer side graphic \u2014 hang stage",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/trailer-rivets.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": "tw-seg",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-mid-8962",
+   "title": "Tall trailer side hang from the ladder",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/orange-99-month-ladder-tall-side-hang.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-roofline",
+    "workflowStep": "tw-roof",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-mid-8974",
+   "title": "Side door recess \u2014 trim from the ladder",
+   "category": "Trailer",
+   "subcategory": "Doors",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-door-hinge",
+    "workflowStep": "tw-hinge",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-1039",
+   "title": "Class C RV stripe walkaround",
+   "category": "RV/Bus",
+   "subcategory": "QC",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/architectural.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": "tw-seg",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-mid-6796",
+   "title": "Hardware cutout and edge tuck",
+   "category": "Trailer",
+   "subcategory": "Trim",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/magenta-series-hardware-cutout-edge-tuck.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/trailer/magenta-series-hardware-cutout-edge-tuck.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "tr-door-hinge",
+    "workflowStep": "tw-hinge",
+    "practice": "prac-recess"
+   }
+  },
+  {
+   "id": "v-mid-8971",
+   "title": "Roofline seat from the ladder",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/orange-99-month-ladder-roofline-seat.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/edge-detail.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-roofline",
+    "workflowStep": "tw-roof",
+    "practice": "prac-panel-align"
+   }
+  },
+  {
+   "id": "v-named-translucent-vinyl-1bidzr",
+   "title": "Translucent vinyl",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/translucent-vinyl.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/translucent-vinyl.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-vinyl-removal-1Wvo1G",
+   "title": "Vinyl removal",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/vinyl-removal.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/vinyl-removal.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-rear-vehicle-gate-wrap-11EhrJ",
+   "title": "Rear vehicle gate wrap",
+   "category": "Van",
+   "subcategory": "Doors",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "van-rear-hinge",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-handling-vinyl-1riO1q",
+   "title": "Handling vinyl",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/prep/handling-vinyl.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/prep/vinyl-cutting1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-corngraphic-1_ycBu",
+   "title": "Corn graphic \u2014 QC check",
+   "category": "QC",
+   "subcategory": "Inspection",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/qc/corngraphic.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/qc/corngraphic.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-qc",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-showing-rivets-1r6aYA",
+   "title": "Showing rivets",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/trailer/showing-rivets.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-smith-field-food-truck-12d1m0",
+   "title": "Food truck wrap",
+   "category": "RV/Bus",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/rv-bus/smith-field-food-truck.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/pickup-panels.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-blue-rv-wrap-1Ckzyv",
+   "title": "Blue RV wrap",
+   "category": "RV/Bus",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/rv-bus/blue-rv-wrap.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "../assets/sales/fleet-rv.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-satin-wrap-cherokee-1y2x7R",
+   "title": "Satin wrap \u2014 Cherokee",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/satin-wrap-cherokee.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/satin-wrap-cherokee.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-cutting-vinyl-4-12OuH3",
+   "title": "Cutting vinyl 4",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/cutting-vinyl-4.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/cutting-vinyl-4.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-cabinet-done-1Shu3T",
+   "title": "Cabinet done",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/cabinet-done.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/cabinet-done.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-cutting-vinyl-6-1WQRED",
+   "title": "Cutting vinyl 6",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/cutting-vinyl-6.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/cutting-vinyl-6.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-vinyl-cabinet-installed-1kTrGV",
+   "title": "Vinyl cabinet installed",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/vinyl-cabinet-installed.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/vinyl-cabinet-installed.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-vinyl-oncabinet8-18oCVi",
+   "title": "Cabinet wrap \u2014 part 8",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/vinyl-oncabinet8.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/vinyl-oncabinet8.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-torch-in-vinyl-3-1uAbFN",
+   "title": "Torch in vinyl 3",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/torch-in-vinyl-3.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/torch-in-vinyl-3.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-vinyl-cutting1-1SZrR5",
+   "title": "Cutting vinyl 1",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/vinyl-cutting1.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/vinyl-cutting1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-stroke-of-the-squeegee-1xetub",
+   "title": "Stroke of the squeegee",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/stroke-of-the-squeegee.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/stroke-of-the-squeegee.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-trailer-rivets-and-marker-li-1WwwZf",
+   "title": "Marker light, cut it out",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/trailer/trailer-rivets-and-marker-lights.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-torch-on-vinyl1-1NfBta",
+   "title": "Torch on vinyl 1",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/torch-on-vinyl1.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/torch-on-vinyl1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-torch-on-vinyl2-1Tk1xt",
+   "title": "Torch on vinyl 2",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/torch-on-vinyl2.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/torch-on-vinyl2.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-vinyl-squeegee-sequence-1j5VJF",
+   "title": "Vinyl squeegee sequence",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/vinyl-squeegee-sequence.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/vinyl-squeegee-sequence.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-wrapping-around-trailer-mark-1Y3WJb",
+   "title": "Wrapping around a trailer marker light",
+   "category": "Trailer",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "tr-panel-seg",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-graphic-installation-1-1gNZhI",
+   "title": "Graphic installation 1",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/graphic-installation-1.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-squeegee-strokes-1NBAg_",
+   "title": "Squeegee strokes",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/squeegee-strokes.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/squeegee-strokes.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-pink-wrap-caddy-1-1G1W_l",
+   "title": "Pink Caddy wrap 1",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/pink-wrap-caddy-1.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/pink-wrap-caddy-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-pink-caddy-wrap5-1CBWZ0",
+   "title": "Pink Caddy wrap 5",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/pink-caddy-wrap5.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/pink-caddy-wrap5.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-dull-blade-cut-1RslTS",
+   "title": "Dull blade cut",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/dull-blade-cut.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/dull-blade-cut.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-cutting-vinyl3-1GT3fB",
+   "title": "Cutting vinyl 3",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/cutting-vinyl3.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/cutting-vinyl3.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-cutting-vinyl-5-15wD6M",
+   "title": "Cutting vinyl 5",
+   "category": "Prep",
+   "subcategory": "Technique",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/prep/cutting-vinyl-5.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/prep/cutting-vinyl-5.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "bt-prep-cleaning",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-pink-caddy-wrap3-1bs6tn",
+   "title": "Pink Caddy wrap 3",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/pink-caddy-wrap3.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/pink-caddy-wrap3.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-pink-caddy-wrap4-1A3qMJ",
+   "title": "Pink Caddy wrap 4",
+   "category": "Fleet",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/fleet/pink-caddy-wrap4.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "fl-alignment",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-wrap-sque-14Wtby",
+   "title": "Wall wrap \u2014 squeegee sequence",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "free",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-vinyl-panel-pr-13pihm",
+   "title": "Wall panel \u2014 pre-install prep",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-vinyl-panel-pre-install-prep.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-panel-cutting--1bucxT",
+   "title": "Wall panel \u2014 trim excess after install 1",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-1.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-panel-cutting--1qn3lV",
+   "title": "Wall panel \u2014 trim excess after install 2",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-2.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-2.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-vinyl-pan-1_jsQ7",
+   "title": "Wall panel \u2014 heat out the fingers",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wrap-cutting-a-1otK4E",
+   "title": "Cutting around hinges",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-wrap-cutting-around-hinges.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wrap-cutting-around-hinges.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-panel-wra-1mdavr",
+   "title": "Wall panel \u2014 post-heat 2",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-panel-wrap-post-heat-2.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-panel-wrap-post-heat-2.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-wrap-18yx_q",
+   "title": "Architectural wall wrap",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": true,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-wrap.mp4",
+    "local": true,
+    "live": true
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-post-heating-v-1FFpMa",
+   "title": "Wall panel \u2014 post-heat",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-post-heating-vinyl-2.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-post-heat-panel-1-10LIlU",
+   "title": "Wall panel \u2014 post-heat 1",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/post-heat-panel-1.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/post-heat-panel-1.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-cutting-vinyl--1NXkcT",
+   "title": "Cutting around hinges 2",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-cutting-vinyl-around-hinges.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-panel-cutting-excess-vinyl-after-install-2.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-wrap-pane-1dNBb4",
+   "title": "Wall panel \u2014 squeegee styles",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.jpg",
+    "local": false,
+    "live": false
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  },
+  {
+   "id": "v-named-architectural-wall-panel-ins-1V50KW",
+   "title": "Wall panel \u2014 dust and tack",
+   "category": "Storefront/Architectural",
+   "subcategory": "Panels",
+   "access": "paid",
+   "shownInApp": false,
+   "src": {
+    "path": "media/videos/architectural/architectural-wall-panel-install-dust-tack.mp4",
+    "local": false,
+    "live": false
+   },
+   "still": {
+    "path": "media/videos/architectural/vinyl-cabinet-installed.jpg",
+    "local": true,
+    "live": true
+   },
+   "related": {
+    "lesson": "sf-multipane",
+    "workflowStep": null,
+    "practice": null
+   }
+  }
+ ],
+ "gallery": [
+  {
+   "id": "pg13",
+   "title": "Office wallpaper wrap",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/office-wallpaper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl13"
+  },
+  {
+   "id": "pg14",
+   "title": "Measuring bleed",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/measuring-bleed2.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl14"
+  },
+  {
+   "id": "pg15",
+   "title": "Half-moon relief",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/demonstration-of-a-half-moon.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl15"
+  },
+  {
+   "id": "pg16",
+   "title": "Cabinet pic sides",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/cabinet-pic-sides.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl16"
+  },
+  {
+   "id": "pg17",
+   "title": "Cabinet measure",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/cabinet-measure.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl17"
+  },
+  {
+   "id": "pg18",
+   "title": "Front bumper wrap",
+   "category": "Fleet",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl18"
+  },
+  {
+   "id": "pg19",
+   "title": "Pink caddy bumper close-up",
+   "category": "Fleet",
+   "media": {
+    "path": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl19"
+  },
+  {
+   "id": "pg20",
+   "title": "Front bumper wrap caddy",
+   "category": "Fleet",
+   "media": {
+    "path": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl20"
+  },
+  {
+   "id": "pg21",
+   "title": "Trailer spot graphics",
+   "category": "Trailer",
+   "media": {
+    "path": "media/photos/gallery/trailer-spot-graphics.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl21"
+  },
+  {
+   "id": "pg22",
+   "title": "Kiosk box",
+   "category": "Storefront/Architectural",
+   "media": {
+    "path": "media/photos/gallery/kiosk-box.jpg",
+    "local": true,
+    "live": true
+   },
+   "photoLesson": "pl22"
+  }
+ ],
+ "drills": {
+  "spotMistake": 8,
+  "checklistDrills": 4,
+  "scenarios": 6,
+  "flashcards": 10
+ },
+ "certLevels": [
+  {
+   "id": "l1",
+   "title": "L1 Installer Basics",
+   "note": "Internal WRAP 911 shop level only \u2014 not a brand certification."
+  },
+  {
+   "id": "l2",
+   "title": "L2 Commercial Installer",
+   "note": "Internal WRAP 911 shop level only \u2014 not a brand certification."
+  },
+  {
+   "id": "l3",
+   "title": "L3 Fleet Specialist",
+   "note": "Internal WRAP 911 shop level only \u2014 not a brand certification."
+  }
+ ],
+ "counts": {
+  "modules": 8,
+  "lessons": 20,
+  "lessonsFree": 3,
+  "workflows": 6,
+  "workflowSteps": 25,
+  "practice": 4,
+  "photoLessons": 63,
+  "photoLessonsFree": 14,
+  "problemLessons": 8,
+  "badges": 24,
+  "videos": 68,
+  "videosFree": 8,
+  "videosShownInApp": 33,
+  "gallery": 10,
+  "drills": {
+   "spotMistake": 8,
+   "checklistDrills": 4,
+   "scenarios": 6,
+   "flashcards": 10
+  },
+  "lessonsMissingFailPassPhotos": 20,
+  "mediaMissingLive": 53
+ }
+}

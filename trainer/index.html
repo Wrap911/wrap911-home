@@ -23,9 +23,10 @@
   <meta name="twitter:image" content="https://wrap911.github.io/wrap911-home/assets/wrap911-logo.jpg">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=324">
-  <link rel="stylesheet" href="css/theme-dark.css?v=316">
+  <link rel="stylesheet" href="css/style.css?v=260">
+  <link rel="stylesheet" href="css/theme-dark.css?v=260">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -34,11 +35,24 @@
     .app-header .brand { line-height: 0; }
     .pu-preview { margin: .6rem 0; }
     .pu-preview img { display:block; }
+    .about-tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .9rem; }
+    .about-tabs button { flex:1 1 auto; min-width:0; padding:.5rem .6rem; font-size:.85rem; }
+    .about-tabs button.active { background:#ffb000; color:#09070d; }
+    .about-panel h2 { margin:.9rem 0 .4rem; font-size:1.05rem; }
+    .about-panel ul { padding-left:1.1rem; margin:.3rem 0 .8rem; }
+    .about-panel li { margin:.25rem 0; line-height:1.4; }
+    .about-panel .plan-row { display:grid; gap:.6rem; }
+    .about-panel .plan-row .card { padding:.8rem; }
+    .about-panel .plan-row .card.default { box-shadow: inset 0 0 0 2px #ffb000; }
+    .about-panel details { margin:.4rem 0; padding:.55rem .7rem; border-radius:10px; background:rgba(255,255,255,.04); }
+    .about-panel summary { cursor:pointer; font-weight:600; }
+    .lesson-meta-box { margin:.6rem 0; }
+    img, video { max-width:100%; }
   </style>
 </head>
 <body>
   <header class="app-header">
-    <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911"></a></div>
+    <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911" onerror="this.onerror=null;this.src='icons/icon-192.png'"></a></div>
     <div class="header-meta">
       <div class="header-chips">
         <span id="plan-chip" class="plan-chip">Free</span>
@@ -56,10 +70,10 @@
       <p style="margin-top:0.45rem"><button type="button" id="install-btn" hidden>Install</button></p>
     </div>
     <ul class="rules-list">
-      <li><strong>Who may wrap:</strong> Only trained WRAP 911 crew under shop direction.</li>
-      <li><strong>Brands only:</strong> 3M, Avery Dennison, Arlon as specified for the job.</li>
+      <li><strong>Who may wrap:</strong> Only trained crew, under the shop lead's direction.</li>
+      <li><strong>Brands only:</strong> 3M, Avery Dennison, Arlon, as spec'd for the job.</li>
       <li><strong>Follow the TDS:</strong> Do not invent temperatures or chemical recipes.</li>
-      <li><strong>Safety:</strong> Ladders, heat, knives. Soften film. Do not melt it.</li>
+      <li><strong>Safety:</strong> Ladders, heat, knives. Soften the film. Do not melt it.</li>
     </ul>
     <div class="accept-row">
       <input type="checkbox" id="rules-checkbox" name="rules">
@@ -105,6 +119,9 @@
       <button type="button" class="secondary" id="btn-hide-job-types">Hide job types</button>
     </div>
     <div id="home-nav-cards" class="home-nav-grid hidden"></div>
+    <div class="card tap" id="goto-about" role="button" tabindex="0">
+      <div class="card-body"><div class="card-title">About WRAP 911 · Pricing · FAQ</div><div class="card-sub">Why it exists, who it's for, free samples</div></div>
+    </div>
     <details class="home-secondary" id="home-more-tools">
       <summary>More tools</summary>
       <div id="module-list"></div>
@@ -150,7 +167,7 @@
   <section id="screen-jobs" class="screen"><button type="button" class="back-link" id="btn-back-jobs">← Back to home</button><h1>Job manager</h1><button type="button" id="btn-new-job">+ New job</button><div id="jobs-list" class="jobs-list"></div></section>
   <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>Arlon</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
-  <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row"><label>Category<select id="video-filter-cat"><option value="">All</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
+  <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
   <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
   <section id="screen-module" class="screen"><button type="button" class="back-link" id="btn-back-module">← Back to home</button><h1 id="module-title">Module</h1><div class="lesson-body" id="module-lesson"></div><div class="mode-tabs" id="module-mode-tabs"><button type="button" class="mode-tab active" data-mode="quiz">Quiz</button><button type="button" class="mode-tab" data-mode="practice">Practice mode</button></div><div class="quiz-box" id="module-quiz"></div><div id="module-practice" class="practice-wrap hidden"></div></section>
   <section id="screen-drills" class="screen"><h1>Drills hub</h1><div id="drills-hub-list"></div></section>
@@ -168,9 +185,21 @@
     <div class="quiz-feedback" id="problem-upload-fb"></div>
     <div id="problem-upload-wrap"></div>
   </section>
-  <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 · Seat $49.</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Open payment link</button></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
+  <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 one-time (5 seats, 12 months) · Seat $49 one-time (1 tech, 12 months) · Field $29/mo.</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Open payment link</button></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
   <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button></div><div class="card coach-media-panel"><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
-  <section id="screen-contact" class="screen"><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p></div></section>
+  <section id="screen-about" class="screen" aria-label="About WRAP 911">
+    <button type="button" class="back-link" id="btn-back-about">← Back to home</button>
+    <h1>About WRAP 911</h1>
+    <div class="about-tabs" role="tablist" id="about-tabs">
+      <button type="button" data-about-tab="why" class="active">Why</button>
+      <button type="button" data-about-tab="pricing">Pricing</button>
+      <button type="button" data-about-tab="shops">For shops</button>
+      <button type="button" data-about-tab="faq">FAQ</button>
+      <button type="button" data-about-tab="samples">Samples</button>
+    </div>
+    <div class="about-panel" id="about-panel"></div>
+  </section>
+  <section id="screen-contact" class="screen"><button type="button" class="back-link" id="btn-back-contact">← Back to home</button><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p><p class="muted">Brands we train on: <span id="contact-brands">3M, Avery Dennison, Arlon</span>. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.</p></div></section>
   <div id="xp-modal" class="modal hidden" role="dialog"><div class="modal-card"><div class="modal-emoji" id="xp-modal-emoji">🎉</div><h2 id="xp-modal-title">Drill complete!</h2><p id="xp-modal-msg">+25 XP</p><button type="button" id="xp-modal-ok">Nice</button></div></div>
   <nav class="bottom-nav hidden" id="bottom-nav">
     <button type="button" data-nav="home">Home</button>
@@ -204,27 +233,26 @@
         deferred = null;
         btn.hidden = true;
       });
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
-      }
+      /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/plan-fix.js?v=325"></script>
-  <script src="js/config.js?v=325"></script>
-  <script src="js/ios-license-bridge.js?v=327"></script>
-  <script src="js/data.js?v=304"></script>
-  <script src="js/data_extra.js?v=317"></script>
-  <script src="js/problems-db.js?v=303"></script>
-  <script src="js/labels-fix.js?v=331"></script>
-  <script src="js/app_extra.js?v=324"></script>
-  <script src="js/problem-upload.js?v=303"></script>
-  <script src="js/coach.js?v=302"></script>
-  <script src="js/app.js?v=326"></script>
-  <script src="js/video-fix.js?v=316"></script>
-  <script src="js/license-gate.js?v=327"></script>
-  <script src="js/captions-fix.js?v=306"></script>
-  <script src="js/jobs-trim.js?v=330"></script>
-  <script src="js/photos-unique.js?v=331"></script>
-  <script src="js/practice-fix.js?v=318"></script>
+  <script src="js/config.js?v=260"></script>
+  <script src="js/plan-fix.js?v=260"></script>
+  <script src="js/ios-license-bridge.js?v=260"></script>
+  <script src="js/data.js?v=260"></script>
+  <script src="js/data_extra.js?v=260"></script>
+  <script src="js/problems-db.js?v=260"></script>
+  <script src="js/labels-fix.js?v=260"></script>
+  <script src="js/app_extra.js?v=260"></script>
+  <script src="js/problem-upload.js?v=260"></script>
+  <script src="js/coach.js?v=260"></script>
+  <script src="js/app.js?v=260"></script>
+  <script src="js/video-fix.js?v=260"></script>
+  <script src="js/license-gate.js?v=260"></script>
+  <script src="js/captions-fix.js?v=260"></script>
+  <script src="js/jobs-trim.js?v=260"></script>
+  <script src="js/photos-unique.js?v=260"></script>
+  <script src="js/practice-fix.js?v=260"></script>
+  <script src="js/about.js?v=260"></script>
 </body>
 </html>

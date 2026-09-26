@@ -211,7 +211,7 @@
     var wrap = $("vehicle-lessons");
     var p = c.loadProgress();
     var ls = lessonsForVehicle(c.state.vehicleId);
-    wrap.innerHTML = '<p class="muted">Tap a lesson card. Each includes techniques, tools, mistakes, steps, 3Q quiz, badge, and practice link.</p>';
+    wrap.innerHTML = '<p class="muted">Tap a lesson. Each card has the goal, tools, steps, mistakes, a time box, a 3-question quiz, and a practice link.</p>';
     for (var i = 0; i < ls.length; i++) {
       (function (lesson) {
         var done = p.lessons && p.lessons[lesson.id] && p.lessons[lesson.id].passed;
@@ -223,8 +223,8 @@
         card.innerHTML =
           '<img class="thumb" src="' + escapeHtml(lesson.media) + '" alt="" loading="lazy" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
           '<div class="card-body"><div class="card-title">' + escapeHtml(lesson.title) + "</div>" +
-          '<div class="card-sub">3-question quiz · badge on pass</div>' +
-          (done ? '<span class="badge done">Passed</span>' : '<span class="badge">Open lesson</span>') +
+          '<div class="card-sub">' + escapeHtml(lesson.timeBox ? lesson.timeBox + " · 3-question quiz" : "3-question quiz · badge on pass") + '</div>' +
+          lessonBadgeHtml(lesson, done) +
           "</div>";
         card.addEventListener("click", function () { openLesson(lesson.id); });
         wrap.appendChild(card);
@@ -266,7 +266,7 @@
       html += '<label class="wf-check"><input type="checkbox" data-wfid="' + escapeHtml(st.id) + '"' + (checked ? " checked" : "") + "> ";
       html += "<strong>" + escapeHtml(st.title) + '</strong> <span class="type-pill">' + escapeHtml(st.type) + "</span></label>";
       if (st.media) html += '<img class="photo-hero" src="' + escapeHtml(st.media) + '" alt="" loading="lazy">';
-      else html += '<div class="video-placeholder">Video placeholder — add offline MOV later</div>';
+      /* no step media: show nothing instead of a placeholder box */
       html += "<p>" + escapeHtml(st.instructions) + "</p>";
       html += "<p><strong>Tools:</strong> " + escapeHtml((st.tools || []).join(" · ")) + "</p>";
       html += "<p><strong>Safety:</strong> " + escapeHtml((st.safety || []).join(" · ")) + "</p>";
@@ -316,6 +316,12 @@
     var c = core();
     var lesson = findLesson(id);
     if (!lesson || !c) return;
+    if (lessonLocked(id)) {
+      var lfb = $("unlock-feedback");
+      if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49."; }
+      c.showScreen("pricing");
+      return;
+    }
     c.state.lessonId = id;
     if (lesson.vehicleId) c.state.vehicleId = lesson.vehicleId;
     c.state.lessonQuizIndex = 0;
@@ -345,14 +351,15 @@
       mountYoutubePlayer(media, youtubePlayId);
     } else if (media && lesson.media) {
       media.innerHTML = '<img class="photo-hero" src="' + escapeHtml(lesson.media) + '" alt="' + escapeHtml(lesson.title) + '">' +
-        '<p class="muted">Photo reference (video placeholder if no MOV yet). Follow TDS for heat — never invent temperatures.</p>';
+        '<p class="muted">Shop photo. Heat: follow the TDS for the exact film. No invented numbers.</p>';
     } else {
-      media.innerHTML = '<div class="video-placeholder">Video placeholder</div>';
+      media.innerHTML = "";
     }
     $("lesson-techniques").innerHTML = (lesson.keyTechniques || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-tools").innerHTML = (lesson.tools || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-mistakes").innerHTML = (lesson.commonMistakes || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-steps").innerHTML = (lesson.steps || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
+    renderLessonMeta(lesson);
     var badgeMsg = $("lesson-badge-msg");
     badgeMsg.className = "quiz-feedback hidden";
     badgeMsg.textContent = "";
@@ -557,6 +564,365 @@
     if (pct >= 70 && prac.id) earnBadge("badge-" + prac.id);
   }
 
+  /* ---------- Restored 2026-09-26 audit: these were called but missing (lessons blank, jobs/library/badges/calc dead) ---------- */
+  function youtubeIdFrom(src) {
+    src = String(src || "").trim();
+    var pats = [/[?&]v=([A-Za-z0-9_-]{11})/, /youtu\.be\/([A-Za-z0-9_-]{11})/, /youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{11})/, /youtube\.com\/shorts\/([A-Za-z0-9_-]{11})/];
+    for (var i = 0; i < pats.length; i++) { var m = src.match(pats[i]); if (m) return m[1]; }
+    return "";
+  }
+
+  function mountYoutubePlayer(host, id) {
+    var frame = document.createElement("iframe");
+    frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&modestbranding=1&playsinline=1";
+    frame.title = "WRAP 911 shop video";
+    frame.setAttribute("allow", "encrypted-media; picture-in-picture; fullscreen");
+    frame.setAttribute("allowfullscreen", "");
+    frame.style.cssText = "width:100%;aspect-ratio:16/9;border:0;border-radius:8px;background:#000;display:block";
+    host.appendChild(frame);
+  }
+
+  function gatePaid() {
+    try {
+      if (window.WRAP911_GATE && window.WRAP911_GATE.paid) return !!window.WRAP911_GATE.paid();
+    } catch (e) {}
+    var c = core();
+    return !!(c && c.hasFullAccess && c.hasFullAccess());
+  }
+
+  function lessonIsFree(id) {
+    var list = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.freeLessonIds) || [];
+    if (!list.length) return true;
+    return list.indexOf(id) >= 0;
+  }
+
+  function lessonLocked(id) {
+    return !gatePaid() && !lessonIsFree(id);
+  }
+
+  function lessonBadgeHtml(lesson, done) {
+    if (done) return '<span class="badge done">Passed</span>';
+    if (lessonLocked(lesson.id)) return '<span class="badge">Pack</span>';
+    if (!gatePaid() && lessonIsFree(lesson.id)) return '<span class="badge">Free sample</span>';
+    return '<span class="badge">Open</span>';
+  }
+
+  function renderLessonMeta(lesson) {
+    var host = $("lesson-card-meta");
+    if (!host) {
+      var anchor = $("lesson-techniques");
+      var h = anchor && anchor.previousElementSibling;
+      if (!h || !h.parentNode) return;
+      host = document.createElement("div");
+      host.id = "lesson-card-meta";
+      host.className = "lesson-card-meta";
+      h.parentNode.insertBefore(host, h);
+    }
+    var html = "";
+    if (lesson.goal) html += '<p class="lesson-goal"><strong>Goal:</strong> ' + escapeHtml(lesson.goal) + "</p>";
+    if (lesson.timeBox) html += '<p class="lesson-timebox"><strong>Time box:</strong> ' + escapeHtml(lesson.timeBox) + ' <span class="muted">(shop drill target, not a job quote)</span></p>';
+    host.innerHTML = html;
+    var pf = $("lesson-passfail");
+    if (!pf) {
+      var stepsEl = $("lesson-steps");
+      if (!stepsEl || !stepsEl.parentNode) return;
+      pf = document.createElement("div");
+      pf.id = "lesson-passfail";
+      pf.className = "lesson-passfail";
+      stepsEl.parentNode.insertBefore(pf, stepsEl.nextSibling);
+    }
+    var ph = "";
+    if (lesson.failPhoto || lesson.passPhoto) {
+      ph += '<h3>Fail / pass</h3><div class="passfail-grid">';
+      if (lesson.failPhoto) ph += '<figure><img class="photo-hero" loading="lazy" src="' + escapeHtml(lesson.failPhoto) + '" alt="Fail example"><figcaption>Fail</figcaption></figure>';
+      if (lesson.passPhoto) ph += '<figure><img class="photo-hero" loading="lazy" src="' + escapeHtml(lesson.passPhoto) + '" alt="Pass example"><figcaption>Pass</figcaption></figure>';
+      ph += "</div>";
+    }
+    pf.innerHTML = ph;
+  }
+
+  function renderLibrary() {
+    var c = core();
+    var cert = $("cert-levels");
+    var levels = data().certLevels || [];
+    if (cert) {
+      cert.innerHTML = levels.map(function (l) {
+        return '<div class="cert-chip"><strong>' + escapeHtml(l.title) + "</strong><span>" + escapeHtml(l.note) + "</span></div>";
+      }).join("");
+    }
+    var list = $("library-list");
+    if (!list || !c) return;
+    var p = c.loadProgress();
+    var html = "";
+    var vs = data().vehicles || [];
+    for (var i = 0; i < vs.length; i++) {
+      var v = vs[i];
+      var ls = lessonsForVehicle(v.id);
+      if (!ls.length) continue;
+      html += "<h2>" + escapeHtml(v.icon + " " + v.title) + "</h2>";
+      for (var j = 0; j < ls.length; j++) {
+        var lesson = ls[j];
+        var done = p.lessons && p.lessons[lesson.id] && p.lessons[lesson.id].passed;
+        html += '<div class="card tap lib-card" data-lesson="' + escapeHtml(lesson.id) + '" role="button" tabindex="0">' +
+          '<div class="card-body"><div class="card-title">' + escapeHtml(lesson.title) + "</div>" +
+          (lesson.timeBox ? '<div class="card-sub">' + escapeHtml(lesson.timeBox) + "</div>" : "") +
+          lessonBadgeHtml(lesson, done) + "</div></div>";
+      }
+    }
+    list.innerHTML = html || '<p class="muted">No lessons loaded.</p>';
+    var cards = list.querySelectorAll(".lib-card");
+    for (var n = 0; n < cards.length; n++) {
+      cards[n].addEventListener("click", function (ev) {
+        openLesson(ev.currentTarget.getAttribute("data-lesson"));
+      });
+    }
+  }
+
+  /* ---------- Jobs ---------- */
+  function val(id) { var el = $(id); return el ? el.value : ""; }
+  function setVal(id, v) { var el = $(id); if (el) el.value = v == null ? "" : v; }
+
+  function renderJobs() {
+    var list = $("jobs-list");
+    if (!list) return;
+    var jobs = loadJobs();
+    if (!jobs.length) {
+      list.innerHTML = '<p class="muted">No jobs yet. Tap + New job.</p>';
+      return;
+    }
+    list.innerHTML = "";
+    jobs.sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    for (var i = 0; i < jobs.length; i++) {
+      (function (job) {
+        var v = findVehicle(job.jobType);
+        var card = document.createElement("div");
+        card.className = "card tap";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.innerHTML =
+          '<div class="card-icon">' + escapeHtml(v ? v.icon : "📋") + "</div>" +
+          '<div class="card-body"><div class="card-title">' + escapeHtml((v ? v.title : job.jobType) + " — " + (job.coverage || "Job")) + "</div>" +
+          '<div class="card-sub">' + escapeHtml(job.materialBrand || "") + (job.completed ? " · Done" : " · In progress") + "</div>" +
+          '<span class="badge">Edit</span></div>';
+        card.addEventListener("click", function () { openJobEdit(job.id); });
+        list.appendChild(card);
+      })(jobs[i]);
+    }
+  }
+
+  function openJobEdit(id) {
+    var c = core();
+    if (!c) return;
+    var jobs = loadJobs();
+    var job = null;
+    for (var i = 0; i < jobs.length; i++) if (jobs[i].id === id) job = jobs[i];
+    var isNew = !job;
+    if (!job) {
+      job = Object.assign({}, data().defaultJob || {}, {
+        id: "job-" + Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        workflowDone: {},
+        materialBrand: "3M",
+        jobType: "box-truck",
+        coverage: "Partial sides + rear"
+      });
+    }
+    c.state.jobId = job.id;
+    if ($("job-edit-title")) $("job-edit-title").textContent = isNew ? "New job" : "Edit job";
+    var typeSel = $("job-type");
+    if (typeSel) {
+      typeSel.innerHTML = (data().vehicles || []).map(function (v) {
+        return '<option value="' + escapeHtml(v.id) + '"' + (v.id === job.jobType ? " selected" : "") + ">" + escapeHtml(v.title) + "</option>";
+      }).join("");
+    }
+    setVal("job-coverage", job.coverage || "");
+    setVal("job-brand", job.materialBrand || "3M");
+    setVal("job-notes", job.notes || "");
+    if ($("job-completed")) $("job-completed").checked = !!job.completed;
+    if ($("job-fb")) { $("job-fb").className = "quiz-feedback"; $("job-fb").textContent = ""; }
+    renderJobWorkflowChecks(job.jobType, job.workflowDone || {});
+    c.showScreen("job-edit");
+  }
+
+  function renderJobWorkflowChecks(jobType, doneMap) {
+    var wrap = $("job-workflow");
+    if (!wrap) return;
+    var steps = (data().workflowSteps || {})[jobType] || [];
+    wrap.innerHTML = "";
+    if (!steps.length) {
+      wrap.innerHTML = '<p class="muted">No workflow steps for this job type.</p>';
+      return;
+    }
+    for (var i = 0; i < steps.length; i++) {
+      var st = steps[i];
+      var label = document.createElement("label");
+      label.className = "cl-step" + (doneMap[st.id] ? " done" : "");
+      label.style.display = "flex";
+      label.innerHTML = '<input type="checkbox" data-jwf="' + escapeHtml(st.id) + '"' + (doneMap[st.id] ? " checked" : "") + "> <span>" +
+        escapeHtml(st.title) + ' <em class="muted">(' + escapeHtml(st.type) + ")</em></span>";
+      wrap.appendChild(label);
+    }
+  }
+
+  function collectJobFromForm() {
+    var c = core();
+    var wf = {};
+    var boxes = document.querySelectorAll("#job-workflow input[data-jwf]");
+    for (var i = 0; i < boxes.length; i++) {
+      if (boxes[i].checked) wf[boxes[i].getAttribute("data-jwf")] = true;
+    }
+    return {
+      id: c.state.jobId,
+      jobType: val("job-type"),
+      coverage: val("job-coverage"),
+      materialBrand: val("job-brand"),
+      notes: val("job-notes"),
+      completed: $("job-completed") ? $("job-completed").checked : false,
+      workflowDone: wf,
+      updatedAt: Date.now()
+    };
+  }
+
+  function saveJob() {
+    var job = collectJobFromForm();
+    var fb = $("job-fb");
+    if (["3M", "Avery Dennison", "Arlon"].indexOf(job.materialBrand) < 0) {
+      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Brand must be 3M, Avery Dennison, or Arlon."; }
+      return;
+    }
+    var jobs = loadJobs();
+    var found = false;
+    for (var i = 0; i < jobs.length; i++) {
+      if (jobs[i].id === job.id) {
+        job.createdAt = jobs[i].createdAt || Date.now();
+        jobs[i] = job;
+        found = true;
+        break;
+      }
+    }
+    if (!found) { job.createdAt = Date.now(); jobs.push(job); }
+    saveJobs(jobs);
+    if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Job saved on this phone."; }
+  }
+
+  function deleteJob() {
+    var c = core();
+    var jobs = loadJobs().filter(function (j) { return j.id !== c.state.jobId; });
+    saveJobs(jobs);
+    renderJobs();
+    c.showScreen("jobs");
+  }
+
+  /* ---------- Badges ---------- */
+  function renderBadges() {
+    var c = core();
+    if (!c) return;
+    var p = c.loadProgress();
+    var badges = data().badges || [];
+    var earned = 0;
+    for (var i = 0; i < badges.length; i++) {
+      if (p.badges && p.badges[badges[i].id] && p.badges[badges[i].id].earned) earned++;
+    }
+    var lessons = data().trainingLessons || [];
+    var lessonDone = 0;
+    for (var L = 0; L < lessons.length; L++) {
+      if (p.lessons && p.lessons[lessons[L].id] && p.lessons[lessons[L].id].passed) lessonDone++;
+    }
+    var xp = (p.drills && p.drills.xp) || 0;
+    if ($("badges-summary")) $("badges-summary").textContent = "Badges " + earned + "/" + badges.length + " · Lessons " + lessonDone + "/" + lessons.length + " · XP " + xp;
+    var next = null;
+    for (var n = 0; n < lessons.length; n++) {
+      if (!(p.lessons && p.lessons[lessons[n].id] && p.lessons[lessons[n].id].passed)) { next = lessons[n]; break; }
+    }
+    if ($("badges-next")) $("badges-next").textContent = next ? ("Next lesson: " + next.title) : "Every lesson passed. Run practice for higher scores.";
+    var cert = $("cert-levels-badges");
+    if (cert) {
+      cert.innerHTML = (data().certLevels || []).map(function (l) {
+        return '<div class="cert-chip"><strong>' + escapeHtml(l.title) + "</strong><span>" + escapeHtml(l.note) + "</span></div>";
+      }).join("");
+    }
+    var grid = $("badge-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    for (var b = 0; b < badges.length; b++) {
+      var bd = badges[b];
+      var on = p.badges && p.badges[bd.id] && p.badges[bd.id].earned;
+      var el = document.createElement("div");
+      el.className = "badge-tile" + (on ? " earned" : "");
+      el.innerHTML = '<div class="badge-ico">' + escapeHtml(bd.icon) + '</div><div class="badge-title">' + escapeHtml(bd.title) + "</div>" +
+        '<div class="badge-sub">' + (on ? "Earned" : "Not yet") + "</div>";
+      grid.appendChild(el);
+    }
+  }
+
+  /* ---------- Calculator (shop estimate only) ---------- */
+  function renderCalc() { /* form lives in index.html */ }
+
+  function runCalc() {
+    var num = function (id, d) { var v = parseFloat(val(id)); return isNaN(v) ? d : v; };
+    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 60);
+    var rivet = num("calc-rivet", 1), recess = num("calc-recess", 1), waste = num("calc-waste", 15);
+    if (waste < 10) waste = 10;
+    if (waste > 20) waste = 20;
+    var mat = num("calc-mat", 0), laborRate = num("calc-labor", 0), hours = num("calc-hours", 0);
+    var sqftPanel = (w * h) / 144;
+    var totalSqft = sqftPanel * n;
+    var adjusted = totalSqft * rivet * recess * (1 + waste / 100);
+    var linearFt = roll > 0 ? (adjusted / (roll / 12)) : 0;
+    var matCost = adjusted * mat;
+    var laborHours = hours * rivet * recess;
+    var laborCost = laborHours * laborRate;
+    var out = $("calc-results");
+    if (!out) return;
+    out.className = "calc-results";
+    out.innerHTML =
+      "<h3>Estimate</h3><ul class=\"checklist\">" +
+      "<li>Sq ft per panel: <strong>" + sqftPanel.toFixed(2) + "</strong></li>" +
+      "<li>Total sq ft (raw): <strong>" + totalSqft.toFixed(2) + "</strong></li>" +
+      "<li>Material sq ft with rivet, recess, and waste (" + waste + "%): <strong>" + adjusted.toFixed(2) + "</strong></li>" +
+      "<li>Linear feet on a " + roll + "\" roll: <strong>" + linearFt.toFixed(1) + "</strong> ft</li>" +
+      "<li>Material: <strong>$" + matCost.toFixed(2) + "</strong></li>" +
+      "<li>Labor: <strong>" + laborHours.toFixed(2) + "</strong> hr → <strong>$" + laborCost.toFixed(2) + "</strong></li>" +
+      "<li>Material + labor: <strong>$" + (matCost + laborCost).toFixed(2) + "</strong></li>" +
+      "</ul>" +
+      '<p class="disclaimer">Shop estimate only. Not a quote. Your markup is your call. Check film yield and the TDS for the exact 3M, Avery Dennison, or Arlon product.</p>';
+  }
+
+  /* ---------- ?lesson= deep link (Field app + Coach) ---------- */
+  var PENDING_LESSON_KEY = "wrap911_pending_lesson";
+  function lessonIdFromUrl() {
+    try {
+      var raw = String(new URLSearchParams(window.location.search).get("lesson") || "").trim();
+      return /^[a-z0-9][a-z0-9-]{0,80}$/i.test(raw) ? raw : "";
+    } catch (e) { return ""; }
+  }
+
+  function applyUrlLesson() {
+    var c = core();
+    if (!c) return false;
+    var id = lessonIdFromUrl();
+    if (!id) { try { id = sessionStorage.getItem(PENDING_LESSON_KEY) || ""; } catch (e2) { id = ""; } }
+    if (!id || !findLesson(id)) return false;
+    var rulesOk = true;
+    try { rulesOk = localStorage.getItem("wrap911_rules_accepted") === "1"; } catch (e3) {}
+    if (!rulesOk) { try { sessionStorage.setItem(PENDING_LESSON_KEY, id); } catch (e4) {} return false; }
+    try { sessionStorage.removeItem(PENDING_LESSON_KEY); } catch (e6) {}
+    openLesson(id);
+    return true;
+  }
+
+  APP.renderLibrary = renderLibrary;
+  APP.renderJobs = renderJobs;
+  APP.openJobEdit = openJobEdit;
+  APP.renderBadges = renderBadges;
+  APP.renderCalc = renderCalc;
+  APP.runCalc = runCalc;
+  APP.openLesson = openLesson;
+  APP.openVehicle = openVehicle;
+  APP.applyUrlLesson = applyUrlLesson;
+  APP.lessonIsFree = lessonIsFree;
+
   APP.renderPracticeHub = renderPracticeHub;
   APP.openPractice = openPractice;
   APP.finishPractice = finishPractice;
@@ -649,42 +1015,4 @@
     if ($("btn-calc") && typeof runCalc === "function") $("btn-calc").addEventListener("click", runCalc);
   };
 
-  /* Fix new job: openJobEdit when id null */
-  if (typeof openJobEdit === "function") {
-  var _openJobEdit = openJobEdit;
-  openJobEdit = function (id) {
-    if (!id) {
-      var c = core();
-      var job = Object.assign({}, data().defaultJob || {}, {
-        id: "job-" + Date.now(),
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        workflowDone: {},
-        materialBrand: "3M",
-        jobType: "box-truck",
-        coverage: "Partial sides + rear"
-      });
-      c.state.jobId = job.id;
-      $("job-edit-title").textContent = "New job";
-      var typeSel = $("job-type");
-      typeSel.innerHTML = (data().vehicles || []).map(function (v) {
-        return '<option value="' + v.id + '"' + (v.id === job.jobType ? " selected" : "") + ">" + escapeHtml(v.title) + "</option>";
-      }).join("");
-      $("job-coverage").value = job.coverage;
-      $("job-brand").value = "3M";
-      $("job-vehicle-photo").value = "";
-      $("job-before").value = "";
-      $("job-after").value = "";
-      $("job-notes").value = "";
-      $("job-completed").checked = false;
-      $("job-fb").className = "quiz-feedback";
-      $("job-fb").textContent = "";
-      renderJobWorkflowChecks(job.jobType, {});
-      c.showScreen("job-edit");
-      return;
-    }
-    _openJobEdit(id);
-  };
-
-}
 })();

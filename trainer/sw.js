@@ -1,21 +1,37 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.8.5-seo";
+var CACHE = "wrap911-trainer-2.6.0-ship";
+var IMG_CACHE = "wrap911-img-v1"; /* photos the user already opened; videos are never cached */
+/* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
   "./",
   "./index.html",
   "./css/style.css",
+  "./css/theme-dark.css",
+  "./js/about.js",
+  "./js/app-core.js",
+  "./js/app.js",
+  "./js/app_extra.js",
+  "./js/captions-fix.js",
+  "./js/coach.js",
   "./js/config.js",
   "./js/data.js",
   "./js/data_extra.js",
-  "./js/app.js",
-  "./js/app-core.js",
+  "./js/ios-license-bridge.js",
+  "./js/jobs-trim.js",
+  "./js/labels-fix.js",
   "./js/license-gate.js",
+  "./js/photos-boost.js",
+  "./js/photos-pack.js",
+  "./js/photos-unique.js",
   "./js/plan-fix.js",
-  "./js/app_extra.js",
-  "./js/coach.js",
+  "./js/practice-fix.js",
+  "./js/problem-upload.js",
+  "./js/problems-db.js",
+  "./js/video-fix.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  "./icons/apple-touch-icon.png"
 ];
 
 function isMediaRequest(url) {
@@ -64,7 +80,7 @@ self.addEventListener("activate", function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k === CACHE) return Promise.resolve();
+        if (k === CACHE || k === IMG_CACHE) return Promise.resolve();
         return caches.delete(k);
       }));
     }).then(function () {
@@ -75,6 +91,20 @@ self.addEventListener("activate", function (event) {
 
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
+  if (/\.(jpe?g|png|webp)$/i.test(new URL(event.request.url).pathname) && new URL(event.request.url).origin === self.location.origin) {
+    event.respondWith(
+      caches.open(IMG_CACHE).then(function (cache) {
+        return cache.match(event.request).then(function (hit) {
+          if (hit) return hit;
+          return fetch(event.request).then(function (res) {
+            if (res && res.ok && new URL(event.request.url).origin === self.location.origin) cache.put(event.request, res.clone());
+            return res;
+          });
+        });
+      }).catch(function () { return new Response("", { status: 503, statusText: "Photo offline" }); })
+    );
+    return;
+  }
   if (isMediaRequest(event.request.url)) {
     event.respondWith(
       fetch(event.request).catch(function () {
@@ -97,7 +127,7 @@ self.addEventListener("fetch", function (event) {
         } catch (e) {}
         return res;
       }).catch(function () {
-        return caches.match(event.request);
+        return caches.match(event.request, { ignoreSearch: true });
       })
     );
     return;
@@ -139,7 +169,7 @@ self.addEventListener("fetch", function (event) {
       } catch (e) {}
       return res;
     }).catch(function () {
-      return caches.match(event.request).then(function (cached) {
+      return caches.match(event.request, { ignoreSearch: event.request.mode === "navigate" }).then(function (cached) {
         if (cached) return cached;
         if (event.request.mode === "navigate") {
           return caches.match("./index.html");

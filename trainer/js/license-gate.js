@@ -3,14 +3,15 @@
   var HOME = "ba0536d462bb84661ab622471863e9137b2e0fad23d9b6367d40e39399bc1108";
   var CREW = "ca397ba52c6efbd986f5cbd43f173cd3fd88a97e54cd4ae1fb723e6454479916";
   var TEASER_SCREENS = {
-    rules: 1, home: 1, pricing: 1, contact: 1, coach: 1,
+    rules: 1, home: 1, pricing: 1, contact: 1, coach: 1, about: 1,
     photos: 1, photo: 1, videos: 1,
     lesson: 1, vehicle: 1, library: 1,
     practice: 1, "practice-hub": 1, module: 1, drills: 1,
     "drill-spot": 1, "drill-checklist": 1
   };
-  var TEASER_PHOTO_MAX = 14;
-  var TEASER_VIDEO_MAX = 2;
+  var cfg0 = window.WRAP911_CONFIG || {};
+  var TEASER_PHOTO_MAX = cfg0.freePhotoSamples || 14;
+  var TEASER_VIDEO_MAX = cfg0.freeVideoSamples || 8;
   var CODE_RE = /WRAP911[- ]?(HOME|CREW|DEMO|PRO)|W911-(PACK|SEAT|FIELD)|enter `WRAP911|Codes \(shop/gi;
 
   var cfg = window.WRAP911_CONFIG || {};
@@ -35,11 +36,13 @@
       if (!lic || lic.expired) return false;
       if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
       if (lic.plan === "free" || lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
-      if (lic.sku === "pack" || lic.sku === "seat") return true;
-      if (lic.code === "SHOP" || lic.code === "STRIPE") return true;
+      if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "field") return true;
+      if (lic.code === "SHOP" || lic.code === "STRIPE" || lic.code === "HOME" || lic.code === "CREW") return true;
     } catch (e) {}
     return false;
   }
+
+  window.WRAP911_GATE = { paid: paid };
 
   function hex(buf) {
     var v = new Uint8Array(buf), s = "", i;
@@ -50,11 +53,12 @@
     return crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(text || "").trim().toUpperCase())).then(hex);
   }
 
-  function applyOwner() {
+  /* WRAP911-HOME = operator shop, free forever (no expiry). WRAP911-CREW = owner crew phones, same. */
+  function applyOwner(kind) {
     var now = Date.now();
     var lic = {
-      code: "SHOP", plan: "pro", sku: "pack", seats: 5,
-      crewCode: "SHOPCS", unlockedAt: now, expiresAt: now + 365 * 86400000
+      code: kind === "CREW" ? "CREW" : "HOME", plan: "free", sku: "home", seats: null,
+      unlockedAt: now, expiresAt: null, source: "owner-code"
     };
     try {
       localStorage.setItem("wrap911_owner", "1");
@@ -66,7 +70,7 @@
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
       fb.className = "quiz-feedback ok";
-      fb.textContent = "Shop license accepted. Full trainer is open.";
+      fb.textContent = "Owner shop code accepted. Full trainer is open. No expiry.";
     }
     goHome();
   }
@@ -98,7 +102,7 @@
   function loadBoost() {
     if (window.WRAP911_BOOST) { afterMedia(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-boost.js?v=293";
+    s.src = "js/photos-boost.js?v=260";
     s.onload = afterMedia;
     s.onerror = afterMedia;
     document.head.appendChild(s);
@@ -107,7 +111,7 @@
   function loadPack() {
     if (window.WRAP911_PACK) { loadBoost(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-pack.js?v=306";
+    s.src = "js/photos-pack.js?v=260";
     s.onload = loadBoost;
     s.onerror = loadBoost;
     document.head.appendChild(s);
@@ -187,7 +191,8 @@
       return false;
     }
     var h = await digest(code);
-    if (h === HOME || h === CREW) { applyOwner(); return true; }
+    if (h === HOME) { applyOwner("HOME"); return true; }
+    if (h === CREW) { applyOwner("CREW"); return true; }
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
       fb.className = "quiz-feedback bad";
@@ -230,13 +235,14 @@
     var shown = 0;
     for (var i = 0; i < cards.length; i++) {
       if (cards[i].classList && cards[i].classList.contains("teaser-paywall")) continue;
+      if (cards[i].getAttribute && cards[i].getAttribute("data-access") === "free") continue;
       shown++;
       if (shown > TEASER_VIDEO_MAX) cards[i].style.display = "none";
     }
     if (!list.querySelector(".teaser-paywall")) {
       var pay = document.createElement("div");
       pay.className = "card tap teaser-paywall";
-      pay.innerHTML = '<div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 · Seat $49 · Tap to unlock</div>';
+      pay.innerHTML = '<div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div>';
       pay.addEventListener("click", goPay);
       list.appendChild(pay);
     }
@@ -284,6 +290,16 @@
             activateScreen(name);
           }
         }
+        /* Audit 2026-09-26: list screens were shown without a re-render (empty library, stale video list after unlock). */
+        try {
+          var A = window.WRAP911_APP || {};
+          var shown = (document.querySelector(".screen.active") || {}).id || "";
+          if (shown === "screen-videos" && A.renderVideos) A.renderVideos();
+          if (shown === "screen-library" && A.renderLibrary) A.renderLibrary();
+          if (shown === "screen-jobs" && A.renderJobs) A.renderJobs();
+          if (shown === "screen-badges" && A.renderBadges) A.renderBadges();
+          if (shown === "screen-practice-hub" && A.renderPracticeHub) A.renderPracticeHub();
+        } catch (e4) {}
         setTimeout(function () { scrub(document.body); limitPhotos(); limitVideos(); }, 0);
         return r;
       };
@@ -304,7 +320,7 @@
     var lead = home.querySelector(".lead");
     var p = document.createElement("p");
     p.className = "lead teaser-pitch";
-    p.textContent = "Free look: shop rules, Coach, 14 photos, plus the trailer rivets clip and the van gate clip. Pack $149 unlocks the other movies.";
+    p.textContent = "Free look: shop rules, Coach, " + TEASER_PHOTO_MAX + " photos, " + TEASER_VIDEO_MAX + " sample videos, and 3 sample lessons. Pack $149 (5 seats, 12 months) unlocks the rest.";
     if (lead && lead.parentNode) lead.parentNode.insertBefore(p, lead.nextSibling);
   }
 
@@ -349,17 +365,20 @@
     }, 0);
   }
   document.addEventListener("click", function (e) {
+    var pw = e.target && e.target.closest && e.target.closest(".teaser-paywall");
+    if (pw) { goPay(); return; }
     var t = e.target && e.target.closest && e.target.closest("#goto-videos, #goto-videos-primary");
     if (!t) return;
     showVideos();
   }, true);
 
+  /* Audit 2026-09-26: ?owner=1 and ?shop=1 used to unlock the full trainer for anyone who typed them.
+     Removed. Owner devices use the WRAP911-HOME code once. ?license=STRIPE is handled by plan-fix.js. */
   function ownerFromUrl() {
     try {
       var q = new URLSearchParams(window.location.search);
-      if (q.get("owner") === "1" || q.get("shop") === "1" || q.get("license") === "STRIPE") {
-        applyOwner();
-        q.delete("owner"); q.delete("shop"); q.delete("license");
+      if (q.get("owner") !== null || q.get("shop") !== null) {
+        q.delete("owner"); q.delete("shop");
         var qs = q.toString();
         history.replaceState({}, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
       }

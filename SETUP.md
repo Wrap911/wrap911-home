@@ -3,7 +3,7 @@
 1. Stripe Payment Links (live)
    - Seat $49 one-time
    - Shop Pack $149 one-time (default sell)
-   - Field $29/mo: KILLED. No monthly obligation.
+   - Field $29/mo: trainer only (fieldSkuLive in trainer/js/config.js). Not on the sales page.
 
 2. Real photos
    Replace every PHOTO SLOT box in trainer.html with shop photos.

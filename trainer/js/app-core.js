@@ -209,7 +209,7 @@
     return false;
   }
 
-  var OPEN_SCREENS = { rules: true, home: true, pricing: true, contact: true, coach: true };
+  var OPEN_SCREENS = { rules: true, home: true, pricing: true, contact: true, coach: true, about: true };
 
   function applyStripeLicense(days) {
     var n = days && days > 0 ? days : (cfg.proPeriodDays || 365);
@@ -273,7 +273,7 @@
         plan: "free",
         badge: "HOME",
         chipClass: "",
-        detail: "Preview only. Full trainer is $149 pack or $49 seat."
+        detail: "WRAP 911 shop. Full trainer, no expiry."
       };
     }
     if (lic.plan === "trial") {
@@ -437,9 +437,9 @@
       } else {
         var extra = "";
         if (lic.expiresAt) {
-          extra = " Renews / expires: " + new Date(lic.expiresAt).toLocaleDateString() + ".";
+          extra = " Expires: " + new Date(lic.expiresAt).toLocaleDateString() + ".";
         }
-        el.textContent = "Active: " + lic.code + " → “" + lic.plan + "”." + extra + " " + meta.detail;
+        el.textContent = "Active: " + (lic.sku === "pack" ? "Shop pack" : lic.sku === "seat" ? "Seat" : lic.code) + "." + extra + " " + meta.detail;
       }
     }
     if (clearBtn) {
@@ -455,9 +455,9 @@
     var modeBanner = $("pricing-mode-banner");
     if (modeBanner) {
       if (cfg.stripeTestMode) {
-        modeBanner.innerHTML = "<strong>TEST MODE</strong> — sandbox Payment Links only (no live charges). Pack-first: PACK $149 · SEAT $49 · FIELD $29/mo.";
+        modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months) · Field $29/mo.";
       } else {
-        modeBanner.innerHTML = "<strong>Live checkout</strong> — W911-PACK $149 · SEAT $49 · FIELD $29/mo. Payment links from shop config only.";
+        modeBanner.innerHTML = "<strong>Checkout</strong> — Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? " · Field $29/mo" : "") + ". One-time for Pack and Seat.";
       }
     }
     var input = $("unlock-code");
@@ -465,12 +465,12 @@
     if (input && lic && lic.code && !lic.expired && !input.value) input.value = lic.code;
     var stripeWrap = $("stripe-link-wrap");
     var stripeBtn = $("btn-stripe-pay");
-    var link = (cfg.stripePaymentLink || "").trim();
+    var link = (cfg.stripeTestMode ? (cfg.stripeTestPackLink || "") : (cfg.stripePaymentLink || "")).trim();
     if (stripeWrap) {
       stripeWrap.classList.toggle("hidden", !link);
     }
     if (stripeBtn) {
-      var test = cfg.stripeTestMode !== false && (link.indexOf("/test_") !== -1 || cfg.stripeTestMode === true);
+      var test = cfg.stripeTestMode === true;
       stripeBtn.textContent = test ? "Open configured payment link (TEST)" : "Open configured payment link";
       stripeBtn.onclick = function () {
         if (link) window.location.href = link;
@@ -479,7 +479,7 @@
     var note = $("stripe-link-note");
     if (note && link) {
       note.textContent = (cfg.stripeTestMode ? "TEST checkout — sandbox cards only, no live charges. " : "") +
-        "After Stripe, you return with ?license=STRIPE and Pro unlocks for 12 months (365 days).";
+        "After Stripe, you land back here and this phone unlocks for 12 months (365 days).";
     }
   }
 
@@ -1295,7 +1295,9 @@
     state.quizLocked = false;
 
     $("photo-title").textContent = pl.title;
-    $("photo-module-tag").textContent = "Maps to: " + pl.module;
+    var plMod = findModule(pl.module);
+    var plLabels = { "commercial-sides": "Vehicle sides", architectural: "Interior / architectural" };
+    $("photo-module-tag").textContent = (plMod && plMod.title) || plLabels[pl.module] || pl.jobType || "Photo lesson";
     var img = $("photo-image");
     img.src = pl.image;
     img.alt = pl.title;
@@ -1380,10 +1382,10 @@
     if (email) {
       emailEl.innerHTML = '<a href="mailto:' + escapeHtml(email) + '">' + escapeHtml(email) + '</a>';
     } else {
-      emailEl.innerHTML = '<span class="muted">Email not set — edit <code>js/config.js</code> (<code>contactEmail</code>) or ask ' +
-        escapeHtml(name) + ' for the shop address.</span>';
+      emailEl.innerHTML = '<span class="muted">Contact email coming soon.</span>';
     }
-    $("contact-brands").textContent = (cfg.brands || ["3M", "Avery Dennison", "Arlon"]).join(", ");
+    var brandsEl = $("contact-brands");
+    if (brandsEl) brandsEl.textContent = (cfg.brands || ["3M", "Avery Dennison", "Arlon"]).join(", ");
   }
 
   function bindNav() {
@@ -1596,7 +1598,10 @@
           /* Hard cache bust: version mismatch → unregister ALL SWs, wipe caches, reload once. */
           try {
             var seen = localStorage.getItem("wrap911_seen_version");
-            if (seen !== cfg.version) {
+            /* Audit 2026-09-26: brand-new visitors (seen === null) used to get a purge + reload on first open. */
+            if (seen === null) {
+              localStorage.setItem("wrap911_seen_version", cfg.version || "");
+            } else if (seen !== cfg.version) {
               var purgeKey = "wrap911_purge_" + (cfg.version || "unknown");
               if (sessionStorage.getItem(purgeKey) !== "1") {
                 sessionStorage.setItem(purgeKey, "1");
@@ -1621,7 +1626,9 @@
 
           navigator.serviceWorker.register("./sw.js").then(function (reg) {
             /* skipWaiting + clients.claim should lead to controllerchange. */
-            navigator.serviceWorker.addEventListener("controllerchange", reloadOnce);
+            /* Only reload on controller swap when a previous worker controlled the page (update, not first install). */
+            var hadController = !!navigator.serviceWorker.controller;
+            navigator.serviceWorker.addEventListener("controllerchange", function () { if (hadController) reloadOnce(); });
             reg.addEventListener("updatefound", function () {
               var worker = reg.installing;
               if (!worker) return;

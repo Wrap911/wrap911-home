@@ -3,7 +3,9 @@
   var COOKIE = "wrap911_lic";
   var LS = "wrap911_license";
   var OWNER = "wrap911_owner";
-  var SEAT = "RIVET-149";
+  /* Audit 2026-09-26: this used to be a plain-text universal unlock code in public JS.
+     Now stored as SHA-256 only. It is still in git history, so retire it once Worker seat codes work. */
+  var SEAT_HASH = "0d284a0c71cd9d96e692a2028026826903f3ceeccf23e03cf4590b3227d0fbe6";
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
 
   function packLicense() {
@@ -37,8 +39,9 @@
     if (!lic || lic.expired) return false;
     if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
     if (lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
-    if (lic.sku === "pack" || lic.sku === "seat") return true;
-    if (lic.code === "SHOP" || lic.code === "STRIPE") return true;
+    if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "field") return true;
+    if (lic.code === "SHOP" || lic.code === "STRIPE" || lic.code === "HOME" || lic.code === "CREW") return true;
+    if (lic.plan === "free" && !lic.expiresAt) return true;
     return false;
   }
   function save(lic) {
@@ -81,13 +84,14 @@
     var box = document.createElement("div");
     box.id = "issued-seat-code";
     box.className = "passion-note";
-    box.innerHTML = "<strong>Your seat code</strong><p>Type <b>" + code + "</b> in Unlock on each phone. " + (sku === "pack" ? seats + " phones." : "This phone only.") + " Write it down.</p>";
+    box.innerHTML = "<strong>Your seat code</strong><p>Type <b>" + escapeText(code) + "</b> in Unlock on each phone. " + (sku === "pack" ? seats + " phones." : "This phone only.") + " Write it down.</p>";
     home.insertBefore(box, home.firstChild);
   }
   function claimSession(id) {
     return fetch(API + "/license/claim?session_id=" + encodeURIComponent(id)).then(function (res) {
       return res.json().then(function (data) {
-        if (!res.ok || !data.ok) throw new Error(data.error || "Could not read the payment.");
+        /* The Worker answers any GET with {ok:true, service:...}. Only a real seat code counts. */
+        if (!res.ok || !data.ok || !/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(data.code || ""))) throw new Error(data.error || "Seat code server is not live yet. Your checkout still unlocked this phone.");
         return data;
       });
     }).then(function (data) {
@@ -104,12 +108,15 @@
       body: JSON.stringify({ code: code })
     }).then(function (res) {
       return res.json().then(function (data) {
-        if (!res.ok || !data.ok) throw new Error(data.error || "Code rejected.");
+        if (!res.ok || !data.ok || !data.sku) throw new Error(data.error || "Code rejected.");
         applyRemote(data);
         refreshUi();
         return data;
       });
     });
+  }
+  function escapeText(t) {
+    return String(t || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
   }
   function standalone() {
     return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
@@ -129,7 +136,7 @@
     if (lead && lead.parentNode) lead.parentNode.insertBefore(box, lead.nextSibling);
     else home.insertBefore(box, home.firstChild);
   }
-  window.WRAP911_LICENSE_BRIDGE = { save: save, restore: restore, valid: valid, packLicense: packLicense, seatCode: SEAT };
+  window.WRAP911_LICENSE_BRIDGE = { save: save, restore: restore, valid: valid, packLicense: packLicense };
   try {
     var origSet = localStorage.setItem.bind(localStorage);
     var origRemove = localStorage.removeItem.bind(localStorage);
@@ -143,12 +150,27 @@
       if (k === LS || k === OWNER) clearCookie();
     };
   } catch (e3) {}
+  function sha(text) {
+    try {
+      return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buf) {
+        var v = new Uint8Array(buf), out = "";
+        for (var i = 0; i < v.length; i++) out += ("0" + v[i].toString(16)).slice(-2);
+        return out;
+      });
+    } catch (e) { return Promise.resolve(""); }
+  }
   function takeCode(code, fb) {
-    if (code === SEAT) {
-      save(packLicense());
-      if (fb) { fb.className = "quiz-feedback ok"; fb.textContent = "Pack is on this icon. Full trainer is open."; }
-      refreshUi();
-      setTimeout(function () { location.reload(); }, 400);
+    if (/^RIVET-\d{3}$/.test(code)) {
+      sha(code).then(function (h) {
+        if (h !== SEAT_HASH) {
+          if (fb) { fb.className = "quiz-feedback bad"; fb.textContent = "Code not recognized."; }
+          return;
+        }
+        save(packLicense());
+        if (fb) { fb.className = "quiz-feedback ok"; fb.textContent = "Pack is on this icon. Full trainer is open."; }
+        refreshUi();
+        setTimeout(function () { location.reload(); }, 400);
+      });
       return true;
     }
     if (!/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) return false;
@@ -191,7 +213,7 @@
         var home = document.getElementById("screen-home") || document.body;
         var box = document.createElement("div");
         box.className = "passion-note";
-        box.innerHTML = "<strong>Payment received, code not ready</strong><p>" + (err.message || "The license server is not set up yet.") + "</p>";
+        box.innerHTML = "<strong>Seat code not ready</strong><p>" + escapeText(err.message || "The license server is not set up yet.") + "</p>";
         home.insertBefore(box, home.firstChild);
       });
     }

@@ -8,7 +8,7 @@ https://wrap911.github.io/wrap911-home/
 ## Make money (required, in order)
 
 1. Repo Settings → Pages → Deploy from branch `main` / root.
-2. Stripe Payment Links: Seat $49, Shop Pack $149. (Field $29/mo SKU killed — no monthly pack obligation.)
+2. Stripe Payment Links: Shop Pack $149 (default), Seat $49. Field $29/mo is sold in the trainer only (not on the sales page).
 3. Paste those URLs into index.html Buy buttons and push.
 4. Put real photos and Drive clips into the trainer modules.
 5. Send the Pages URL to shops.

@@ -66,6 +66,8 @@ window.WRAP911_DATA.trainingLessons = [
     "id": "bt-rivet-mastery",
     "vehicleId": "box-truck",
     "title": "Rivet Mastery",
+    "goal": "One rivet row seated head by head. No tents or silvering after cool-down.",
+    "timeBox": "30 min drill: one rivet row on a scrap panel (starting target — set your own)",
     "badgeId": "badge-bt-rivet",
     "media": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
     "mediaType": "photo",
@@ -108,7 +110,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "What heat guidance should you follow for rivet work?",
         "choices": [
-          "Always 250F for every brand.",
+          "Use one fixed heat number for every brand.",
           "Follow the film maker's TDS for the exact 3M, Avery Dennison, or Arlon product.",
           "Hold the torch until the film looks melted and glossy."
         ],
@@ -124,12 +126,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 1
       }
     ],
-    "relatedVideoId": "v-mid-6788"
+    "relatedVideoId": "v-mid-6788",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "bt-oversized-panels",
     "vehicleId": "box-truck",
     "title": "Oversized Panel Handling",
+    "goal": "Hang one tall panel level with two people. Nobody stretches off a ladder.",
+    "timeBox": "45 min, two techs (starting target — set your own)",
     "badgeId": "badge-bt-panels",
     "media": "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg",
     "mediaType": "photo",
@@ -142,7 +148,7 @@ window.WRAP911_DATA.trainingLessons = [
     ],
     "tools": [
       "Extension ladder (locked)",
-      "Hingemate / masking tape",
+      "Hinge tape / masking tape",
       "Magnet holders",
       "Wide soft squeegee",
       "Second installer"
@@ -188,12 +194,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-8959"
+    "relatedVideoId": "v-mid-8962",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "bt-rollup-door",
     "vehicleId": "rv-bus",
     "title": "Class C RV Panel Walkaround",
+    "goal": "Walk a finished RV and log every lift, gap, and stripe break before it leaves.",
+    "timeBox": "20 min walkaround (starting target — set your own)",
     "badgeId": "badge-bt-rollup",
     "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "mediaType": "photo",
@@ -252,12 +262,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-1039"
+    "relatedVideoId": "v-mid-1039",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "bt-swing-door",
     "vehicleId": "box-truck",
     "title": "Swing Door Workflow",
+    "goal": "Graphic lines up across both doors. Hinge cuts are clean. Doors slam without lift.",
+    "timeBox": "45 min per door pair (starting target — set your own)",
     "badgeId": "badge-bt-swing",
     "media": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
     "mediaType": "photo",
@@ -315,25 +329,29 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-5342"
+    "relatedVideoId": "v-named-architectural-wrap-cutting-a-1otK4E",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "bt-prep-cleaning",
     "vehicleId": "rv-bus",
-    "title": "Prep stack — magenta base & grey overlay peel",
+    "title": "Prep & Cleaning — Dirt Traps",
+    "goal": "A fresh white towel comes back clean. No residue at rivets, seals, or hardware.",
+    "timeBox": "20–30 min per side (starting target — set your own)",
     "badgeId": "badge-bt-prep",
     "media": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
       "Degrease top-to-bottom; chase dirt traps at rivets and hardware",
-      "Two-cloth 70% IPA finish until wipe is clean",
+      "Two-cloth IPA finish (mix per the film maker’s cleaning guide) until wipe is clean",
       "Hunt silicone near seals and prior graphics",
       "Do not lay film on wet or oily residue"
     ],
     "tools": [
       "Degreaser approved for paint",
-      "70% IPA",
+      "IPA (mix per the film maker’s cleaning guide)",
       "Microfiber (wet + dry)",
       "Detail brushes",
       "Plastic razors if needed"
@@ -355,7 +373,7 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "Most immediate risk from runoff streaks under hardware?",
         "choices": [
           "Residue that blocks adhesive bond on 3M / Avery Dennison / Arlon film.",
-          "Proof paint needs a 30-day outgas wait.",
+          "Fresh paint means the job must wait no matter what.",
           "You must switch to calendared film only."
         ],
         "answer": 0
@@ -363,7 +381,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Preferred final wipe?",
         "choices": [
-          "Two-cloth 70% IPA: wet then dry until clean.",
+          "Two-cloth IPA (mix per the film maker’s cleaning guide): wet then dry until clean.",
           "Dish soap left to air-dry.",
           "Light WD-40 for squeegee glide."
         ],
@@ -379,12 +397,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-7694"
+    "relatedVideoId": "v-mid-7694",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "van-deep-recess",
     "vehicleId": "van",
     "title": "Deep Recess / Liftgate Tuck",
+    "goal": "Liftgate recess fed and seated. No bridge over the plate pocket.",
+    "timeBox": "40 min per liftgate (starting target — set your own)",
     "badgeId": "badge-van-recess",
     "media": "media/videos/van/white-liftgate-recess-tuck.jpg",
     "mediaType": "photo",
@@ -442,12 +464,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-0020"
+    "relatedVideoId": "v-mid-0020",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "van-sliding-door",
     "vehicleId": "van",
     "title": "Sliding Door Alignment",
+    "goal": "Bands line up across the slider, door shut and open. Nothing binds in the track.",
+    "timeBox": "45 min per side (starting target — set your own)",
     "badgeId": "badge-van-slide",
     "media": "media/videos/fleet/fleet-van-seam-tuck.jpg",
     "mediaType": "photo",
@@ -505,12 +531,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-697405"
+    "relatedVideoId": "v-mid-697405",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "van-roof-safety",
     "vehicleId": "rv-bus",
     "title": "RV/Bus Roof & Ladder Safety",
+    "goal": "Tall work done from a locked platform, clear floor, two people. No top-cap standing.",
+    "timeBox": "10 min setup check before every high hang (starting target — set your own)",
     "badgeId": "badge-van-roof",
     "media": "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg",
     "mediaType": "photo",
@@ -568,12 +598,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-8956"
+    "relatedVideoId": "v-mid-8962",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "van-rear-hinge",
     "vehicleId": "van",
     "title": "Rear Hinge Mapping",
+    "goal": "Rear doors registered before the full liner comes off. Hinge cuts planned, not torn.",
+    "timeBox": "45 min per door pair (starting target — set your own)",
     "badgeId": "badge-van-hinge",
     "media": "media/videos/van/d-pillar-taillight-mid-install.jpg",
     "mediaType": "photo",
@@ -631,21 +665,25 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-3886"
+    "relatedVideoId": "v-mid-3886",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "sf-wet-install",
     "vehicleId": "storefront",
     "title": "Wet Soft-Seat Recess",
+    "goal": "Recess soft-seated wet. No trapped fluid, grit, or corner puddles.",
+    "timeBox": "30 min per recess (starting target — set your own)",
     "badgeId": "badge-sf-wet",
     "media": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
-      "Mist application fluid per the exact film TDS \u2014 don't invent a mix",
+      "Mist application fluid per the exact film TDS — don't invent a mix",
       "Soft-seat magenta film into the architectural recess/cubby with a felt squeegee",
       "Chase fluid and air to open edges; don't trap puddles in corners",
-      "This is fixture/cubby wet seating \u2014 not storefront glass or silicone removal"
+      "This is fixture/cubby wet seating — not storefront glass or silicone removal"
     ],
     "tools": [
       "Application fluid / spray bottle",
@@ -670,7 +708,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "What does this wet soft-seat recess lesson actually cover?",
         "choices": [
-          "Application-fluid soft-seat into an architectural cubby/recess \u2014 not storefront glass.",
+          "Application-fluid soft-seat into an architectural cubby/recess — not storefront glass.",
           "Silicone removal from plate glass only.",
           "Outdoor wind staging for tall curtainwall."
         ],
@@ -695,12 +733,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-7696"
+    "relatedVideoId": "v-mid-7696",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "sf-perf-film",
     "vehicleId": "storefront",
     "title": "Architectural Panel Hang",
+    "goal": "Pattern lines match across panels. Returns seated before any trim.",
+    "timeBox": "45 min per panel (starting target — set your own)",
     "badgeId": "badge-sf-perf",
     "media": "media/videos/architectural/architectural-brick-film-stainless-panel-hang.jpg",
     "mediaType": "photo",
@@ -758,12 +800,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-1876"
+    "relatedVideoId": "v-named-architectural-wall-wrap-18yx_q",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "sf-multipane",
     "vehicleId": "storefront",
     "title": "Cubby / Recess Registration",
+    "goal": "Every bay matches the next: same reveal, same edge, same baseline.",
+    "timeBox": "15 min survey, then 20 min per bay (starting target — set your own)",
     "badgeId": "badge-sf-multipane",
     "media": "media/videos/architectural/cubbies-compare-magenta-vs-white-liners.jpg",
     "mediaType": "photo",
@@ -771,7 +817,7 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Compare adjacent cubby bays for liner color and edge consistency",
       "Register floor-to-wall returns bay-to-bay before final lock",
-      "Measure each recess \u2014 don't assume identical openings",
+      "Measure each recess — don't assume identical openings",
       "Step-back QC for continuity across the fixture run"
     ],
     "tools": [
@@ -790,13 +836,13 @@ window.WRAP911_DATA.trainingLessons = [
       "Mark shared baselines on returns and floors.",
       "Install bay-by-bay to registration marks.",
       "Trim edges consistently; keep reveals even.",
-      "Step-back QC across the fixture \u2014 not sidewalk pane claims."
+      "Step-back QC across the fixture — not sidewalk pane claims."
     ],
     "quiz": [
       {
         "q": "Why measure each cubby/recess individually?",
         "choices": [
-          "Bay sizes often differ \u2014 assumptions skew registration.",
+          "Bay sizes often differ — assumptions skew registration.",
           "All fixture cubbies are always identical.",
           "Measuring replaces cleaning."
         ],
@@ -821,12 +867,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-7701"
+    "relatedVideoId": "v-mid-7701",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "sf-weather",
     "vehicleId": "storefront",
     "title": "Corner Trim / Edge Finish",
+    "goal": "Clean knife line in the crease. No chewed edge. No lift after cool-down.",
+    "timeBox": "15 min drill: five corners (starting target — set your own)",
     "badgeId": "badge-sf-weather",
     "media": "media/videos/architectural/hand-seat-corner-knife-trim.jpg",
     "mediaType": "photo",
@@ -834,8 +884,8 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Hand-seat film fully into the interior corner before any knife work",
       "Knife-trim in the crease; remove curled scrap cleanly",
-      "Fresh blades \u2014 dull blades tear magenta film at corners",
-      "Follow product TDS for any post-trim heat lock \u2014 never invent temps"
+      "Fresh blades — dull blades tear magenta film at corners",
+      "Follow product TDS for any post-trim heat lock — never invent temps"
     ],
     "tools": [
       "Fresh snap-off blades",
@@ -877,19 +927,23 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Heat after corner trim?",
         "choices": [
-          "Only if the film TDS calls for edge lock \u2014 never invent a temperature.",
+          "Only if the film TDS calls for edge lock — never invent a temperature.",
           "Always max torch until the corner glosses.",
           "Heat replaces the need for a sharp blade."
         ],
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-7699"
+    "relatedVideoId": "v-mid-7699",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "tr-rivet-rows",
     "vehicleId": "trailer",
     "title": "Trailer Rivet Rows",
+    "goal": "Rivet rows seated after alignment. No scorched transfer tape. No tents.",
+    "timeBox": "30 min per row section (starting target — set your own)",
     "badgeId": "badge-tr-rivets",
     "media": "media/videos/trailer/magenta-trailer-rivet-row-channel-detail.jpg",
     "mediaType": "photo",
@@ -947,14 +1001,18 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-6789"
+    "relatedVideoId": "v-mid-6788",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "tr-roofline",
     "vehicleId": "trailer",
     "title": "Trailer Tall-Side Roofline",
+    "goal": "Top edge runs straight the full length. Seams shed water.",
+    "timeBox": "20 min layout before the hang (starting target — set your own)",
     "badgeId": "badge-tr-roof",
-    "media": "",
+    "media": "media/videos/trailer/orange-99-month-ladder-roofline-seat.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1010,12 +1068,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-8971"
+    "relatedVideoId": "v-mid-8971",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "tr-door-hinge",
     "vehicleId": "trailer",
     "title": "Door Hinge Cutting",
+    "goal": "Hinge cuts land in the void. No paint scores. Door cycles clean.",
+    "timeBox": "20 min per hinge set (starting target — set your own)",
     "badgeId": "badge-tr-hinge",
     "media": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "mediaType": "photo",
@@ -1073,14 +1135,18 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-8974"
+    "relatedVideoId": "v-mid-8974",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "tr-panel-seg",
     "vehicleId": "trailer",
     "title": "Panel Segmentation",
+    "goal": "Segments line up. No logo cut through a seam. QC between every segment.",
+    "timeBox": "15 min planning, then QC after each segment (starting target — set your own)",
     "badgeId": "badge-tr-seg",
-    "media": "",
+    "media": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1136,12 +1202,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-6795"
+    "relatedVideoId": "v-mid-6790",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "fl-alignment",
     "vehicleId": "fleet",
     "title": "Fleet Alignment Rules",
+    "goal": "Unit 2 matches unit 1 on your fleet sheet. Photo proof.",
+    "timeBox": "15 min measure card per unit (starting target — set your own)",
     "badgeId": "badge-fl-align",
     "media": "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg",
     "mediaType": "photo",
@@ -1199,14 +1269,18 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-3880"
+    "relatedVideoId": "v-named-graphic-installation-1-1gNZhI",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "fl-multi-vehicle",
     "vehicleId": "fleet",
     "title": "Multi-Vehicle Workflow",
+    "goal": "Every panel labeled by unit. Nothing leaves without QC sign-off.",
+    "timeBox": "10 min intake per vehicle (starting target — set your own)",
     "badgeId": "badge-fl-multi",
-    "media": "",
+    "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1262,12 +1336,16 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-1871"
+    "relatedVideoId": "v-mid-697405",
+    "failPhoto": "",
+    "passPhoto": ""
   },
   {
     "id": "fl-qc",
     "vehicleId": "fleet",
     "title": "Fleet Quality Control",
+    "goal": "Same checklist, same photos, every unit. Lead signs off.",
+    "timeBox": "15 min per unit (starting target — set your own)",
     "badgeId": "badge-fl-qc",
     "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
     "mediaType": "photo",
@@ -1325,7 +1403,9 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-8752"
+    "relatedVideoId": "v-named-corngraphic-1_ycBu",
+    "failPhoto": "",
+    "passPhoto": ""
   }
 ];
 window.WRAP911_DATA.workflowSteps = {
@@ -1335,7 +1415,7 @@ window.WRAP911_DATA.workflowSteps = {
       "title": "Prep & Cleaning",
       "type": "Prep",
       "media": "media/videos/prep/magenta-strip-prep-alcohol-wipe-ready.jpg",
-      "instructions": "Degrease box sides and rear top-to-bottom. Detail rivets, channels, door seals, and plate pocket. Finish with two-cloth 70% IPA. Do not hang film on residue or wet surfaces.",
+      "instructions": "Degrease box sides and rear top-to-bottom. Detail rivets, channels, door seals, and plate pocket. Finish with two-cloth IPA (mix per the film maker’s cleaning guide). Do not hang film on residue or wet surfaces.",
       "tools": [
         "Degreaser",
         "IPA",
@@ -1714,7 +1794,7 @@ window.WRAP911_DATA.workflowSteps = {
       "steps": [
         "Clear dust/oil from the next face under shop light",
         "Stage magenta strip, felt squeegee, and liner path",
-        "Two-cloth 70% IPA wipe until clean and dry",
+        "Two-cloth IPA (mix per the film maker’s cleaning guide) wipe until clean and dry",
         "Soft-seat the strip; chase air to open edges"
       ]
     },
@@ -2242,10 +2322,10 @@ window.WRAP911_DATA.badges = [
   }
 ];
 window.WRAP911_DATA.VIDEO_CATALOG = [
-{
+  {
     "id": "v-mid-3886",
     "access": "paid",
-    "title": "Pink caddy wrap 9",
+    "title": "D-pillar and taillight, mid-install",
     "category": "Van",
     "subcategory": "Doors",
     "type": "clip",
@@ -2257,10 +2337,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~3.5s). Dusty-rose film around D-pillar / taillight; alcohol + microfiber on the bumper. Edge/light install. Follow product TDS for any heat."
   },
-{
+  {
     "id": "v-mid-697405",
     "access": "paid",
-    "title": "Van recess",
+    "title": "Fleet van seam tuck",
     "category": "Fleet",
     "subcategory": "Seams",
     "type": "clip",
@@ -2272,10 +2352,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-seam",
     "note": "Shop clip (~17s). Blue fleet van graphics; tuck a stripe/edge into the body line. Side-panel finish / seam tuck."
   },
-{
+  {
     "id": "v-mid-7685",
     "access": "paid",
-    "title": "Vinyl oncabinet1",
+    "title": "Box interior — edge knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2287,10 +2367,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-seam",
     "note": "Shop clip (~14s). Shop POV of lining a plywood display/fixture box with glossy magenta (hot-pink) film. Installer knives excess at the top rim after the floor and one wall are already covered. Pre-cut magenta rectangles sit on the bench. 3M Controltac liner appears later in the same job series. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7688",
     "access": "paid",
-    "title": "Vinyl oncabinet2",
+    "title": "Strip prep — alcohol wipe, ready to lay",
     "category": "Prep",
     "subcategory": "Material Prep",
     "type": "clip",
@@ -2302,10 +2382,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "",
     "note": "Shop clip (~12s). Installer handles a long glossy magenta strip over the bench with IPA spray bottle and white/yellow felt squeegee visible. Same plywood box job — preparing wall strips after floor work. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7689",
     "access": "paid",
-    "title": "Vinyl oncabinet2",
+    "title": "Liner peel — box floor hang",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2317,10 +2397,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~26s). Close-up liner peel of glossy magenta film into the plywood box floor/channel. White liner shows 3M Controltac Graphic Marking System branding. Yellow knife on the blue bench; pre-cuts staged. Clock shows shop time ~1:54. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7690",
     "access": "paid",
-    "title": "Vinyl oncabinet3",
+    "title": "Deep corner tuck with felt squeegee",
     "category": "Storefront/Architectural",
     "subcategory": "Recesses",
     "type": "clip",
@@ -2332,10 +2412,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~32s). Installer tucks glossy magenta film into a deep three-way interior corner of the fixture box using a white squeegee with yellow/tan felt buffer. Manages bridging/fingers at the vertex. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7692",
     "access": "paid",
-    "title": "Vinyl oncabinet4",
+    "title": "Inner wall squeegee — 3M Controltac",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2347,10 +2427,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~18s). Squeegeeing magenta film up an interior wall/corner. Discarded liner clearly shows 3M Controltac. Yellow detail tool rests on the floor panel; plotter and vinyl racks in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7694",
-    "access": "free",
-    "title": "Vinyl oncabinet5",
+    "access": "paid",
+    "title": "Overlay peel on a base layer stack",
     "category": "Prep",
     "subcategory": "Material Prep",
     "type": "clip",
@@ -2362,10 +2442,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "",
     "note": "Shop clip (~3s). Very short clip: hand peels a matte/satin grey film piece relative to glossy magenta sheets on the bench — accent/stack prep for the same fixture job. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7695",
     "access": "paid",
-    "title": "Vinyl oncabinet6",
+    "title": "Strip handling — weeding stage",
     "category": "Prep",
     "subcategory": "Material Prep",
     "type": "clip",
@@ -2377,10 +2457,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "",
     "note": "Shop clip (~7s). Handling long glossy magenta strips and staging pre-cuts near the wide-format cutter. Mix of liner peel into the box and bench weeding/organization. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7696",
     "access": "paid",
-    "title": "Vinyl oncabinet6",
+    "title": "Gloss recess — glass it out",
     "category": "Storefront/Architectural",
     "subcategory": "Recesses",
     "type": "clip",
@@ -2392,10 +2472,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~63s). Longer (~63s) detail of tensioning/glassing magenta film and seating it into deep box recesses with a yellow squeegee under bright shop LEDs. High-gloss reflections make dirt and fingers obvious. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7697",
     "access": "paid",
-    "title": "Vinyl oncabinet7",
+    "title": "Corner tuck with relief cut",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2407,10 +2487,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-seam",
     "note": "Shop clip (~35s). Yellow corner tool seats film, then a slim knife trims/relieves the interior corner. Later frame shows rim trim on the plywood edge with alcohol bottle and printer in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7699",
     "access": "paid",
-    "title": "Vinyl oncabinet8",
+    "title": "Hand-seat the corner, knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2422,10 +2502,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-seam",
     "note": "Shop clip (~43s). Hand presses magenta film into a vertical interior corner, then knives a clean cut in the crease, removing a curled scrap. Shop cans and broom in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-7701",
     "access": "paid",
-    "title": "Vinyl oncabinet9 finalized",
+    "title": "Cubbies — compare liners, finished",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2437,7 +2517,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~6s). Plywood cubby fixture on orange-edged bench: one bay lined glossy magenta, adjacent bay white/satin. Training/demo of multi-bay fixture lining consistency. Follow product TDS for any heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-6788",
     "access": "paid",
     "title": "Magenta Rivet Field — Tented Heads",
@@ -2452,10 +2532,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-rivet",
     "note": "Shop clip (~8s). Close-up of glossy magenta film over seated/tented hardware heads on a commercial panel; neon-yellow accents nearby. Still replaced to show real rivet/hardware heads (prior still was a flat Music Den graphic). Use for rivet-field teaching. Follow product TDS for heat/post-heat — do not invent temperatures."
   },
-{
+  {
     "id": "v-mid-0020",
     "access": "paid",
-    "title": "Rear vehicle rear wrap2",
+    "title": "Liftgate recess tuck",
     "category": "Van",
     "subcategory": "Doors",
     "type": "clip",
@@ -2467,10 +2547,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~34s). Installer tucks white film into the rear liftgate license-plate recess and around chrome trim on a white SUV. Shows mid-install finger work with loose edges still hanging. Follow product TDS for any heat — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-3884",
     "access": "paid",
-    "title": "Pink caddy wrap 7",
+    "title": "GMC C-pillar tuck from the ladder",
     "category": "Fleet",
     "subcategory": "Doors",
     "type": "clip",
@@ -2482,10 +2562,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-seam",
     "note": "Shop clip (~38s). Installer on step stool tucks dusty-rose film into upper C-pillar / roof-rail trim on black GMC SUV; liner scrap on floor. Height + edge tuck lesson. Same series as IMG_3886. Follow product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-3885",
     "access": "paid",
-    "title": "Pink caddy wrap 8",
+    "title": "GMC chrome trim finish",
     "category": "Fleet",
     "subcategory": "QC",
     "type": "clip",
@@ -2497,10 +2577,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "",
     "note": "Shop clip (~26s). Close finish look at dusty-rose panels meeting horizontal/vertical chrome trim on GMC SUV. QC for tuck quality and reflection cleanliness. Same dusty-rose series. Follow product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-5540",
     "access": "paid",
-    "title": "Contour wrapping",
+    "title": "Carbon-pattern bumper recess seat",
     "category": "Van",
     "subcategory": "Recesses",
     "type": "clip",
@@ -2512,10 +2592,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~31s). Gloss carbon-fiber–pattern vinyl seating into a rear bumper recess beside mesh vent; excess film still bunched. Texture film in a pocket/recess. Follow product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-6790",
     "access": "paid",
-    "title": "Vinyl remove2",
+    "title": "Trailer side graphic — hang stage",
     "category": "Trailer",
     "subcategory": "Panels",
     "type": "clip",
@@ -2527,10 +2607,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~15s). Wider white trailer side with magenta/orange DONUTS graphic mid-hang; transfer-tape/liner bunched at top edge; rivets visible under film and on white upper. Same job as IMG_6788. Follow product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-8962",
     "access": "paid",
-    "title": "Rv orange",
+    "title": "Tall trailer side hang from the ladder",
     "category": "Trailer",
     "subcategory": "Panels",
     "type": "clip",
@@ -2542,10 +2622,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~26s). Installer on A-frame ladder works tall orange graphic with white '99' / MONTH lettering; 3M liner/roll visible nearby. Tall-side ladder safety + large panel hang. Follow 3M product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-8974",
     "access": "paid",
-    "title": "Rv vinyl3",
+    "title": "Side door recess — trim from the ladder",
     "category": "Trailer",
     "subcategory": "Doors",
     "type": "clip",
@@ -2557,10 +2637,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~24s). Installer on ladder seats/trims orange/red film into a side door recess; heat gun staged on ladder; cart with tape/sealant nearby. Tall commercial door detail. Related to IMG_8962/8965 series. Follow film TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-1039",
     "access": "paid",
-    "title": "Rv wrap walk around",
+    "title": "Class C RV stripe walkaround",
     "category": "RV/Bus",
     "subcategory": "QC",
     "type": "clip",
@@ -2572,10 +2652,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~33s). Outdoor walkaround of a finished Ford E-350 Class C motorhome with multi-color horizontal stripe graphics (blue / yellow / orange) aligned across door gaps and body sections. Stripe continuity / finished-job QC. Follow film TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-6796",
     "access": "paid",
-    "title": "Signs of a bad install",
+    "title": "Hardware cutout and edge tuck",
     "category": "Trailer",
     "subcategory": "Trim",
     "type": "clip",
@@ -2587,10 +2667,10 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~13s). Tight detail on glossy magenta/red film around a hardware cutout and brushed-metal trim; finger work at the recessed edge. Same magenta trailer series as IMG_6788–6797. Follow product TDS — no invented temperatures."
   },
-{
+  {
     "id": "v-mid-8971",
     "access": "paid",
-    "title": "Rv vinyl2",
+    "title": "Roofline seat from the ladder",
     "category": "Trailer",
     "subcategory": "Panels",
     "type": "clip",
@@ -2620,7 +2700,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-vinyl-removal-1Wvo1G",
     "access": "paid",
-    "title": "Vinyl Removal",
+    "title": "Vinyl removal",
     "category": "Prep",
     "subcategory": "Technique",
     "type": "clip",
@@ -2665,7 +2745,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-corngraphic-1_ycBu",
     "access": "free",
-    "title": "Corngraphic",
+    "title": "Corn graphic — QC check",
     "category": "QC",
     "subcategory": "Inspection",
     "type": "clip",
@@ -2695,7 +2775,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-smith-field-food-truck-12d1m0",
     "access": "paid",
-    "title": "Smith field food truck",
+    "title": "Food truck wrap",
     "category": "RV/Bus",
     "subcategory": "Panels",
     "type": "clip",
@@ -2710,7 +2790,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-blue-rv-wrap-1Ckzyv",
     "access": "paid",
-    "title": "BlueRV. Wrap",
+    "title": "Blue RV wrap",
     "category": "RV/Bus",
     "subcategory": "Panels",
     "type": "clip",
@@ -2725,7 +2805,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-satin-wrap-cherokee-1y2x7R",
     "access": "paid",
-    "title": "Satin wrap Cherokee",
+    "title": "Satin wrap — Cherokee",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -2739,7 +2819,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-cutting-vinyl-4-12OuH3",
-    "access": "free",
+    "access": "paid",
     "title": "Cutting vinyl 4",
     "category": "Prep",
     "subcategory": "Technique",
@@ -2769,7 +2849,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-cutting-vinyl-6-1WQRED",
-    "access": "free",
+    "access": "paid",
     "title": "Cutting vinyl 6",
     "category": "Prep",
     "subcategory": "Technique",
@@ -2784,7 +2864,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-vinyl-cabinet-installed-1kTrGV",
-    "access": "free",
+    "access": "paid",
     "title": "Vinyl cabinet installed",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
@@ -2799,8 +2879,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-vinyl-oncabinet8-18oCVi",
-    "access": "free",
-    "title": "Vinyl oncabinet8",
+    "access": "paid",
+    "title": "Cabinet wrap — part 8",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2814,7 +2894,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-torch-in-vinyl-3-1uAbFN",
-    "access": "free",
+    "access": "paid",
     "title": "Torch in vinyl 3",
     "category": "Prep",
     "subcategory": "Technique",
@@ -2829,8 +2909,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-vinyl-cutting1-1SZrR5",
-    "access": "free",
-    "title": "Vinyl cutting1",
+    "access": "paid",
+    "title": "Cutting vinyl 1",
     "category": "Prep",
     "subcategory": "Technique",
     "type": "clip",
@@ -2875,7 +2955,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-torch-on-vinyl1-1NfBta",
     "access": "paid",
-    "title": "Torch on vinyl1",
+    "title": "Torch on vinyl 1",
     "category": "Prep",
     "subcategory": "Technique",
     "type": "clip",
@@ -2890,7 +2970,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-torch-on-vinyl2-1Tk1xt",
     "access": "paid",
-    "title": "Torch on vinyl2",
+    "title": "Torch on vinyl 2",
     "category": "Prep",
     "subcategory": "Technique",
     "type": "clip",
@@ -2920,7 +3000,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-wrapping-around-trailer-mark-1Y3WJb",
     "access": "paid",
-    "title": "Wrapping around trailer marking light",
+    "title": "Wrapping around a trailer marker light",
     "category": "Trailer",
     "subcategory": "Panels",
     "type": "clip",
@@ -2965,7 +3045,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-pink-wrap-caddy-1-1G1W_l",
     "access": "free",
-    "title": "Pink wrap caddy 1",
+    "title": "Pink Caddy wrap 1",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -2979,8 +3059,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-pink-caddy-wrap5-1CBWZ0",
-    "access": "free",
-    "title": "Pink caddy wrap5",
+    "access": "paid",
+    "title": "Pink Caddy wrap 5",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -3009,8 +3089,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-cutting-vinyl3-1GT3fB",
-    "access": "free",
-    "title": "Cutting vinyl3",
+    "access": "paid",
+    "title": "Cutting vinyl 3",
     "category": "Prep",
     "subcategory": "Technique",
     "type": "clip",
@@ -3024,7 +3104,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-cutting-vinyl-5-15wD6M",
-    "access": "free",
+    "access": "paid",
     "title": "Cutting vinyl 5",
     "category": "Prep",
     "subcategory": "Technique",
@@ -3039,8 +3119,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-pink-caddy-wrap3-1bs6tn",
-    "access": "free",
-    "title": "Pink caddy wrap3",
+    "access": "paid",
+    "title": "Pink Caddy wrap 3",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -3054,8 +3134,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-pink-caddy-wrap4-1A3qMJ",
-    "access": "free",
-    "title": "Pink caddy wrap4",
+    "access": "paid",
+    "title": "Pink Caddy wrap 4",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -3070,7 +3150,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-wrap-sque-14Wtby",
     "access": "free",
-    "title": "Architectural wall wrap squeegee sequence",
+    "title": "Wall wrap — squeegee sequence",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3085,7 +3165,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-vinyl-panel-pr-13pihm",
     "access": "paid",
-    "title": "Architectural vinyl panel pre install prep",
+    "title": "Wall panel — pre-install prep",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3100,7 +3180,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-panel-cutting--1bucxT",
     "access": "paid",
-    "title": "Architectural panel cutting excess vinyl after install 1",
+    "title": "Wall panel — trim excess after install 1",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3114,8 +3194,8 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-architectural-panel-cutting--1qn3lV",
-    "access": "free",
-    "title": "Architectural panel cutting excess vinyl after install 2",
+    "access": "paid",
+    "title": "Wall panel — trim excess after install 2",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3130,7 +3210,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-vinyl-pan-1_jsQ7",
     "access": "paid",
-    "title": "Architectural wall vinyl panel using heat to remove fingers",
+    "title": "Wall panel — heat out the fingers",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3145,7 +3225,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wrap-cutting-a-1otK4E",
     "access": "paid",
-    "title": "Architectural wrap cutting around hinges",
+    "title": "Cutting around hinges",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3160,7 +3240,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-panel-wra-1mdavr",
     "access": "paid",
-    "title": "Architectural wall panel wrap post heat 2",
+    "title": "Wall panel — post-heat 2",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3174,7 +3254,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   },
   {
     "id": "v-named-architectural-wall-wrap-18yx_q",
-    "access": "free",
+    "access": "paid",
     "title": "Architectural wall wrap",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
@@ -3190,7 +3270,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-post-heating-v-1FFpMa",
     "access": "paid",
-    "title": "Architectural post heating vinyl 2",
+    "title": "Wall panel — post-heat",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3205,7 +3285,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-post-heat-panel-1-10LIlU",
     "access": "paid",
-    "title": "Post heat panel 1",
+    "title": "Wall panel — post-heat 1",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3220,7 +3300,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-cutting-vinyl--1NXkcT",
     "access": "paid",
-    "title": "Architectural cutting vinyl around hinges",
+    "title": "Cutting around hinges 2",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3235,7 +3315,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-wrap-pane-1dNBb4",
     "access": "paid",
-    "title": "Architectural wall wrap panel squeegeeing styles",
+    "title": "Wall panel — squeegee styles",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3250,7 +3330,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-panel-ins-1V50KW",
     "access": "paid",
-    "title": "Architectural wall panel install dust tack",
+    "title": "Wall panel — dust and tack",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3263,7 +3343,6 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "note": "Shop clip (~113s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
   }
 ];
-
 window.WRAP911_DATA.panels = [
   {
     "id": "panel-side",
