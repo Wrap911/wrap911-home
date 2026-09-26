@@ -7,7 +7,7 @@ window.WRAP911_CONFIG = {
   contactName: "Gerry",
   contactEmail: "",
   brands: ["3M", "Avery Dennison", "Arlon"],
-  version: "2.8.4-home",
+  version: "2.8.5-seo",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
