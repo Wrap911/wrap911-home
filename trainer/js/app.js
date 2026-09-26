@@ -1,4 +1,4 @@
-/* WRAP 911 Trainer — boot. Prefer local app-core, else last known CDN build. */
+/* WRAP 911 Trainer — boot. Local core first. */
 (function () {
   function after() {
     var core = window.WRAP911_APP && window.WRAP911_APP.core;
@@ -22,10 +22,16 @@
     }
   }
 
-  function loadCdn() {
+  function loadLocal() {
     var s = document.createElement("script");
-    s.src = "https://cdn.jsdelivr.net/gh/Wrap911/wrap911-home@4a6584a7c87d6624a73d9df6d59cf694e5d3d093/trainer/js/app.js";
+    s.src = "js/app-core.js?v=326";
     s.onload = function () { after(); setTimeout(after, 200); };
+    s.onerror = function () {
+      var c = document.createElement("script");
+      c.src = "https://cdn.jsdelivr.net/gh/Wrap911/wrap911-home@4a6584a7c87d6624a73d9df6d59cf694e5d3d093/trainer/js/app.js";
+      c.onload = function () { after(); setTimeout(after, 200); };
+      document.head.appendChild(c);
+    };
     document.head.appendChild(s);
   }
 
@@ -33,6 +39,6 @@
     after();
     setTimeout(after, 200);
   } else {
-    loadCdn();
+    loadLocal();
   }
 })();

@@ -104,6 +104,22 @@
     document.head.appendChild(s);
   }
 
+  function wipePayCopy() {
+    var locked = "That section is locked. Shop pack $149 or seat $49. Buy on this phone.";
+    var none = "No license. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone). Buy on this same phone.";
+    var el = document.getElementById("license-status-text");
+    if (el && /forever|WRAP911-HOME|No license|\\?license=STRIPE/i.test(el.textContent || "")) el.textContent = none;
+    var fb = document.getElementById("unlock-feedback");
+    if (fb && /forever|WRAP911-HOME|That section is locked/i.test(fb.textContent || "")) fb.textContent = locked;
+    var detail = document.getElementById("home-plan-detail");
+    if (detail && /forever|WRAP911-HOME/i.test(detail.textContent || "")) detail.textContent = "Training is locked. Shop pack $149 or seat $49.";
+    var nodes = document.querySelectorAll(".plan-status-detail, #unlock-feedback, #license-status-text, #home-plan-detail");
+    for (var i = 0; i < nodes.length; i++) {
+      var txt = nodes[i].textContent || "";
+      if (/free forever/i.test(txt)) nodes[i].textContent = txt.replace(/[^.]*free forever[^.]*\.?/gi, " Paid pack or seat.").trim();
+    }
+  }
+
   function hideCodeBlocks() {
     var nodes = document.querySelectorAll("h3, h2, p, li, .lead, .example-banner, .plan-status-detail");
     for (var i = 0; i < nodes.length; i++) {
@@ -123,20 +139,25 @@
   function scrub(root) {
     if (!root) return;
     hideCodeBlocks();
+    wipePayCopy();
     var walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
     var n, t;
     while ((n = walk.nextNode())) {
       t = n.nodeValue;
       if (!t) continue;
-      if (CODE_RE.test(t)) {
+      if (CODE_RE.test(t) || /free forever/i.test(t) || /That section is locked/i.test(t) || /No license/i.test(t)) {
         CODE_RE.lastIndex = 0;
         n.nodeValue = t
-          .replace(/WRAP911-HOME/gi, "shop license")
-          .replace(/WRAP911-CREW/gi, "shop license")
+          .replace(/WRAP911-HOME \(free forever\)/gi, "buy on this phone")
+          .replace(/free forever[^.\n]*/gi, "paid pack or seat")
+          .replace(/WRAP911-HOME/gi, "shop pack")
+          .replace(/WRAP911-CREW/gi, "shop pack")
           .replace(/WRAP911-DEMO/gi, "trial")
           .replace(/WRAP911-PRO/gi, "pro")
-          .replace(/enter `WRAP911[^`]*`/gi, "enter your license")
-          .replace(/Codes \(shop \+ test\)/gi, "Unlock");
+          .replace(/enter `WRAP911[^`]*`/gi, "buy on this phone")
+          .replace(/Codes \(shop \+ test\)/gi, "Unlock")
+          .replace(/That section is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, "That section is locked. Shop pack $149 or seat $49.")
+          .replace(/No license — training is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, "No license. Shop pack $149 or seat $49. Buy on this phone.");
       }
     }
     var inp = document.getElementById("unlock-code");
@@ -344,6 +365,7 @@
     bind();
     setTimeout(function () {
       scrub(document.body);
+      wipePayCopy();
       limitPhotos();
       limitVideos();
     }, 300);
