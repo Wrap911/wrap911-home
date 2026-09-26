@@ -210,6 +210,29 @@
   }
 
   var OPEN_SCREENS = { rules: true, home: true, pricing: true, contact: true, coach: true, about: true };
+  /* Hotfix 2.6.1: free screens come from cfg.freeScreens (same list license-gate.js reads). */
+  (function () {
+    var fs = cfg && cfg.freeScreens;
+    if (fs && fs.length) {
+      OPEN_SCREENS = {};
+      for (var i = 0; i < fs.length; i++) OPEN_SCREENS[fs[i]] = true;
+    }
+  })();
+  function isOpenScreen(name) { return !!OPEN_SCREENS[name]; }
+  function paidNow() {
+    var ok = hasFullAccess();
+    try { if (!ok && window.WRAP911_GATE && window.WRAP911_GATE.paid) ok = !!window.WRAP911_GATE.paid(); } catch (e) {}
+    return ok;
+  }
+  /* Hotfix 2.6.1: free photo set = first cfg.freePhotoSamples photos of the full list, whatever filter chip is on. */
+  function freePhotoIds() {
+    if (paidNow()) return null;
+    var n = cfg.freePhotoSamples || 14;
+    var ids = {};
+    var all = (data && data.photoLessons) || [];
+    for (var i = 0; i < all.length && i < n; i++) ids[all[i].id] = true;
+    return ids;
+  }
 
   function applyStripeLicense(days) {
     var n = days && days > 0 ? days : (cfg.proPeriodDays || 365);
@@ -417,7 +440,7 @@
         "<h3>" + escapeHtml(p.name || "") + "</h3>" +
         '<span class="price-status ' + escapeHtml(st) + '">' + escapeHtml(statusLabel(st)) + "</span>" +
         "</div>" +
-        '<div class="price-example"><span class="ex-tag">' + (p.status === "test" ? "TEST" : (p.status === "locked-price" ? "PRICE" : (p.id === "free-shop" ? "HOME" : "PLAN"))) + "</span>" + escapeHtml(p.priceExample || "") + "</div>" +
+        '<div class="price-example"><span class="ex-tag">' + (p.status === "test" ? "TEST" : (p.status === "locked-price" ? "PRICE" : (p.id === "free-shop" ? "HOME" : "PLAN"))) + "</span> " + escapeHtml(p.priceExample || "") + "</div>" +
         "<p>" + escapeHtml(p.blurb || "") + "</p>" +
         "</div>";
     }
@@ -510,7 +533,7 @@
   };
 
   function showScreen(name) {
-    if (!OPEN_SCREENS[name] && !hasFullAccess()) {
+    if (!isOpenScreen(name) && !hasFullAccess()) {
       var fb = $("unlock-feedback");
       if (fb) {
         fb.className = "quiz-feedback bad";
@@ -521,6 +544,8 @@
       renderPricingStatus();
       updatePlanChip();
     }
+    /* Hotfix 2.6.1: photo list depends on plan (free = 14), so rebuild it whenever Photos opens. */
+    if (name === "photos") { try { renderPhotosList(); } catch (eR) {} }
     var screens = document.querySelectorAll(".screen");
     for (var i = 0; i < screens.length; i++) {
       screens[i].classList.toggle("active", screens[i].id === "screen-" + name);
@@ -536,6 +561,8 @@
         buttons[j].classList.toggle("active", target === activeNav);
       }
     }
+    /* Hotfix 2.6.1: re-apply the free caps (14 photos + pack card, 8 videos + paywall) after any screen change. */
+    try { if (window.WRAP911_GATE && window.WRAP911_GATE.afterScreen) window.WRAP911_GATE.afterScreen(name); } catch (eG) {}
     window.scrollTo(0, 0);
   }
 
@@ -584,11 +611,19 @@
     var stats = progressStats();
     var p = loadProgress();
     var pct = Math.round(((stats.modDone + stats.photoDone) / (stats.modTotal + stats.photoTotal)) * 100) || 0;
-    $("home-progress-fill").style.width = pct + "%";
-    $("home-progress-label").textContent = pct + "% overall";
-    $("home-progress-detail").textContent =
-      "Modules " + stats.modDone + "/" + stats.modTotal +
+    var detail = "Modules " + stats.modDone + "/" + stats.modTotal +
       " · Photos " + stats.photoDone + "/" + stats.photoTotal;
+    var isPaid = paidNow();
+    if (!isPaid) {
+      /* Hotfix 2.6.1: free phones see the photos they can open, not the full pack count. */
+      var freeTotal = Math.min(cfg.freePhotoSamples || 14, stats.photoTotal) || 0;
+      var freeDone = Math.min(stats.photoDone, freeTotal);
+      pct = freeTotal ? Math.round((freeDone / freeTotal) * 100) : 0;
+      detail = "Free photos " + freeDone + "/" + freeTotal + " · Modules unlock with a seat or the pack";
+    }
+    $("home-progress-fill").style.width = pct + "%";
+    $("home-progress-label").textContent = pct + "% " + (isPaid ? "overall" : "of free look");
+    $("home-progress-detail").textContent = detail;
 
     $("home-xp").textContent = String(p.drills.xp || 0);
     $("home-streak").textContent = String(p.drills.streak || 0);
@@ -850,6 +885,7 @@
     var items = [
       {
         id: "spot",
+        screen: "drill-spot",
         icon: "🔍",
         title: "Spot the mistake",
         sub: spotDone + "/" + spotTotal + " photo drills · tap what's wrong / what next",
@@ -857,6 +893,7 @@
       },
       {
         id: "checklist",
+        screen: "drill-checklist-pick",
         icon: "✅",
         title: "Tap-through checklist",
         sub: clDone + "/" + clTotal + " sequences · tap steps in order",
@@ -864,6 +901,7 @@
       },
       {
         id: "scenarios",
+        screen: "drill-scenarios",
         icon: "🎬",
         title: "Scenario picker",
         sub: scDone + "/" + scTotal + " job setups · best first move",
@@ -871,6 +909,7 @@
       },
       {
         id: "flash",
+        screen: "drill-flash",
         icon: "🃏",
         title: "Practice flashcards",
         sub: (drills.flashcards || []).length + " technique tips · flip & next",
@@ -890,7 +929,7 @@
         '<div class="card-body">' +
         '<div class="card-title">' + escapeHtml(it.title) + '</div>' +
         '<div class="card-sub">' + escapeHtml(it.sub) + '</div>' +
-        (it.done ? '<span class="badge done">Complete</span>' : '<span class="badge">+' + (drills.xpPerDrill || 25) + ' XP</span>') +
+        (it.done ? '<span class="badge done">Complete</span>' : (!hasFullAccess() && !isOpenScreen(it.screen) ? '<span class="badge">Pack</span>' : '<span class="badge">+' + (drills.xpPerDrill || 25) + ' XP</span>')) +
         '</div>';
       (function (drillId) {
         function go() {
@@ -1208,7 +1247,8 @@
     $("flash-back").textContent = c.back;
     var card = $("flash-card");
     card.classList.toggle("flipped", state.flashFlipped);
-    $("flash-hint").textContent = state.flashFlipped ? "Technique tip" : "Tap to reveal technique tip";
+    var hint = $("flash-hint"); /* Hotfix 2.6.1: #flash-hint was missing from the markup; flashcards threw. */
+    if (hint) hint.textContent = state.flashFlipped ? "Technique tip" : "Tap to reveal technique tip";
   }
 
   function flipFlash() {
@@ -1238,10 +1278,12 @@
     list.innerHTML = "";
     var p = loadProgress();
     var shown = 0;
+    var freeIds = freePhotoIds();
     for (var i = 0; i < data.photoLessons.length; i++) {
       var pl = data.photoLessons[i];
       var jt = pl.jobType || "";
       if (photoJobFilter && jt !== photoJobFilter) continue;
+      if (freeIds && !freeIds[pl.id]) continue;
       shown++;
       var done = p.photos[pl.id] && p.photos[pl.id].passed;
       var card = document.createElement("div");
@@ -1264,7 +1306,9 @@
     if (empty) {
       empty.classList.toggle("hidden", shown > 0);
       if (!shown) {
-        empty.innerHTML =
+        empty.innerHTML = freeIds ?
+          "<strong>" + escapeHtml(photoJobFilter || "These") + " photos are in the pack</strong>" +
+          "Tap <em>All</em> for the free photos, or unlock with the pack or a seat." :
           "<strong>No photos for " + escapeHtml(photoJobFilter || "this filter") + "</strong>" +
           "Tap <em>All</em> or another job type chip — or Home → Browse photos.";
       }
@@ -1274,6 +1318,7 @@
       var v = chips[c].getAttribute("data-photo-job") || "";
       chips[c].classList.toggle("active", v === photoJobFilter);
     }
+    try { if (window.WRAP911_GATE && window.WRAP911_GATE.limitNow) window.WRAP911_GATE.limitNow(); } catch (eL) {}
   }
 
   function bindPhotoFilters() {
@@ -1291,6 +1336,8 @@
   function openPhoto(id) {
     var pl = findPhoto(id);
     if (!pl) return;
+    var freeIds = freePhotoIds();
+    if (freeIds && !freeIds[id]) { showScreen("pricing"); return; }
     state.photoId = id;
     state.quizLocked = false;
 

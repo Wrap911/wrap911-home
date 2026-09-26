@@ -436,7 +436,8 @@
       card.className = "card tap";
       card.setAttribute("role", "button");
       card.tabIndex = 0;
-      card.innerHTML = '<div class="card-body"><div class="card-title">' + escapeHtml((prac.icon ? prac.icon + " " : "") + (prac.title || prac.id)) + '</div><div class="card-sub">' + escapeHtml(prac.panelDesc || "Practice drill") + '</div></div>';
+      var pBadge = practiceLocked(prac.id) ? '<span class="badge">Pack</span>' : (!gatePaid() ? '<span class="badge">Free sample</span>' : "");
+      card.innerHTML = '<div class="card-body"><div class="card-title">' + escapeHtml((prac.icon ? prac.icon + " " : "") + (prac.title || prac.id)) + '</div><div class="card-sub">' + escapeHtml(prac.panelDesc || "Practice drill") + '</div>' + pBadge + '</div>';
       card.addEventListener("click", function () { openPractice(prac.id); });
       wrap.appendChild(card);
     });
@@ -448,6 +449,12 @@
     if (!prac) {
       renderPracticeHub();
       if (c && c.showScreen) c.showScreen("practice-hub");
+      return;
+    }
+    if (practiceLocked(id)) {
+      var pfb = $("unlock-feedback");
+      if (pfb) { pfb.className = "quiz-feedback bad"; pfb.textContent = "That practice drill is in the pack. Free look has 2 practice drills. Pack $149 (5 seats) or seat $49."; }
+      if (c && c.showScreen) c.showScreen("pricing");
       return;
     }
     if (c) c.state.practiceId = id;
@@ -598,6 +605,18 @@
 
   function lessonLocked(id) {
     return !gatePaid() && !lessonIsFree(id);
+  }
+
+  /* Hotfix 2.6.1: a practice drill is free when one of its linked lessons is a free sample. */
+  function practiceLocked(id) {
+    if (gatePaid()) return false;
+    var list = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.freeLessonIds) || [];
+    if (!list.length) return false;
+    var all = data().trainingLessons || [];
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].practiceId === id && lessonIsFree(all[i].id)) return false;
+    }
+    return true;
   }
 
   function lessonBadgeHtml(lesson, done) {

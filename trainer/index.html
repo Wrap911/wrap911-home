@@ -25,8 +25,8 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=260">
-  <link rel="stylesheet" href="css/theme-dark.css?v=260">
+  <link rel="stylesheet" href="css/style.css?v=261">
+  <link rel="stylesheet" href="css/theme-dark.css?v=261">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -48,6 +48,17 @@
     .about-panel summary { cursor:pointer; font-weight:600; }
     .lesson-meta-box { margin:.6rem 0; }
     img, video { max-width:100%; }
+    /* Hotfix 2.6.1: Coach screen was 434px wide on a 390px phone (file input + catalog select). */
+    #screen-coach { max-width:100%; overflow-x:hidden; }
+    #screen-coach .coach-media-panel, #screen-coach .coach-compose { max-width:100%; min-width:0; box-sizing:border-box; }
+    #screen-coach .coach-media-panel input, #screen-coach .coach-media-panel select,
+    #screen-coach .coach-compose textarea, #coach-file-input, #coach-catalog-pick {
+      display:block; width:100%; max-width:100%; min-width:0; box-sizing:border-box; }
+    #coach-file-input { overflow:hidden; text-overflow:ellipsis; }
+    #coach-catalog-pick { text-overflow:ellipsis; }
+    /* Hotfix 2.6.1: pricing label/value spacing ("PLAN Free", "PRICE $149"). */
+    .price-example .ex-tag { display:inline-block; margin-right:.45rem; padding:.1rem .4rem; border-radius:6px;
+      font-size:.7rem; letter-spacing:.08em; font-weight:700; background:rgba(255,176,0,.15); color:#ffb000; vertical-align:middle; }
   </style>
 </head>
 <body>
@@ -176,7 +187,7 @@
   <section id="screen-drill-checklist-pick" class="screen"><button type="button" class="back-link" id="btn-back-cl-pick">← Back</button><h1>Checklist drills</h1><div id="cl-pick-list"></div></section>
   <section id="screen-drill-scenarios" class="screen"><button type="button" class="back-link" id="btn-back-scenarios">← Back</button><h1>Scenario picker</h1><div id="scenario-list"></div></section>
   <section id="screen-drill-scenario" class="screen"><button type="button" class="back-link" id="btn-back-scenario">← Back</button><p class="module-tag" id="sc-icon-title"></p><h1 id="sc-title">Scenario</h1><div class="narration" id="sc-setup"></div><p class="lead" id="sc-question"></p><div id="sc-choices"></div><div class="quiz-feedback" id="sc-fb"></div><button type="button" class="secondary" id="sc-again" disabled>Try another</button></section>
-  <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
+  <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><p class="muted" id="flash-hint"></p><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
   <section id="screen-photos" class="screen"><h1>Browse photos</h1><div class="filter-chips" id="photo-filter-chips"></div><div class="thumb-grid" id="photo-list"></div><div class="photos-empty hidden" id="photos-empty"></div></section>
   <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt=""><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
   <section id="screen-problem-upload" class="screen">
@@ -236,23 +247,23 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=260"></script>
-  <script src="js/plan-fix.js?v=260"></script>
-  <script src="js/ios-license-bridge.js?v=260"></script>
-  <script src="js/data.js?v=260"></script>
-  <script src="js/data_extra.js?v=260"></script>
-  <script src="js/problems-db.js?v=260"></script>
-  <script src="js/labels-fix.js?v=260"></script>
-  <script src="js/app_extra.js?v=260"></script>
-  <script src="js/problem-upload.js?v=260"></script>
-  <script src="js/coach.js?v=260"></script>
-  <script src="js/app.js?v=260"></script>
-  <script src="js/video-fix.js?v=260"></script>
-  <script src="js/license-gate.js?v=260"></script>
-  <script src="js/captions-fix.js?v=260"></script>
-  <script src="js/jobs-trim.js?v=260"></script>
-  <script src="js/photos-unique.js?v=260"></script>
-  <script src="js/practice-fix.js?v=260"></script>
-  <script src="js/about.js?v=260"></script>
+  <script src="js/config.js?v=261"></script>
+  <script src="js/plan-fix.js?v=261"></script>
+  <script src="js/ios-license-bridge.js?v=261"></script>
+  <script src="js/data.js?v=261"></script>
+  <script src="js/data_extra.js?v=261"></script>
+  <script src="js/problems-db.js?v=261"></script>
+  <script src="js/labels-fix.js?v=261"></script>
+  <script src="js/app_extra.js?v=261"></script>
+  <script src="js/problem-upload.js?v=261"></script>
+  <script src="js/coach.js?v=261"></script>
+  <script src="js/app.js?v=261"></script>
+  <script src="js/video-fix.js?v=261"></script>
+  <script src="js/license-gate.js?v=261"></script>
+  <script src="js/captions-fix.js?v=261"></script>
+  <script src="js/jobs-trim.js?v=261"></script>
+  <script src="js/photos-unique.js?v=261"></script>
+  <script src="js/practice-fix.js?v=261"></script>
+  <script src="js/about.js?v=261"></script>
 </body>
 </html>

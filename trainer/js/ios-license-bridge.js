@@ -44,24 +44,36 @@
     if (lic.plan === "free" && !lic.expiresAt) return true;
     return false;
   }
+  /* Hotfix 2.6.1: save() -> setItem(OWNER) -> restore() -> save() recursed until the stack blew
+     (caught), about 140 ms per paid check on a paid phone. Re-entry guard + skip rewrites when nothing changed. */
+  var saving = false;
   function save(lic) {
-    if (!lic) {
-      try { localStorage.removeItem(LS); localStorage.removeItem(OWNER); } catch (e) {}
-      clearCookie();
-      return;
-    }
+    if (saving) return;
+    saving = true;
     try {
-      localStorage.setItem(LS, JSON.stringify(lic));
-      if (lic.plan !== "free") localStorage.setItem(OWNER, "1");
-    } catch (e2) {}
-    writeCookie(lic);
+      if (!lic) {
+        try { localStorage.removeItem(LS); localStorage.removeItem(OWNER); } catch (e) {}
+        clearCookie();
+        return;
+      }
+      try {
+        localStorage.setItem(LS, JSON.stringify(lic));
+        if (lic.plan !== "free") localStorage.setItem(OWNER, "1");
+      } catch (e2) {}
+      writeCookie(lic);
+    } finally {
+      saving = false;
+    }
   }
   function restore() {
-    var lic = null;
+    var lic = null, fromLs = false;
     try { var raw = localStorage.getItem(LS); if (raw) lic = JSON.parse(raw); } catch (e) {}
-    if (!valid(lic)) lic = readCookie();
+    if (valid(lic)) fromLs = true;
+    else lic = readCookie();
     if (!valid(lic)) return null;
-    save(lic);
+    var ownerOk = true;
+    try { ownerOk = lic.plan === "free" || localStorage.getItem(OWNER) === "1"; } catch (e3) {}
+    if (!fromLs || !ownerOk || !readCookie()) save(lic);
     return lic;
   }
   function refreshUi() {
@@ -121,17 +133,46 @@
   function standalone() {
     return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
   }
+  function openUnlock() {
+    try {
+      var core = window.WRAP911_APP && window.WRAP911_APP.core;
+      if (core && core.showScreen) core.showScreen("pricing");
+      else { var nb = document.querySelector('[data-nav="pricing"]'); if (nb) nb.click(); }
+    } catch (e) {}
+    setTimeout(function () {
+      var inp = document.getElementById("unlock-code");
+      if (inp) { try { inp.scrollIntoView({ block: "center" }); inp.focus(); } catch (e2) {} }
+    }, 60);
+  }
+  function paidNow() {
+    if (restore()) return true;
+    try { if (window.WRAP911_GATE && window.WRAP911_GATE.paid && window.WRAP911_GATE.paid()) return true; } catch (e) {}
+    return false;
+  }
+  /* Hotfix 2.6.1: free phones saw "Icon says Free". Free = "Have a seat code?" with a tap to Unlock.
+     Paid in a browser tab = Home Screen tip. Paid on the Home Screen icon = no card. Re-checked on each boot. */
   function showSeatCard() {
     var home = document.getElementById("screen-home");
-    if (!home || home.querySelector(".seat-carry")) return;
-    var paid = !!restore();
+    if (!home) return;
+    var paid = paidNow();
+    var mode = !paid ? "free" : (!standalone() ? "browser" : "");
+    var old = home.querySelector(".seat-carry");
+    if (old) {
+      if (old.getAttribute("data-mode") === mode) return;
+      old.parentNode.removeChild(old);
+    }
+    if (!mode) return;
     var box = document.createElement("div");
     box.className = "passion-note seat-carry";
-    if (!paid) {
-      box.innerHTML = "<strong>Icon says Free</strong><p>Open Unlock and type the seat code from the phone that just paid.</p>";
-    } else if (!standalone()) {
-      box.innerHTML = "<strong>Home Screen</strong><p>If the icon says Free, open it and type the seat code in Unlock.</p>";
-    } else return;
+    box.setAttribute("data-mode", mode);
+    if (mode === "free") {
+      box.innerHTML = '<strong>Have a seat code?</strong><p>Enter it here to unlock this phone.</p>' +
+        '<button type="button" class="chip seat-carry-go" style="margin-top:.5rem">Enter seat code</button>';
+      var go = box.querySelector(".seat-carry-go");
+      if (go) go.addEventListener("click", openUnlock);
+    } else {
+      box.innerHTML = "<strong>Add to Home Screen</strong><p>Save WRAP 911 to your Home Screen. If the icon opens on the free look, enter your seat code in Unlock.</p>";
+    }
     var lead = home.querySelector(".lead");
     if (lead && lead.parentNode) lead.parentNode.insertBefore(box, lead.nextSibling);
     else home.insertBefore(box, home.firstChild);

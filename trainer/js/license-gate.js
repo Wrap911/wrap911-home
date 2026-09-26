@@ -6,10 +6,15 @@
     rules: 1, home: 1, pricing: 1, contact: 1, coach: 1, about: 1,
     photos: 1, photo: 1, videos: 1,
     lesson: 1, vehicle: 1, library: 1,
-    practice: 1, "practice-hub": 1, module: 1, drills: 1,
-    "drill-spot": 1, "drill-checklist": 1
+    practice: 1, "practice-hub": 1, drills: 1,
+    "drill-spot": 1, "drill-checklist": 1, "drill-checklist-pick": 1
   };
   var cfg0 = window.WRAP911_CONFIG || {};
+  /* Hotfix 2.6.1: one source of truth. config.js freeScreens wins; the list above is the fallback. */
+  if (cfg0.freeScreens && cfg0.freeScreens.length) {
+    TEASER_SCREENS = {};
+    for (var fsI = 0; fsI < cfg0.freeScreens.length; fsI++) TEASER_SCREENS[cfg0.freeScreens[fsI]] = 1;
+  }
   var TEASER_PHOTO_MAX = cfg0.freePhotoSamples || 14;
   var TEASER_VIDEO_MAX = cfg0.freeVideoSamples || 8;
   var CODE_RE = /WRAP911[- ]?(HOME|CREW|DEMO|PRO)|W911-(PACK|SEAT|FIELD)|enter `WRAP911|Codes \(shop/gi;
@@ -42,7 +47,11 @@
     return false;
   }
 
-  window.WRAP911_GATE = { paid: paid };
+  function afterScreen() {
+    setTimeout(function () { limitPhotos(); limitVideos(); }, 0);
+  }
+  function limitNow() { limitPhotos(); limitVideos(); }
+  window.WRAP911_GATE = { paid: paid, afterScreen: afterScreen, limitNow: limitNow, freeScreens: TEASER_SCREENS };
 
   function hex(buf) {
     var v = new Uint8Array(buf), s = "", i;
@@ -102,7 +111,7 @@
   function loadBoost() {
     if (window.WRAP911_BOOST) { afterMedia(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-boost.js?v=260";
+    s.src = "js/photos-boost.js?v=261";
     s.onload = afterMedia;
     s.onerror = afterMedia;
     document.head.appendChild(s);
@@ -111,7 +120,7 @@
   function loadPack() {
     if (window.WRAP911_PACK) { loadBoost(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-pack.js?v=260";
+    s.src = "js/photos-pack.js?v=261";
     s.onload = loadBoost;
     s.onerror = loadBoost;
     document.head.appendChild(s);
