@@ -304,6 +304,8 @@ button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data
 .video-still {
   width: 100%;
   display: block;
+  height: auto;
+  aspect-ratio: auto 720 / 1280; /* 2.6.2: reserve space before the still loads */
   max-height: 210px;
   object-fit: cover;
   background: #000;

@@ -128,7 +128,7 @@
     for (var i = 0; i < q.length; i++) {
       var item = q[i];
       html += '<div class="card" style="margin-bottom:.6rem">' +
-        (item.image ? '<img src="' + escapeHtml(item.image) + '" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-bottom:.5rem">' : "") +
+        (item.image ? '<img src="' + escapeHtml(item.image) + '" alt="" loading="lazy" decoding="async" style="width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-bottom:.5rem">' : "") +
         '<div class="card-title">' + escapeHtml(item.what || "Untitled problem") + "</div>" +
         (item.fix ? '<div class="card-sub"><strong>Fix:</strong> ' + escapeHtml(item.fix) + "</div>" : "") +
         (item.area ? '<div class="card-sub">' + escapeHtml(item.area) + "</div>" : "") +

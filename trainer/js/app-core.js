@@ -1045,7 +1045,7 @@
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.innerHTML =
-        '<img class="thumb" src="' + escapeHtml(it.image) + '" alt="" loading="lazy" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
+        '<img class="thumb" src="' + escapeHtml(it.image) + '" alt="" loading="lazy" decoding="async" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
         '<div class="card-body">' +
         '<div class="card-title">' + escapeHtml(it.title) + '</div>' +
         '<div class="card-sub">' + escapeHtml(it.subtitle) + '</div>' +
@@ -1291,7 +1291,7 @@
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.innerHTML =
-        '<img class="thumb" src="' + escapeHtml(pl.image) + '" alt="' + escapeHtml(pl.title) + '" loading="lazy">' +
+        '<img class="thumb" src="' + escapeHtml(pl.image) + '" alt="' + escapeHtml(pl.title) + '" loading="lazy" decoding="async">' +
         '<div class="photo-caption">' + escapeHtml(pl.title) + '</div>' +
         '<div class="photo-meta">' + escapeHtml(jt || "Shop photo") +
         (done ? " · Quiz passed" : " · Tap to open") + '</div>';

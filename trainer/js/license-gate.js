@@ -111,7 +111,7 @@
   function loadBoost() {
     if (window.WRAP911_BOOST) { afterMedia(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-boost.js?v=261";
+    s.src = "js/photos-boost.js?v=262";
     s.onload = afterMedia;
     s.onerror = afterMedia;
     document.head.appendChild(s);
@@ -120,7 +120,7 @@
   function loadPack() {
     if (window.WRAP911_PACK) { loadBoost(); return; }
     var s = document.createElement("script");
-    s.src = "js/photos-pack.js?v=261";
+    s.src = "js/photos-pack.js?v=262";
     s.onload = loadBoost;
     s.onerror = loadBoost;
     document.head.appendChild(s);

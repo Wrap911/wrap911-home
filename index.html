@@ -57,6 +57,8 @@
     "keywords": "vinyl wrapping, commercial wrapping, fleet wraps, wrap shop training, vinyl install training, 3M, Avery Dennison, Arlon"
   }
   </script>
+  <link rel="preload" href="fonts/outfit-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/bebas-neue.woff2" as="font" type="font/woff2" crossorigin />
   <style>
     @font-face {
       font-family: "Wrap Display";
@@ -428,7 +430,7 @@
 <body>
   <div class="spectrum" aria-hidden="true"></div>
   <a class="logo-banner" href="index.html" aria-label="WRAP 911">
-    <img src="assets/wrap911-logo.jpg" alt="WRAP 911" />
+    <img src="assets/wrap911-logo.jpg" alt="WRAP 911" width="1400" height="312" fetchpriority="high" />
   </a>
   <header class="topbar">
     <div class="badge">For wrap shops — not hobbyists</div>
@@ -450,7 +452,7 @@
       </div>
       <div class="hero-art">
         <span class="hero-tag">Bay job</span>
-        <img src="assets/sales/trailer-rivets.jpg" alt="Enclosed trailer mid-wrap in the shop bay" />
+        <img src="assets/sales/trailer-rivets.jpg" alt="Enclosed trailer mid-wrap in the shop bay" width="1200" height="900" decoding="async" />
       </div>
     </section>
     <svg class="rivets" viewBox="0 0 600 22" preserveAspectRatio="none" aria-hidden="true">
@@ -480,13 +482,13 @@
       <p class="muted">Install videos from the shop. Once in a while a live mistake is in the shot, and you watch it get fixed. No hidden footage. Press play. The rest of the library stays in the trainer.</p>
       <div class="bay-grid">
         <figure class="clip">
-          <video controls playsinline preload="metadata" poster="trainer/media/videos/trailer/trailer-rivets-and-marker-lights.jpg">
+          <video controls playsinline preload="none" poster="trainer/media/videos/trailer/trailer-rivets-and-marker-lights.jpg">
             <source src="trainer/media/videos/trailer/trailer-rivets-and-marker-lights.mp4" type="video/mp4" />
           </video>
           <figcaption><strong>Marker light</strong><span>Gold film over a round marker light. That light gets cut out. It is not a rivet.</span></figcaption>
         </figure>
         <figure class="clip">
-          <video controls playsinline preload="metadata" poster="trainer/media/videos/van/rear-vehicle-gate-wrap.jpg">
+          <video controls playsinline preload="none" poster="trainer/media/videos/van/rear-vehicle-gate-wrap.jpg">
             <source src="trainer/media/videos/van/rear-vehicle-gate-wrap.mp4" type="video/mp4" />
           </video>
           <figcaption><strong>Rear gate</strong><span>Real door work. Seat the film, then check the edge before you call it done.</span></figcaption>
@@ -498,15 +500,15 @@
       <p class="muted">Real bay photos. Match the job, then run the card.</p>
       <div class="mistake-grid">
         <figure class="mistake">
-          <img src="assets/sales/edge-detail.jpg" alt="Headlight return seated in pink wrap" />
+          <img src="assets/sales/edge-detail.jpg" alt="Headlight return seated in pink wrap" width="960" height="1280" loading="lazy" decoding="async" />
           <figcaption><strong>Headlight return</strong><span> Seat the film into the pocket. Tuck 1–2 mm behind the trim.</span></figcaption>
         </figure>
         <figure class="mistake">
-          <img src="assets/sales/trailer-rivets.jpg" alt="Trailer side mid-wrap with rivet field" />
+          <img src="assets/sales/trailer-rivets.jpg" alt="Trailer side mid-wrap with rivet field" width="1200" height="900" loading="lazy" decoding="async" />
           <figcaption><strong>Rivet field</strong><span> Warm, press, purge each head. Bridged film tents and lifts.</span></figcaption>
         </figure>
         <figure class="mistake">
-          <img src="assets/sales/pickup-panels.jpg" alt="Pickup mid-install with liner hanging" />
+          <img src="assets/sales/pickup-panels.jpg" alt="Pickup mid-install with liner hanging" width="1200" height="1200" loading="lazy" decoding="async" />
           <figcaption><strong>Mid-install</strong><span> Panel on the truck. Heat on the floor. This is a job in progress, not a catalog shot.</span></figcaption>
         </figure>
       </div>

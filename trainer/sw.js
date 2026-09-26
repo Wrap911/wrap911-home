@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.6.1-ship";
+var CACHE = "wrap911-trainer-2.6.2-ship";
 var IMG_CACHE = "wrap911-img-v1"; /* photos the user already opened; videos are never cached */
 /* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
@@ -31,7 +31,12 @@ var ASSETS = [
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png"
+  "./icons/apple-touch-icon.png",
+  /* 2.6.2: shell fonts + header logo so the first screen renders offline (small files; no photos/mp4s here) */
+  "../fonts/bebas-neue.woff2",
+  "../fonts/outfit-400.woff2",
+  "../fonts/outfit-700.woff2",
+  "../assets/wrap911-logo.jpg"
 ];
 
 function isMediaRequest(url) {

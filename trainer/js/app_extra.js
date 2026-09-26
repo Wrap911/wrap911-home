@@ -221,7 +221,7 @@
         card.setAttribute("tabindex", "0");
         card.setAttribute("data-lesson", lesson.id);
         card.innerHTML =
-          '<img class="thumb" src="' + escapeHtml(lesson.media) + '" alt="" loading="lazy" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
+          '<img class="thumb" src="' + escapeHtml(lesson.media) + '" alt="" loading="lazy" decoding="async" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0">' +
           '<div class="card-body"><div class="card-title">' + escapeHtml(lesson.title) + "</div>" +
           '<div class="card-sub">' + escapeHtml(lesson.timeBox ? lesson.timeBox + " · 3-question quiz" : "3-question quiz · badge on pass") + '</div>' +
           lessonBadgeHtml(lesson, done) +
@@ -265,7 +265,7 @@
       html += '<div class="workflow-card' + (checked ? " done" : "") + '" data-step="' + escapeHtml(st.id) + '">';
       html += '<label class="wf-check"><input type="checkbox" data-wfid="' + escapeHtml(st.id) + '"' + (checked ? " checked" : "") + "> ";
       html += "<strong>" + escapeHtml(st.title) + '</strong> <span class="type-pill">' + escapeHtml(st.type) + "</span></label>";
-      if (st.media) html += '<img class="photo-hero" src="' + escapeHtml(st.media) + '" alt="" loading="lazy">';
+      if (st.media) html += '<img class="photo-hero" src="' + escapeHtml(st.media) + '" alt="" loading="lazy" decoding="async">';
       /* no step media: show nothing instead of a placeholder box */
       html += "<p>" + escapeHtml(st.instructions) + "</p>";
       html += "<p><strong>Tools:</strong> " + escapeHtml((st.tools || []).join(" · ")) + "</p>";
@@ -653,8 +653,8 @@
     var ph = "";
     if (lesson.failPhoto || lesson.passPhoto) {
       ph += '<h3>Fail / pass</h3><div class="passfail-grid">';
-      if (lesson.failPhoto) ph += '<figure><img class="photo-hero" loading="lazy" src="' + escapeHtml(lesson.failPhoto) + '" alt="Fail example"><figcaption>Fail</figcaption></figure>';
-      if (lesson.passPhoto) ph += '<figure><img class="photo-hero" loading="lazy" src="' + escapeHtml(lesson.passPhoto) + '" alt="Pass example"><figcaption>Pass</figcaption></figure>';
+      if (lesson.failPhoto) ph += '<figure><img class="photo-hero" loading="lazy" decoding="async" src="' + escapeHtml(lesson.failPhoto) + '" alt="Fail example"><figcaption>Fail</figcaption></figure>';
+      if (lesson.passPhoto) ph += '<figure><img class="photo-hero" loading="lazy" decoding="async" src="' + escapeHtml(lesson.passPhoto) + '" alt="Pass example"><figcaption>Pass</figcaption></figure>';
       ph += "</div>";
     }
     pf.innerHTML = ph;

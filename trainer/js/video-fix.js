@@ -217,7 +217,7 @@
       var still = item.still || "";
       html += '<article class="card video-card" data-access="' + (item.access === "free" ? "free" : "paid") + '">' +
         '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(still) + '">' +
-        (still ? '<img class="video-still" alt="" src="' + esc(still) + '">' : '') +
+        (still ? '<img class="video-still" alt="" loading="lazy" decoding="async" width="720" height="1280" src="' + esc(still) + '">' : '') +
         '<button type="button" class="video-play-btn">Play clip</button></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
         '<div class="card-sub">' + esc(bucket(item.category)) + (!paid && item.access === "free" ? ' · Free sample' : '') + '</div></article>';

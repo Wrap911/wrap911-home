@@ -25,8 +25,12 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=261">
-  <link rel="stylesheet" href="css/theme-dark.css?v=261">
+  <link rel="preload" href="../fonts/outfit-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/bebas-neue.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=262">
+  <link rel="stylesheet" href="css/theme-dark.css?v=262">
+  <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
+  <link rel="preload" href="js/app-core.js?v=262" as="script">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -63,7 +67,7 @@
 </head>
 <body>
   <header class="app-header">
-    <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911" onerror="this.onerror=null;this.src='icons/icon-192.png'"></a></div>
+    <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911" width="1400" height="312" onerror="this.onerror=null;this.src='icons/icon-192.png'"></a></div>
     <div class="header-meta">
       <div class="header-chips">
         <span id="plan-chip" class="plan-chip">Free</span>
@@ -174,7 +178,7 @@
   </section>
   <section id="screen-library" class="screen"><button type="button" class="back-link" id="btn-back-library">← Back to home</button><h1>Training library</h1><div id="cert-levels" class="cert-row"></div><div id="library-list"></div></section>
   <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
-  <section id="screen-practice" class="screen"><button type="button" class="back-link" id="btn-back-practice">← Practice hub</button><h1 id="prac-title">Practice</h1><img class="photo-hero" id="prac-image" src="" alt=""><p class="lead" id="prac-desc"></p><div id="prac-checklist" class="cl-steps"></div><div id="prac-mistakes"></div><div class="quiz-box" id="prac-quiz"></div><div class="quiz-nav"><button type="button" class="secondary" id="prac-redo">Redo</button><button type="button" id="prac-finish">Score & save</button></div><div class="quiz-feedback" id="prac-fb"></div></section>
+  <section id="screen-practice" class="screen"><button type="button" class="back-link" id="btn-back-practice">← Practice hub</button><h1 id="prac-title">Practice</h1><img class="photo-hero" id="prac-image" src="" alt="" decoding="async"><p class="lead" id="prac-desc"></p><div id="prac-checklist" class="cl-steps"></div><div id="prac-mistakes"></div><div class="quiz-box" id="prac-quiz"></div><div class="quiz-nav"><button type="button" class="secondary" id="prac-redo">Redo</button><button type="button" id="prac-finish">Score & save</button></div><div class="quiz-feedback" id="prac-fb"></div></section>
   <section id="screen-jobs" class="screen"><button type="button" class="back-link" id="btn-back-jobs">← Back to home</button><h1>Job manager</h1><button type="button" id="btn-new-job">+ New job</button><div id="jobs-list" class="jobs-list"></div></section>
   <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>Arlon</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
@@ -182,14 +186,14 @@
   <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
   <section id="screen-module" class="screen"><button type="button" class="back-link" id="btn-back-module">← Back to home</button><h1 id="module-title">Module</h1><div class="lesson-body" id="module-lesson"></div><div class="mode-tabs" id="module-mode-tabs"><button type="button" class="mode-tab active" data-mode="quiz">Quiz</button><button type="button" class="mode-tab" data-mode="practice">Practice mode</button></div><div class="quiz-box" id="module-quiz"></div><div id="module-practice" class="practice-wrap hidden"></div></section>
   <section id="screen-drills" class="screen"><h1>Drills hub</h1><div id="drills-hub-list"></div></section>
-  <section id="screen-drill-spot" class="screen"><button type="button" class="back-link" id="btn-back-spot">← Back</button><h1 id="spot-title">What's wrong?</h1><div id="spot-progress"></div><img class="photo-hero" id="spot-image" src="" alt=""><p class="lead" id="spot-question"></p><div id="spot-choices"></div><div class="quiz-feedback" id="spot-fb"></div><button type="button" class="secondary" id="spot-next" disabled>Next</button></section>
-  <section id="screen-drill-checklist" class="screen"><button type="button" class="back-link" id="btn-back-checklist">← Back</button><h1 id="cl-title">Checklist</h1><p id="cl-intro" class="lead"></p><img class="photo-hero" id="cl-image" src="" alt=""><div id="cl-steps" class="cl-steps"></div><div class="quiz-feedback" id="cl-fb"></div><button type="button" class="secondary" id="cl-reset">Reset</button><button type="button" id="cl-done" class="hidden">Done</button></section>
+  <section id="screen-drill-spot" class="screen"><button type="button" class="back-link" id="btn-back-spot">← Back</button><h1 id="spot-title">What's wrong?</h1><div id="spot-progress"></div><img class="photo-hero" id="spot-image" src="" alt="" decoding="async"><p class="lead" id="spot-question"></p><div id="spot-choices"></div><div class="quiz-feedback" id="spot-fb"></div><button type="button" class="secondary" id="spot-next" disabled>Next</button></section>
+  <section id="screen-drill-checklist" class="screen"><button type="button" class="back-link" id="btn-back-checklist">← Back</button><h1 id="cl-title">Checklist</h1><p id="cl-intro" class="lead"></p><img class="photo-hero" id="cl-image" src="" alt="" decoding="async"><div id="cl-steps" class="cl-steps"></div><div class="quiz-feedback" id="cl-fb"></div><button type="button" class="secondary" id="cl-reset">Reset</button><button type="button" id="cl-done" class="hidden">Done</button></section>
   <section id="screen-drill-checklist-pick" class="screen"><button type="button" class="back-link" id="btn-back-cl-pick">← Back</button><h1>Checklist drills</h1><div id="cl-pick-list"></div></section>
   <section id="screen-drill-scenarios" class="screen"><button type="button" class="back-link" id="btn-back-scenarios">← Back</button><h1>Scenario picker</h1><div id="scenario-list"></div></section>
   <section id="screen-drill-scenario" class="screen"><button type="button" class="back-link" id="btn-back-scenario">← Back</button><p class="module-tag" id="sc-icon-title"></p><h1 id="sc-title">Scenario</h1><div class="narration" id="sc-setup"></div><p class="lead" id="sc-question"></p><div id="sc-choices"></div><div class="quiz-feedback" id="sc-fb"></div><button type="button" class="secondary" id="sc-again" disabled>Try another</button></section>
   <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><p class="muted" id="flash-hint"></p><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
   <section id="screen-photos" class="screen"><h1>Browse photos</h1><div class="filter-chips" id="photo-filter-chips"></div><div class="thumb-grid" id="photo-list"></div><div class="photos-empty hidden" id="photos-empty"></div></section>
-  <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt=""><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
+  <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt="" decoding="async"><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
   <section id="screen-problem-upload" class="screen">
     <button type="button" class="back-link" id="btn-back-problem-upload">← Back to home</button>
     <h1>Report a problem</h1>
@@ -247,23 +251,23 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=261"></script>
-  <script src="js/plan-fix.js?v=261"></script>
-  <script src="js/ios-license-bridge.js?v=261"></script>
-  <script src="js/data.js?v=261"></script>
-  <script src="js/data_extra.js?v=261"></script>
-  <script src="js/problems-db.js?v=261"></script>
-  <script src="js/labels-fix.js?v=261"></script>
-  <script src="js/app_extra.js?v=261"></script>
-  <script src="js/problem-upload.js?v=261"></script>
-  <script src="js/coach.js?v=261"></script>
-  <script src="js/app.js?v=261"></script>
-  <script src="js/video-fix.js?v=261"></script>
-  <script src="js/license-gate.js?v=261"></script>
-  <script src="js/captions-fix.js?v=261"></script>
-  <script src="js/jobs-trim.js?v=261"></script>
-  <script src="js/photos-unique.js?v=261"></script>
-  <script src="js/practice-fix.js?v=261"></script>
-  <script src="js/about.js?v=261"></script>
+  <script src="js/config.js?v=262"></script>
+  <script src="js/plan-fix.js?v=262"></script>
+  <script src="js/ios-license-bridge.js?v=262"></script>
+  <script src="js/data.js?v=262"></script>
+  <script src="js/data_extra.js?v=262"></script>
+  <script src="js/problems-db.js?v=262"></script>
+  <script src="js/labels-fix.js?v=262"></script>
+  <script src="js/app_extra.js?v=262"></script>
+  <script src="js/problem-upload.js?v=262"></script>
+  <script src="js/coach.js?v=262"></script>
+  <script src="js/app.js?v=262"></script>
+  <script src="js/video-fix.js?v=262"></script>
+  <script src="js/license-gate.js?v=262"></script>
+  <script src="js/captions-fix.js?v=262"></script>
+  <script src="js/jobs-trim.js?v=262"></script>
+  <script src="js/photos-unique.js?v=262"></script>
+  <script src="js/practice-fix.js?v=262"></script>
+  <script src="js/about.js?v=262"></script>
 </body>
 </html>
