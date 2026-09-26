@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.9.23-quiz";
+var CACHE = "wrap911-trainer-2.9.24-pay";
 var ASSETS = [
   "./",
   "./index.html",
@@ -8,6 +8,8 @@ var ASSETS = [
   "./js/data.js",
   "./js/data_extra.js",
   "./js/app.js",
+  "./js/app-core.js",
+  "./js/license-gate.js",
   "./js/plan-fix.js",
   "./js/app_extra.js",
   "./js/coach.js",
