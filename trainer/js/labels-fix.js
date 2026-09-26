@@ -264,11 +264,5 @@
   setTimeout(apply, 900);
   setTimeout(apply, 1800);
 
-  document.addEventListener("error", function (e) {
-    var t = e.target;
-    if (!t || t.tagName !== "IMG") return;
-    var cur = String(t.src || "");
-    if (cur.indexOf("trailer-rivets.jpg") !== -1) return;
-    t.src = COVER;
-  }, true);
+  /* Do not swap every broken image to the black trailer. That made one still fill the whole list. */
 })();

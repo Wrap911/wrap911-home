@@ -1,139 +1,82 @@
-/* One still = one card. Drop copy-paste trailer/caddy repeats. Pull Drive extras. */
+/* One still = one card. Local bay files only. No Drive thumbnail URLs. */
 (function () {
-  var DRIVE = "https://drive.google.com/thumbnail?id=";
-
   var EXTRA = [
     {
-      id: "drv-airstream-side",
-      title: "Airstream side wrap",
-      image: DRIVE + "1gX_mARfcjCV0Wzqg9Qw7dYbR-1-BW6zx&sz=w1600",
+      id: "prob-airstream-nose",
+      title: "Airstream nose, film not seated",
+      image: "media/photos/gallery/airstream-nose.jpg",
       module: "squeegee",
-      jobType: "Vehicles",
-      visual: "Airstream body mid-wrap from the Wrap 911 Drive folder.",
-      narration: "Long compound curves. Glass the flats, then feed the radius. Do not stretch across a rivet row to hide a seam.",
-      checklist: ["Read the curve before heat", "Glass flats first", "Feed the radius", "TDS heat only"],
-      quiz: { q: "Airstream radius. First move?", correct: "Glass the flat, then feed the curve.", wrong: "Torch the whole side so the film goes soft." }
-    },
-    {
-      id: "drv-airstream-top",
-      title: "Airstream top wrap",
-      image: DRIVE + "1YJEIaSTQXdHtLfOLuu6qvcWxkH1r4aps&sz=w1600",
-      module: "squeegee",
-      jobType: "Vehicles",
-      visual: "Airstream roof / upper skin from the Drive folder.",
-      narration: "Roof work is layout and two people. Do not walk film dirt into a wet panel.",
-      checklist: ["Stage the panel", "Two people on a long hang", "Keep grit off the roof", "Post-check in raking light"],
-      quiz: { q: "Who hangs a long Airstream roof panel?", correct: "Two people. One sets, one follows.", wrong: "One person with more heat." }
-    },
-    {
-      id: "drv-bay-0806",
-      title: "Bay still — IMG_0806",
-      image: DRIVE + "13HsWzFqYbGPjabfiyV3ogYf7pX4ERHll&sz=w1600",
-      module: "prep",
       jobType: "Problems",
-      visual: "Shop still from the Wrap 911 Drive folder (IMG_0806).",
-      narration: "Name what is in frame before you invent a defect. If the edge is dirty, reclean. Do not glue dirt in.",
-      checklist: ["Name the panel", "Look for dirt at the edge", "Reclean before reseat", "TDS only"],
-      quiz: { q: "Dirty edge. First fix?", correct: "Pull back, reclean, reseat.", wrong: "Weld it down with extra heat." }
+      visual: "Cream Airstream nose. Film is on the crown but the center seam is open and the lower edge is still loose. Rivets run the panel. A ladder is in the way.",
+      narration: "Problem: the nose panel is hung and not glassed. The seam at the crown is open. Heat will not close that.\n\nSolution: move the ladder. Glass from the center out. Feed the radius. Do not bridge the rivet row. Seat the loose lower edge before you trim.",
+      checklist: ["Move the ladder off the panel", "Glass from the center out", "Close the crown seam before heat", "Feed rivets, do not bridge them"],
+      quiz: { q: "The crown seam is still open. First move?", correct: "Glass it shut from the center. Do not torch an open seam.", wrong: "Heat the crown until the seam disappears." }
     },
     {
-      id: "drv-bay-6220",
-      title: "Bay still — IMG_6220",
-      image: DRIVE + "12hIgs4Qw1mBDS6xF2c2v7pZnB0mWKyRt&sz=w1600",
+      id: "prob-airstream-light",
+      title: "Airstream marker light still covered",
+      image: "media/photos/gallery/airstream-corner.jpg",
+      module: "cutting",
+      jobType: "Problems",
+      visual: "Cream film over an oval amber marker light. Fingers bunch above and below the light. Rivets on the right post.",
+      narration: "Problem: the marker light is still under film and the corner is fingered.\n\nSolution: lift the fingers, glass toward the housing, then cut the light out. Leave a small tuck. Do not call those rivets a tent close-up from this wide shot.",
+      checklist: ["Lift the fingers first", "Glass toward the housing", "Cut the light out", "Do not bridge the rivets"],
+      quiz: { q: "What is under the cream film in the oval?", correct: "A marker light that still needs to be cut out.", wrong: "A rivet dome to mash flat." }
+    },
+    {
+      id: "bay-airstream-graphic",
+      title: "Airstream mountain graphic",
+      image: "media/photos/gallery/airstream-graphic.jpg",
       module: "post-heat",
       jobType: "Vehicles",
-      visual: "Shop still from the Wrap 911 Drive folder (IMG_6220).",
-      narration: "QC the panel that is in the photo. Raking light. Edges first.",
-      checklist: ["Raking light", "Check edges", "Note tents", "Do not leave a tick-up"],
-      quiz: { q: "When is QC?", correct: "Before the vehicle leaves the bay.", wrong: "After the first rain." }
+      visual: "Blue and cream Airstream. Mountain and pine graphic is down. Blue tape is still on the nose curve. Rear wheels and a Toyota badge are in frame.",
+      narration: "The graphic is seated. Tape is still on the nose curve. Pull that tape low and slow after the panel is glassed. Check the rivet line and the wheel-well edge before you call it done.",
+      checklist: ["Confirm the graphic is glassed", "Pull the blue tape low and slow", "Check rivets and the wheel-well edge", "Do not heat a panel that is already down just to look busy"],
+      quiz: { q: "Tape is still on the nose. Move?", correct: "Squeegee it, then pull low and slow.", wrong: "Leave the tape. It holds the edge." }
     },
     {
-      id: "drv-bay-6222",
-      title: "Bay still — IMG_6222",
-      image: DRIVE + "1RWuh6dofp3X_3g87Zxa55VaMRlD1akbw&sz=w1600",
+      id: "prob-pickup-quarter",
+      title: "Pickup quarter, fingers at the lamp",
+      image: "media/photos/gallery/pickup-bottle-quarter.jpg",
       module: "squeegee",
-      jobType: "Vehicles",
-      visual: "Shop still from the Wrap 911 Drive folder (IMG_6222).",
-      narration: "Match the job in frame. Overlap squeegee strokes. No dry islands.",
-      checklist: ["Name the job", "Overlap strokes", "No dry islands", "Keep tools off fresh film"],
-      quiz: { q: "Squeegee rule?", correct: "Overlapped sequence. No dry islands.", wrong: "One hard pass down the center." }
-    },
-    {
-      id: "drv-jpg-5918",
-      title: "Bay still — 59189248600",
-      image: DRIVE + "1TrBd4hU4aZtCWeuUZHRPswsGoVf62u1P&sz=w1600",
-      module: "prep",
       jobType: "Problems",
-      visual: "JPEG from the Wrap 911 Drive folder.",
-      narration: "Describe the frame. If tape is still on a graphic, pull low and slow.",
-      checklist: ["Describe the frame", "Tape low and slow", "Stop if a corner lifts", "Bag the tape"],
-      quiz: { q: "Transfer tape pull?", correct: "Low and slow, 180 degrees.", wrong: "Snap it straight up." }
+      visual: "Sage bottle-print film on a pickup quarter. Fingers stack at the taillight and the cap seam. A spray bottle is on the floor. LEER badge on the cap.",
+      narration: "Problem: film is bridged into the lamp pocket and fingered along the bed seam.\n\nSolution: glass the door flat first. Stop at the lamp. Relief-cut and feed the pocket. Do not stretch the bottle print across the opening.",
+      checklist: ["Glass the flat before the lamp", "Relief-cut the taillight pocket", "Do not stretch the print across the gap", "Keep the spray bottle off the film"],
+      quiz: { q: "Fingers at the taillight. First fix?", correct: "Lift, glass the flat, then feed the pocket.", wrong: "Torch the pocket and mash the fingers flat." }
     },
     {
-      id: "drv-jpg-5932",
-      title: "Bay still — 59327138079",
-      image: DRIVE + "1IJtyv7niB3hbl_nTkilUVm8wtJLlbtZs&sz=w1600",
-      module: "cutting",
+      id: "prob-rv-pink",
+      title: "RV side, pink film still loose",
+      image: "media/photos/gallery/rv-pink-side.jpg",
+      module: "squeegee",
       jobType: "Problems",
-      visual: "JPEG from the Wrap 911 Drive folder.",
-      narration: "Finish cuts use a fresh blade and light pressure. Film only.",
-      checklist: ["Fresh blade", "Light pass", "Film only", "Do not score paint"],
-      quiz: { q: "Chewed cut. Cause?", correct: "Dull blade or too much pressure.", wrong: "Not enough heat on the cut line." }
+      visual: "Tall RV or box side. Pink and red film is on the panel but wrinkled and not glassed. A ladder stands in front. The next bay section is still bare.",
+      narration: "Problem: the sheet is stuck at the top and the field is still loose. A ladder in front is not a squeegee.\n\nSolution: hinge from the glassed top. Overlap strokes down the panel. Do not heat the loose field to hide wrinkles.",
+      checklist: ["Work from the glassed top down", "Overlap every stroke", "No heat on a loose field", "Move the ladder when it blocks the panel"],
+      quiz: { q: "The pink field is still wrinkled. Move?", correct: "Squeegee from the glassed area down. Do not heat it first.", wrong: "Heat the whole sheet so the wrinkles fall out." }
     },
     {
-      id: "local-glass-partitions",
-      title: "Office glass partitions",
-      image: "media/stock/multipane_office_glass_partitions.jpg",
+      id: "int-magenta-run",
+      title: "Interior panels, clips still on",
+      image: "media/photos/gallery/panels-6222.jpg",
       module: "architectural",
       jobType: "Interior",
-      visual: "Multi-pane office glass. Layout seams off the sight line.",
-      narration: "Glass film is layout first. Dust is a tent under lights. Do not stretch art across a mullion.",
-      checklist: ["Clean the glass", "Layout off sight lines", "No stretch across a mullion", "Squeegee sequence"],
-      quiz: { q: "Glass partition. First move?", correct: "Clean and layout. Do not stretch across a mullion.", wrong: "Heat the whole wall so the film goes soft." }
+      visual: "A run of magenta and red wall panels. Small metal clips and black pads are still on the faces.",
+      narration: "Clips and pads on a finished face will read as defects under shop lights. Pop them after the film is glassed. Do not squeegee over hardware.",
+      checklist: ["Glass the face first", "Remove clips and pads", "Check seams between panels", "Raking light before you walk"],
+      quiz: { q: "A clip is still on the show face. Move?", correct: "Take it off after the film is seated.", wrong: "Squeegee over it so the face stays smooth." }
     },
     {
-      id: "local-squeegee-table",
-      title: "Squeegee strokes on the table",
-      image: "media/videos/prep/squeegee-strokes.jpg",
-      module: "squeegee",
-      jobType: "Vehicles",
-      visual: "Squeegee work on film at the table.",
-      narration: "Stroke pattern on the table is the same on the vehicle. Overlap. Soft edge.",
-      checklist: ["Overlap", "Soft edge", "Wipe the blade", "No grit"],
-      quiz: { q: "Why wipe the squeegee?", correct: "Grit on the blade scratches film.", wrong: "So the heat transfers better." }
-    },
-    {
-      id: "local-torch-1",
-      title: "Heat on vinyl — keep it moving",
-      image: "media/videos/prep/torch-on-vinyl1.jpg",
-      module: "heat",
-      jobType: "Problems",
-      visual: "Torch over film.",
-      narration: "Heat is a tool. Keep it moving. TDS only.",
-      checklist: ["Keep heat moving", "TDS only", "Never hold one spot", "Stop if film goes shiny-melted"],
-      quiz: { q: "Film looks shiny-melted. Meaning?", correct: "You passed the TDS window. Stop.", wrong: "It is ready for a harder squeegee." }
-    },
-    {
-      id: "local-translucent",
-      title: "Translucent film on the table",
-      image: "media/videos/prep/translucent-vinyl.jpg",
-      module: "film-types",
+      id: "int-panel-corner",
+      title: "Interior corner, two red faces",
+      image: "media/photos/gallery/panel-6220.jpg",
+      module: "architectural",
       jobType: "Interior",
-      visual: "Translucent film staged for hang.",
-      narration: "Translucent shows dirt and stretch. Prep is the job.",
-      checklist: ["Clean first", "Light pressure", "Watch stretch marks", "Raking light"],
-      quiz: { q: "Why go light on translucent?", correct: "It shows dirt and stretch that opaque hides.", wrong: "It needs more torch than gloss." }
-    },
-    {
-      id: "local-cut6",
-      title: "Table cut — long sheet",
-      image: "media/videos/prep/cutting-vinyl-6.jpg",
-      module: "cutting",
-      jobType: "Vehicles",
-      visual: "Cutting a long sheet on the table.",
-      narration: "Square the sheet before it leaves the table. Fresh blade. Cut once.",
-      checklist: ["Fresh blade", "Square the sheet", "Cut once", "Bag scrap"],
-      quiz: { q: "Why square on the table?", correct: "A crooked sheet becomes a crooked hang.", wrong: "So the torch heats even." }
+      visual: "Inside corner of two red panels. The faces meet at a sharp edge. No knife is in the frame.",
+      narration: "An inside corner gets a relief cut, then one face, then the other. Do not stretch one sheet around the corner.",
+      checklist: ["Read the corner before you commit", "Relief cut off the show face", "Seat one face, then the other", "Do not bridge the edge"],
+      quiz: { q: "How do you wrap this inside corner?", correct: "Relief cut, then one face at a time.", wrong: "Stretch one sheet around the corner." }
     }
   ];
 
@@ -147,7 +90,8 @@
     var out = [];
     for (var i = 0; i < list.length; i++) {
       var it = list[i];
-      var key = base(it.image || it.still || "") || String(it.id || i);
+      var key = base(it.image || it.still || "");
+      if (!key) key = String(it.id || i);
       if (seen[key]) continue;
       seen[key] = 1;
       out.push(it);
@@ -157,30 +101,35 @@
 
   function apply() {
     var d = window.WRAP911_DATA;
-    if (!d) return;
-    if (!d.photoLessons) d.photoLessons = [];
-    var haveId = {};
-    var haveImg = {};
+    if (!d || !d.photoLessons) return;
     var i;
     for (i = 0; i < d.photoLessons.length; i++) {
+      var img = String(d.photoLessons[i].image || "");
+      if (img.indexOf("drive.google.com") !== -1 || img.indexOf("thumbnail?id=") !== -1) {
+        d.photoLessons[i].image = "";
+      }
+    }
+    var haveId = {};
+    var haveImg = {};
+    for (i = 0; i < d.photoLessons.length; i++) {
       haveId[d.photoLessons[i].id] = 1;
-      haveImg[base(d.photoLessons[i].image)] = 1;
+      var b = base(d.photoLessons[i].image);
+      if (b) haveImg[b] = 1;
     }
     for (i = 0; i < EXTRA.length; i++) {
       var ex = EXTRA[i];
       if (haveId[ex.id] || haveImg[base(ex.image)]) continue;
-      d.photoLessons.push(ex);
+      d.photoLessons.unshift(ex);
       haveId[ex.id] = 1;
       haveImg[base(ex.image)] = 1;
     }
     d.photoLessons = dedupe(d.photoLessons);
-    if (d.gallery) d.gallery = dedupe(d.gallery);
   }
 
   apply();
   document.addEventListener("DOMContentLoaded", apply);
-  setTimeout(apply, 50);
-  setTimeout(apply, 400);
-  setTimeout(apply, 1200);
-  setTimeout(apply, 2400);
+  setTimeout(apply, 60);
+  setTimeout(apply, 500);
+  setTimeout(apply, 1600);
+  setTimeout(apply, 2800);
 })();
