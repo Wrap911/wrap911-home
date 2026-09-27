@@ -1,0 +1,80 @@
+name: iOS build and upload to App Store Connect
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      BUNDLE_ID: com.wrap911.trainer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Select Xcode
+        run: |
+          X=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1); echo $X
+          sudo xcode-select -s "$X"; xcodebuild -version
+      - name: Install API key
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s\n' "${{ secrets.ASC_KEY_P8 }}" > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          echo "KEY_PATH=$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> $GITHUB_ENV
+      - name: Look up team and app in App Store Connect
+        run: |
+          python3 -m venv $RUNNER_TEMP/venv && . $RUNNER_TEMP/venv/bin/activate
+          pip install --quiet pyjwt cryptography requests
+          python - <<'PY'
+          import jwt, time, os, requests, sys
+          key=open(os.environ["KEY_PATH"]).read()
+          tok=jwt.encode({"iss":os.environ["ASC_ISSUER_ID"],"iat":int(time.time()),"exp":int(time.time())+1200,"aud":"appstoreconnect-v1"},key,algorithm="ES256",headers={"kid":os.environ["ASC_KEY_ID"]})
+          H={"Authorization":"Bearer "+tok}; B="https://api.appstoreconnect.apple.com/v1"
+          bid=os.environ["BUNDLE_ID"]
+          r=requests.get(B+"/bundleIds",params={"filter[identifier]":bid},headers=H); print("bundleIds",r.status_code)
+          if r.status_code!=200: print(r.text[:500]); sys.exit(1)
+          d=[x for x in r.json()["data"] if x["attributes"]["identifier"]==bid]
+          if not d:
+              r=requests.post(B+"/bundleIds",headers=H,json={"data":{"type":"bundleIds","attributes":{"identifier":bid,"name":"Wrap911","platform":"IOS"}}}); print("create bundle",r.status_code,r.text[:300]); r.raise_for_status(); d=[r.json()["data"]]
+          team=d[0]["attributes"]["seedId"]; print("team",team)
+          open(os.environ["GITHUB_ENV"],"a").write(f"TEAM_ID={team}\n")
+          a=requests.get(B+"/apps",params={"filter[bundleId]":bid},headers=H).json().get("data",[])
+          if not a:
+              print("::error::NO_APP_RECORD: create the app in App Store Connect (Apps > + > New App) with bundle ID "+bid); sys.exit(1)
+          print("app", a[0]["id"], a[0]["attributes"]["name"])
+          PY
+      - name: Build web and sync Capacitor
+        run: |
+          npm ci
+          npm install --no-save @capacitor/cli@^8
+          npm run build:www
+          npx cap sync ios
+      - name: Archive
+        working-directory: ios/App
+        run: |
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 14.0/IPHONEOS_DEPLOYMENT_TARGET = 15.0/' App.xcodeproj/project.pbxproj
+          sed -i '' "s/platform :ios, '14.0'/platform :ios, '15.0'/" Podfile
+          pod install
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath $RUNNER_TEMP/App.xcarchive \
+            DEVELOPMENT_TEAM=$TEAM_ID CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            -allowProvisioningUpdates -authenticationKeyPath "$KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" archive
+      - name: Export IPA
+        run: |
+          cat > $RUNNER_TEMP/export.plist <<PL
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+          <key>method</key><string>app-store-connect</string>
+          <key>teamID</key><string>$TEAM_ID</string>
+          <key>signingStyle</key><string>automatic</string>
+          <key>destination</key><string>export</string>
+          </dict></plist>
+          PL
+          xcodebuild -exportArchive -archivePath $RUNNER_TEMP/App.xcarchive -exportPath $RUNNER_TEMP/out \
+            -exportOptionsPlist $RUNNER_TEMP/export.plist -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          ls $RUNNER_TEMP/out
+      - name: Upload to App Store Connect
+        run: xcrun altool --upload-app -f $RUNNER_TEMP/out/*.ipa -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
