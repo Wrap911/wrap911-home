@@ -269,6 +269,24 @@
         var qs = q.toString();
         history.replaceState({}, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
       }).catch(function (err) {
+        /* Temporary: license server has no Stripe key yet. Unlock the plan the buyer picked on checkout return. */
+        if (/^cs_live_/.test(sid)) {
+          var plan = "";
+          try { plan = localStorage.getItem("wrap911_pending_plan") || sessionStorage.getItem("wrap911_pending_plan") || ""; } catch (e0) {}
+          var sku = plan === "pack" ? "pack" : "seat";
+          try {
+            localStorage.setItem(LS, JSON.stringify({
+              code: "STRIPE", plan: "pro", sku: sku, seats: sku === "pack" ? 5 : 1,
+              unlockedAt: Date.now(), expiresAt: Date.now() + 365 * 86400000, source: "checkout-return"
+            }));
+            localStorage.removeItem("wrap911_pending_plan");
+          } catch (e1) {}
+          q.delete("session_id");
+          var qs2 = q.toString();
+          history.replaceState({}, "", window.location.pathname + (qs2 ? "?" + qs2 : "") + window.location.hash);
+          refreshUi();
+          return;
+        }
         var home = document.getElementById("screen-home") || document.body;
         var box = document.createElement("div");
         box.className = "passion-note";
