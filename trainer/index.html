@@ -25,10 +25,10 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=265">
-  <link rel="stylesheet" href="css/theme-dark.css?v=265">
+  <link rel="stylesheet" href="css/style.css?v=266">
+  <link rel="stylesheet" href="css/theme-dark.css?v=266">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
-  <link rel="preload" href="js/app-core.js?v=265" as="script">
+  <link rel="preload" href="js/app-core.js?v=266" as="script">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -200,8 +200,8 @@
     <div class="quiz-feedback" id="problem-upload-fb"></div>
     <div id="problem-upload-wrap"></div>
   </section>
-  <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 one-time (5 seats, 12 months) · Seat $49 one-time (1 tech, 12 months) · Field $29/mo.</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Open payment link</button></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
-  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button></div><div class="card coach-media-panel"><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
+  <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 one-time (5 seats, 12 months) · Seat $49 one-time (1 tech, 12 months).</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Open payment link</button></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
+  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2" placeholder="Ask about a wrap step or vehicle part…"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Where do I start?">Where do I start?</button><button type="button" class="chip" data-coach-prompt="Prep">Prep</button><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button><button type="button" class="chip" data-coach-prompt="Recesses">Recesses</button><button type="button" class="chip" data-coach-prompt="Seams">Seams</button><button type="button" class="chip" data-coach-prompt="Doors">Doors</button><button type="button" class="chip" data-coach-prompt="Post-heat">Post-heat</button><button type="button" class="chip" data-coach-prompt="QC">QC</button></div><div class="card coach-media-panel hidden" hidden><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
   <section id="screen-about" class="screen" aria-label="About WRAP 911">
     <button type="button" class="back-link" id="btn-back-about">← Back to home</button>
     <h1>About WRAP 911</h1>
@@ -251,24 +251,24 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=265"></script>
-  <script src="js/plan-fix.js?v=265"></script>
+  <script src="js/config.js?v=266"></script>
+  <script src="js/plan-fix.js?v=266"></script>
   <script src="js/ios-license-bridge.js?v=266"></script>
-  <script src="js/data.js?v=265"></script>
-  <script src="js/data_extra.js?v=265"></script>
-  <script src="js/problems-db.js?v=265"></script>
-  <script src="js/labels-fix.js?v=265"></script>
-  <script src="js/app_extra.js?v=265"></script>
-  <script src="js/problem-upload.js?v=265"></script>
-  <script src="js/coach.js?v=265"></script>
-  <script src="js/app.js?v=265"></script>
-  <script src="js/video-fix.js?v=265"></script>
+  <script src="js/data.js?v=266"></script>
+  <script src="js/data_extra.js?v=266"></script>
+  <script src="js/problems-db.js?v=266"></script>
+  <script src="js/labels-fix.js?v=266"></script>
+  <script src="js/app_extra.js?v=266"></script>
+  <script src="js/problem-upload.js?v=266"></script>
+  <script src="js/coach.js?v=266"></script>
+  <script src="js/app.js?v=266"></script>
+  <script src="js/video-fix.js?v=266"></script>
   <script src="js/license-gate.js?v=267"></script>
-  <script src="js/captions-fix.js?v=265"></script>
-  <script src="js/jobs-trim.js?v=265"></script>
+  <script src="js/captions-fix.js?v=266"></script>
+  <script src="js/jobs-trim.js?v=266"></script>
   <script src="js/photos-unique.js?v=331"></script>
-  <script src="js/practice-fix.js?v=265"></script>
-  <script src="js/about.js?v=265"></script>
-  <script src="js/games.js?v=265"></script>
+  <script src="js/practice-fix.js?v=266"></script>
+  <script src="js/about.js?v=266"></script>
+  <script src="js/games.js?v=266"></script>
 </body>
 </html>

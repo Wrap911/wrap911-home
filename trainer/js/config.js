@@ -18,7 +18,7 @@ window.WRAP911_CONFIG = {
   fieldPriceUsd: 29,
   fieldPriceLabel: "W911-FIELD $29/mo",
   /* Offer lock 2026-09-26: Field $29/mo sold in the trainer. Set false to hide Field everywhere in the app. */
-  fieldSkuLive: true,
+  fieldSkuLive: false,
   proPeriodDays: 365,
   audience: "other-shops-first",
   aiEndpoint: "https://wrap911-coach-proxy.wrap911.workers.dev",
@@ -66,13 +66,6 @@ window.WRAP911_CONFIG = {
       priceExample: "$49 one-time",
       status: "locked-price",
       blurb: "One tech, 12 months, one-time. Same library as the pack."
-    },
-    {
-      id: "w911-field",
-      name: "W911-FIELD",
-      priceExample: "$29 / mo",
-      status: "locked-price",
-      blurb: "Monthly, one tech. Not the default sell."
     }
   ],
   demoCodes: {}

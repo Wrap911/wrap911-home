@@ -77,7 +77,7 @@
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
       ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew link for 4 more phones."],
-      ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew. Field: monthly while you pay."],
+      ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", "Ask first: " + contactLine() + ". Send your Stripe receipt."],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
       ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or Arlon certification, and it does not replace one."],
@@ -97,7 +97,7 @@
       '<h2>Free lessons</h2><ul>' + (ls || '<li>None set.</li>') + '</ul>' +
       '<h2>Free video clips</h2><ul>' + (vs || '<li>None set.</li>') + '</ul>' +
       '<p><button type="button" data-about-go="videos">Open videos</button> <button type="button" class="secondary" data-about-go="photos">Browse photos</button></p>' +
-      '<p class="muted">Everything else opens with a Seat, Pack or Field plan.</p>';
+      '<p class="muted">Everything else opens with a Seat or Pack plan.</p>';
   }
 
   var PANELS = { why: why, pricing: pricing, shops: shops, faq: faq, samples: samples };

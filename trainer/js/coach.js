@@ -1341,8 +1341,7 @@
 
   var COACH_GREETING =
     "Ask anything about commercial or architectural wrap installs. " +
-    "When live AI is configured, answers come from the WRAP 911 cloud coach; otherwise the local SOP library answers instantly. " +
-    "Tap a chip (Rivets, Prep, QC…) or name a vehicle part. Brands: 3M · Avery Dennison · Arlon only. " +
+    "Tap a topic below or name a vehicle part. Covers 3M · Avery Dennison · Arlon films. " +
     TDS_FOOTER;
 
   function renderCoach() {
