@@ -22,7 +22,8 @@ jobs:
       - name: Install API key
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
-          printf '%s\n' "${{ secrets.ASC_KEY_P8 }}" > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          export RAW='${{ secrets.ASC_KEY_P8 }}'
+          python3 -c "import os,re; b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b); print('-----BEGIN PRIVATE KEY-----'); [print(b[i:i+64]) for i in range(0,len(b),64)]; print('-----END PRIVATE KEY-----')" > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
           echo "KEY_PATH=$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> $GITHUB_ENV
       - name: Look up team and app in App Store Connect
         run: |
