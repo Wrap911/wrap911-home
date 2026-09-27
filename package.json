@@ -1,0 +1,17 @@
+{
+  "name": "wrap911",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:www": "rm -rf www && mkdir www && cp -r index.html privacy.html sample.html templates.html templates.js trainer.html trainer assets fonts www/ && mv www/index.html www/home.html && printf '<!doctype html><meta http-equiv=\"refresh\" content=\"0;url=trainer/index.html\">' > www/index.html",
+    "ios:sync": "npm run build:www && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.9"
+  }
+}

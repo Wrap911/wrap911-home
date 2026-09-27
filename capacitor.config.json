@@ -1,0 +1,6 @@
+{
+  "appId": "com.wrap911.trainer",
+  "appName": "Wrap911",
+  "webDir": "www",
+  "ios": { "contentInset": "automatic", "scheme": "Wrap911" }
+}

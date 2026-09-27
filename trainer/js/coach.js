@@ -1233,7 +1233,8 @@
         return finishLocal("");
       }
 
-      answerCloud(q)
+      (window.WRAP911_AI_CONSENT ? window.WRAP911_AI_CONSENT() : Promise.resolve(true))
+        .then(function (ok) { return ok ? answerCloud(q) : null; })
         .then(function (cloudReply) {
           if (!cloudReply) {
             finishLocal("Cloud coach returned nothing.");

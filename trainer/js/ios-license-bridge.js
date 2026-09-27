@@ -5,7 +5,6 @@
   var OWNER = "wrap911_owner";
   /* Audit 2026-09-26: this used to be a plain-text universal unlock code in public JS.
      Now stored as SHA-256 only. It is still in git history, so retire it once Worker seat codes work. */
-  var SEAT_HASH = "0d284a0c71cd9d96e692a2028026826903f3ceeccf23e03cf4590b3227d0fbe6";
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
 
   function packLicense() {
@@ -38,11 +37,7 @@
   function valid(lic) {
     if (!lic || lic.expired) return false;
     if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
-    if (lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
-    if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "field") return true;
-    if (lic.code === "SHOP" || lic.code === "STRIPE" || lic.code === "HOME" || lic.code === "CREW") return true;
-    if (lic.plan === "free" && !lic.expiresAt) return true;
-    return false;
+    return /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || "")) && lic.source === "server";
   }
   /* Hotfix 2.6.1: save() -> setItem(OWNER) -> restore() -> save() recursed until the stack blew
      (caught), about 140 ms per paid check on a paid phone. Re-entry guard + skip rewrites when nothing changed. */
@@ -82,12 +77,37 @@
     try { if (core.updatePlanChip) core.updatePlanChip(); } catch (e) {}
     try { if (core.renderHome) core.renderHome(); } catch (e2) {}
   }
+  function deviceId() {
+    var k = "wrap911_device", id = "";
+    try { id = localStorage.getItem(k) || ""; } catch (e) {}
+    if (!/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      var b = new Uint8Array(16); crypto.getRandomValues(b);
+      id = Array.prototype.map.call(b, function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+      try { localStorage.setItem(k, id); } catch (e2) {}
+    }
+    return id;
+  }
   function applyRemote(data) {
-    var now = Date.now();
     save({
-      code: data.code || "STRIPE", plan: "pro", sku: data.sku || "seat",
-      seats: data.seats || 1, unlockedAt: now, expiresAt: now + 365 * 86400000, source: "stripe-seat"
+      code: data.code, plan: "pro", sku: data.sku || "seat",
+      seats: data.seats || 1, unlockedAt: Date.now(), expiresAt: Number(data.expiresAt) || (Date.now() + 35 * 86400000),
+      source: "server", checkedAt: Date.now()
     });
+  }
+  /* Re-check the code with the server once a day. Offline keeps the phone unlocked. */
+  function recheck() {
+    var lic = null;
+    try { lic = JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) {}
+    if (!lic || lic.source !== "server" || (lic.checkedAt && Date.now() - lic.checkedAt < 86400000)) return;
+    fetch(API + "/license/check", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: lic.code, device: deviceId() })
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        if (res.ok && data.ok) { applyRemote(data); return; }
+        if (res.status === 404 || res.status === 403 || res.status === 410) { save(null); refreshUi(); }
+      });
+    }).catch(function () {});
   }
   function showIssuedCode(code, sku, seats) {
     var home = document.getElementById("screen-home") || document.body;
@@ -96,14 +116,14 @@
     var box = document.createElement("div");
     box.id = "issued-seat-code";
     box.className = "passion-note";
-    box.innerHTML = "<strong>Your seat code</strong><p>Type <b>" + escapeText(code) + "</b> in Unlock on each phone. " + (sku === "pack" ? seats + " phones." : "This phone only.") + " Write it down.</p>";
+    box.innerHTML = "<strong>Your unlock code</strong><p><b style=\"font-size:1.2em;letter-spacing:.05em\">" + escapeText(code) + "</b></p><p>This phone is unlocked. " + (sku === "pack" ? "Type this code in Unlock on up to " + (seats - 1) + " more phones or in the iOS app." : "Type it in the WRAP 911 iOS app or on a new phone if you switch.") + " Write it down or screenshot it.</p>";
     home.insertBefore(box, home.firstChild);
   }
   function claimSession(id) {
-    return fetch(API + "/license/claim?session_id=" + encodeURIComponent(id)).then(function (res) {
+    return fetch(API + "/license/claim?session_id=" + encodeURIComponent(id) + "&device=" + deviceId()).then(function (res) {
       return res.json().then(function (data) {
         /* The Worker answers any GET with {ok:true, service:...}. Only a real seat code counts. */
-        if (!res.ok || !data.ok || !/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(data.code || ""))) throw new Error(data.error || "Seat code server is not live yet. Your checkout still unlocked this phone.");
+        if (!res.ok || !data.ok || !/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(data.code || ""))) throw new Error(data.error || "Seat code server is not live yet. Your payment went through. Email us and we will send your code.");
         return data;
       });
     }).then(function (data) {
@@ -117,7 +137,7 @@
     return fetch(API + "/license/redeem", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: code })
+      body: JSON.stringify({ code: code, device: deviceId() })
     }).then(function (res) {
       return res.json().then(function (data) {
         if (!res.ok || !data.ok || !data.sku) throw new Error(data.error || "Code rejected.");
@@ -212,19 +232,6 @@
     } catch (e) { return Promise.resolve(""); }
   }
   function takeCode(code, fb) {
-    if (/^RIVET-\d{3}$/.test(code)) {
-      sha(code).then(function (h) {
-        if (h !== SEAT_HASH) {
-          if (fb) { fb.className = "quiz-feedback bad"; fb.textContent = "Code not recognized."; }
-          return;
-        }
-        save(packLicense());
-        if (fb) { fb.className = "quiz-feedback ok"; fb.textContent = "Pack is on this icon. Full trainer is open."; }
-        refreshUi();
-        setTimeout(function () { location.reload(); }, 400);
-      });
-      return true;
-    }
     if (!/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) return false;
     redeemRemote(code).then(function () {
       if (fb) { fb.className = "quiz-feedback ok"; fb.textContent = "Seat accepted. Full trainer is open on this phone."; }
@@ -270,6 +277,7 @@
       });
     }
     if (restore()) refreshUi();
+    recheck();
     showSeatCard();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
