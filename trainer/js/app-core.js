@@ -204,6 +204,8 @@
   function hasFullAccess() {
     var lic = loadLicense();
     if (!lic || lic.expired) return false;
+    if (lic.code === "HOME" || lic.code === "CREW" || lic.code === "SHOP" || lic.sku === "home") return false;
+    if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
     if (lic.plan === "free") return true;
     if (lic.plan === "pro" || lic.plan === "trial") return true;
     return false;
@@ -373,8 +375,8 @@
     var stripeDays = cfg.proPeriodDays || 365;
     var stripeMatch = code.match(/^STRIPE(?:-(\d+))?$/);
     if (stripeMatch) {
-      if (stripeMatch[1]) stripeDays = parseInt(stripeMatch[1], 10) || stripeDays;
-      lic = applyStripeLicense(stripeDays);
+      if (fb) { fb.className = "quiz-feedback bad"; fb.textContent = "Enter the W911-XXXX-XXXX code from your checkout."; }
+      return false;
     } else if (def) {
       lic = {
         code: code,

@@ -123,28 +123,9 @@
       strip("owner");
     }
 
-    /* Honor system (no server check yet): only a Stripe-shaped id counts. Fake ?session_id=1 does nothing. */
-    if (/^cs_(live|test)_[A-Za-z0-9]{10,}$/.test(sessionId) && !token) {
-      var sku = (plan === "seat" || plan === "pack" || plan === "field") ? plan : defaultSku();
-      write(sku, "");
-      clearPending();
-      missed = false;
-      strip("session_id");
-      strip("redirect_status");
-    }
-    if (token === "STRIPE-SEAT" || token === "STRIPE-PACK") {
-      write(token === "STRIPE-PACK" ? "pack" : "seat", "");
-      clearPending();
-      strip("license");
-    } else if (token === "STRIPE" || token.indexOf("STRIPE-") === 0) {
-      var sku2 = (plan === "seat" || plan === "pack" || plan === "field") ? plan : defaultSku();
-      write(sku2, "");
-      clearPending();
-      strip("license");
-    } else if (crewOk(token)) {
-      write("pack", token.slice(5));
-      strip("license");
-    }
+    /* Per-purchase codes: ?session_id is claimed from the license Worker in ios-license-bridge.js.
+       ?license=STRIPE / STRIPE-* / CREW-* links no longer unlock anything. */
+    if (token) strip("license");
   }
 
   function daysLeft(lic) {

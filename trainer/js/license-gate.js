@@ -34,11 +34,11 @@
         var restored = bridge.restore();
         if (restored && bridge.valid(restored)) return true;
       }
-      if (localStorage.getItem("wrap911_owner") === "1") return true;
       var raw = localStorage.getItem("wrap911_license");
       if (!raw) return false;
       var lic = JSON.parse(raw);
       if (!lic || lic.expired) return false;
+      if (lic.code === "HOME" || lic.code === "CREW" || lic.code === "SHOP" || lic.sku === "home") return false;
       if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
       if (lic.plan === "free" || lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
       if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "field") return true;
@@ -213,8 +213,7 @@
       return false;
     }
     var h = await digest(code);
-    if (h === HOME) { applyOwner("HOME"); return true; }
-    if (h === CREW) { applyOwner("CREW"); return true; }
+    /* WRAP911-HOME / WRAP911-CREW were public in git and are retired. Owner phones use a W911 code. */
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
       fb.className = "quiz-feedback bad";
