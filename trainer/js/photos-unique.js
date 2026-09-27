@@ -2,6 +2,61 @@
 (function () {
   var EXTRA = [
     {
+      id: "bay-mustang-hood-tac",
+      title: "Dark Horse hood, Rapid Tac still on the panel",
+      image: "media/photos/gallery/mustang-hood-rapid-tac.jpg",
+      module: "squeegee",
+      jobType: "Vehicles",
+      visual: "Gloss black Mustang Dark Horse hood. A Rapid Tac bottle sits on the cowl. A tan tape stripe runs across the hood toward the vents. Shop lights are in the paint.",
+      narration: "This is layout, not a finished hood. The bottle is sitting on show film. Get it off the panel before you glass. The tape is a guide, not an edge.\n\nSolution: lift the bottle. Glass from the center out. Do not trap the tape under a second sheet. Seat the vent pockets last. Any slip solution follows the film TDS.",
+      checklist: ["Get bottles and tools off the show face", "Treat tape as a layout mark, not a finished edge", "Glass from the center toward the vents", "Seat vent pockets after the field is down"],
+      quiz: { q: "A Rapid Tac bottle is sitting on the hood film. First move?", correct: "Lift the bottle off the show face, then glass the field.", wrong: "Leave it. The weight helps the film stick." }
+    },
+    {
+      id: "bay-mustang-quarter-tape",
+      title: "Quarter tape line on gloss black",
+      image: "media/photos/gallery/mustang-quarter-tape.jpg",
+      module: "cutting",
+      jobType: "Vehicles",
+      visual: "Rear quarter of a gloss black Mustang. Tan tape runs the C-pillar and quarter. Bronze wheel in frame. Shop boxes reflect in the film.",
+      narration: "Tape on a finished gloss panel is a layout mark for a stripe or a second color. Do not cut to the tape like it is a panel gap.\n\nPull the tape low and slow after the graphic is glassed. Check the wheel-arch edge and the fuel-door pocket before you walk.",
+      checklist: ["Confirm what the tape is marking before you cut", "Glass the graphic, then pull tape low and slow", "Check the wheel-arch edge", "Do not treat tape as a body seam"],
+      quiz: { q: "Tan tape is on a gloss quarter. What is it?", correct: "A layout mark. Do not cut it like a panel gap.", wrong: "The factory body seam. Cut hard to it." }
+    },
+    {
+      id: "prob-mustang-fuel-door",
+      title: "Fuel door still under film",
+      image: "media/photos/gallery/mustang-fuel-door.jpg",
+      module: "cutting",
+      jobType: "Problems",
+      visual: "Gloss black rear quarter. The round fuel door is still covered. A tan tape stripe runs above it toward the spoiler.",
+      narration: "Problem: the fuel door is wrapped shut. That door has to open.\n\nSolution: seat the field, cut the door gap with a sharp blade into the gap, leave a tuck, cycle the door. Do not slice across the painted face.",
+      checklist: ["Seat the field first", "Cut into the fuel-door gap, not across the face", "Leave a tuck margin", "Cycle the door before you call it done"],
+      quiz: { q: "The round fuel door is still covered. Move?", correct: "Cut into the gap, tuck, then cycle the door.", wrong: "Heat the circle until the door outline shows through." }
+    },
+    {
+      id: "bay-mustang-overview",
+      title: "Dark Horse in the bay, job not done",
+      image: "media/photos/gallery/mustang-bay-overview.jpg",
+      module: "post-heat",
+      jobType: "Vehicles",
+      visual: "Overhead of a black Mustang Dark Horse in an open shop. Bronze wheels. Boxes and a ladder in the bay. Tape still on the quarter and spoiler line.",
+      narration: "The car looks wet and finished from ten feet. Tape is still on the quarter and the spoiler line. That is not a walk-around.\n\nWalk the edges: hood vents, fuel door, wheel arches, spoiler ends, door handles. Pull leftover tape. Post-heat only where the film TDS says.",
+      checklist: ["Walk every edge before you call it done", "Pull leftover layout tape", "Cycle doors and the fuel door", "Post-heat only per the film TDS"],
+      quiz: { q: "The car looks finished from the mezzanine. Next?", correct: "Walk the edges and pull leftover tape.", wrong: "Ship it. Shine means done." }
+    },
+    {
+      id: "bay-mustang-fender-badge",
+      title: "Fender badge and hood vents",
+      image: "media/photos/gallery/mustang-fender-gtr.jpg",
+      module: "cutting",
+      jobType: "Vehicles",
+      visual: "Driver fender of a black Mustang Dark Horse. GTR badge on the fender. Hood vents in frame. Bronze wheel and splitter visible.",
+      narration: "Badges and hood vents are cutouts, not stickers you wrap over and leave. Seat the field, then cut the badge and the vent openings. Leave a small tuck. Do not stretch film into the vent slats until the field is glassed.",
+      checklist: ["Glass the fender field first", "Cut the badge, do not bury it", "Seat vent pockets after the field", "Do not stretch into slats from a loose sheet"],
+      quiz: { q: "How do you treat the fender badge?", correct: "Seat the field, then cut the badge and leave a tuck.", wrong: "Stretch film over the badge and leave it covered." }
+    },
+    {
       id: "prob-airstream-nose",
       title: "Airstream nose, film not seated",
       image: "media/photos/gallery/airstream-nose.jpg",

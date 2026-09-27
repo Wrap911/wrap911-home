@@ -174,3 +174,22 @@ Paste this to Grokbot:
 ---
 
 End of saved log. Update this file whenever a new decision is made.
+
+## 9. Mustang Dark Horse bay media (Sep 26 night)
+
+User sent hood still (IMG_5766) plus two clips (IMG_5774 quarter walk, IMG_5779 bay walk). Added to the trainer as local files. No Drive thumbnails.
+
+**Photos** in `trainer/media/photos/gallery/`:
+- mustang-hood-rapid-tac.jpg
+- mustang-quarter-tape.jpg
+- mustang-fuel-door.jpg
+- mustang-bay-overview.jpg
+- mustang-fender-gtr.jpg
+
+**Clips** in `trainer/media/videos/passenger/`:
+- mustang-quarter-walk.mp4
+- mustang-bay-walk.mp4
+
+Cards added at the top of Photos via `photos-unique.js` (cache v=331). Homepage bay section now has a Dark Horse clip. Work grid has the hood layout still.
+
+These are mid-job shots: Rapid Tac bottle on the hood, layout tape on the quarter, fuel door still covered. That is the point of the cards.

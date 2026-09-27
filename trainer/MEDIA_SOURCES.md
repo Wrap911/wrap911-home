@@ -18,3 +18,6 @@ All lesson JPEGs are baked upright (EXIF Orientation stripped). CSS keeps `image
 
 ## Field app copies
 Matching stills are copied under `solutions-hub/media/` for the Field host (`:8766`). Paths in Field data are relative to that app root.
+
+## Passenger car stills and clips (Sep 26)
+Mustang Dark Horse hood / quarter / bay walk. Files under `trainer/media/photos/gallery/mustang-*.jpg` and `trainer/media/videos/passenger/`.
