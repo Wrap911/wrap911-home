@@ -1144,10 +1144,18 @@
       })
       .concat([{ role: "user", content: String(question || "") }]);
     /* Do not send a browser system prompt — Worker injects WRAP 911 rules */
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = null;
+    if (ctrl) {
+      timer = setTimeout(function () {
+        try { ctrl.abort(); } catch (e) {}
+      }, 12000);
+    }
     return fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: messages }),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       return res.text().then(function (raw) {
         var data = null;
@@ -1167,6 +1175,15 @@
         if (!text) throw new Error("Cloud coach returned an empty reply");
         return appendTds(text);
       });
+    }).then(function (out) {
+      if (timer) clearTimeout(timer);
+      return out;
+    }).catch(function (err) {
+      if (timer) clearTimeout(timer);
+      if (err && (err.name === "AbortError" || /abort/i.test(String(err && err.message || err)))) {
+        throw new Error("timed out after 12s");
+      }
+      throw err;
     });
   }
 

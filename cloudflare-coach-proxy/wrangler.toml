@@ -1,0 +1,7 @@
+name = "wrap911-coach-proxy"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+LLM_BASE_URL = "https://api.x.ai/v1/chat/completions"
+LLM_MODEL = "grok-4"
