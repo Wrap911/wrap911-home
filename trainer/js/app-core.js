@@ -485,7 +485,7 @@
     var modeBanner = $("pricing-mode-banner");
     if (modeBanner) {
       if (cfg.stripeTestMode) {
-        modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months) · Field $29/mo.";
+        modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months).";
       } else {
         modeBanner.innerHTML = "<strong>Checkout</strong> — Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? " · Field $29/mo" : "") + ". One-time for Pack and Seat.";
       }
