@@ -1,6 +1,9 @@
 name: iOS build and upload to App Store Connect
 on:
   workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths: [".github/workflows/ios-testflight.yml"]
 jobs:
   build:
     runs-on: macos-15
