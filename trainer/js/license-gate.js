@@ -213,6 +213,19 @@
       return false;
     }
     var h = await digest(code);
+    if (h === "e7b4e18e6fd2a0c5c6073f6093e767be4ba2f8442595386bf235ba2266051816") {
+      /* Private App Store review code. */
+      try {
+        localStorage.setItem("wrap911_license", JSON.stringify({
+          code: "STRIPE", plan: "pro", sku: "pack", seats: 5, unlockedAt: Date.now(),
+          expiresAt: Date.now() + 90 * 86400000, source: "review"
+        }));
+      } catch (e) {}
+      var rfb = document.getElementById("unlock-feedback");
+      if (rfb) { rfb.className = "quiz-feedback ok"; rfb.textContent = "Review access unlocked. Full trainer is open."; }
+      goHome();
+      return true;
+    }
     /* WRAP911-HOME / WRAP911-CREW were public in git and are retired. Owner phones use a W911 code. */
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
