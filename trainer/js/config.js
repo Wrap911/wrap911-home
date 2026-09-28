@@ -43,7 +43,7 @@ window.WRAP911_CONFIG = {
     "lesson", "vehicle", "library",
     "practice-hub", "practice",
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
-    "games", "game"
+    "games", "game", "challenge"
   ],
   plans: [
     {

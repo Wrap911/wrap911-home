@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.6.6";
+var CACHE = "wrap911-trainer-2.7.0";
 var IMG_CACHE = "wrap911-img-v1"; /* photos the user already opened; videos are never cached */
 /* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
@@ -33,6 +33,8 @@ var ASSETS = [
   /* 2.6.4: extra game sets (fetched without ?v=; network-first, this copy answers offline) */
   "./data/games/fix-it-fast.json",
   "./data/games/spot-it.json",
+  "./data/challenges.json",
+  "./js/weekly-challenge.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
