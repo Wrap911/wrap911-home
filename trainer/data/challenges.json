@@ -1,0 +1,642 @@
+{
+ "version": 1,
+ "note": "Add a new week by copying one block. The app reads this file from the live site, so no Apple update is needed.",
+ "weeks": [
+  {
+   "id": "w2026-09-28",
+   "start": "2026-09-28",
+   "title": "Rivet Rumble",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Rivets are set. What comes next before QC?",
+     "choices": [
+      "Roll the truck out and let the sun finish it.",
+      "Post-heat edges and rivets so the film remembers the shape.",
+      "Pierce each rivet head so trapped air can escape."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Swing doors, before any film. First step?",
+     "choices": [
+      "Dry-fit the graphic with the doors shut.",
+      "Heat-set the door edges.",
+      "Open the doors and clean the hinge barrels and latch faces."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "A finished unit doesn't match the fleet card. Besides fixing it, what's the step?",
+     "choices": [
+      "Log the deviation.",
+      "Change the card to match this unit.",
+      "Nothing, if it's close."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Liner is piled on the floor where you're about to stage a big panel. Move?",
+     "choices": [
+      "Clear the liner off the floor, then stage the panel with hinge tape.",
+      "Leave it. Clean up after the hang.",
+      "Stand on it. Keeps your boots off the concrete."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Move on these finger rows?",
+     "choices": [
+      "Squeegee them flat, hard.",
+      "Lift a finger and chase it out."
+     ],
+     "answer": 1,
+     "photoId": "pb-torch"
+    }
+   ]
+  },
+  {
+   "id": "w2026-10-05",
+   "start": "2026-10-05",
+   "title": "Bumper Battle",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Unit 5 is finished and unit 1 still hasn't been QC'd. Problem?",
+     "choices": [
+      "No. QC the whole fleet at the end.",
+      "No. Unit 1 was just the sample.",
+      "Yes. QC unit 1 before you finish more units."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "Trailer nose graphic is still under transfer tape. When does heat come in?",
+     "choices": [
+      "Before registering, to relax the film.",
+      "While it's still under the tape.",
+      "After you squeegee and pull the tape, and only per the film TDS."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "Who signs off before a fleet unit goes out?",
+     "choices": [
+      "Whoever finished it.",
+      "Nobody, if the checklist looks good.",
+      "The lead."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "How deep does a half-moon relief go?",
+     "choices": [
+      "All the way to the panel edge.",
+      "Skip it. A straight slash across the face works.",
+      "Only as deep as the bunch."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "The torch is on the floor. When does it come up?",
+     "choices": [
+      "Now, to relax the salmon panel before it's registered.",
+      "After the nose panel is down, and only per the film TDS."
+     ],
+     "answer": 1,
+     "photoId": "pl21"
+    }
+   ]
+  },
+  {
+   "id": "w2026-10-12",
+   "start": "2026-10-12",
+   "title": "Seam Showdown",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Where does this blade stay?",
+     "choices": [
+      "Back into the face to square it up.",
+      "On the edge, cutting the waste. Not back into the finished face."
+     ],
+     "answer": 1,
+     "photoId": "prob-fingers-wall"
+    },
+    {
+     "q": "Multi-bay cubby run. What keeps every bay on the same line?",
+     "choices": [
+      "Shared baselines marked on the returns and floors.",
+      "Eyeballing each bay as you go.",
+      "Trimming each bay to fit afterward."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Long wood-grain wall and the boards start to stair-step. Fix?",
+     "choices": [
+      "Stretch the next panel to catch the line.",
+      "Register each panel to the last one before you glass it. Sight the seam from the far end.",
+      "Heat the seam straight."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Next move on this hatch?",
+     "choices": [
+      "Glass the broad hatch, then feed up to the chrome. No bridge over the bar.",
+      "Stretch over the chrome bar now and trim later."
+     ],
+     "answer": 0,
+     "photoId": "pl11"
+    },
+    {
+     "q": "Box truck side. Rivet rows are marked and the film is ready. What do you glass first?",
+     "choices": [
+      "The flat field. Leave the rivet lines staged, not crushed.",
+      "The rivet rows, one head at a time, before the flat.",
+      "The whole rivet field in one long stretch."
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "w2026-10-19",
+   "start": "2026-10-19",
+   "title": "Corner Crunch",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Next move on this RV side?",
+     "choices": [
+      "Climb with the full sheet and stretch it on.",
+      "Move the ladder instead of overreaching. Hinge the panel, then glass it."
+     ],
+     "answer": 1,
+     "photoId": "prob-bridge-intake"
+    },
+    {
+     "q": "What's wrong on this panel?",
+     "choices": [
+      "Only the top is stuck. The rest of the field is wrinkled and loose.",
+      "Rivets are tented along a seam."
+     ],
+     "answer": 0,
+     "photoId": "prob-rv-pink"
+    },
+    {
+     "q": "Your IPA wipe beads up near a door seal. What's that telling you?",
+     "choices": [
+      "Normal. The film will cover it.",
+      "Silicone. Resolve it before you hang.",
+      "The surface is too clean for the adhesive."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Trailer rivet graphic is squeegeed, hinge tape still on. When do the rivets get post-heated?",
+     "choices": [
+      "After the tape comes off and each rivet is set.",
+      "Now, while the tape holds everything.",
+      "Before the squeegee, to soften the rivets."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Slider is wrapped. Film catches when the door runs. What went wrong?",
+     "choices": [
+      "Gap and seal cuts weren't managed. Film is binding in the track.",
+      "Not enough heat on the field.",
+      "The door got cycled before post-heat."
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "w2026-10-26",
+   "start": "2026-10-26",
+   "title": "Heat Check",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Pulling the liner on a big sheet. When do you squeegee?",
+     "choices": [
+      "As you pull the liner.",
+      "After the whole liner is off.",
+      "Only once the sheet is trimmed."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Next move in this box?",
+     "choices": [
+      "Move the can, glass the sheet to the walls, then wrap or trim the bare plywood rim.",
+      "Leave the rim bare. It's inside the box."
+     ],
+     "answer": 0,
+     "photoId": "pb-cab-on"
+    },
+    {
+     "q": "Walking the rivet row for QC. What are you looking for?",
+     "choices": [
+      "Gloss level across the panel only.",
+      "Nothing. A set rivet can't lift later.",
+      "Tents, silvering, and dirty bases."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "What will read as a defect on this run under shop lights?",
+     "choices": [
+      "The metal clips and black pads still on the faces.",
+      "The color change from magenta to red."
+     ],
+     "answer": 0,
+     "photoId": "int-magenta-run"
+    },
+    {
+     "q": "Checking the band level across the slider. Door open or shut?",
+     "choices": [
+      "Shut only.",
+      "Open only.",
+      "Both. Shut and open."
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "w2026-11-02",
+   "start": "2026-11-02",
+   "title": "Box Truck Blitz",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Class C is wrapped. How do you walk it before release?",
+     "choices": [
+      "Front, side, rear for stripe and panel continuity, plus a distance look at the tall sides.",
+      "Up close on the cab only.",
+      "Skip the walk if the hang went clean."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Why check this satin hood in raking light?",
+     "choices": [
+      "Satin can't take a relief cut.",
+      "Satin shows every finger. No gloss reflection hides them."
+     ],
+     "answer": 1,
+     "photoId": "pl05"
+    },
+    {
+     "q": "Fix order at this marker light?",
+     "choices": [
+      "Cut the light out first, then chase the fingers.",
+      "Lift the fingers, glass toward the housing, then cut the light out."
+     ],
+     "answer": 1,
+     "photoId": "prob-airstream-light"
+    },
+    {
+     "q": "What's wrong with this nose panel?",
+     "choices": [
+      "It's glassed but the film is scorched.",
+      "It's hung, not glassed. The crown seam is open and the lower edge is loose."
+     ],
+     "answer": 1,
+     "photoId": "prob-airstream-nose"
+    },
+    {
+     "q": "Why the felt edge on this printed film?",
+     "choices": [
+      "It heats the film as it goes.",
+      "It keeps the printed grain from getting scratched."
+     ],
+     "answer": 1,
+     "photoId": "pl07"
+    }
+   ]
+  },
+  {
+   "id": "w2026-11-09",
+   "start": "2026-11-09",
+   "title": "Van Recess Run",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "About to make post-heat passes on a trailer. Liner scraps are piled at the base. Move?",
+     "choices": [
+      "Heat carefully around them.",
+      "Clear the liner piles first.",
+      "Kick them under the trailer."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Graphic is seated. What's left before you call it done?",
+     "choices": [
+      "Post-heat the whole graphic again to be safe.",
+      "Pull the nose tape low and slow, then check the rivet line and wheel-well edge."
+     ],
+     "answer": 1,
+     "photoId": "bay-airstream-graphic"
+    },
+    {
+     "q": "Film snags as you feed it into a cubby. Likely cause?",
+     "choices": [
+      "It is bridging the opening. Feed the corners; do not bridge.",
+      "The cubby is too clean.",
+      "The squeegee has a felt edge."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Liftgate with a deep plate pocket. What goes first?",
+     "choices": [
+      "Feed the plate pocket, then the field.",
+      "Hang and glass the main rear field.",
+      "Trim the voids, then hang."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "The face is glassed. What still needs work?",
+     "choices": [
+      "The raw plywood inside the round holes. Wrap or tuck each edge.",
+      "The QR code needs a relief cut."
+     ],
+     "answer": 0,
+     "photoId": "pl22"
+    }
+   ]
+  },
+  {
+   "id": "w2026-11-16",
+   "start": "2026-11-16",
+   "title": "Mirror Cap Mayhem",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "What's the rule on this peel?",
+     "choices": [
+      "Pull straight up, fast.",
+      "Keep it low. Stop if the pink layer under it starts to lift."
+     ],
+     "answer": 1,
+     "photoId": "pk-grey"
+    },
+    {
+     "q": "Plate recess isn't seated yet. Trim now?",
+     "choices": [
+      "Yes. Trimming first makes the feed easier.",
+      "Yes, then heat the edge so it shrinks in.",
+      "No. Seat the recess first, then trim into the voids."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "How do you finish this inside corner?",
+     "choices": [
+      "Stretch one sheet across the inside angle.",
+      "Glass each wall, then tuck the corner."
+     ],
+     "answer": 1,
+     "photoId": "pl16"
+    },
+    {
+     "q": "Long trailer, before the first segment goes up. First step?",
+     "choices": [
+      "Plan the segment map on paper or photos.",
+      "Hang the middle segment and work out.",
+      "Order one full-length sheet."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Where does this knife stay?",
+     "choices": [
+      "In the corner, off the show face, with the white wall as the guide.",
+      "Out on the show face for a straighter line."
+     ],
+     "answer": 0,
+     "photoId": "pk-cut4"
+    }
+   ]
+  },
+  {
+   "id": "w2026-11-23",
+   "start": "2026-11-23",
+   "title": "Edge Seal Sprint",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "You're up on an RV roof and a forklift starts moving through the bay. Move?",
+     "choices": [
+      "Keep working. The driver will go around.",
+      "Speed up and finish before it gets close.",
+      "Stop and coordinate around the bay traffic."
+     ],
+     "answer": 2
+    },
+    {
+     "q": "Two crews keep waiting on the same tools. Fix?",
+     "choices": [
+      "Stagger the crews so no vehicle is starved of tools.",
+      "Put both crews on one vehicle.",
+      "Skip the steps that need the missing tool."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "What has to happen before this blade touches the film?",
+     "choices": [
+      "Clean off the drop and the specks.",
+      "Nothing. Cut right through them."
+     ],
+     "answer": 0,
+     "photoId": "pk-cut5"
+    },
+    {
+     "q": "Film is bunching at a rear-door hinge. When do the relief cuts go in?",
+     "choices": [
+      "Early, to release the bunching.",
+      "After the film tears, to clean it up.",
+      "Never. Stretch through it."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Tall box side. You're on the ladder and the panel edge is just out of reach. Fix?",
+     "choices": [
+      "Lean out and grab it. It's one reach.",
+      "Step up on the top cap for the extra height.",
+      "Climb down and move the ladder."
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "w2026-11-30",
+   "start": "2026-11-30",
+   "title": "QC Walkaround",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "How do you inspect a fleet unit at QC?",
+     "choices": [
+      "Distance view only.",
+      "Distance view, plus a close rivet and edge inspection.",
+      "Close up only."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Bubbles in the corners of a soft-seated recess. What caused them?",
+     "choices": [
+      "Not enough application fluid.",
+      "Air trapped in the corners. Chase it out toward the open edges.",
+      "Using a felt squeegee."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "How do you wrap these slats?",
+     "choices": [
+      "One sheet stretched across all the openings.",
+      "Each slat on its own."
+     ],
+     "answer": 1,
+     "photoId": "pl19"
+    },
+    {
+     "q": "Headlight pocket, film is seated. Next move?",
+     "choices": [
+      "Cut flush on the lens face.",
+      "Fresh blade, cut into the gap, leave a small tuck behind the housing.",
+      "Score the paint so the cut tracks."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Score marks on the hinge face after cutting. What went wrong?",
+     "choices": [
+      "The film wasn't heated enough.",
+      "The blade was too fresh.",
+      "The blade crossed the paint instead of cutting into the void."
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "w2026-12-07",
+   "start": "2026-12-07",
+   "title": "Fleet Friday Prep",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "A helper wants to spray a glide product so the squeegee slides easier. Answer?",
+     "choices": [
+      "No. Nothing oily goes under the adhesive.",
+      "Fine on commercial sides.",
+      "Fine, if you heat harder after."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Inside corner on an interior panel. Where does the relief cut go?",
+     "choices": [
+      "Off the show face.",
+      "Dead center on the show face.",
+      "No relief. Stretch one sheet around."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Cutting in the corner crease. Which way does the blade travel?",
+     "choices": [
+      "Toward your body for control.",
+      "Away from your body.",
+      "Across the show face."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Rear-door registration is confirmed. How does the liner come off?",
+     "choices": [
+      "All at once to save time.",
+      "In sections, squeegeeing the field as you go.",
+      "Leave it on and heat through it."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Architectural panel hang. First step?",
+     "choices": [
+      "Knife-trim the reveals.",
+      "Seat the corners and returns.",
+      "Survey the panel layout and pattern direction."
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "w2026-12-14",
+   "start": "2026-12-14",
+   "title": "Master Mix",
+   "timeLimitSec": 90,
+   "questions": [
+    {
+     "q": "Tall graphic, field is glassed. What do you check before you commit the recesses?",
+     "choices": [
+      "Nothing. Recesses come first anyway.",
+      "Level lines, from a distance.",
+      "Just the rivet heads, up close."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "What is standing against the orange panel at the door?",
+     "choices": [
+      "A folding ladder, set right at the door.",
+      "A film roll on a stand."
+     ],
+     "answer": 0,
+     "photoId": "bay-trailer-door"
+    },
+    {
+     "q": "Knife is chewing the edge at an interior corner. Fix?",
+     "choices": [
+      "Snap a fresh blade.",
+      "Press harder.",
+      "Heat the corner, then cut."
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Roof flats are glassed. How do you work the channels?",
+     "choices": [
+      "Hard-card them flat in one stroke.",
+      "Feed them with soft tools.",
+      "Torch the film until it drops in."
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Where does the cut go on this door handle?",
+     "choices": [
+      "Into the black voids, off the paint, leaving a tuck the housing can hide.",
+      "Straight across the face of the scoop."
+     ],
+     "answer": 0,
+     "photoId": "pl03"
+    }
+   ]
+  }
+ ]
+}
