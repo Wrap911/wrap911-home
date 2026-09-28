@@ -19,6 +19,8 @@ window.WRAP911_CONFIG = {
   fieldPriceLabel: "W911-FIELD $29/mo",
   /* Offer lock 2026-09-26: Field $29/mo sold in the trainer. Set false to hide Field everywhere in the app. */
   fieldSkuLive: false,
+  /* App Review fallback: true = iPhone app shows unlock code only (no prices, no Stripe). Web is not affected. */
+  iosHideBuy: true,
   proPeriodDays: 365,
   audience: "other-shops-first",
   aiEndpoint: "https://wrap911-coach-proxy.wrap911.workers.dev",

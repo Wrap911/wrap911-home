@@ -48,7 +48,7 @@
   }
 
   function iosCheckoutNote() {
-    if (!isNative) return;
+    if (!isNative || window.WRAP911_IOS_CODE_ONLY) return;
     var p = document.getElementById("screen-pricing");
     if (!p || p.querySelector(".w911-ios-note")) return;
     var note = el('<p class="w911-ios-note">Checkout opens in Safari on wrap911.com. After you pay, come back here and enter your unlock code.</p>');
