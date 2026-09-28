@@ -39,3 +39,11 @@ Data Not Used to Track You. Data Not Linked to You: **User Content > Other User 
 
 ## Review risks
 - Guideline 4.2 (web wrapper): lead with the drills, scoring, job manager and progress that work on the device. The service worker does NOT run in the iOS app, so do not claim offline caching.
+
+## Fallback if rejected under 3.1.1 (branch ios-store-mode)
+`trainer/js/ios-reader-mode.js` + `iosHideBuy: true` in `config.js`: inside the iOS app only, every price, buy button and Stripe link is hidden. The Pricing screen becomes "Unlock" with just the code box. The website keeps selling. Merge this branch into ios-capacitor to build and submit.
+
+Review note for the fallback build:
+> WRAP 911 is a training app for commercial vinyl-wrap installers: lessons, timed practice scenarios, drills with scoring, a job workflow manager, a material calculator, and progress saved on the device. The AI Coach asks permission before sending a question to our server.
+> The app has no purchases, prices or payment links. Shops that already have a WRAP 911 plan enter their unlock code on the Unlock screen. Anyone can use the free lessons, photos, videos, drills and Coach without a code.
+> Full access for review: open Unlock, enter code <REVIEW CODE>, tap Unlock.
