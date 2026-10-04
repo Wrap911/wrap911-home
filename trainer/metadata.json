@@ -644,7 +644,7 @@
     "vehicle": "fleet",
     "practice": "prac-panel-align",
     "badge": "badge-fl-align",
-    "video": "v-named-graphic-installation-1-1gNZhI"
+    "video": ""
    }
   },
   {
@@ -917,7 +917,7 @@
    "category": "practice",
    "access": "paid",
    "media": {
-    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "path": "media/videos/fleet/seam-peel-rework-zest-life.jpg",
     "local": true,
     "live": true
    },
@@ -1949,23 +1949,19 @@
   },
   {
    "id": "badge-prac-rivet",
-   "title": "Rivet Drilled",
-   "lessonId": null
+   "title": "Rivet Drilled"
   },
   {
    "id": "badge-prac-seam",
-   "title": "Seam Sharp",
-   "lessonId": null
+   "title": "Seam Sharp"
   },
   {
    "id": "badge-prac-align",
-   "title": "Alignment Drilled",
-   "lessonId": null
+   "title": "Alignment Drilled"
   },
   {
    "id": "badge-prac-recess",
-   "title": "Recess Drilled",
-   "lessonId": null
+   "title": "Recess Drilled"
   }
  ],
  "videos": [
@@ -2057,8 +2053,7 @@
    },
    "related": {
     "lesson": "sf-multipane",
-    "workflowStep": "sw-pane",
-    "practice": null
+    "workflowStep": "sw-pane"
    }
   },
   {
@@ -2149,8 +2144,7 @@
    },
    "related": {
     "lesson": "sf-multipane",
-    "workflowStep": "sw-pane",
-    "practice": null
+    "workflowStep": "sw-pane"
    }
   },
   {
@@ -2172,8 +2166,7 @@
    },
    "related": {
     "lesson": "sf-multipane",
-    "workflowStep": "sw-pane",
-    "practice": null
+    "workflowStep": "sw-pane"
    }
   },
   {
@@ -2356,8 +2349,7 @@
    },
    "related": {
     "lesson": "fl-qc",
-    "workflowStep": "fw-qc",
-    "practice": null
+    "workflowStep": "fw-qc"
    }
   },
   {
@@ -2539,9 +2531,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2562,9 +2552,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2585,9 +2573,7 @@
     "live": true
    },
    "related": {
-    "lesson": "van-rear-hinge",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "van-rear-hinge"
    }
   },
   {
@@ -2608,9 +2594,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2631,9 +2615,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-qc",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-qc"
    }
   },
   {
@@ -2654,9 +2636,7 @@
     "live": true
    },
    "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "tr-panel-seg"
    }
   },
   {
@@ -2677,9 +2657,7 @@
     "live": true
    },
    "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "tr-panel-seg"
    }
   },
   {
@@ -2700,9 +2678,7 @@
     "live": true
    },
    "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "tr-panel-seg"
    }
   },
   {
@@ -2723,9 +2699,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-alignment"
    }
   },
   {
@@ -2746,9 +2720,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2769,9 +2741,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -2792,9 +2762,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2815,9 +2783,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -2838,9 +2804,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -2861,9 +2825,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2884,9 +2846,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2907,9 +2867,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2930,9 +2888,7 @@
     "live": true
    },
    "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "tr-panel-seg"
    }
   },
   {
@@ -2953,9 +2909,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2976,9 +2930,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -2999,9 +2951,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -3022,55 +2972,7 @@
     "live": true
    },
    "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": null,
-    "practice": null
-   }
-  },
-  {
-   "id": "v-named-graphic-installation-1-1gNZhI",
-   "title": "Graphic installation 1",
-   "category": "Fleet",
-   "subcategory": "Panels",
-   "access": "paid",
-   "shownInApp": true,
-   "src": {
-    "path": "media/videos/fleet/graphic-installation-1.mp4",
-    "local": true,
-    "live": true
-   },
-   "still": {
-    "path": "media/videos/fleet/graphic-installation-1.jpg",
-    "local": true,
-    "live": true
-   },
-   "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
-   }
-  },
-  {
-   "id": "v-named-squeegee-strokes-1NBAg_",
-   "title": "Squeegee strokes",
-   "category": "Prep",
-   "subcategory": "Technique",
-   "access": "paid",
-   "shownInApp": true,
-   "src": {
-    "path": "media/videos/prep/squeegee-strokes.mp4",
-    "local": true,
-    "live": true
-   },
-   "still": {
-    "path": "media/videos/prep/squeegee-strokes.jpg",
-    "local": true,
-    "live": true
-   },
-   "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "tr-panel-seg"
    }
   },
   {
@@ -3091,9 +2993,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-alignment"
    }
   },
   {
@@ -3114,9 +3014,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-alignment"
    }
   },
   {
@@ -3137,9 +3035,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -3160,9 +3056,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -3183,9 +3077,7 @@
     "live": true
    },
    "related": {
-    "lesson": "bt-prep-cleaning",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "bt-prep-cleaning"
    }
   },
   {
@@ -3206,9 +3098,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-alignment"
    }
   },
   {
@@ -3229,9 +3119,7 @@
     "live": true
    },
    "related": {
-    "lesson": "fl-alignment",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "fl-alignment"
    }
   },
   {
@@ -3252,9 +3140,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3275,9 +3161,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3298,9 +3182,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3321,9 +3203,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3344,9 +3224,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3367,9 +3245,7 @@
     "live": false
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3390,9 +3266,7 @@
     "live": false
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3413,9 +3287,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3436,9 +3308,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3459,9 +3329,7 @@
     "live": false
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3482,9 +3350,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3505,9 +3371,7 @@
     "live": false
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   },
   {
@@ -3528,9 +3392,7 @@
     "live": true
    },
    "related": {
-    "lesson": "sf-multipane",
-    "workflowStep": null,
-    "practice": null
+    "lesson": "sf-multipane"
    }
   }
  ],
