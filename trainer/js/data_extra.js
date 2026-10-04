@@ -1269,7 +1269,7 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-named-graphic-installation-1-1gNZhI",
+    "relatedVideoId": "",
     "failPhoto": "",
     "passPhoto": ""
   },
@@ -1280,7 +1280,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Every panel labeled by unit. Nothing leaves without QC sign-off.",
     "timeBox": "10 min intake per vehicle (starting target — set your own)",
     "badgeId": "badge-fl-multi",
-    "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
+    "media": "media/videos/fleet/seam-peel-rework-zest-life.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1521,7 +1521,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "btw-qc",
       "title": "Post-Heat & QC",
       "type": "Post-Heat",
-      "media": "media/photos/gallery/airstream-graphic.jpg",
+      "media": "media/photos/gallery/airstream-corner.jpg",
       "instructions": "Post-heat edges and rivets per TDS. Walk for tents/silvering. Door cycle. Photo for job ticket.",
       "tools": [
         "Heat tool",
@@ -3013,36 +3013,6 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "note": "Shop clip (~52s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
   },
   {
-    "id": "v-named-graphic-installation-1-1gNZhI",
-    "access": "paid",
-    "title": "Graphic installation 1",
-    "category": "Fleet",
-    "subcategory": "Panels",
-    "type": "clip",
-    "src": "media/videos/fleet/graphic-installation-1.mp4",
-    "still": "media/videos/fleet/graphic-installation-1.jpg",
-    "driveId": "1gNZhIF4PxyFy5Y5hIMi-j1-budREb386",
-    "recommendedModule": "fl-alignment",
-    "recommendedWorkflow": "",
-    "recommendedPractice": "",
-    "note": "Shop clip (~67s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
-  },
-  {
-    "id": "v-named-squeegee-strokes-1NBAg_",
-    "access": "paid",
-    "title": "Squeegee strokes",
-    "category": "Prep",
-    "subcategory": "Technique",
-    "type": "clip",
-    "src": "media/videos/prep/squeegee-strokes.mp4",
-    "still": "media/videos/prep/squeegee-strokes.jpg",
-    "driveId": "1NBAg_uLvUcbfrqn3RTrZ0nuuYByfp0kd",
-    "recommendedModule": "bt-prep-cleaning",
-    "recommendedWorkflow": "",
-    "recommendedPractice": "",
-    "note": "Shop clip (~47s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
-  },
-  {
     "id": "v-named-pink-wrap-caddy-1-1G1W_l",
     "access": "free",
     "title": "Pink Caddy wrap 1",
@@ -3420,8 +3390,6 @@ window.WRAP911_DATA.VIDEO_ON_PAGE = {
   "media/videos/prep/torch-on-vinyl2.mp4": true,
   "media/videos/prep/vinyl-squeegee-sequence.mp4": true,
   "media/videos/trailer/wrapping-around-trailer-marking-light.mp4": true,
-  "media/videos/fleet/graphic-installation-1.mp4": true,
-  "media/videos/prep/squeegee-strokes.mp4": true,
   "media/videos/fleet/pink-wrap-caddy-1.mp4": true,
   "media/videos/fleet/pink-caddy-wrap5.mp4": true,
   "media/videos/prep/dull-blade-cut.mp4": true,
