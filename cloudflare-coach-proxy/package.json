@@ -1,0 +1,2 @@
+{ "name": "wrap911-coach-proxy", "private": true, "type": "module",
+  "dependencies": { "@peculiar/x509": "^1.12.3" } }

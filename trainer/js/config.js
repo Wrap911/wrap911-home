@@ -1,7 +1,7 @@
 /* WRAP 911 Trainer — shop config (LIVE)
    Offer lock (pack-first): W911-PACK $149 one-time (5 seats, 12 months, default sell)
    · W911-SEAT $49 one-time (1 tech, 12 months) · W911-FIELD $29/mo (trainer only). No per-seat monthly price.
-   Free look: rules, Coach, 14 shop photos, 8 sample videos, 3 sample lessons.
+   Free look: rules, Coach, 14 shop photos, 3 sample videos, 3 sample lessons.
    Live: stripeTestMode false, live Payment Links. Buyers unlock with ?license=STRIPE on the Stripe
    success return (honor system until the license Worker ships). Do not print owner codes. */
 window.WRAP911_CONFIG = {
@@ -31,7 +31,7 @@ window.WRAP911_CONFIG = {
   problemUploadEndpoint: "",
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
-  freeVideoSamples: 8,
+  freeVideoSamples: 3,
   /* Lessons open on the free look. Empty array = every lesson open. */
   freeLessonIds: ["bt-rivet-mastery", "van-deep-recess", "sf-wet-install"],
   /* Hotfix 2.6.1: ONE list of screens a free phone may open. app-core.js showScreen and
@@ -51,7 +51,7 @@ window.WRAP911_CONFIG = {
       name: "Free look",
       priceExample: "Free",
       status: "available",
-      blurb: "Shop rules, Coach, 14 shop photos, 8 sample videos, and 3 sample lessons. Enough to see how WRAP 911 trains. The rest of the lessons, videos, jobs, and calculator unlock with a seat or the pack."
+      blurb: "Shop rules, Coach, 14 shop photos, 3 sample videos, and 3 sample lessons. Enough to see how WRAP 911 trains. The rest of the lessons, videos, jobs, and calculator unlock with a seat or the pack."
     },
     {
       id: "w911-pack",
