@@ -536,3 +536,10 @@ input, select, textarea {
 .xp-chip { color: #1a0c00; background: #ffb000; border-color: #ffb000; }
 .plan-chip { color: #fff; background: #ff2d8c; border-color: #ff2d8c; }
 
+
+/* iPhone notch / Dynamic Island: keep the header below the clock and battery. */
+.app-header {
+  padding-top: calc(0.75rem + env(safe-area-inset-top, 0px));
+  padding-left: calc(1rem + env(safe-area-inset-left, 0px));
+  padding-right: calc(1rem + env(safe-area-inset-right, 0px));
+}
