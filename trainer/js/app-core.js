@@ -501,7 +501,7 @@
     }
     if (stripeBtn) {
       var test = cfg.stripeTestMode === true;
-      stripeBtn.textContent = test ? "Open configured payment link (TEST)" : "Open configured payment link";
+      stripeBtn.textContent = test ? "Buy shop pack · $149 (TEST)" : "Buy shop pack · $149";
       stripeBtn.onclick = function () {
         if (link) window.location.href = link;
       };
