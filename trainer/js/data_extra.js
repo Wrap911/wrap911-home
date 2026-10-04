@@ -4,7 +4,7 @@
 window.WRAP911_DATA.vehicles = [
   {
     "id": "box-truck",
-    "title": "Box Truck",
+    "title": "Commercial Wraps",
     "icon": "🚛",
     "summary": "Rivet fields, oversized panels, roll-up and swing doors."
   },
