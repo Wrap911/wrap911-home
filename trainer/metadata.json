@@ -1041,19 +1041,6 @@
    "source": "data.js/data_extra.js"
   },
   {
-   "id": "pl06",
-   "title": "Just Ice Tea graphic on the bench",
-   "category": "Vehicles",
-   "module": "commercial-sides",
-   "access": "free",
-   "media": {
-    "path": "media/videos/fleet/graphic-installation-1.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "data.js/data_extra.js"
-  },
-  {
    "id": "pl07",
    "title": "Squeegee on grey wood-grain wall film",
    "category": "Interior",
@@ -1587,19 +1574,6 @@
    "source": "photos-boost.js"
   },
   {
-   "id": "pb-graphic",
-   "title": "Printed graphic install",
-   "category": "Fleet",
-   "module": "squeegee",
-   "access": "free",
-   "media": {
-    "path": "media/videos/fleet/graphic-installation-1.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "photos-boost.js"
-  },
-  {
    "id": "pb-wall",
    "title": "Interior wall wrap",
    "category": "Interior",
@@ -1750,19 +1724,6 @@
    "access": "paid",
    "media": {
     "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "photos-boost.js"
-  },
-  {
-   "id": "pb-squeegee",
-   "title": "Squeegee strokes on the table",
-   "category": "Fleet",
-   "module": "squeegee",
-   "access": "paid",
-   "media": {
-    "path": "media/videos/prep/squeegee-strokes.jpg",
     "local": true,
     "live": true
    },
