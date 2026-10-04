@@ -79,17 +79,6 @@
       quiz: { q: "What is under the cream film in the oval?", correct: "A marker light that still needs to be cut out.", wrong: "A rivet dome to mash flat." }
     },
     {
-      id: "bay-airstream-graphic",
-      title: "Airstream mountain graphic",
-      image: "media/photos/gallery/airstream-graphic.jpg",
-      module: "post-heat",
-      jobType: "Vehicles",
-      visual: "Blue and cream Airstream. Mountain and pine graphic is down. Blue tape is still on the nose curve. Rear wheels and a Toyota badge are in frame.",
-      narration: "The graphic is seated. Tape is still on the nose curve. Pull that tape low and slow after the panel is glassed. Check the rivet line and the wheel-well edge before you call it done.",
-      checklist: ["Confirm the graphic is glassed", "Pull the blue tape low and slow", "Check rivets and the wheel-well edge", "Do not heat a panel that is already down just to look busy"],
-      quiz: { q: "Tape is still on the nose. Move?", correct: "Pull the tape low and slow, then seat the edge it was holding.", wrong: "Leave the tape. It holds the edge." }
-    },
-    {
       /* 2.6.5: replaces prob-pickup-quarter (sage-green bottle-print film; no green wraps on Photos). */
       id: "bay-trailer-door",
       title: "Orange side, door outline at the ladder",
