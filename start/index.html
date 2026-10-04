@@ -45,8 +45,23 @@ footer{color:var(--mute);text-align:center;padding:30px 0;font-size:.85rem}
 <section class="lead" id="lead">
 <h2 style="margin-top:0">Free: The 10 Most Common Wrap Mistakes</h2>
 <p style="color:var(--mute)">The mistakes that cost shops hundreds per job — and how to avoid them.</p>
-<form onsubmit="event.preventDefault();window.location.href='10-wrap-mistakes.pdf';">
-<input type="email" required placeholder="you@shop.com"><button class="btn">Send Me the Guide</button></form>
+<form id="lead-form">
+<input type="email" name="email" required autocomplete="email" placeholder="you@shop.com"><button class="btn">Send Me the Guide</button></form>
+<script>
+(function () {
+  var f = document.getElementById("lead-form");
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var btn = f.querySelector("button"); btn.disabled = true; btn.textContent = "Opening guide...";
+    var go = function () { window.location.href = "10-wrap-mistakes.pdf"; };
+    var t = setTimeout(go, 2500);
+    fetch("https://wrap911-coach-proxy.wrap911.workers.dev/lead", {
+      method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: f.email.value, source: "start" })
+    }).catch(function () {}).then(function () { clearTimeout(t); go(); });
+  });
+})();
+</script>
 </section>
 <section class="hero" id="get" style="padding-top:20px">
 <h2 style="margin-top:0">Start training today</h2><p>Available on iOS and web.</p>
