@@ -8,7 +8,10 @@
  *   LLM_BASE_URL  default https://api.x.ai/v1/chat/completions
  *   LLM_MODEL     default grok-4
  */
+import { handleLicense } from "./license.js";
+
 const ALLOWED_ORIGINS = [
+  "capacitor://localhost",
   "https://wrap911.com",
   "https://www.wrap911.com",
   "https://wrap911.github.io",
@@ -49,6 +52,8 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
+    const lic = await handleLicense(request, env);
+    if (lic) return json(lic[0], lic[1], origin);
     if (request.method === "GET") {
       return json(
         { ok: true, service: "wrap911-coach-proxy", hint: "POST { messages }" },

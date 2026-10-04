@@ -39,3 +39,10 @@ Data Not Used to Track You. Data Not Linked to You: **User Content > Other User 
 
 ## Review risks
 - Guideline 4.2 (web wrapper): lead with the drills, scoring, job manager and progress that work on the device. The service worker does NOT run in the iOS app, so do not claim offline caching.
+
+## In-App Purchase: Wrap911 Pro yearly (v1.1)
+- Product ID `com.wrap911.trainer.pro.yearly`, auto-renewable, group "Wrap911 Pro", 1 year, $49.00 USD, 7-day free trial (introductory offer, new subscribers).
+- Code: `trainer/js/iap.js` + `@capgo/native-purchases` (StoreKit 2). Active sub writes a local `plan: "pro", sku: "iap"` license; expired/refunded subs remove it on next launch.
+- Paywall shows price, trial terms, auto-renew text, Restore purchases, Terms of Use (Apple EULA) and Privacy links (Guideline 3.1.2).
+- Stripe seat codes and US web checkout still work alongside IAP.
+- First subscription must be submitted for review together with app version 1.1.
