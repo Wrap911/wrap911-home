@@ -610,24 +610,25 @@ window.WRAP911_DATA = {
       }
     },
     {
+      /* 2.6.6: new still (was media/photos/gallery/front-bumper-wrap.jpg, the same frame as pl12 edge-detail.jpg). */
       id: "pl18",
-      title: "Escalade headlight — film seated in the lamp gap",
-      image: "media/photos/gallery/front-bumper-wrap.jpg",
-      module: "cutting",
-      jobType: "Fleet",
-      visual: "Close-up of the pink Cadillac Escalade headlight. Glossy pink film follows the lamp housing: upper light, main lens, and the lower bumper lamp. Black trim outlines the lamp. Chrome is at the right. A small round mark sits on the bumper below the lamp.",
-      narration: "Headlight pockets are the QC moment on this color-change. This is the pink Escalade lamp, and the film is seated into the channel — the finish you get from cast wrap film in the 3M, Avery Dennison, or Arlon family when you seat before you cut.\n\nBridge the pocket, soft-tool the film in, then cut into the void with a fresh blade and leave a small tuck margin behind the housing. Short flush cuts flash paint after minor shrink. Heat-set only within the product TDS — no memorized torch numbers.\n\nIf the pocket was dirty, that edge will lift first; clean the recess before the final tuck.",
+      title: "Pink SUV rear quarter, installer on the step stool",
+      image: "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
+      module: "squeegee",
+      jobType: "Vehicles",
+      visual: "A pink SUV in the bay, seen from the rear corner. An installer in a black hoodie and striped track pants stands on a small step stool and works the film high on the rear quarter, up by the roof rail. A loose flap of pink film hangs down over the rear door edge, just behind the wheel. A white film roll lies on the concrete by the stool.",
+      narration: "This is a pink SUV at the rear quarter, not the front bumper. The installer is working the film high on the quarter by the roof rail, from a step stool. A flap of film still hangs loose over the rear door edge.\n\nWork the top of the quarter first, then come down. Keep the loose flap off the floor and off the tire until you get to it. Lay it into the door gap. Do not stretch it across the gap to the door. Move the stool instead of leaning out to reach.",
       checklist: [
-        "Clean the lamp and bumper recesses before final seating",
-        "Seat film into the pocket before any finish cut",
-        "Fresh blade; cut into the gap, not across paint",
-        "Leave a small tuck margin behind the housing",
-        "Final edge heat only per film TDS — never invent a temp"
+        "Name it: pink SUV rear quarter",
+        "Work the top edge first, then come down",
+        "Keep the loose flap off the floor and the tire",
+        "Lay the film into the door gap, do not bridge it",
+        "Move the stool, do not overreach"
       ],
       quiz: {
-        q: "What is the correct order at this headlight pocket?",
-        correct: "Clean, seat the film into the recess, then cut and tuck a small margin behind the housing.",
-        wrong: "Cut flush on the face first so the lamp can hold the film while you stretch it in."
+        q: "Where is the installer working on this pink SUV?",
+        correct: "High on the rear quarter by the roof rail, standing on a step stool.",
+        wrong: "At the front bumper, on the fog lamp."
       }
     },
     {
@@ -810,19 +811,19 @@ window.WRAP911_DATA.drills = {
     },
     {
       id: "sm07",
-      photoId: "pl10",
-      image: "../assets/sales/pickup-panels.jpg",
+      /* 2.6.6: was ../assets/sales/pickup-panels.jpg (sage-green film; no green wraps). New real still, drill text matched to it. */
+      image: "media/photos/gallery/dusty-rose-tailgate-gmc-emblem-bridge.jpg",
       prompt: "What's wrong / what next?",
-      question: "Sage bottle-print on a crew-cab pickup, liner hanging, torch on the floor. Before you lock it?",
+      question: "Pink film on a tailgate. The film has ripples above the badge and is not laid down around the letters. What next?",
       choices: [
-        "Call it a black trailer with a white tire-tread graphic.",
-        "Line the bottle rows up across the doors and the bed while the liner is still a hinge. Leave the torch down.",
-        "Call it a pink Escalade and look for hexagons."
+        "Squeegee hard across the letters so the ripples go flat.",
+        "Lift the film back off the letters and work it around them a little at a time, with relief cuts where it will not lie down. Do not stretch it over them.",
+        "Trim the top edge and leave the badge area as it is."
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — this is the pickup. Register the bottles before you pull the rest of the liner.",
-        wrong: "Wrong — this is not the trailer and not the Escalade."
+        correct: "Correct. The film is bridged over the badge. Work it around the letters in small sections instead of forcing it flat.",
+        wrong: "Wrong. Film forced flat or left bridged over the badge can lift. Work it around the letters."
       }
     },
     {

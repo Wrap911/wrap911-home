@@ -10,12 +10,14 @@
   var DB = [
     {
       id: "prob-rivet-tent",
-      title: "Problem: reading the wrong job — Solution: name the trailer in frame",
-      image: "../assets/sales/trailer-rivets.jpg",
+      /* 2.6.6: was ../assets/sales/trailer-rivets.jpg, the same frame as pl21 (trailer-spot-graphics.jpg), so the
+         black trailer showed twice on Photos. Now a real rivet-tent close-up, which is what this lesson teaches. */
+      title: "Problem: film standing up at the rivet heads — Solution: lift, warm per TDS, reseat",
+      image: "media/photos/gallery/magenta-rivet-field-tented-heads.jpg",
       module: "post-heat",
       jobType: "Problems",
-      visual: "Black dual-axle enclosed trailer. White slash graphic already on the side. Salmon panel still under grey transfer tape on the nose, with orange tape. Blue and yellow ladder and a torch on the concrete. This wide shot is not a rivet-tent close-up and it is not a pickup.",
-      narration: "Problem: the caption names rivet tents and marker lights this frame does not show. The photo is the black enclosed trailer. White slash graphic is already down on the side. The salmon nose panel is still under transfer tape.\n\nSolution: describe what is in the picture. Register the taped panel, squeegee it, pull the tape low and slow. Fastener heads on the upper skin are not a tent close-up, so do not teach a rivet mash from this still. Heat only after the panel is aligned, and only per the 3M, Avery Dennison, or Arlon TDS.",
+      visual: "Close-up of a riveted side in glossy magenta film. Two round rivet heads sit on a vertical panel line at the left. Each head has a shiny raised ring of film around it, where the film stands off the skin instead of lying down around the head. Two yellow graphic shapes show at the top and the lower right.",
+      narration: "Problem: the film is standing up in a ring around each rivet head. It is not seated down around the head.\n\nSolution: work one head at a time. Lift the film locally, warm it only per the 3M, Avery Dennison, or Arlon TDS for that film, then seat the ring around the head before the dome. Do not mash a tent flat with a hard squeegee. When the row is down, post-heat it per the TDS.",
       checklist: [
         "Glass the panel flats before any rivet head",
         "Heat only to the film TDS — no chat-room numbers",

@@ -2,14 +2,16 @@
    Offer lock (pack-first): W911-PACK $149 one-time (5 seats, 12 months, default sell)
    · W911-SEAT $49 one-time (1 tech, 12 months) · W911-FIELD $29/mo (trainer only). No per-seat monthly price.
    Free look: rules, Coach, 14 shop photos, 8 sample videos, 3 sample lessons.
-   Live: stripeTestMode false, live Payment Links. Buyers unlock with ?license=STRIPE on the Stripe
-   success return (honor system until the license Worker ships). Do not print owner codes. */
+   Live: stripeTestMode false, live Payment Links. Pack/Seat links return to /trainer/?session_id={CHECKOUT_SESSION_ID};
+   ios-license-bridge.js claims a W911 code from the license Worker, and falls back to an honor unlock for cs_live_
+   sessions while the Worker cannot read Stripe. ?license=STRIPE no longer unlocks (2026-09-27). Field is off
+   (fieldSkuLive false, 2026-09-27). Do not print owner codes. */
 window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
   contactName: "Gerry",
   contactEmail: "Djavoo1975@icloud.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "Arlon"],
-  version: "2.6.5",
+  version: "2.7.0",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",

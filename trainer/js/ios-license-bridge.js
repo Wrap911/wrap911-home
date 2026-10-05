@@ -116,7 +116,7 @@
     var box = document.createElement("div");
     box.id = "issued-seat-code";
     box.className = "passion-note";
-    box.innerHTML = "<strong>Your unlock code</strong><p><b style=\"font-size:1.2em;letter-spacing:.05em\">" + escapeText(code) + "</b></p><p>This phone is unlocked. " + (sku === "pack" ? "Type this code in Unlock on up to " + (seats - 1) + " more phones or in the iOS app." : "Type it in the WRAP 911 iOS app or on a new phone if you switch.") + " Write it down or screenshot it.</p>";
+    box.innerHTML = "<strong>Your unlock code</strong><p><b style=\"font-size:1.2em;letter-spacing:.05em\">" + escapeText(code) + "</b></p><p>This phone is unlocked. " + (sku === "pack" ? "Type this code in Unlock on up to " + (seats - 1) + " more phones." : "Type it in Unlock if you switch phones.") + " Write it down or screenshot it.</p>";
     home.insertBefore(box, home.firstChild);
   }
   function claimSession(id) {
@@ -271,6 +271,8 @@
       }).catch(function (err) {
         /* Temporary: license server has no Stripe key yet. Unlock the plan the buyer picked on checkout return. */
         if (/^cs_live_/.test(sid)) {
+          /* 2.7.0: keep the session id so retryClaim() can swap this for a real W911 code once the server reads Stripe. */
+          try { localStorage.setItem("wrap911_claim_session", sid); } catch (eS) {}
           var plan = "";
           try { plan = localStorage.getItem("wrap911_pending_plan") || sessionStorage.getItem("wrap911_pending_plan") || ""; } catch (e0) {}
           var sku = plan === "pack" ? "pack" : "seat";
@@ -296,7 +298,21 @@
     }
     if (restore()) refreshUi();
     recheck();
+    retryClaim();
     showSeatCard();
+  }
+  /* 2.7.0: a checkout-return phone (honor unlock) asks the license server again at most once a day. On success the
+     server code replaces the honor license and is shown on Home; any failure leaves the phone as it is. */
+  var retried = false;
+  function retryClaim() {
+    if (retried) return; retried = true;
+    var lic = null, sid = "", last = 0;
+    try { lic = JSON.parse(localStorage.getItem(LS) || "null"); sid = localStorage.getItem("wrap911_claim_session") || ""; last = Number(localStorage.getItem("wrap911_claim_tried") || 0); } catch (e) {}
+    if (!lic || lic.source !== "checkout-return" || !/^cs_live_/.test(sid) || Date.now() - last < 86400000) return;
+    try { localStorage.setItem("wrap911_claim_tried", String(Date.now())); } catch (e2) {}
+    claimSession(sid).then(function () {
+      try { localStorage.removeItem("wrap911_claim_session"); localStorage.removeItem("wrap911_claim_tried"); } catch (e3) {}
+    }).catch(function () {});
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

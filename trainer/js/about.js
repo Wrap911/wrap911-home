@@ -66,7 +66,7 @@
     return '' +
       '<h2>For shop owners and crew leads</h2>' +
       '<ul><li>One Shop Pack covers 5 phones for 12 months.</li>' +
-      '<li>Buy on the lead phone. Send the crew link to up to 4 more phones.</li>' +
+      '<li>Buy on the lead phone. Type the crew code on up to 4 more phones.</li>' +
       '<li>New hire path: shop rules, a sample lesson, practice, then Coach questions.</li>' +
       '<li>Job manager: pick a job type, tick the workflow steps.</li>' +
       '<li>Same rules for everyone: ' + esc(brands()) + ', follow the TDS, no guessing.</li></ul>' +
@@ -78,7 +78,7 @@
     var L = n(D.trainingLessons), W = n(D.vehicles), P = n(D.practiceScenarios), PH = n(D.photoLessons), V = (D.VIDEO_CATALOG || []).length;
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
-      ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew link for 4 more phones."],
+      ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", "Ask first: " + contactLine() + ". Send your Stripe receipt."],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],

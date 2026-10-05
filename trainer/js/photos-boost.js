@@ -96,11 +96,12 @@
       narration:"Heat is a tool. Keep it moving. TDS only. If the film goes shiny-melted you went past the window.",
       checklist:["Keep the heat moving","TDS only","Stop when pliable","Never hold on one spot"],
       quiz:{q:"Film looks shiny-melted. Meaning?",correct:"You passed the TDS window. Stop.",wrong:"It is ready for a harder squeegee."} },
-    { id:"pb-removal", title:"Vinyl removal", image:"media/videos/prep/vinyl-removal.jpg", module:"prep", jobType:"Fleet",
-      visual:"Old film coming off.",
-      narration:"Removal is heat and a low pull. Adhesive left behind gets removed with the product the TDS names. Do not invent a soup.",
-      checklist:["Heat to release","Low pull","Adhesive remover per TDS","Prep again before the new hang"],
-      quiz:{q:"What remover do you use?",correct:"The one named in the film TDS.",wrong:"Whatever solvent is under the bench."} }
+    /* 2.6.6: was media/videos/prep/vinyl-removal.jpg (a social-media screenshot). Real trailer job still; id kept. */
+    { id:"pb-removal", title:"Donut trailer side, liner flaps over the top", image:"media/photos/gallery/donuts-trailer-side-graphic-hang-stage.jpg", module:"squeegee", jobType:"Vehicles",
+      visual:"The side of a trailer with a pink printed donut graphic, big white outlined letters, and orange and gold circles. The panels are up, but grey liner and transfer flaps are folded over the top edge, and gold and pink tape strips hang down between the panels. The upper side of the trailer is still white. Two wheels and a silver fender show at the bottom.",
+      narration:"This is a trailer side mid-hang. The printed panels are up, but the liner and tape at the top are still on. Those flaps are the hinge, so the panels are not finished.\n\nCheck that the print lines up across each seam before you pull the rest of the liner. Then squeegee each panel down from the hinge and pull the tape low and slow. Trim the top edge last.",
+      checklist:["Check the print lines up across each seam","Treat the top flaps as the hinge","Squeegee down from the hinge","Pull tape low and slow","Trim the top edge last"],
+      quiz:{q:"What is still folded over the top edge of this donut trailer side?",correct:"Grey liner and tape flaps, so the panels are still hinged.",wrong:"Nothing. The side is trimmed and finished."} }
   ];
 
   var have = {};

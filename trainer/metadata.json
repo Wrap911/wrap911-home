@@ -2,7 +2,7 @@
  "app": {
   "name": "WRAP 911 Trainer",
   "shortName": "WRAP 911",
-  "version": "2.6.5",
+  "version": "2.7.0",
   "stripeTestMode": false,
   "generated": "2026-09-26",
   "canonical": "https://wrap911.github.io/wrap911-home/trainer/",
@@ -42,19 +42,19 @@
    "billing": "monthly",
    "seats": 1,
    "buyParam": "?buy=field",
-   "note": "Sold in the trainer only (fieldSkuLive). Not shown on the sales page or its JSON-LD (operator, 2026-09-26)."
+   "note": "Off in the trainer since 2026-09-27 (fieldSkuLive false). Not on the sales page. The Stripe link is still live and returns to ?license=STRIPE, which no longer unlocks."
   }
  ],
  "unlock": {
   "home": {
-   "code": "WRAP911-HOME",
-   "term": "forever",
-   "who": "operator"
+   "term": "owner",
+   "who": "operator",
+   "note": "Owner code is not published here."
   },
   "buyer": {
-   "param": "?license=STRIPE",
+   "param": "?session_id={CHECKOUT_SESSION_ID}",
    "termDays": 365,
-   "note": "Stripe success return adds ?license=STRIPE. Honor system until the license Worker ships."
+   "note": "Pack/Seat Payment Links return with the Checkout Session id. The license Worker (wrap911-coach-proxy /license/claim) issues a W911-XXXX-XXXX code; while it cannot read Stripe, a cs_live_ return unlocks on the honor system. ?license=STRIPE no longer unlocks."
   },
   "freeLook": {
    "lessons": [

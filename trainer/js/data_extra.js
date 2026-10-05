@@ -1538,26 +1538,28 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     }
   ],
+  /* 2.6.6: steps in job order (prep, layout, heat, cut/post-heat/QC). Was Heat, Layout, Prep, Cut. Step text unchanged. */
   "van": [
     {
-      "id": "vw-recess",
-      "title": "Deep Recess Heating",
-      "type": "Heat",
-      "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
-      "instructions": "Glass ridges first. Foam-roll channels. Heat only to pliable per TDS. Feed, don't bridge-and-stretch.",
+      "id": "vw-roof",
+      "title": "Roof Wrap Safety",
+      "type": "Prep",
+      "media": "../assets/sales/fleet-rv.jpg",
+      "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
       "tools": [
-        "Foam roller",
-        "Heat tool",
-        "Soft pad"
+        "Ladder/scaffold",
+        "Magnets",
+        "Second person"
       ],
       "safety": [
-        "Stable heat base",
-        "Ventilation"
+        "Three points of contact",
+        "No top-cap standing",
+        "Bay traffic awareness"
       ],
-      "technique": "Soft tools win in corrugations — hard center strokes crease and trap air.",
+      "technique": "Height work fails first on footing, then on technique.",
       "mistakes": [
-        "Melting film into channels",
-        "Hard squeegee down tunnel centers"
+        "Climbing with full loose sheet",
+        "Ignoring bay traffic"
       ]
     },
     {
@@ -1581,25 +1583,24 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     },
     {
-      "id": "vw-roof",
-      "title": "Roof Wrap Safety",
-      "type": "Prep",
-      "media": "../assets/sales/fleet-rv.jpg",
-      "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
+      "id": "vw-recess",
+      "title": "Deep Recess Heating",
+      "type": "Heat",
+      "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+      "instructions": "Glass ridges first. Foam-roll channels. Heat only to pliable per TDS. Feed, don't bridge-and-stretch.",
       "tools": [
-        "Ladder/scaffold",
-        "Magnets",
-        "Second person"
+        "Foam roller",
+        "Heat tool",
+        "Soft pad"
       ],
       "safety": [
-        "Three points of contact",
-        "No top-cap standing",
-        "Bay traffic awareness"
+        "Stable heat base",
+        "Ventilation"
       ],
-      "technique": "Height work fails first on footing, then on technique.",
+      "technique": "Soft tools win in corrugations — hard center strokes crease and trap air.",
       "mistakes": [
-        "Climbing with full loose sheet",
-        "Ignoring bay traffic"
+        "Melting film into channels",
+        "Hard squeegee down tunnel centers"
       ]
     },
     {
@@ -1708,26 +1709,8 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     }
   ],
+  /* 2.6.6: steps in job order (layout, install, rivets heat, cut/heat-set). Was Heat, Layout, Cut, Install. Step text unchanged. */
   "trailer": [
-    {
-      "id": "tw-rivets",
-      "title": "Rivet Row Workflow",
-      "type": "Heat",
-      "media": "media/photos/gallery/airstream-corner.jpg",
-      "instructions": "Hinge dry-fit. Squeegee field. Soften per TDS and set rivets individually, then post-heat per TDS.",
-      "tools": [
-        "Hinge tape",
-        "Heat",
-        "Soft tools"
-      ],
-      "safety": [
-        "Torch stable; clear liner"
-      ],
-      "technique": "Alignment first, heat second.",
-      "mistakes": [
-        "Heating through hinge tape while aligning"
-      ]
-    },
     {
       "id": "tw-roof",
       "title": "Roofline Alignment",
@@ -1748,6 +1731,43 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     },
     {
+      "id": "tw-seg",
+      "title": "Panel Segmentation",
+      "type": "Install",
+      "media": "",
+      "instructions": "Map segments. Hang and QC each before the next. Maintain print continuity.",
+      "tools": [
+        "Segment map",
+        "Registration marks"
+      ],
+      "safety": [
+        "Manage large sheets with two people"
+      ],
+      "technique": "Segment long jobs for control and safety.",
+      "mistakes": [
+        "One impossible full-length sheet"
+      ]
+    },
+    {
+      "id": "tw-rivets",
+      "title": "Rivet Row Workflow",
+      "type": "Heat",
+      "media": "media/photos/gallery/airstream-corner.jpg",
+      "instructions": "Hinge dry-fit. Squeegee field. Soften per TDS and set rivets individually, then post-heat per TDS.",
+      "tools": [
+        "Hinge tape",
+        "Heat",
+        "Soft tools"
+      ],
+      "safety": [
+        "Torch stable; clear liner"
+      ],
+      "technique": "Alignment first, heat second.",
+      "mistakes": [
+        "Heating through hinge tape while aligning"
+      ]
+    },
+    {
       "id": "tw-hinge",
       "title": "Door Hinge Workflow",
       "type": "Cut",
@@ -1764,24 +1784,6 @@ window.WRAP911_DATA.workflowSteps = {
       "technique": "Seat before cut — always.",
       "mistakes": [
         "Flush-short edges that open after shrink"
-      ]
-    },
-    {
-      "id": "tw-seg",
-      "title": "Panel Segmentation",
-      "type": "Install",
-      "media": "",
-      "instructions": "Map segments. Hang and QC each before the next. Maintain print continuity.",
-      "tools": [
-        "Segment map",
-        "Registration marks"
-      ],
-      "safety": [
-        "Manage large sheets with two people"
-      ],
-      "technique": "Segment long jobs for control and safety.",
-      "mistakes": [
-        "One impossible full-length sheet"
       ]
     }
   ],
@@ -1823,7 +1825,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-rear",
       "title": "Rear panel & recesses",
-      "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
+      "media": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
       "steps": [
         "Glass the main rear field first",
         "Feed plate pocket and side channels",

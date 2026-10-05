@@ -1,4 +1,4 @@
-/* Seat $49 is one phone. Shop pack $149 is five phones and a crew link. */
+/* Seat $49 is one phone. Shop pack $149 is five phones and a crew code. */
 (function () {
   var KEY = "wrap911_license";
   var PENDING = "wrap911_pending_plan";
@@ -93,6 +93,9 @@
   }
 
   var missed = false;
+  /* 2.7.0: ?license=STRIPE no longer unlocks (retired 2026-09-27). The live Field payment link still returns there,
+     so a buyer who lands on it gets told what to do instead of a silent free look. */
+  var stripeReturn = false;
   var params;
   try { params = new URLSearchParams(window.location.search); } catch (e) { params = new URLSearchParams(); }
   var buy = (params.get("buy") || "").toLowerCase();
@@ -125,6 +128,7 @@
 
     /* Per-purchase codes: ?session_id is claimed from the license Worker in ios-license-bridge.js.
        ?license=STRIPE / STRIPE-* / CREW-* links no longer unlock anything. */
+    if (/^STRIPE/.test(token)) stripeReturn = true;
     if (token) strip("license");
   }
 
@@ -183,8 +187,14 @@
       else home.appendChild(card);
     }
     if (lic.sku === "pack") {
-      var link = crewLink(lic);
-      card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. Send this link to the other four. Each phone that opens it gets the same 12 months.</p><p><a href=\"" + link + "\">" + link + "</a></p>";
+      /* 2.7.0: the old ?license=CREW- link stopped unlocking on 2026-09-27; it showed "CREW-undefined" and did nothing.
+         Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one. */
+      var mail = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.contactEmail) || "";
+      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. On each of the other four phones, open WRAP 911, tap Unlock, and type <b>" + String(lic.code).replace(/[^A-Z0-9-]/g, "") + "</b>.</p>";
+      } else {
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. For the other four phones, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20crew%20code\">" + mail + "</a>" : "us") + " with your Stripe receipt and we send your crew code.</p>";
+      }
     } else if (lic.sku === "field") {
       card.innerHTML = "<strong>Field monthly</strong><p>This phone is unlocked month to month. A shop pack is $149 one-time for five phones, 12 months.</p>";
     } else {
@@ -211,11 +221,16 @@
       card.innerHTML = "<strong>Sandbox: checkout is off</strong><p>This is the local test copy. Add a Stripe test-mode link in config.js (stripeTestPackLink / stripeTestSeatLink) to test checkout. No live charge was started.</p>";
       return;
     }
+    if (stripeReturn) {
+      var mail2 = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.contactEmail) || "";
+      card.innerHTML = "<strong>Just paid?</strong><p>This return link does not unlock the trainer by itself. Email " + (mail2 ? "<a href=\"mailto:" + mail2 + "?subject=WRAP%20911%20unlock\">" + mail2 + "</a>" : "us") + " with your Stripe receipt and we send your unlock code.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
+      return;
+    }
     if (missed) {
       card.innerHTML = "<strong>Checkout did not stick to this phone</strong><p>Start again from the buy button on this same phone. A shared return link does not open the trainer by itself.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
       return;
     }
-    card.innerHTML = "<strong>Two different buys</strong><p>$49 unlocks this phone only. $149 unlocks this phone and gives you a link for four more.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
+    card.innerHTML = "<strong>Two different buys</strong><p>$49 unlocks this phone only. $149 unlocks this phone and gives you a crew code for four more.</p><p><a href=\"?buy=seat\">Buy 1 seat · $49</a> · <a href=\"?buy=pack\">Buy shop pack · $149</a></p>";
   }
 
   document.addEventListener("click", function (e) {
