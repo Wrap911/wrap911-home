@@ -197,7 +197,7 @@
     if (inp) {
       inp.placeholder = "Unlock code";
       inp.removeAttribute("value");
-      if (/WRAP911|W911-/i.test(inp.value || "")) inp.value = "";
+      if (/WRAP911-(HOME|CREW|DEMO|PRO)/i.test(inp.value || "")) inp.value = "";
     }
   }
 
@@ -213,7 +213,7 @@
       return false;
     }
     var h = await digest(code);
-    if (h === "e7b4e18e6fd2a0c5c6073f6093e767be4ba2f8442595386bf235ba2266051816") {
+    if (h === "8cc8c70943c9e1802e076416b4ea8963ebfb950bc773d71ec54aa126bd06ba01") {
       /* Private App Store review code. */
       try {
         localStorage.setItem("wrap911_license", JSON.stringify({
