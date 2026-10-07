@@ -269,6 +269,26 @@
         var qs = q.toString();
         history.replaceState({}, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
       }).catch(function (err) {
+        /* Temporary: license server has no Stripe key yet. Unlock the plan the buyer picked on checkout return. */
+        if (/^cs_live_/.test(sid)) {
+          /* 2.7.0: keep the session id so retryClaim() can swap this for a real W911 code once the server reads Stripe. */
+          try { localStorage.setItem("wrap911_claim_session", sid); } catch (eS) {}
+          var plan = "";
+          try { plan = localStorage.getItem("wrap911_pending_plan") || sessionStorage.getItem("wrap911_pending_plan") || ""; } catch (e0) {}
+          var sku = plan === "pack" ? "pack" : "seat";
+          try {
+            localStorage.setItem(LS, JSON.stringify({
+              code: "STRIPE", plan: "pro", sku: sku, seats: sku === "pack" ? 5 : 1,
+              unlockedAt: Date.now(), expiresAt: Date.now() + 365 * 86400000, source: "checkout-return"
+            }));
+            localStorage.removeItem("wrap911_pending_plan");
+          } catch (e1) {}
+          q.delete("session_id");
+          var qs2 = q.toString();
+          history.replaceState({}, "", window.location.pathname + (qs2 ? "?" + qs2 : "") + window.location.hash);
+          refreshUi();
+          return;
+        }
         var home = document.getElementById("screen-home") || document.body;
         var box = document.createElement("div");
         box.className = "passion-note";
@@ -278,7 +298,21 @@
     }
     if (restore()) refreshUi();
     recheck();
+    retryClaim();
     showSeatCard();
+  }
+  /* 2.7.0: a checkout-return phone (honor unlock) asks the license server again at most once a day. On success the
+     server code replaces the honor license and is shown on Home; any failure leaves the phone as it is. */
+  var retried = false;
+  function retryClaim() {
+    if (retried) return; retried = true;
+    var lic = null, sid = "", last = 0;
+    try { lic = JSON.parse(localStorage.getItem(LS) || "null"); sid = localStorage.getItem("wrap911_claim_session") || ""; last = Number(localStorage.getItem("wrap911_claim_tried") || 0); } catch (e) {}
+    if (!lic || lic.source !== "checkout-return" || !/^cs_live_/.test(sid) || Date.now() - last < 86400000) return;
+    try { localStorage.setItem("wrap911_claim_tried", String(Date.now())); } catch (e2) {}
+    claimSession(sid).then(function () {
+      try { localStorage.removeItem("wrap911_claim_session"); localStorage.removeItem("wrap911_claim_tried"); } catch (e3) {}
+    }).catch(function () {});
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

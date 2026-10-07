@@ -51,26 +51,6 @@
       correct: "At the mesh hood vents and at the chrome seven-slot grille.",
       wrong: "On a tall RV side with ladders and a pink graphic."
     },
-    "graphic-installation-1.jpg": {
-      title: "Just Ice Tea graphic on the bench",
-      jobType: "Vehicles",
-      visual: "Shop bench. A white gloss sheet carries a black printed panel that reads JUST ICE TEA. A row of small color cards lines the top. Hands in a blue sleeve, one with a ring, work the left edge. A plotter is at the left, a red ladder and pallet jack are in the bay, and a blurred red-orange fruit sits in the foreground.",
-      narration: "The words on the film are JUST ICE TEA. This is the bench, not a vehicle. The color cards are the graphic reference. Hands are on the left edge of the sheet. The round blur in front is fruit, not part of the job.\n\nKeep the print flat so the type does not crease. Square the panel here before it ever goes on a vehicle.",
-      check: ["Read the print: JUST ICE TEA", "This is the bench, not a vehicle", "Keep the sheet flat so the type does not kink", "Use the color cards as the reference"],
-      q: "What does this still show?",
-      correct: "A JUST ICE TEA graphic on white film, on the shop bench.",
-      wrong: "An outdoor walkaround of a Ford E-350 motorhome."
-    },
-    "squeegee-strokes.jpg": {
-      title: "Squeegee on the Just Ice Tea sheet",
-      jobType: "Vehicles",
-      visual: "Same bench job. A person in a blue sleeve squeegees the white gloss sheet with a small white tool and a green felt edge. Color cards and the black JUST ICE TEA print are at the top. A peach with a green leaf is in the foreground. The sheet sits in a wood frame.",
-      narration: "The hand is squeegeeing the JUST ICE TEA sheet on the bench. The black print is already on the film. A peach sits in the foreground and is not part of the graphic.\n\nOverlap the strokes so air moves ahead of the felt. Do not crease the type. This is still the table, not a vehicle panel.",
-      check: ["See the squeegee on the white sheet", "Read the JUST ICE TEA print at the top", "Overlap strokes so air moves out", "Ignore the fruit in the foreground"],
-      q: "What is the hand doing?",
-      correct: "Squeegeeing the white JUST ICE TEA sheet on the bench.",
-      wrong: "Installing a graphic on the side of a motorhome."
-    },
     "architectural-wall-wrap-squeegee-sequence.jpg": {
       title: "Squeegee on grey wood-grain",
       jobType: "Interior",

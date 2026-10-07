@@ -34,6 +34,8 @@
     return '' +
       '<h2>Built by an installer</h2>' +
       '<p>WRAP 911 is built by ' + esc(CFG.contactName || "Gerry") + ', a commercial vinyl installer with 8 years on the tools in Worcester, MA. Not a marketing team. Not a film maker.</p>' +
+      '<p>I have wrapped name-brand retail stores, stadiums and event venues, trailers (including office trailer interiors), RVs, buses, dozens of transit vans, and a lot of ad and branding pieces.</p>' +
+      '<p>I did not get here by getting it right the first time. I have had plenty of failures: lifted edges, wrinkles, panels that would not line up. Every one taught me something. WRAP 911 is built from those lessons, so you learn from my mistakes instead of paying for your own.</p>' +
       '<h2>Trains the jobs that walk in</h2>' +
       '<ul><li>Box trucks and trailers: rivets, seams, rollup doors.</li>' +
       '<li>Vans and fleet: deep recesses, handles, lights.</li>' +
@@ -64,7 +66,7 @@
     return '' +
       '<h2>For shop owners and crew leads</h2>' +
       '<ul><li>One Shop Pack covers 5 phones for 12 months.</li>' +
-      '<li>Buy on the lead phone. Send the crew link to up to 4 more phones.</li>' +
+      '<li>Buy on the lead phone. Type the crew code on up to 4 more phones.</li>' +
       '<li>New hire path: shop rules, a sample lesson, practice, then Coach questions.</li>' +
       '<li>Job manager: pick a job type, tick the workflow steps.</li>' +
       '<li>Same rules for everyone: ' + esc(brands()) + ', follow the TDS, no guessing.</li></ul>' +
@@ -76,7 +78,7 @@
     var L = n(D.trainingLessons), W = n(D.vehicles), P = n(D.practiceScenarios), PH = n(D.photoLessons), V = (D.VIDEO_CATALOG || []).length;
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
-      ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew link for 4 more phones."],
+      ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", "Ask first: " + contactLine() + ". Send your Stripe receipt."],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],

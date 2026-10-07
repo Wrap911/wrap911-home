@@ -1,0 +1,87 @@
+name: App Store setup - subscriptions (Seat $49/yr, Crew $149/yr, 7-day trial)
+on: workflow_dispatch
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - run: pip install -q pyjwt cryptography requests
+      - name: Create group, products, prices, free trials (idempotent)
+        shell: python
+        run: |
+          import os,re,time,jwt,requests,sys
+          b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b)
+          key='-----BEGIN PRIVATE KEY-----\n'+'\n'.join(b[i:i+64] for i in range(0,len(b),64))+'\n-----END PRIVATE KEY-----\n'
+          def tok(): return jwt.encode({"iss":os.environ["ASC_ISSUER_ID"],"iat":int(time.time()),"exp":int(time.time())+1200,"aud":"appstoreconnect-v1"},key,algorithm="ES256",headers={"kid":os.environ["ASC_KEY_ID"]})
+          A="https://api.appstoreconnect.apple.com"
+          def req(m,p,body=None):
+            for i in range(4):
+              r=requests.request(m,A+p,headers={"Authorization":"Bearer "+tok()},json=body)
+              if r.status_code==429: time.sleep(5); continue
+              return r
+            return r
+          def get_all(p):
+            out=[]; url=p
+            while url:
+              j=req("GET",url).json(); out+=j.get("data",[])
+              nxt=j.get("links",{}).get("next"); url=nxt.replace(A,"") if nxt else None
+            return out
+          def must(r,what):
+            print(what,r.status_code)
+            if r.status_code>=300: print(r.text[:1500]); sys.exit(1)
+            return r.json().get("data")
+          app=req("GET","/v1/apps?filter[bundleId]=com.wrap911.trainer").json()["data"][0]; aid=app["id"]
+          groups=req("GET",f"/v1/apps/{aid}/subscriptionGroups").json().get("data",[])
+          g=[x for x in groups if x["attributes"]["referenceName"]=="Wrap911 Pro"]
+          if g: gid=g[0]["id"]; print("group exists",gid)
+          else:
+            gid=must(req("POST","/v1/subscriptionGroups",{"data":{"type":"subscriptionGroups","attributes":{"referenceName":"Wrap911 Pro"},"relationships":{"app":{"data":{"type":"apps","id":aid}}}}}),"create group")["id"]
+          gl=req("GET",f"/v1/subscriptionGroups/{gid}/subscriptionGroupLocalizations").json().get("data",[])
+          if not gl:
+            must(req("POST","/v1/subscriptionGroupLocalizations",{"data":{"type":"subscriptionGroupLocalizations","attributes":{"name":"Wrap911 Pro","locale":"en-US"},"relationships":{"subscriptionGroup":{"data":{"type":"subscriptionGroups","id":gid}}}}}),"group loc")
+          products=[
+            ("com.wrap911.trainer.seat.yearly","Wrap911 Seat (Yearly)","Wrap911 Seat","Full trainer for 1 installer: lessons, drills, photos, videos.","49.0",2),
+            ("com.wrap911.trainer.crew.yearly","Wrap911 Crew (Yearly)","Wrap911 Crew - 5 seats","Full trainer for a crew of 5 installers. Share seat codes.","149.0",1)]
+          existing={s["attributes"]["productId"]:s for s in req("GET",f"/v1/subscriptionGroups/{gid}/subscriptions").json().get("data",[])}
+          terr=[t["id"] for t in get_all("/v1/territories?limit=200")]
+          for pid,name,dname,desc,price,level in products:
+            if pid in existing: sid=existing[pid]["id"]; print("sub exists",pid,existing[pid]["attributes"].get("state"))
+            else:
+              sid=must(req("POST","/v1/subscriptions",{"data":{"type":"subscriptions","attributes":{"name":name,"productId":pid,"subscriptionPeriod":"ONE_YEAR","familySharable":False,"groupLevel":level,"reviewNote":"Unlock via the Pricing screen in the app. Crew buyers get a 5-seat code to share with their installers."},"relationships":{"group":{"data":{"type":"subscriptionGroups","id":gid}}}}}),"create "+pid)["id"]
+            if not req("GET",f"/v1/subscriptions/{sid}/subscriptionLocalizations").json().get("data"):
+              must(req("POST","/v1/subscriptionLocalizations",{"data":{"type":"subscriptionLocalizations","attributes":{"name":dname,"locale":"en-US","description":desc[:55]},"relationships":{"subscription":{"data":{"type":"subscriptions","id":sid}}}}}),"loc "+pid)
+            # availability: all territories
+            r=req("POST","/v1/subscriptionAvailabilities",{"data":{"type":"subscriptionAvailabilities","attributes":{"availableInNewTerritories":True},"relationships":{"subscription":{"data":{"type":"subscriptions","id":sid}},"availableTerritories":{"data":[{"type":"territories","id":t} for t in terr]}}}})
+            print("availability",r.status_code,r.text[:200] if r.status_code>=300 else "")
+            # price: USA point + equalized prices everywhere
+            have=req("GET",f"/v1/subscriptions/{sid}/prices?limit=1").json().get("data",[])
+            if have: print("prices already set for",pid)
+            else:
+              pts=get_all(f"/v1/subscriptions/{sid}/pricePoints?filter[territory]=USA&limit=200")
+              pt=[p for p in pts if abs(float(p["attributes"]["customerPrice"])-float(price))<0.001]
+              if not pt: print("No exact USA price point for",price,[p["attributes"]["customerPrice"] for p in pts][:400]); sys.exit(1)
+              usa=pt[0]["id"]
+              def setp(ptid,t):
+                return req("POST","/v1/subscriptionPrices",{"data":{"type":"subscriptionPrices","attributes":{"preserveCurrentPrice":False},"relationships":{"subscription":{"data":{"type":"subscriptions","id":sid}},"subscriptionPricePoint":{"data":{"type":"subscriptionPricePoints","id":ptid}},"territory":{"data":{"type":"territories","id":t}}}}})
+              must(setp(usa,"USA"),"USA price "+price)
+              eq=get_all(f"/v1/subscriptionPricePoints/{usa}/equalizations?limit=200&include=territory")
+              ok=0
+              for e in eq:
+                t=e["relationships"]["territory"]["data"]["id"]
+                if t=="USA": continue
+                r=setp(e["id"],t); ok+= r.status_code<300
+              print("equalized prices set",ok,"of",len(eq))
+            # 7-day free trial for new subscribers, all territories
+            offers=req("GET",f"/v1/subscriptions/{sid}/introductoryOffers?limit=1").json().get("data",[])
+            if offers: print("intro offer exists for",pid)
+            else:
+              n=0
+              for t in terr:
+                r=req("POST","/v1/subscriptionIntroductoryOffers",{"data":{"type":"subscriptionIntroductoryOffers","attributes":{"duration":"ONE_WEEK","offerMode":"FREE_TRIAL","numberOfPeriods":1},"relationships":{"subscription":{"data":{"type":"subscriptions","id":sid}},"territory":{"data":{"type":"territories","id":t}}}}})
+                if r.status_code<300: n+=1
+                elif n==0 and t==terr[0]: print("intro offer error",r.status_code,r.text[:600])
+              print("free trial offers created",n,"of",len(terr))
+            s=req("GET",f"/v1/subscriptions/{sid}").json()["data"]["attributes"]; print("FINAL",pid,s.get("state"),s.get("subscriptionPeriod"))

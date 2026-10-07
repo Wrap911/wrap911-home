@@ -21,13 +21,6 @@
   "free": true
  },
  {
-  "photoId": "bay-airstream-graphic",
-  "q": "Graphic is seated. What's left before you call it done?",
-  "right": "Pull the nose tape low and slow, then check the rivet line and wheel-well edge.",
-  "wrong": "Post-heat the whole graphic again to be safe.",
-  "free": false
- },
- {
   "photoId": "prob-airstream-light",
   "q": "Fix order at this marker light?",
   "right": "Lift the fingers, glass toward the housing, then cut the light out.",

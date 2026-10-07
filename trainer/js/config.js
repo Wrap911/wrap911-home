@@ -1,15 +1,17 @@
 /* WRAP 911 Trainer — shop config (LIVE)
    Offer lock (pack-first): W911-PACK $149 one-time (5 seats, 12 months, default sell)
    · W911-SEAT $49 one-time (1 tech, 12 months) · W911-FIELD $29/mo (trainer only). No per-seat monthly price.
-   Free look: rules, Coach, 14 shop photos, 3 sample videos, 3 sample lessons.
-   Live: stripeTestMode false, live Payment Links. Buyers unlock with ?license=STRIPE on the Stripe
-   success return (honor system until the license Worker ships). Do not print owner codes. */
+   Free look: rules, Coach, 14 shop photos, 8 sample videos, 3 sample lessons.
+   Live: stripeTestMode false, live Payment Links. Pack/Seat links return to /trainer/?session_id={CHECKOUT_SESSION_ID};
+   ios-license-bridge.js claims a W911 code from the license Worker, and falls back to an honor unlock for cs_live_
+   sessions while the Worker cannot read Stripe. ?license=STRIPE no longer unlocks (2026-09-27). Field is off
+   (fieldSkuLive false, 2026-09-27). Do not print owner codes. */
 window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
   contactName: "Gerry",
   contactEmail: "Djavoo1975@icloud.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "Arlon"],
-  version: "2.6.5",
+  version: "2.7.1",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
@@ -31,7 +33,7 @@ window.WRAP911_CONFIG = {
   problemUploadEndpoint: "",
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
-  freeVideoSamples: 3,
+  freeVideoSamples: 8,
   /* Lessons open on the free look. Empty array = every lesson open. */
   freeLessonIds: ["bt-rivet-mastery", "van-deep-recess", "sf-wet-install"],
   /* Hotfix 2.6.1: ONE list of screens a free phone may open. app-core.js showScreen and
@@ -51,7 +53,7 @@ window.WRAP911_CONFIG = {
       name: "Free look",
       priceExample: "Free",
       status: "available",
-      blurb: "Shop rules, Coach, 14 shop photos, 3 sample videos, and 3 sample lessons. Enough to see how WRAP 911 trains. The rest of the lessons, videos, jobs, and calculator unlock with a seat or the pack."
+      blurb: "Shop rules, Coach, 14 shop photos, 8 sample videos, and 3 sample lessons. Enough to see how WRAP 911 trains. The rest of the lessons, videos, jobs, and calculator unlock with a seat or the pack."
     },
     {
       id: "w911-pack",

@@ -124,8 +124,8 @@
     if (mediaAsked) return;
     mediaAsked = true;
     var srcs = [];
-    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=265");
-    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=265");
+    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=271");
+    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=271");
     var left = srcs.length;
     if (!left) { afterMedia(); return; }
     function done() { if (--left === 0) afterMedia(); }
@@ -197,7 +197,7 @@
     if (inp) {
       inp.placeholder = "Unlock code";
       inp.removeAttribute("value");
-      if (/WRAP911|W911-/i.test(inp.value || "")) inp.value = "";
+      if (/WRAP911-(HOME|CREW|DEMO|PRO)/i.test(inp.value || "")) inp.value = "";
     }
   }
 
@@ -213,6 +213,19 @@
       return false;
     }
     var h = await digest(code);
+    if (h === "8cc8c70943c9e1802e076416b4ea8963ebfb950bc773d71ec54aa126bd06ba01") {
+      /* Private App Store review code. */
+      try {
+        localStorage.setItem("wrap911_license", JSON.stringify({
+          code: "STRIPE", plan: "pro", sku: "pack", seats: 5, unlockedAt: Date.now(),
+          expiresAt: Date.now() + 90 * 86400000, source: "review"
+        }));
+      } catch (e) {}
+      var rfb = document.getElementById("unlock-feedback");
+      if (rfb) { rfb.className = "quiz-feedback ok"; rfb.textContent = "Review access unlocked. Full trainer is open."; }
+      goHome();
+      return true;
+    }
     /* WRAP911-HOME / WRAP911-CREW were public in git and are retired. Owner phones use a W911 code. */
     var fb = document.getElementById("unlock-feedback");
     if (fb) {
