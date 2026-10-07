@@ -27,12 +27,12 @@ People who already paid on wrap911.com still type their unlock code on the Prici
 ### In-App Purchase products to create
 Type: **Non-Renewing Subscription**, duration **1 year**. Not auto-renewable (those renew). Not non-consumable (those never expire). StoreKit does not send an expiration for this type, so the app uses the same 365-day window as an unlock code, starting at `purchaseDate`.
 
-| Product ID | Reference name | Display name | Description | Suggested USA price |
+| Product ID | Reference name | Display name | Description | USA price |
 | --- | --- | --- | --- | --- |
-| `com.wrap911.trainer.pack.12mo` | Shop Pack 12 months | WRAP 911 Shop Pack | 5 seats, 12 months, full trainer. One-time. | $169 |
-| `com.wrap911.trainer.seat.12mo` | Seat 12 months | WRAP 911 Seat | 1 seat, 12 months, full trainer. One-time. | $55 |
+| `com.wrap911.trainer.pack.12mo` | Shop Pack 12 months | WRAP 911 Shop Pack | 5 seats, 12 months, full trainer. One-time. | $149 |
+| `com.wrap911.trainer.seat.12mo` | Seat 12 months | WRAP 911 Seat | 1 seat, 12 months, full trainer. One-time. | $49 |
 
-Prices are set in App Store Connect. The app shows StoreKit's localized `priceString` and does not hardcode them. Family Sharing off. No free trial. No introductory offer.
+Use the same prices the site already sells: Shop Pack $149, Seat $49. Do not pick a different Apple price. Prices are set in App Store Connect. The app shows StoreKit's localized `priceString` and does not hardcode them. Family Sharing off. No free trial. No introductory offer.
 
 A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. The worker change is in `cloudflare-coach-proxy/license.js` and is **not** deployed by this branch. Until it is, the buying phone still unlocks, and the screen tells the buyer to email the Apple receipt for the other four seats.
 

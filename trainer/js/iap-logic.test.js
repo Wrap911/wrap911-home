@@ -65,7 +65,7 @@ assert.strictEqual(L.isUsStorefront(null), false);
 assert.strictEqual(L.isNativeApp(), false);
 
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
-["$169", "$55", "$149", "$49", "$29"].forEach(function (bad) {
+["$149", "$49", "$29"].forEach(function (bad) {
   assert.strictEqual(iap.indexOf(bad), -1, "iap.js must not hardcode " + bad);
 });
 

@@ -2,7 +2,7 @@
   "identifier" : "WRAP911STOREKIT",
   "nonRenewingSubscriptions" : [
     {
-      "displayPrice" : "169.00",
+      "displayPrice" : "149.00",
       "familyShareable" : false,
       "internalID" : "PACK12MO",
       "localizations" : [
@@ -17,7 +17,7 @@
       "type" : "NonRenewingSubscription"
     },
     {
-      "displayPrice" : "55.00",
+      "displayPrice" : "49.00",
       "familyShareable" : false,
       "internalID" : "SEAT12MO",
       "localizations" : [
