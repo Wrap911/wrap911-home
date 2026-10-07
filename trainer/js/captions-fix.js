@@ -223,13 +223,13 @@
       wrong: "A propane torch heating rivets."
     },
     "trailer-spot-graphics.jpg": {
-      title: "Black trailer, nose still taped",
+      title: "Black trailer — nose panel still taped",
       jobType: "Vehicles",
-      visual: "Black dual-axle enclosed trailer in the shop. A white slash graphic is already on the side, across the door and the rear panel. On the nose, a salmon panel is still under grey transfer tape with orange tape tabs. Diamond plate runs the lower rail. A blue and yellow step ladder, a spray bottle, and a propane torch stand on the concrete. White liner scraps are on the floor.",
-      narration: "This is the black trailer. The white slash graphic on the side is already down. The salmon piece on the nose is still under transfer tape. That is a dry-fit, not a finished panel. The torch and the ladder are on the floor.\n\nRegister the salmon panel before you pull the liner. Pull the tape low and slow after the film is squeegeed. This wide shot does not show a rivet-tent close-up.",
-      check: ["Name the black enclosed trailer", "See the white slash already on the side", "See the salmon nose still under transfer tape", "Leave the torch on the floor until the panel is down"],
+      visual: "Black dual-axle enclosed trailer in the shop. A white side graphic is already on the side, across the door and the rear panel. On the nose, a printed panel is still under grey transfer tape with orange tape tabs. Diamond plate runs the lower rail. A blue and yellow step ladder, a spray bottle, and a propane torch stand on the concrete. White liner scraps are on the floor.",
+      narration: "This is the black trailer. The white side graphic on the side is already down. The nose piece is still under transfer tape. That is a dry-fit, not a finished panel. The torch and the ladder are on the floor.\n\nRegister the nose panel before you pull the liner. Pull the tape low and slow after the film is squeegeed. This wide shot does not show a rivet-tent close-up.",
+      check: ["Name the black enclosed trailer", "See the white side graphic already down", "See the nose panel still under transfer tape", "Leave the torch on the floor until the panel is down"],
       q: "Which graphic is finished, and which is still taped?",
-      correct: "The white slash on the side is down. The salmon nose panel is still under transfer tape.",
+      correct: "The white side graphic is down. The nose panel is still under transfer tape.",
       wrong: "A bottle-print pickup with the liner hanging off the doors."
     },
     "trailer-rivets.jpg": null,
