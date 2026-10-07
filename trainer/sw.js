@@ -18,6 +18,8 @@ var ASSETS = [
   "./js/data_extra.js",
   "./js/games.js",
   "./js/ios-license-bridge.js",
+  "./js/iap.js",
+  "./js/appstore.js",
   "./js/jobs-trim.js",
   "./js/labels-fix.js",
   "./js/license-gate.js",

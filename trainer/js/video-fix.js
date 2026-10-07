@@ -54,6 +54,53 @@
     card.insertBefore(frame, card.firstChild);
   }
 
+  /* Capacitor WKWebView often completes fetch(url, {method:"HEAD"}) with status 0 and ok=false
+     even when the mp4 is in the bundle (https://github.com/ionic-team/capacitor/issues/7794).
+     A normal browser still gets a real status, so missing files and non-video responses stay refused. */
+  function inNativeWebView() {
+    try {
+      var cap = window.Capacitor;
+      if (cap && typeof cap.isNativePlatform === "function" && cap.isNativePlatform()) return true;
+    } catch (e) {}
+    try {
+      var proto = String(location.protocol || "").replace(/:$/, "").toLowerCase();
+      if (proto === "capacitor" || proto === "ionic" || proto === "wrap911") return true;
+    } catch (e2) {}
+    return false;
+  }
+
+  function headDecision(res) {
+    if (!res || res.status === 0) return "inconclusive";
+    var rtype = "";
+    try { rtype = String(res.type || ""); } catch (e0) {}
+    if (rtype === "opaque" || rtype === "opaqueredirect") return "inconclusive";
+    if (!res.ok) return "missing";
+    var type = "";
+    try { type = String(res.headers.get("content-type") || "").toLowerCase(); } catch (e1) {}
+    if (type.indexOf("video") === -1) return "missing";
+    return "play";
+  }
+
+  function mountClip(host, btn, src, still) {
+    var card = host.closest(".video-card") || host;
+    card.style.display = "block";
+    var old = card.querySelector("video.catalog-clip");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var video = document.createElement("video");
+    video.className = "catalog-clip";
+    video.controls = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.preload = "metadata";
+    if (still) video.poster = still;
+    video.style.cssText = "width:100%;max-height:70vh;margin:0 0 8px;border-radius:8px;background:#000;display:block";
+    video.addEventListener("error", function () { showMissing(host, btn); });
+    video.src = src;
+    card.insertBefore(video, card.firstChild);
+    var playPromise = video.play();
+    if (playPromise && playPromise.catch) playPromise.catch(function () {});
+  }
+
   function playSafe(btn) {
     var host = btn && btn.closest ? btn.closest(".video-player-host") : null;
     if (!host) return;
@@ -79,26 +126,13 @@
       try { open[v].pause(); } catch (e1) {}
       if (open[v].parentNode) open[v].parentNode.removeChild(open[v]);
     }
+    if (inNativeWebView()) {
+      mountClip(host, btn, src, still);
+      return;
+    }
     fetch(src, { method: "HEAD", cache: "no-store" }).then(function (res) {
-      var type = (res.headers.get("content-type") || "").toLowerCase();
-      if (!res.ok || type.indexOf("video") === -1) throw new Error("not-video");
-      var card = host.closest(".video-card") || host;
-      card.style.display = "block";
-      var old = card.querySelector("video.catalog-clip");
-      if (old && old.parentNode) old.parentNode.removeChild(old);
-      var video = document.createElement("video");
-      video.className = "catalog-clip";
-      video.controls = true;
-      video.playsInline = true;
-      video.setAttribute("playsinline", "");
-      video.preload = "metadata";
-      if (still) video.poster = still;
-      video.style.cssText = "width:100%;max-height:70vh;margin:0 0 8px;border-radius:8px;background:#000;display:block";
-      video.addEventListener("error", function () { showMissing(host, btn); });
-      video.src = src;
-      card.insertBefore(video, card.firstChild);
-      var playPromise = video.play();
-      if (playPromise && playPromise.catch) playPromise.catch(function () {});
+      if (headDecision(res) === "missing") throw new Error("not-video");
+      mountClip(host, btn, src, still);
     }).catch(function () {
       showMissing(host, btn);
     });
@@ -245,6 +279,7 @@
   window.renderVideos = renderVideos;
   window.WRAP911_APP = window.WRAP911_APP || {};
   window.WRAP911_APP.renderVideos = renderVideos;
+  window.WRAP911_VIDEO_PLAYBACK = { inNativeWebView: inNativeWebView, headDecision: headDecision };
 
   function tidyVideos() {
     var list = document.getElementById("video-list");

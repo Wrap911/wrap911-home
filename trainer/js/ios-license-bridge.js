@@ -116,7 +116,7 @@
     var box = document.createElement("div");
     box.id = "issued-seat-code";
     box.className = "passion-note";
-    box.innerHTML = "<strong>Your unlock code</strong><p><b style=\"font-size:1.2em;letter-spacing:.05em\">" + escapeText(code) + "</b></p><p>This phone is unlocked. " + (sku === "pack" ? "Type this code in Unlock on up to " + (seats - 1) + " more phones." : "Type it in Unlock if you switch phones.") + " Write it down or screenshot it.</p>";
+    box.innerHTML = "<strong>Your unlock code</strong><p><b style=\"font-size:1.2em;letter-spacing:.05em\">" + escapeText(code) + "</b></p><p>This phone is unlocked. " + (sku === "pack" ? "Type this code in Unlock on up to " + (seats - 1) + " more phones or in the iOS app." : "Type it in the WRAP 911 iOS app or on a new phone if you switch.") + " Write it down or screenshot it.</p>";
     home.insertBefore(box, home.firstChild);
   }
   function claimSession(id) {
