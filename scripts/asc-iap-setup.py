@@ -707,6 +707,7 @@ def main() -> None:
     api = Asc(key_path, key_id, issuer)
     summary: dict = {"products": [], "agreements": [], "build10": {}, "appAvailability": {}, "appPriceReadOnly": {}}
     screenshot_path = Path(os.environ.get("SCREENSHOT_PATH", "/tmp/wrap911-pricing.png"))
+    screenshot_path.parent.mkdir(parents=True, exist_ok=True)
     screenshot_state = "not-attempted"
     try:
         capture_pricing_screenshot(screenshot_path)
@@ -754,7 +755,9 @@ def main() -> None:
     print("SUMMARY_JSON_END")
     out = os.environ.get("SUMMARY_PATH")
     if out:
-        Path(out).write_text(text + "\n")
+        dest = Path(out)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(text + "\n")
     wanted = {PACK_ID: Decimal("149.00"), SEAT_ID: Decimal("49.00")}
     bad = []
     for row in summary["products"]:

@@ -19,8 +19,8 @@ jobs:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       ASC_APP_ID: "6816763473"
-      SUMMARY_PATH: ${{ runner.temp }}/asc-iap-summary.json
-      SCREENSHOT_PATH: ${{ runner.temp }}/wrap911-pricing.png
+      SUMMARY_PATH: asc-out/asc-iap-summary.json
+      SCREENSHOT_PATH: asc-out/wrap911-pricing.png
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,19 +42,12 @@ jobs:
           echo "KEY_PATH=$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
       - name: Create IAPs, prices, and US availability
         run: python scripts/asc-iap-setup.py
-      - name: Collect setup files
-        if: always()
-        run: |
-          mkdir -p "$RUNNER_TEMP/asc-out"
-          cp -f "$SUMMARY_PATH" "$RUNNER_TEMP/asc-out/" 2>/dev/null || true
-          cp -f "$SCREENSHOT_PATH" "$RUNNER_TEMP/asc-out/" 2>/dev/null || true
-          ls -la "$RUNNER_TEMP/asc-out" || true
       - name: Upload setup summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: asc-iap-setup-summary
-          path: ${{ runner.temp }}/asc-out
+          path: asc-out
           if-no-files-found: ignore
       - name: Remove API key
         if: always()
