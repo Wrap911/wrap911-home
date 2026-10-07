@@ -698,23 +698,23 @@ window.WRAP911_DATA = {
     },
         {
       id: "pl21",
-      title: "Black enclosed trailer — side graphic down, nose still taped",
+      title: "Black enclosed trailer — white slash down, nose still taped",
       image: "media/photos/gallery/trailer-spot-graphics.jpg",
       module: "post-heat",
       jobType: "Vehicles",
-      visual: "Black dual-axle enclosed trailer in the shop. A white side graphic is already on the side, across the door and the rear panel. On the nose, a printed panel is still under grey transfer tape, held with orange tape. Diamond plate runs the lower rail. A blue and yellow step ladder, a spray bottle, and a propane torch stand on the concrete. Liner scraps are on the floor. This is not a pickup.",
-      narration: "This is the trailer, and it is not the bottle-print pickup. The white side graphic on the side is already down across the door and the rear panel. It is seated. The nose piece is still in transfer tape, hinged with orange tape. That is a dry-fit, not a finished panel.\n\nRegister the nose panel to the trailer before you pull the liner. Squeegee it, then pull the tape low and slow. The torch on the floor is for after the panel is down, and only at the film TDS. Do not invent a temperature, and do not heat the tape while you are still sliding the graphic.\n\nSmall fastener heads are visible on the black skin. This wide shot does not show tented rivets, so do not teach a rivet-tent close-up from it. Ladder stays on the concrete until you need the upper edge.",
+      visual: "Black dual-axle enclosed trailer in the shop. A white slash graphic is already on the side, across the door and the rear panel. On the nose, a salmon panel is still under grey transfer tape, held with orange tape. Diamond plate runs the lower rail. A blue and yellow step ladder, a spray bottle, and a propane torch stand on the concrete. Liner scraps are on the floor. This is not a pickup.",
+      narration: "This is the trailer, and it is not the bottle-print pickup. The white graphic already on the side is a slash pattern across the door and the rear panel. It is seated. The salmon piece on the nose is the one still in transfer tape, hinged with orange tape. That is a dry-fit, not a finished panel.\n\nRegister the salmon panel to the trailer before you pull the liner. Squeegee it, then pull the tape low and slow. The torch on the floor is for after the panel is down, and only at the film TDS. Do not invent a temperature, and do not heat the tape while you are still sliding the graphic.\n\nSmall fastener heads are visible on the black skin. This wide shot does not show tented rivets, so do not teach a rivet-tent close-up from it. Ladder stays on the concrete until you need the upper edge.",
       checklist: [
         "Call it a black enclosed trailer, not a pickup",
-        "White side graphic is already down",
-        "Nose panel is still under transfer tape",
-        "Register the nose panel before pulling the liner",
+        "White slash graphic is already down on the side",
+        "Salmon nose panel is still under transfer tape",
+        "Register that panel before pulling the liner",
         "Pull tape low and slow after the squeegee pass",
         "Leave the torch down until alignment is locked; heat only per TDS",
       ],
       quiz: {
         q: "Which graphic is finished, and which is still under tape?",
-        correct: "The white side graphic is down. The nose panel is still under transfer tape.",
+        correct: "The white slash on the side is down. The salmon panel on the nose is still under transfer tape.",
         wrong: "A white tire-tread graphic on a pickup, with an orange bottle print already glassed."
       }
     },
@@ -917,13 +917,13 @@ window.WRAP911_DATA.drills = {
     },
     {
       id: "cl03",
-      title: "Trailer nose panel hang",
-      subtitle: "Side graphic is down, nose panel still taped",
+      title: "Trailer nose graphic",
+      subtitle: "White slash is down, salmon panel still taped",
       image: "media/photos/gallery/trailer-spot-graphics.jpg",
       intro: "Tap the sequence IN ORDER for this black enclosed trailer.",
       steps: [
-        "Confirm the white side graphic is already down",
-        "Register the nose panel while it is still under tape",
+        "Confirm the white slash on the side is already down",
+        "Register the salmon nose panel while it is still under tape",
         "Squeegee, then pull the tape low and slow",
         "Only then use heat, and only per the film TDS"
       ],
