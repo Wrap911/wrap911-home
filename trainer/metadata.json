@@ -2,7 +2,7 @@
  "app": {
   "name": "WRAP 911 Trainer",
   "shortName": "WRAP 911",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "stripeTestMode": false,
   "generated": "2026-09-26",
   "canonical": "https://wrap911.github.io/wrap911-home/trainer/",
@@ -1041,6 +1041,19 @@
    "source": "data.js/data_extra.js"
   },
   {
+   "id": "pl06",
+   "title": "Printed panel on the bench",
+   "category": "Vehicles",
+   "module": "commercial-sides",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "data.js/data_extra.js"
+  },
+  {
    "id": "pl07",
    "title": "Squeegee on grey wood-grain wall film",
    "category": "Interior",
@@ -1574,6 +1587,19 @@
    "source": "photos-boost.js"
   },
   {
+   "id": "pb-graphic",
+   "title": "Printed panel on the bench",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "free",
+   "media": {
+    "path": "media/videos/fleet/graphic-installation-1.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
    "id": "pb-wall",
    "title": "Interior wall wrap",
    "category": "Interior",
@@ -1724,6 +1750,19 @@
    "access": "paid",
    "media": {
     "path": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-squeegee",
+   "title": "Squeegee on the printed sheet",
+   "category": "Fleet",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/videos/prep/squeegee-strokes.jpg",
     "local": true,
     "live": true
    },

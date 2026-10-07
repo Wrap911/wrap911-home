@@ -370,6 +370,29 @@ window.WRAP911_DATA = {
         wrong: "A tall RV side with ladders and a pink graphic panel."
       }
     },
+
+    {
+      id: "pl06",
+      title: "Printed panel on the bench",
+      image: "media/videos/fleet/graphic-installation-1.jpg",
+      module: "commercial-sides",
+      jobType: "Vehicles",
+      visual: "Shop bench, not a vehicle. A large white gloss sheet carries a black printed panel near the middle. A row of small color cards lines the top of the sheet. Hands in a blue sleeve, one with a ring, work the left edge. A plotter stands at the left, a red ladder and pallet jack are in the bay behind, and a blurred red-orange object sits in the foreground. This is not a motorhome.",
+      narration: "You are at the bench, looking down a white gloss sheet with a black printed panel already on it. Color cards along the top are the reference for that graphic. Hands are on the left edge of the sheet. Nothing in this frame is a Ford E-350 or a Class C body.\n\nOn the bench, keep the print flat and the liner path clean. Do not squeegee a wrinkle into the black panel or the type will kink. The plotter, ladder, and pallet jack are the shop around the table, not the substrate.\n\nWhen this graphic moves to a vehicle later, registration starts from how square it is right here. This still is the bench step only.",
+      checklist: [
+        "This is the bench, not a motorhome walkaround",
+        "Keep the sheet flat so the print does not crease",
+        "Use the color cards as the graphic reference",
+        "Keep liner and hands off the adhesive face",
+        "Square the panel on the table before it ever hits a vehicle",
+        "Do not invent a substrate this still does not show",
+      ],
+      quiz: {
+        q: "What does this still actually show?",
+        correct: "A black printed panel on white film, on the shop bench, with color cards and hands at the edge.",
+        wrong: "An outdoor walkaround of a Ford E-350 Class C motorhome."
+      }
+    },
     {
       id: "pl07",
       title: "Squeegee on grey wood-grain wall film",
@@ -773,6 +796,24 @@ window.WRAP911_DATA.drills = {
       feedback: {
         correct: "Correct — satin Jeep nose. Openings and chrome are where the film stops.",
         wrong: "Wrong — this is not an RV, and you do not bridge mesh."
+      }
+    },
+
+    {
+      id: "sm04",
+      photoId: "pl06",
+      image: "media/videos/fleet/graphic-installation-1.jpg",
+      prompt: "What's wrong / what next?",
+      question: "What is on the bench in this still?",
+      choices: [
+        "A Ford E-350 Class C motorhome.",
+        "A black printed panel on white film, with color cards and hands at the edge.",
+        "Rivet tents on a trailer roof."
+      ],
+      answer: 1,
+      feedback: {
+        correct: "Correct — read the frame. This is the bench, not a motorhome.",
+        wrong: "Wrong — this is a printed panel on the shop bench, not a vehicle walkaround."
       }
     },
     {

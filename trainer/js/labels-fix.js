@@ -54,7 +54,10 @@
   /* 2.6.5: real repo stills under media/videos/ that have no mp4 but are used as photo lessons.
      Without this they read as "missing" and got swapped for a pool still at runtime. */
   var STILL_OK = {
-    "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg": 1
+    "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg": 1,
+    /* 2.7.2: client word-mark blurred on these bench stills; no companion mp4 (removed). */
+    "media/videos/fleet/graphic-installation-1.jpg": 1,
+    "media/videos/prep/squeegee-strokes.jpg": 1
   };
 
   /* 2.6.6: the same frame saved under two file names (checked by eye and by image hash). Photos dedupe keys on

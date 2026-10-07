@@ -124,8 +124,8 @@
     if (mediaAsked) return;
     mediaAsked = true;
     var srcs = [];
-    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=271");
-    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=271");
+    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=272");
+    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=272");
     var left = srcs.length;
     if (!left) { afterMedia(); return; }
     function done() { if (--left === 0) afterMedia(); }
