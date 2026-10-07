@@ -291,7 +291,9 @@
         '<div class="card-sub">' + esc(bucket(item.category)) + (!paid && item.access === "free" ? ' · Free sample' : '') + '</div></article>';
     }
     if (!paid) {
-      html += '<div class="card tap teaser-paywall" role="button" tabindex="0"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div></div>';
+      html += (window.WRAP911_NATIVE && window.WRAP911_NATIVE())
+        ? '<div class="card tap teaser-paywall" role="button" tabindex="0"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Shop Pack or Seat · Tap to unlock</div></div>'
+        : '<div class="card tap teaser-paywall" role="button" tabindex="0"><div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div></div>';
     }
     if (!html) html = '<p class="muted">No clips in this category.</p>';
     list.innerHTML = html;

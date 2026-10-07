@@ -6,7 +6,9 @@
  *   secret        STRIPE_SECRET_KEY   (only for /license/claim, web checkout)
  *
  * Routes:
- *   POST /license/apple   { jws, device }  Apple StoreKit 2 signed transaction -> seat code
+ *   POST /license/apple   { jws, device }  Apple non-renewing Shop Pack / Seat -> seat code
+ *                                 Not deployed with the iOS change. Pack = 5 seats, Seat = 1.
+ *                                 Missing expiresDate uses purchaseDate + 365 days.
  *   GET  /license/claim?session_id=cs_...&device=...   Stripe Checkout session -> seat code
  *   POST /license/redeem  { code, device } use a seat on this phone
  *   POST /license/check   { code, device } daily re-check (403/404/410 = lock the phone)
@@ -17,10 +19,31 @@
 import { X509Certificate } from "@peculiar/x509";
 
 const BUNDLE_ID = "com.wrap911.trainer";
+const YEAR_MS = 365 * 86400000;
 const APPLE_PRODUCTS = {
+  /* Current offer: non-renewing 12-month Shop Pack and Seat. */
+  "com.wrap911.trainer.pack.12mo": { sku: "pack", seats: 5 },
+  "com.wrap911.trainer.seat.12mo": { sku: "seat", seats: 1 },
+  /* Older auto-renewable ids, if they were ever created. */
   "com.wrap911.trainer.seat.yearly": { sku: "seat", seats: 1 },
-  "com.wrap911.trainer.crew.yearly": { sku: "crew", seats: 5 },
+  "com.wrap911.trainer.crew.yearly": { sku: "pack", seats: 5 },
 };
+function appleMillis(v) {
+  if (v == null || v === "") return 0;
+  if (typeof v === "number" && isFinite(v)) return v > 1e11 ? v : (v > 1e9 ? v * 1000 : 0);
+  const n = Number(v);
+  if (n > 1e11) return n;
+  if (n > 1e9 && n < 1e11) return n * 1000;
+  const p = Date.parse(String(v));
+  return Number.isNaN(p) ? 0 : p;
+}
+/* Non-renewing transactions have purchaseDate and no expiresDate. */
+function appleExpiry(tx) {
+  const stated = appleMillis(tx.expiresDate);
+  if (stated) return stated;
+  const purchase = appleMillis(tx.purchaseDate);
+  return purchase ? purchase + YEAR_MS : 0;
+}
 /* SHA-256 fingerprint of Apple Root CA - G3 (DER). */
 const APPLE_ROOT_G3_SHA256 = "63343abfb89a6a03ebb57e9b3f5fa7be7c4f5c756f3017b3a8c488c3653e9179";
 const OID_LEAF = "1.2.840.113635.100.6.11.1";
@@ -99,8 +122,8 @@ async function appleRoute(body, env) {
   const p = APPLE_PRODUCTS[tx.productId];
   if (!p) return [{ ok: false, error: "Unknown product" }, 400];
   if (tx.revocationDate) return [{ ok: false, error: "Purchase was refunded" }, 410];
-  const exp = Number(tx.expiresDate) || 0;
-  if (exp < Date.now()) return [{ ok: false, error: "Subscription expired" }, 410];
+  const exp = appleExpiry(tx);
+  if (!exp || exp < Date.now()) return [{ ok: false, error: "Purchase expired" }, 410];
   const ref = "apple:" + (tx.originalTransactionId || tx.transactionId);
   const rec = await issue(env, ref, p.sku, p.seats, exp, "apple-" + (tx.environment || ""), body.device);
   return [pub(rec), 200];

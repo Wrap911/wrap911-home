@@ -321,7 +321,7 @@
     if (!lesson || !c) return;
     if (lessonLocked(id)) {
       var lfb = $("unlock-feedback");
-      if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49."; }
+      if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) ? "That lesson is in the pack. Free look has 3 sample lessons. Open Pricing to buy a Shop Pack or Seat." : "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49."; }
       c.showScreen("pricing");
       return;
     }
@@ -456,7 +456,7 @@
     }
     if (practiceLocked(id)) {
       var pfb = $("unlock-feedback");
-      if (pfb) { pfb.className = "quiz-feedback bad"; pfb.textContent = "That practice drill is in the pack. Free look has 2 practice drills. Pack $149 (5 seats) or seat $49."; }
+      if (pfb) { pfb.className = "quiz-feedback bad"; pfb.textContent = (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) ? "That practice drill is in the pack. Free look has 2 practice drills. Open Pricing to buy a Shop Pack or Seat." : "That practice drill is in the pack. Free look has 2 practice drills. Pack $149 (5 seats) or seat $49."; }
       if (c && c.showScreen) c.showScreen("pricing");
       return;
     }

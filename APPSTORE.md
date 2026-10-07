@@ -17,11 +17,31 @@ In Xcode > App target > Signing & Capabilities: tick "Automatically manage signi
 Set Version 1.0.0 / Build 1. Add 1024px icon in Assets > AppIcon.
 Product > Archive > Distribute App > App Store Connect > Upload. Then submit in App Store Connect (TestFlight first).
 
-## Payments: US storefront only (keeps Stripe, no In-App Purchase)
-Since May 2025, Guideline 3.1.1(a) lets apps on the **United States** storefront link to web checkout without an entitlement. Every other country still requires In-App Purchase.
-- App Store Connect > Pricing and Availability: price **Free** (the download is free, and the trainer is sold on the web), availability **United States only**.
-- In the app, Buy buttons open Stripe in Safari (wrap911.com). The pricing screen tells iOS users to come back and enter their unlock code.
-- Do not turn on other countries unless In-App Purchase has been added.
+## Payments
+The download is free. Full access is a one-time 12-month Shop Pack (5 seats) or Seat (1 phone).
+
+Apple In-App Purchase is the primary way to buy inside the iOS app. On the US storefront only, a secondary **Buy on wrap911.com** link opens Safari. That link is allowed without the external-purchase entitlement under Guideline 3.1.1(a) / 3.1.3 (May 2025). Other storefronts do not show the website button or the website prices. Keep App Store Connect availability set to **United States only** until you intend to sell elsewhere.
+
+People who already paid on wrap911.com still type their unlock code on the Pricing screen.
+
+### In-App Purchase products to create
+Type: **Non-Renewing Subscription**, duration **1 year**. Not auto-renewable (those renew). Not non-consumable (those never expire). StoreKit does not send an expiration for this type, so the app uses the same 365-day window as an unlock code, starting at `purchaseDate`.
+
+| Product ID | Reference name | Display name | Description | Suggested USA price |
+| --- | --- | --- | --- | --- |
+| `com.wrap911.trainer.pack.12mo` | Shop Pack 12 months | WRAP 911 Shop Pack | 5 seats, 12 months, full trainer. One-time. | $169 |
+| `com.wrap911.trainer.seat.12mo` | Seat 12 months | WRAP 911 Seat | 1 seat, 12 months, full trainer. One-time. | $55 |
+
+Prices are set in App Store Connect. The app shows StoreKit's localized `priceString` and does not hardcode them. Family Sharing off. No free trial. No introductory offer.
+
+A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. The worker change is in `cloudflare-coach-proxy/license.js` and is **not** deployed by this branch. Until it is, the buying phone still unlocks, and the screen tells the buyer to email the Apple receipt for the other four seats.
+
+`Restore Purchases` is on the Pricing screen.
+
+### Local StoreKit test
+`ios/App/App/WRAP911.storekit` lists both products. In Xcode: Product > Scheme > Edit Scheme > Run > Options > StoreKit Configuration > WRAP911.storekit. The prices in that file are for the simulator only.
+
+Do not run `.github/workflows/asc-setup-iap.yml`. It used to create the wrong auto-renewable products and now exits without changing App Store Connect.
 
 ## Privacy (done in code)
 - `trainer/js/appstore.js`: the AI Coach asks permission before sending anything to xAI (5.1.2). Declining uses the offline answers. "Reset AI permission" is on the Coach screen.
@@ -33,16 +53,18 @@ Since May 2025, Guideline 3.1.1(a) lets apps on the **United States** storefront
 Data Not Used to Track You. Data Not Linked to You: **User Content > Other User Content** (App Functionality). Nothing else is collected.
 
 ## Review notes (paste into App Review Information)
-> WRAP 911 is an on-device training app for commercial vinyl-wrap installers: lessons, practice scenarios, drills with scoring, a job workflow manager, a material calculator, and progress saved on the device. The AI Coach asks for permission before sending a question to our server and xAI.
-> Full access: on the Pricing screen, enter unlock code **<REVIEW CODE>** and tap Unlock.
-> The digital training is sold on our website through Stripe. Under Guideline 3.1.1(a), the app links out to that checkout on the US storefront only.
+> Guideline 2.3.8: the app icon is now the WRAP 911 wordmark. The previous build used Capacitor's placeholder icon.
+> Guideline 3.1.1: Shop Pack and Seat are for sale as non-renewing In-App Purchases on the Pricing screen (Shop Pack first). Restore Purchases is on that screen. A purchase unlocks the full trainer on this phone for 12 months.
+> On the United States storefront only, a secondary Buy on wrap911.com button opens Safari. That is the external-purchase link allowed by Guideline 3.1.1(a) and 3.1.3. The website button and website prices are hidden on every other storefront. Availability is United States only.
+> Unlock code entry remains for people who already bought on wrap911.com. The app does not sell access only by license key.
+> The AI Coach asks permission before sending a question to our server and xAI. Declining uses the offline answers.
 
 ## Review risks
 - Guideline 4.2 (web wrapper): lead with the drills, scoring, job manager and progress that work on the device. The service worker does NOT run in the iOS app, so do not claim offline caching.
 
-## In-App Purchase: Wrap911 Pro yearly (v1.1)
-- Product ID `com.wrap911.trainer.pro.yearly`, auto-renewable, group "Wrap911 Pro", 1 year, $49.00 USD, 7-day free trial (introductory offer, new subscribers).
-- Code: `trainer/js/iap.js` + `@capgo/native-purchases` (StoreKit 2). Active sub writes a local `plan: "pro", sku: "iap"` license; expired/refunded subs remove it on next launch.
-- Paywall shows price, trial terms, auto-renew text, Restore purchases, Terms of Use (Apple EULA) and Privacy links (Guideline 3.1.2).
-- Stripe seat codes and US web checkout still work alongside IAP.
-- First subscription must be submitted for review together with app version 1.1.
+## Submit the IAPs with the version
+App Store Connect > the iOS version > In-App Purchases > add both products above before you submit. The first IAP has to ship with a new version. Banking and tax (Paid Apps agreement) have to be complete or the products stay unsellable. The Small Business Program is separate and optional: enroll at https://developer.apple.com/app-store/small-business-program/ if the proceeds qualify for the 15% rate.
+
+Publish the Apple paragraph in `privacy.html` to https://wrap911.com/privacy.html before resubmitting. The in-app privacy link points at that URL.
+
+Do not upload a TestFlight build from this branch until the icon is approved and both products exist in App Store Connect. The TestFlight workflow only runs on a manual dispatch or when its own file changes.

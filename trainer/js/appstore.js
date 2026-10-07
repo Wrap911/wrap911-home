@@ -48,12 +48,8 @@
   }
 
   function iosCheckoutNote() {
+    /* Pricing copy for the iOS app lives in iap.js. The old note said Safari checkout was the only way to pay. */
     if (!isNative) return;
-    var p = document.getElementById("screen-pricing");
-    if (!p || p.querySelector(".w911-ios-note")) return;
-    var note = el('<p class="w911-ios-note">Checkout opens in Safari on wrap911.com. After you pay, come back here and enter your unlock code.</p>');
-    var box = p.querySelector(".unlock-box");
-    p.insertBefore(note, box || null);
   }
 
   function run() { addPrivacyLink(); iosCheckoutNote(); }

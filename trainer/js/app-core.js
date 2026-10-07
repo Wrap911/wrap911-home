@@ -201,6 +201,10 @@
   }
 
   /* Paid pack/seat or unexpired trial/pro — including Stripe Payment Link. */
+  function iosApp() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+
   function hasFullAccess() {
     var lic = loadLicense();
     if (!lic || lic.expired) return false;
@@ -290,7 +294,9 @@
         plan: "locked",
         badge: "FREE",
         chipClass: "",
-        detail: "Free look is open. Pack $149 or seat $49 unlocks the rest on this phone."
+        detail: iosApp()
+          ? "Free look is open. A Shop Pack or Seat unlocks the rest on this phone."
+          : "Free look is open. Pack $149 or seat $49 unlocks the rest on this phone."
       };
     }
     /* Hotfix 2.6.4: Seat/Pack/Field licenses use the same label plan-fix.js paints on Home (was PRO here). */
@@ -325,12 +331,14 @@
         var d2 = Math.max(0, Math.ceil((lic.expiresAt - Date.now()) / 86400000));
         proLeft = " · ~" + d2 + " day(s) left this period";
       }
-      var src = lic.code === "STRIPE" ? "Stripe Pro" : "Pro";
+      var src = lic.code === "STRIPE" ? "Stripe Pro" : (lic.source === "apple" ? "Apple" : "Pro");
       return {
         plan: "pro",
         badge: "PRO",
         chipClass: "pro",
-        detail: src + " — pack-first pricing (PACK $149 default)" + proLeft + "."
+        detail: iosApp()
+          ? src + proLeft + "."
+          : src + " — pack-first pricing (PACK $149 default)" + proLeft + "."
       };
     }
     return {
@@ -366,7 +374,9 @@
     if (!code) {
       if (fb) {
         fb.className = "quiz-feedback bad";
-        fb.textContent = "Buy on this phone. Pack $149 or seat $49.";
+        fb.textContent = iosApp()
+          ? "Enter an unlock code, or buy with Apple on this screen."
+          : "Buy on this phone. Pack $149 or seat $49.";
       }
       return false;
     }
@@ -447,7 +457,7 @@
         "<h3>" + escapeHtml(p.name || "") + "</h3>" +
         '<span class="price-status ' + escapeHtml(st) + '">' + escapeHtml(statusLabel(st)) + "</span>" +
         "</div>" +
-        '<div class="price-example"><span class="ex-tag">' + (p.status === "test" ? "TEST" : (p.status === "locked-price" ? "PRICE" : (p.id === "free-shop" ? "HOME" : "PLAN"))) + "</span> " + escapeHtml(p.priceExample || "") + "</div>" +
+        '<div class="price-example"><span class="ex-tag">' + (p.status === "test" ? "TEST" : (p.status === "locked-price" ? "PRICE" : (p.id === "free-shop" ? "HOME" : "PLAN"))) + "</span> " + escapeHtml((iosApp() && p.id !== "preview") ? "12 months, one-time" : (p.priceExample || "")) + "</div>" +
         "<p>" + escapeHtml(p.blurb || "") + "</p>" +
         "</div>";
     }
@@ -461,7 +471,9 @@
     var clearBtn = $("btn-clear-license");
     if (el) {
       if (!lic) {
-        el.textContent = "No license — training is locked. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone, 12 months). Buy on this same phone.";
+        el.textContent = iosApp()
+          ? "No license — training is locked. Shop Pack (5 phones, 12 months) or Seat (this phone, 12 months). Buy with Apple on this screen."
+          : "No license — training is locked. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone, 12 months). Buy on this same phone.";
       } else if (lic.expired) {
         el.textContent = "License expired (" + lic.code + "). Buy again on this phone.";
       } else {
@@ -484,7 +496,9 @@
     updatePlanChip();
     var modeBanner = $("pricing-mode-banner");
     if (modeBanner) {
-      if (cfg.stripeTestMode) {
+      if (iosApp()) {
+        modeBanner.innerHTML = "<strong>Apple</strong> — Shop Pack (5 seats, 12 months) or Seat (1 tech, 12 months). One-time. The App Store shows the price. It does not auto-renew.";
+      } else if (cfg.stripeTestMode) {
         modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months).";
       } else {
         modeBanner.innerHTML = "<strong>Checkout</strong> — Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? " · Field $29/mo" : "") + ". One-time for Pack and Seat.";
@@ -497,7 +511,7 @@
     var stripeBtn = $("btn-stripe-pay");
     var link = (cfg.stripeTestMode ? (cfg.stripeTestPackLink || "") : (cfg.stripePaymentLink || "")).trim();
     if (stripeWrap) {
-      stripeWrap.classList.toggle("hidden", !link);
+      stripeWrap.classList.toggle("hidden", iosApp() || !link);
     }
     if (stripeBtn) {
       var test = cfg.stripeTestMode === true;
@@ -544,7 +558,9 @@
       var fb = $("unlock-feedback");
       if (fb) {
         fb.className = "quiz-feedback bad";
-        fb.textContent = "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
+        fb.textContent = iosApp()
+          ? "That part is paid. Open Pricing and buy a Shop Pack or Seat with Apple."
+          : "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
       }
       name = "pricing";
       renderPricingPlans();

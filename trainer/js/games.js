@@ -18,7 +18,12 @@
     "pb-caddy-5": 1, "pb-caddy-1": 1, "pb-cherokee": 1, "pb-cut-ex1": 1, "pb-office": 1, "pb-wall": 1, "pb-cab-done": 1,
     /* QA S13-S16: pl18 = same frame as pl12; stock photo; social-media screenshot (pb-caddy-4 in 2.6.3, pb-removal in 2.6.4); bubbles vs reflections */
     "pl18": 1, "pk-interior-sales": 1, "pb-caddy-4": 1, "pb-removal": 1, "prob-half-moon": 1 };
-  var LOCK_MSG = "Full game rounds are in the pack. Free look has one sample round of each game. Pack $149 (5 seats) or seat $49.";
+  function lockMsg() {
+    if (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) {
+      return "Full game rounds are in the Shop Pack or Seat. Open Pricing to buy in the app.";
+    }
+    return "Full game rounds are in the pack. Free look has one sample round of each game. Pack $149 (5 seats) or seat $49.";
+  }
   var S = { game: null, round: null, timer: null, play: null };
 
   function $(id) { return document.getElementById(id); }
@@ -50,7 +55,7 @@
   }
   function goPricing() {
     var fb = $("unlock-feedback");
-    if (fb) { fb.className = "quiz-feedback bad"; fb.textContent = LOCK_MSG; }
+    if (fb) { fb.className = "quiz-feedback bad"; fb.textContent = lockMsg(); }
     var c = core();
     try { if (c && c.renderPricing) c.renderPricing(); } catch (e) {}
     show("pricing");
@@ -468,7 +473,7 @@
       var pay = document.createElement("div");
       pay.className = "card tap gm-pay";
       pay.setAttribute("role", "button");
-      pay.innerHTML = '<div class="card-body"><div class="card-title">Every round, every lesson</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div></div>';
+      pay.innerHTML = '<div class="card-body"><div class="card-title">Every round, every lesson</div><div class="card-sub">' + ((window.WRAP911_NATIVE && window.WRAP911_NATIVE()) ? "Shop Pack or Seat · Tap to unlock" : "Pack $149 (5 seats) · Seat $49 · Tap to unlock") + '</div></div>';
       pay.addEventListener("click", goPricing);
       list.appendChild(pay);
     }
@@ -588,7 +593,7 @@
     if (o.srcAll) h += '<div class="gm-actions"><button type="button" class="secondary" id="gm-open-src">' + esc(srcLabel(o.srcAll)) + ' →</button></div>';
     h += '<div class="gm-actions"><button type="button" id="gm-again">Play again</button>' +
       '<button type="button" class="secondary" id="gm-more">More rounds</button></div>';
-    if (!paid()) h += '<div class="card tap gm-pay" id="gm-results-pay" role="button"><div class="card-body"><div class="card-title">Want every round?</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div></div></div>';
+    if (!paid()) h += '<div class="card tap gm-pay" id="gm-results-pay" role="button"><div class="card-body"><div class="card-title">Want every round?</div><div class="card-sub">' + ((window.WRAP911_NATIVE && window.WRAP911_NATIVE()) ? "Shop Pack or Seat · Tap to unlock" : "Pack $149 (5 seats) · Seat $49 · Tap to unlock") + '</div></div></div>';
     body.innerHTML = h;
     var links = body.querySelectorAll(".gm-src-link");
     for (var i = 0; i < links.length; i++) {

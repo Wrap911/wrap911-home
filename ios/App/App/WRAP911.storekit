@@ -1,0 +1,98 @@
+{
+  "identifier" : "WRAP911STOREKIT",
+  "nonRenewingSubscriptions" : [
+    {
+      "displayPrice" : "169.00",
+      "familyShareable" : false,
+      "internalID" : "PACK12MO",
+      "localizations" : [
+        {
+          "description" : "5 seats, 12 months, full trainer. One-time.",
+          "displayName" : "WRAP 911 Shop Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.wrap911.trainer.pack.12mo",
+      "referenceName" : "Shop Pack 12 months",
+      "type" : "NonRenewingSubscription"
+    },
+    {
+      "displayPrice" : "55.00",
+      "familyShareable" : false,
+      "internalID" : "SEAT12MO",
+      "localizations" : [
+        {
+          "description" : "1 seat, 12 months, full trainer. One-time.",
+          "displayName" : "WRAP 911 Seat",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.wrap911.trainer.seat.12mo",
+      "referenceName" : "Seat 12 months",
+      "type" : "NonRenewingSubscription"
+    }
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6816763473",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

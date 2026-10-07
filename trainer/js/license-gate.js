@@ -22,6 +22,10 @@
   var cfg = window.WRAP911_CONFIG || {};
   cfg.demoCodes = {};
 
+  function iosApp() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+
   function shopOpen() {
     return !!(cfg && cfg.shopPhoneOpen);
   }
@@ -140,8 +144,12 @@
   }
 
   function wipePayCopy() {
-    var locked = "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
-    var none = "No license. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone). Buy on this same phone.";
+    var locked = iosApp()
+      ? "That part is paid. Open Pricing and buy a Shop Pack or Seat with Apple."
+      : "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
+    var none = iosApp()
+      ? "No license. Shop Pack (5 phones, 12 months) or Seat (this phone, 12 months). Buy with Apple on Pricing."
+      : "No license. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone). Buy on this same phone.";
     var chip = document.getElementById("plan-chip");
     if (chip && /LOCKED/i.test(chip.textContent || "")) chip.textContent = "FREE";
     var badge = document.getElementById("home-plan-badge");
@@ -151,7 +159,11 @@
     var fb = document.getElementById("unlock-feedback");
     if (fb && /forever|WRAP911-HOME|That section is locked/i.test(fb.textContent || "")) fb.textContent = locked;
     var detail = document.getElementById("home-plan-detail");
-    if (detail && /forever|WRAP911-HOME|Training is locked/i.test(detail.textContent || "")) detail.textContent = "Free look is open. Pack $149 or seat $49 unlocks the rest.";
+    if (detail && /forever|WRAP911-HOME|Training is locked/i.test(detail.textContent || "")) {
+      detail.textContent = iosApp()
+        ? "Free look is open. A Shop Pack or Seat unlocks the rest."
+        : "Free look is open. Pack $149 or seat $49 unlocks the rest.";
+    }
   }
 
   function hideCodeBlocks() {
@@ -189,8 +201,8 @@
           .replace(/WRAP911-PRO/gi, "pro")
           .replace(/enter `WRAP911[^`]*`/gi, "buy on this phone")
           .replace(/Codes \(shop \+ test\)/gi, "Unlock")
-          .replace(/That section is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, "That section is locked. Shop pack $149 or seat $49.")
-          .replace(/No license — training is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, "No license. Shop pack $149 or seat $49. Buy on this phone.");
+          .replace(/That section is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, iosApp() ? "That section is locked. Open Pricing to buy a Shop Pack or Seat." : "That section is locked. Shop pack $149 or seat $49.")
+          .replace(/No license — training is locked\. WRAP 911 shop:[^.]*\. Other shops:[^.]*\.?/gi, iosApp() ? "No license. Open Pricing to buy a Shop Pack or Seat." : "No license. Shop pack $149 or seat $49. Buy on this phone.");
       }
     }
     var inp = document.getElementById("unlock-code");
@@ -255,7 +267,9 @@
     if (!list.querySelector(".teaser-paywall")) {
       var pay = document.createElement("div");
       pay.className = "card tap teaser-paywall";
-      pay.innerHTML = '<div class="photo-caption">More bay photos in the pack</div><div class="photo-meta">$149 pack · $49 seat · Tap to unlock</div>';
+      pay.innerHTML = iosApp()
+        ? '<div class="photo-caption">More bay photos in the pack</div><div class="photo-meta">Shop Pack or Seat · Tap to unlock</div>'
+        : '<div class="photo-caption">More bay photos in the pack</div><div class="photo-meta">$149 pack · $49 seat · Tap to unlock</div>';
       pay.addEventListener("click", goPay);
       list.appendChild(pay);
     }
@@ -276,7 +290,9 @@
     if (!list.querySelector(".teaser-paywall")) {
       var pay = document.createElement("div");
       pay.className = "card tap teaser-paywall";
-      pay.innerHTML = '<div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div>';
+      pay.innerHTML = iosApp()
+        ? '<div class="card-title">Rest of the bay videos</div><div class="card-sub">Shop Pack or Seat · Tap to unlock</div>'
+        : '<div class="card-title">Rest of the bay videos</div><div class="card-sub">Pack $149 (5 seats) · Seat $49 · Tap to unlock</div>';
       pay.addEventListener("click", goPay);
       list.appendChild(pay);
     }
@@ -354,7 +370,7 @@
     var lead = home.querySelector(".lead");
     var p = document.createElement("p");
     p.className = "lead teaser-pitch";
-    p.textContent = "Free look: shop rules, Coach, " + TEASER_PHOTO_MAX + " photos, " + TEASER_VIDEO_MAX + " sample videos, and 3 sample lessons. Pack $149 (5 seats, 12 months) unlocks the rest.";
+    p.textContent = "Free look: shop rules, Coach, " + TEASER_PHOTO_MAX + " photos, " + TEASER_VIDEO_MAX + " sample videos, and 3 sample lessons. " + (iosApp() ? "A Shop Pack or Seat unlocks the rest." : "Pack $149 (5 seats, 12 months) unlocks the rest.");
     if (lead && lead.parentNode) lead.parentNode.insertBefore(p, lead.nextSibling);
   }
 
