@@ -1,0 +1,61 @@
+name: Set up Shop Pack and Seat In-App Purchases
+# Creates the two non-renewing IAPs. Does not submit for review and does not upload a build.
+# A push of this file to ios-capacitor starts a run. workflow_dispatch is the other trigger.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-iap-setup.yml
+      - scripts/asc-iap-setup.py
+concurrency:
+  group: asc-iap-setup
+  cancel-in-progress: false
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_APP_ID: "6816763473"
+      SUMMARY_PATH: ${{ runner.temp }}/asc-iap-summary.json
+      SCREENSHOT_PATH: ${{ runner.temp }}/wrap911-pricing.png
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          python -m pip install --quiet "pyjwt>=2.8" cryptography requests playwright
+          python -m playwright install --with-deps chromium
+      - name: Check copy rules
+        run: python scripts/asc-iap-setup.py --self-check
+      - name: Install API key
+        run: |
+          set +x
+          mkdir -p "$RUNNER_TEMP/private_keys"
+          export RAW='${{ secrets.ASC_KEY_P8 }}'
+          python3 -c "import os,re; b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b); print('-----BEGIN PRIVATE KEY-----'); [print(b[i:i+64]) for i in range(0,len(b),64)]; print('-----END PRIVATE KEY-----')" > "$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          chmod 600 "$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          echo "KEY_PATH=$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+      - name: Create IAPs, prices, and US availability
+        run: python scripts/asc-iap-setup.py
+      - name: Collect setup files
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/asc-out"
+          cp -f "$SUMMARY_PATH" "$RUNNER_TEMP/asc-out/" 2>/dev/null || true
+          cp -f "$SCREENSHOT_PATH" "$RUNNER_TEMP/asc-out/" 2>/dev/null || true
+          ls -la "$RUNNER_TEMP/asc-out" || true
+      - name: Upload setup summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asc-iap-setup-summary
+          path: ${{ runner.temp }}/asc-out
+          if-no-files-found: ignore
+      - name: Remove API key
+        if: always()
+        run: rm -f "$KEY_PATH"
