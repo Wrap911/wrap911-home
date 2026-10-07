@@ -49,7 +49,22 @@
       '<p><button type="button" data-about-go="samples">See the free samples</button></p>';
   }
 
+  function iosApp() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+
   function pricing() {
+    if (iosApp()) {
+      var us = window.WRAP911_IAP_US === true;
+      return '' +
+        '<div class="plan-row">' +
+        '<div class="card default"><strong>Shop Pack</strong><p>5 seats. 12 months. One-time. This phone plus four more.</p></div>' +
+        '<div class="card"><strong>Seat</strong><p>1 tech. 12 months. One-time. This phone only.</p></div>' +
+        '</div>' +
+        '<p class="muted">Buy with Apple on the Pricing screen. The App Store shows the price. It does not auto-renew.</p>' +
+        (us ? '<p><a href="https://wrap911.com" target="_blank" rel="noopener">Buy on wrap911.com</a></p>' : '') +
+        '<p><button type="button" class="secondary" data-about-go="pricing-screen">Enter an unlock code</button></p>';
+    }
     var field = CFG.fieldSkuLive ? '<div class="card"><strong>W911-FIELD · $29/mo</strong><p>One tech, month to month. To cancel, contact us.</p><p><a href="?buy=field">Start Field</a></p></div>' : "";
     return '' +
       '<div class="plan-row">' +
@@ -78,7 +93,9 @@
     var L = n(D.trainingLessons), W = n(D.vehicles), P = n(D.practiceScenarios), PH = n(D.photoLessons), V = (D.VIDEO_CATALOG || []).length;
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
-      ["How does unlock work?", "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
+      ["How does unlock work?", iosApp()
+        ? ("Buy with Apple on the Pricing screen. This phone unlocks for 12 months. A Shop Pack also covers four more phones with a crew code." + (window.WRAP911_IAP_US ? " On the US App Store you can also buy on wrap911.com and type the unlock code here." : ""))
+        : "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", "Ask first: " + contactLine() + ". Send your Stripe receipt."],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],

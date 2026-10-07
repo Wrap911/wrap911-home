@@ -1,161 +1,333 @@
-/* Apple In-App Purchase: Wrap911 Seat ($49/yr, 1 installer) and Crew ($149/yr, 5 installers), 7-day free trial.
-   iOS app only. Uses @capgo/native-purchases (StoreKit 2). An active subscription writes a
-   local "pro" license (sku "iap") that app-core.js / license-gate.js already treat as full access.
-   Web visitors and Stripe seat codes are untouched. */
+/* Apple In-App Purchase on the iOS app only.
+   Non-renewing Shop Pack and Seat. Prices come from StoreKit (priceString).
+   A purchase unlocks this phone for 365 days, same as an unlock code.
+   Web and PWA: this file returns immediately. */
 (function () {
-  var SEAT = "com.wrap911.trainer.seat.yearly";
-  var CREW = "com.wrap911.trainer.crew.yearly";
-  var IDS = [SEAT, CREW];
+  var Logic = window.WRAP911_IAP_LOGIC;
+  if (!Logic || !Logic.isNativeApp()) return;
+
+  var PACK = "com.wrap911.trainer.pack.12mo";
+  var SEAT = "com.wrap911.trainer.seat.12mo";
+  var IDS = [PACK, SEAT];
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
   var CREW_KEY = "wrap911_crew_code";
+  var CLAIM_TRY = "wrap911_apple_claim_tried";
   var LS = "wrap911_license";
+  var WEB = "https://wrap911.com";
   var TERMS = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   var PRIVACY = "https://wrap911.com/privacy.html";
   var cap = window.Capacitor;
-  var isNative = !!(cap && cap.isNativePlatform && cap.isNativePlatform());
-  if (!isNative) return;
   var NP = cap.Plugins && cap.Plugins.NativePurchases;
-  if (!NP) return;
-
   var products = {};
+  var us = false;
 
-  function readLic() { try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; } }
-  function isIapLic(l) { return !!(l && l.sku === "iap"); }
+  function readLic() {
+    try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
+  }
+  function crewCode() {
+    try { return localStorage.getItem(CREW_KEY) || ""; } catch (e) { return ""; }
+  }
+  function deviceId() {
+    var k = "wrap911_device", id = "";
+    try { id = localStorage.getItem(k) || ""; } catch (e) {}
+    if (!/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      var b = new Uint8Array(16);
+      crypto.getRandomValues(b);
+      id = Array.prototype.map.call(b, function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+      try { localStorage.setItem(k, id); } catch (e2) {}
+    }
+    return id;
+  }
   function refreshUi() {
     var core = window.WRAP911_APP && window.WRAP911_APP.core;
     if (!core) return;
     try { if (core.updatePlanChip) core.updatePlanChip(); } catch (e) {}
     try { if (core.renderHome) core.renderHome(); } catch (e2) {}
+    try { if (window.WRAP911_PLAN_FIX_PAINT) window.WRAP911_PLAN_FIX_PAINT(); } catch (e3) {}
   }
-  function grant(tx) {
-    var exp = tx && tx.expirationDate ? Date.parse(tx.expirationDate) : NaN;
-    if (!exp || isNaN(exp)) exp = Date.now() + 8 * 86400000;
+  function writeLicense(lic, force) {
     var cur = readLic();
-    /* Do not overwrite a Stripe/server license that lasts longer. */
-    if (cur && !isIapLic(cur) && cur.plan === "pro" && Number(cur.expiresAt) > exp) return;
-    try {
-      localStorage.setItem(LS, JSON.stringify({
-        code: "APPLE", plan: "pro", sku: "iap", seats: 1, source: "apple",
-        productId: (tx && (tx.productIdentifier || tx.productId)) || SEAT, trial: !!(tx && tx.isTrialPeriod),
-        unlockedAt: Date.now(), expiresAt: exp, checkedAt: Date.now()
-      }));
-    } catch (e) {}
-    refreshUi();
-  }
-  function revokeIfIap() {
-    if (isIapLic(readLic())) { try { localStorage.removeItem(LS); } catch (e) {} refreshUi(); }
-  }
-  function activeFrom(list) {
-    var now = Date.now();
-    for (var i = 0; i < (list || []).length; i++) {
-      var p = list[i];
-      if (IDS.indexOf(p.productIdentifier || p.productId) < 0) continue;
-      var exp = p.expirationDate ? Date.parse(p.expirationDate) : 0;
-      if (p.isActive === true || exp > now) return p;
+    if (!Logic.shouldWrite(cur, lic, Date.now(), !!force)) return cur;
+    if (cur && cur.source === "apple" && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(cur.code || ""))) {
+      lic.code = cur.code;
     }
-    return null;
+    try { localStorage.setItem(LS, JSON.stringify(lic)); } catch (e) {}
+    refreshUi();
+    return lic;
   }
-  function sync() {
-    return NP.getPurchases({ productType: "subs" }).then(function (r) {
-      var a = activeFrom(r && r.purchases);
-      if (a) { grant(a); if ((a.productIdentifier || a.productId) === CREW && !crewCode()) crewClaim(a); }
-      else revokeIfIap();
-      return !!a;
-    }).catch(function () { return false; });
+  function priceText(id) {
+    var p = products[id];
+    var s = p && (p.priceString || p.localizedPrice);
+    return s ? String(s) : "";
   }
-
-  function crewCode() { try { return localStorage.getItem(CREW_KEY) || ""; } catch (e) { return ""; } }
-  function deviceId() {
-    try { return localStorage.getItem("wrap911_device") || ""; } catch (e) { return ""; }
+  function escapeText(t) {
+    return String(t || "").replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
   }
-  /* Crew: send Apple's signed transaction to the license server, get a 5-seat code to share. */
-  function crewClaim(tx) {
+  function contactMail() {
+    var cfg = window.WRAP911_CONFIG || {};
+    return cfg.contactEmail || "";
+  }
+  function css() {
+    if (document.getElementById("w911-iap-css")) return;
+    var s = document.createElement("style");
+    s.id = "w911-iap-css";
+    s.textContent =
+      ".iap-card{background:#161018;border:1px solid #ffb000;border-radius:14px;padding:16px;margin:12px 0}" +
+      ".iap-card h2{margin:0 0 6px;font-size:1.15rem;letter-spacing:.04em}" +
+      ".iap-card .iap-lead{margin:0 0 8px;line-height:1.4}" +
+      ".iap-card button,.iap-card .iap-web{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border-radius:12px;padding:14px 12px;font-weight:800;margin-top:10px}" +
+      ".iap-card .buy{background:linear-gradient(100deg,#ff2d8c,#ffb000);color:#fff;border:0;font-size:1.05rem}" +
+      ".iap-card .buy.seat{background:#24182a;color:#fff6ee;border:1px solid #ffb000}" +
+      ".iap-card .restore{background:transparent;color:#ffb000;border:1px solid #4a2a44;font-weight:700}" +
+      ".iap-card .iap-web{background:transparent;color:#fff6ee;border:1px solid #4a2a44;font-weight:700;font-size:.95rem}" +
+      ".iap-card .fine{font-size:12px;opacity:.8;margin:12px 0 0;line-height:1.45}" +
+      ".iap-card a{color:#ffb000}" +
+      ".iap-card .msg{font-size:14px;margin-top:10px;line-height:1.4}" +
+      ".iap-card .code{font-size:1.15rem;letter-spacing:.06em}";
+    document.head.appendChild(s);
+  }
+  function buyLabel(id, name) {
+    var price = priceText(id);
+    return price ? ("Buy " + name + " · " + price) : ("Buy " + name);
+  }
+  function activeLicense() {
+    var lic = readLic();
+    if (!lic || lic.source !== "apple") return null;
+    if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return null;
+    if (lic.sku !== "pack" && lic.sku !== "seat") return null;
+    return lic;
+  }
+  function rememberCode(code) {
+    try { localStorage.setItem(CREW_KEY, code); } catch (e) {}
+    var lic = readLic();
+    if (lic && lic.source === "apple" && lic.sku === "pack" && code) {
+      lic.code = code;
+      try { localStorage.setItem(LS, JSON.stringify(lic)); } catch (e2) {}
+    }
+    refreshUi();
+    try { render(); } catch (e3) {}
+  }
+  function claimPack(tx, force) {
+    var have = crewCode();
+    if (have && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(have) && !force) return Promise.resolve(have);
     if (!tx || !tx.jwsRepresentation) return Promise.resolve("");
+    var last = 0;
+    try { last = Number(localStorage.getItem(CLAIM_TRY) || 0); } catch (e) {}
+    if (!force && Date.now() - last < 86400000) return Promise.resolve("");
+    try { localStorage.setItem(CLAIM_TRY, String(Date.now())); } catch (e2) {}
     return fetch(API + "/license/apple", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ jws: tx.jwsRepresentation, device: deviceId() })
     }).then(function (r) { return r.json(); }).then(function (d) {
       if (d && d.ok && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(d.code)) {
-        try { localStorage.setItem(CREW_KEY, d.code); } catch (e) {}
-        render();
+        rememberCode(d.code);
         return d.code;
       }
       return "";
     }).catch(function () { return ""; });
   }
-  function css() {
-    if (document.getElementById("w911-iap-css")) return;
-    var s = document.createElement("style"); s.id = "w911-iap-css";
-    s.textContent = ".iap-card{background:#15171c;border:1px solid #ffb020;border-radius:14px;padding:18px;margin:14px 0}" +
-      ".iap-card h2{margin:0 0 4px;font-size:20px}.iap-card .price{font-size:17px;font-weight:700;margin:6px 0}" +
-      ".iap-card button{width:100%;padding:14px;border-radius:10px;border:0;font-weight:700;font-size:16px;margin-top:10px}" +
-      ".iap-card .buy{background:#ffb020;color:#111}.iap-card .restore{background:#2a2d35;color:#eee}" +
-      ".iap-card .fine{font-size:12px;opacity:.75;margin-top:10px;line-height:1.4}.iap-card a{color:#ffb020}" +
-      ".iap-card .msg{font-size:14px;margin-top:8px}";
-    document.head.appendChild(s);
+  function grantRow(row, force) {
+    if (!row) return null;
+    var lic = writeLicense(Logic.licenseFrom(row, Date.now()), force);
+    if (row.sku === "pack") claimPack(row.tx, !!force);
+    return lic;
   }
-  function priceText(id) {
-    var p = products[id];
-    return (p && (p.priceString || p.localizedPrice)) || (id === CREW ? "$149.00" : "$49.00");
+  function sync() {
+    if (!NP || !NP.getPurchases) return Promise.resolve(false);
+    return NP.getPurchases().then(function (r) {
+      var row = Logic.pickEntitlement((r && r.purchases) || [], Date.now());
+      if (row) {
+        grantRow(row, false);
+        return true;
+      }
+      var cur = readLic();
+      if (cur && cur.source === "apple") {
+        /* A purchase just wrote this license. StoreKit can return an empty list
+           for a moment. Keep a fresh unlock; the next sync removes it if it is really gone. */
+        var age = Date.now() - Number(cur.checkedAt || 0);
+        if (Number(cur.expiresAt) > Date.now() && age < 20000) return true;
+        try { localStorage.removeItem(LS); } catch (e) {}
+        refreshUi();
+      }
+      return false;
+    }).catch(function () { return false; });
   }
   function render() {
-    var p = document.getElementById("screen-pricing");
-    if (!p) return;
+    var screen = document.getElementById("screen-pricing");
+    if (!screen) return;
     css();
+    var lead = screen.querySelector(".lead");
+    if (lead) lead.textContent = "Shop Pack is 5 seats for 12 months. Seat is 1 tech for 12 months. One payment. It does not auto-renew.";
+    var stripe = document.getElementById("stripe-link-wrap");
+    if (stripe) {
+      stripe.classList.add("hidden");
+      stripe.innerHTML = "";
+    }
     var card = document.getElementById("iap-card");
     if (!card) {
-      card = document.createElement("div"); card.id = "iap-card"; card.className = "iap-card";
-      var lead = p.querySelector(".lead");
-      p.insertBefore(card, lead ? lead.nextSibling : p.firstChild);
+      card = document.createElement("div");
+      card.id = "iap-card";
+      card.className = "iap-card";
+      var h1 = screen.querySelector("h1");
+      if (h1 && h1.nextSibling) screen.insertBefore(card, h1.nextSibling);
+      else screen.insertBefore(card, screen.firstChild);
     }
-    var lic = readLic(), active = isIapLic(lic) && Number(lic.expiresAt) > Date.now();
-    var seatP = priceText(SEAT), crewP = priceText(CREW), code = crewCode();
-    var activeName = active ? (lic.productId === CREW ? "Crew (5 seats)" : "Seat") : "";
-    card.innerHTML = '<h2>Wrap911 Pro</h2>' +
-      '<p>Full trainer: every lesson, drill, photo, video and the job manager. Try it free for 7 days.</p>' +
-      (active
-        ? '<p class="msg">' + activeName + ' is active' + (lic.trial ? ' (free trial)' : '') + ' until ' + new Date(Number(lic.expiresAt)).toLocaleDateString() + '.</p>'
-        : '<p class="price">Seat · 1 installer · ' + seatP + ' per year</p>' +
-          '<button type="button" class="buy" data-iap="' + SEAT + '">Start free trial · Seat</button>' +
-          '<p class="price" style="margin-top:14px">Crew · 5 installers · ' + crewP + ' per year</p>' +
-          '<button type="button" class="buy" data-iap="' + CREW + '">Start free trial · Crew</button>') +
-      (code ? '<p class="msg"><b>Crew code: ' + code + '</b><br>Give this code to up to 4 installers. They enter it under Unlock on their phone.</p>' : '') +
-      '<button type="button" class="restore" id="iap-restore">Restore purchases</button>' +
+    var unlock = screen.querySelector(".unlock-box");
+    if (unlock && !document.getElementById("iap-code-note")) {
+      var note = document.createElement("p");
+      note.id = "iap-code-note";
+      note.className = "muted";
+      note.textContent = "Already have an unlock code? Enter it here.";
+      unlock.parentNode.insertBefore(note, unlock);
+    }
+    var lic = activeLicense();
+    var code = crewCode();
+    var mail = contactMail();
+    var mailHtml = mail ? '<a href="mailto:' + escapeText(mail) + '?subject=WRAP%20911%20Apple%20crew%20code">' + escapeText(mail) + "</a>" : "us";
+    var status = "";
+    if (lic) {
+      var when = new Date(Number(lic.expiresAt)).toLocaleDateString();
+      var name = lic.sku === "pack" ? "Shop Pack" : "Seat";
+      status = '<p class="msg"><b>' + name + " is active</b> until " + escapeText(when) + ".</p>";
+      if (lic.sku === "pack") {
+        if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) || /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
+          var shown = /^W911-/.test(code) ? code : lic.code;
+          status += '<p class="msg">Crew code <b class="code">' + escapeText(shown) + "</b><br>Type it in Unlock on up to 4 other phones.</p>";
+        } else {
+          status += '<p class="msg">This phone is unlocked for 12 months. The code for the other four phones is not ready yet. Email ' + mailHtml + " with your Apple receipt and we will send it.</p>";
+        }
+      }
+    }
+    var buttons = "";
+    if (!NP) {
+      buttons = '<p class="msg">App Store purchasing is not available in this build. You can still enter an unlock code.</p>';
+    } else if (!lic) {
+      buttons =
+        '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>" +
+        '<button type="button" class="buy seat" data-iap="' + SEAT + '">' + escapeText(buyLabel(SEAT, "Seat")) + "</button>";
+    } else if (lic.sku === "seat") {
+      buttons = '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>";
+    }
+    var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore Purchases</button>' : "";
+    var web = us
+      ? '<a class="iap-web" href="' + WEB + '" target="_blank" rel="noopener noreferrer">Buy on wrap911.com</a>'
+      : "";
+    var packP = priceText(PACK);
+    var seatP = priceText(SEAT);
+    var priceLine = (packP || seatP)
+      ? ("Shop Pack " + (packP || "—") + ". Seat " + (seatP || "—") + ". ")
+      : "";
+    card.innerHTML =
+      "<h2>Buy with Apple</h2>" +
+      '<p class="iap-lead">Full trainer on this phone for 12 months. Shop Pack is the crew buy: this phone plus four more.</p>' +
+      buttons +
+      status +
+      restore +
       '<p class="msg" id="iap-msg"></p>' +
-      '<p class="fine">7 days free, then ' + seatP + ' per year (Seat) or ' + crewP + ' per year (Crew), charged to your Apple ID when the trial ends. ' +
-      'The subscription renews automatically unless you cancel at least 24 hours before the end of the current period. ' +
-      'Manage or cancel in Settings &gt; your name &gt; Subscriptions. ' +
-      '<a href="' + TERMS + '" target="_blank" rel="noopener">Terms of Use (EULA)</a> · <a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>';
-    var msg = function (t) { var m = document.getElementById("iap-msg"); if (m) m.textContent = t; };
+      '<p class="fine">' + escapeText(priceLine) +
+      "One-time purchase. Access lasts 12 months from the purchase date and does not auto-renew. " +
+      "Payment is charged to your Apple ID. " +
+      '<a href="' + TERMS + '" target="_blank" rel="noopener">Terms of Use (EULA)</a> · ' +
+      '<a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>' +
+      web;
+    var msg = function (t) {
+      var m = document.getElementById("iap-msg");
+      if (m) m.textContent = t;
+    };
     Array.prototype.forEach.call(card.querySelectorAll("[data-iap]"), function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-iap");
-        btn.disabled = true; msg("Opening Apple checkout…");
-        NP.purchaseProduct({ productIdentifier: id, productType: "subs", quantity: 1 }).then(function (tx) {
-          grant(tx);
-          return (id === CREW ? crewClaim(tx) : Promise.resolve("")).then(sync);
-        }).then(function () { msg("Welcome to Wrap911 Pro."); render(); })
-          .catch(function (e) { btn.disabled = false; msg(/cancel/i.test(String(e && e.message || e)) ? "" : "Purchase did not finish. Please try again."); });
+        btn.disabled = true;
+        msg("Opening App Store checkout…");
+        NP.purchaseProduct({ productIdentifier: id, productType: "inapp", quantity: 1 }).then(function (tx) {
+          var stamped = tx || {};
+          if (!stamped.purchaseDate) stamped.purchaseDate = new Date().toISOString();
+          if (!stamped.productIdentifier) stamped.productIdentifier = id;
+          var row = Logic.pickEntitlement([stamped], Date.now());
+          if (row) grantRow(row, true);
+          return sync();
+        }).then(function () {
+          msg("This phone is unlocked.");
+          render();
+        }).catch(function (e) {
+          btn.disabled = false;
+          msg(/cancel/i.test(String(e && (e.message || e))) ? "" : "Purchase did not finish. Please try again.");
+        });
       };
     });
-    document.getElementById("iap-restore").onclick = function () {
-      msg("Restoring…");
-      NP.restorePurchases().then(sync).then(function (ok) {
-        msg(ok ? "Subscription restored." : "No active Wrap911 subscription found for this Apple ID."); render();
-      }).catch(function () { msg("Restore failed. Check your connection and try again."); });
-    };
+    var restoreBtn = document.getElementById("iap-restore");
+    if (restoreBtn) {
+      restoreBtn.onclick = function () {
+        msg("Restoring…");
+        var done = function () {
+          return sync().then(function (ok) {
+            msg(ok ? "Purchase restored on this phone." : "No active Shop Pack or Seat was found for this Apple ID.");
+            render();
+          });
+        };
+        var pending = (NP.restorePurchases ? NP.restorePurchases() : Promise.resolve());
+        pending.then(done).catch(function () { msg("Restore failed. Check your connection and try again."); });
+      };
+    }
   }
-  function loadProduct() {
-    return NP.getProducts({ productIdentifiers: IDS, productType: "subs" }).then(function (r) {
-      ((r && r.products) || []).forEach(function (p) { products[p.identifier || p.productIdentifier] = p; });
+  function loadProducts() {
+    if (!NP || !NP.getProducts) return Promise.resolve();
+    return NP.getProducts({ productIdentifiers: IDS, productType: "inapp" }).then(function (r) {
+      ((r && r.products) || []).forEach(function (p) {
+        products[p.identifier || p.productIdentifier] = p;
+      });
     }).catch(function () {});
   }
-  function run() {
+  function loadStorefront() {
+    window.WRAP911_IAP_US = false;
+    if (!NP || !NP.getStorefront) return Promise.resolve();
+    return NP.getStorefront().then(function (r) {
+      us = Logic.isUsStorefront(r && r.countryCode);
+      window.WRAP911_IAP_US = us;
+    }).catch(function () {
+      us = false;
+      window.WRAP911_IAP_US = false;
+    });
+  }
+  function hookCore() {
+    var core = window.WRAP911_APP && window.WRAP911_APP.core;
+    if (!core || core._iapHook || typeof core.renderPricing !== "function") return;
+    var orig = core.renderPricing;
+    core.renderPricing = function () {
+      var result = orig.apply(this, arguments);
+      render();
+      return result;
+    };
+    core._iapHook = true;
+  }
+  function boot() {
     render();
-    loadProduct().then(render);
+    hookCore();
+    loadStorefront().then(function () {
+      try { if (window.WRAP911_PLAN_FIX_PAINT) window.WRAP911_PLAN_FIX_PAINT(); } catch (e) {}
+      render();
+    });
+    loadProducts().then(render);
     sync().then(render);
   }
-  window.WRAP911_IAP = { sync: sync, render: render, productIds: IDS };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) sync().then(render); });
+  window.WRAP911_IAP = { sync: sync, render: render, productIds: IDS, hook: hookCore };
+  if (NP && NP.addListener) {
+    try {
+      NP.addListener("transactionUpdated", function (tx) {
+        var row = Logic.pickEntitlement([tx], Date.now());
+        if (row) grantRow(row, true);
+        render();
+      });
+    } catch (e) {}
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+  setTimeout(function () { hookCore(); render(); }, 400);
+  setTimeout(function () { hookCore(); render(); }, 1600);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) sync().then(render);
+  });
 })();

@@ -11,6 +11,10 @@
   var FIELD_URL = CFG.fieldSkuLive ? (TEST ? (CFG.stripeTestFieldLink || "") : (CFG.stripeFieldLink || "")) : "";
   var YEAR = 365 * 86400000;
 
+  function iosApp() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+
   function pending() {
     try {
       return localStorage.getItem(PENDING) || sessionStorage.getItem(PENDING) || "";
@@ -100,15 +104,20 @@
   try { params = new URLSearchParams(window.location.search); } catch (e) { params = new URLSearchParams(); }
   var buy = (params.get("buy") || "").toLowerCase();
   if (buy === "seat" || buy === "pack" || buy === "field") {
-    remember(buy);
-    var target = buy === "pack" ? PACK_URL : (buy === "field" ? FIELD_URL : SEAT_URL);
-    if (target) {
-      window.location.replace(target);
-      return;
+    /* iOS sells Pack and Seat with Apple. Do not send the webview to Stripe. */
+    if (iosApp()) {
+      strip("buy");
+    } else {
+      remember(buy);
+      var target = buy === "pack" ? PACK_URL : (buy === "field" ? FIELD_URL : SEAT_URL);
+      if (target) {
+        window.location.replace(target);
+        return;
+      }
+      /* Sandbox with no test link: stay here and say so. */
+      window.WRAP911_SANDBOX_NO_CHECKOUT = buy;
+      strip("buy");
     }
-    /* Sandbox with no test link: stay here and say so. */
-    window.WRAP911_SANDBOX_NO_CHECKOUT = buy;
-    strip("buy");
   }
 
   function applyReturn() {
@@ -185,15 +194,26 @@
       /* 2.7.0: the old ?license=CREW- link stopped unlocking on 2026-09-27; it showed "CREW-undefined" and did nothing.
          Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one. */
       var mail = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.contactEmail) || "";
-      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
-        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. On each of the other four phones, open WRAP 911, tap Unlock, and type <b>" + String(lic.code).replace(/[^A-Z0-9-]/g, "") + "</b>.</p>";
+      var shown = "";
+      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) shown = String(lic.code);
+      else if (lic.source === "apple") {
+        try { shown = localStorage.getItem("wrap911_crew_code") || ""; } catch (eCode) {}
+      }
+      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(shown)) {
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. On each of the other four phones, open WRAP 911, tap Unlock, and type <b>" + shown.replace(/[^A-Z0-9-]/g, "") + "</b>.</p>";
+      } else if (lic.source === "apple") {
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. The code for the other four phones shows here when it is ready. Until then, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20Apple%20crew%20code\">" + mail + "</a>" : "us") + " with your Apple receipt.</p>";
       } else {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. For the other four phones, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20crew%20code\">" + mail + "</a>" : "us") + " with your Stripe receipt and we send your crew code.</p>";
       }
     } else if (lic.sku === "field") {
-      card.innerHTML = "<strong>Field monthly</strong><p>This phone is unlocked month to month. A shop pack is $149 one-time for five phones, 12 months.</p>";
+      card.innerHTML = iosApp()
+        ? "<strong>Field monthly</strong><p>This phone is unlocked month to month.</p>"
+        : "<strong>Field monthly</strong><p>This phone is unlocked month to month. A shop pack is $149 one-time for five phones, 12 months.</p>";
     } else {
-      card.innerHTML = "<strong>1 seat</strong><p>This phone is unlocked for 12 months. It does not cover a second phone. A shop pack is $149 for five.</p>";
+      card.innerHTML = iosApp()
+        ? "<strong>1 seat</strong><p>This phone is unlocked for 12 months. It does not cover a second phone. A Shop Pack covers five phones for 12 months.</p>"
+        : "<strong>1 seat</strong><p>This phone is unlocked for 12 months. It does not cover a second phone. A shop pack is $149 for five.</p>";
     }
   }
 
@@ -212,6 +232,16 @@
     var lic = read();
     if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field")) return;
     if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
+    if (iosApp()) {
+      var us = window.WRAP911_IAP_US === true;
+      var web = us ? '<p><a href="https://wrap911.com" target="_blank" rel="noopener">Buy on wrap911.com</a></p>' : "";
+      if (stripeReturn) {
+        card.innerHTML = "<strong>Just paid on the website?</strong><p>Enter the unlock code on the Pricing screen.</p>" + web;
+        return;
+      }
+      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen.</p>" + web;
+      return;
+    }
     if (window.WRAP911_SANDBOX_NO_CHECKOUT) {
       card.innerHTML = "<strong>Sandbox: checkout is off</strong><p>This is the local test copy. Add a Stripe test-mode link in config.js (stripeTestPackLink / stripeTestSeatLink) to test checkout. No live charge was started.</p>";
       return;
@@ -238,6 +268,8 @@
     if (/buy=pack/i.test(href) || /3cI6oI3ML8WU2ZjdzP9ws03/.test(href)) remember("pack");
     if (/buy=seat/i.test(href) || /eVq8wQ1EDc9643nanD9ws04/.test(href)) remember("seat");
   }, true);
+
+  window.WRAP911_PLAN_FIX_PAINT = function () { paint(); payCard(); };
 
   function arm() {
     applyReturn();
