@@ -3427,7 +3427,7 @@ window.WRAP911_DATA.PHOTO_GALLERY = [
   { id: "pg18", title: "Front bumper wrap", src: "media/photos/gallery/front-bumper-wrap.jpg", category: "Fleet", driveId: "1LXKPxgPCquWKbYZXlQFBrfL9Kn7Fbryy", photoLessonId: "pl18" },
   { id: "pg19", title: "Pink caddy bumper close-up", src: "media/photos/gallery/pink-caddy-bumper-close-up.jpg", category: "Fleet", driveId: "15_Rj2xH_QllC30ixdFQQcRVUOuQcUKNP", photoLessonId: "pl19" },
   { id: "pg20", title: "Front bumper wrap caddy", src: "media/photos/gallery/front-bumper-wrap-caddy.jpg", category: "Fleet", driveId: "12eOxYGaNrxoGOITdr9j8D5qBuxTqG-iS", photoLessonId: "pl20" },
-  { id: "pg21", title: "Black trailer — nose panel hang", src: "media/photos/gallery/trailer-spot-graphics.jpg", category: "Trailer", driveId: "1omAzjz3VPoOSu7rAGxBrry0zofUDUvpK", photoLessonId: "pl21" },
+  { id: "pg21", title: "Trailer spot graphics", src: "media/photos/gallery/trailer-spot-graphics.jpg", category: "Trailer", driveId: "1omAzjz3VPoOSu7rAGxBrry0zofUDUvpK", photoLessonId: "pl21" },
   { id: "pg22", title: "Kiosk box", src: "media/photos/gallery/kiosk-box.jpg", category: "Storefront/Architectural", driveId: "1O7xfBZTJ82bZQlILBQlr_wzxnLkWUisA", photoLessonId: "pl22" }
 ];
 
