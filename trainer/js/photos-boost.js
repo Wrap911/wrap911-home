@@ -96,6 +96,11 @@
       narration:"Heat is a tool. Keep it moving. TDS only. If the film goes shiny-melted you went past the window.",
       checklist:["Keep the heat moving","TDS only","Stop when pliable","Never hold on one spot"],
       quiz:{q:"Film looks shiny-melted. Meaning?",correct:"You passed the TDS window. Stop.",wrong:"It is ready for a harder squeegee."} },
+    { id:"pb-squeegee", title:"Squeegee on the printed bench sheet", image:"media/videos/prep/squeegee-strokes.jpg", module:"squeegee", jobType:"Vehicles",
+      visual:"A hand squeegees a white printed sheet on the shop bench. Color cards line the top. A peach sits in the foreground.",
+      narration:"Bench strokes are the same idea as on a panel. Overlap the felt so air moves out. Do not crease the print. The fruit in front is not part of the job.",
+      checklist:["Overlap every stroke","Keep the print flat","Soft felt on the face","Ignore anything that is not the sheet"],
+      quiz:{q:"Why overlap squeegee strokes on a printed sheet?",correct:"So air moves out and the print does not crease.",wrong:"One hard pass down the middle is enough."} },
     /* 2.6.6: was media/videos/prep/vinyl-removal.jpg (a social-media screenshot). Real trailer job still; id kept. */
     { id:"pb-removal", title:"Donut trailer side, liner flaps over the top", image:"media/photos/gallery/donuts-trailer-side-graphic-hang-stage.jpg", module:"squeegee", jobType:"Vehicles",
       visual:"The side of a trailer with a pink printed donut graphic, big white outlined letters, and orange and gold circles. The panels are up, but grey liner and transfer flaps are folded over the top edge, and gold and pink tape strips hang down between the panels. The upper side of the trailer is still white. Two wheels and a silver fender show at the bottom.",

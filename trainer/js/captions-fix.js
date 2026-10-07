@@ -51,6 +51,26 @@
       correct: "At the mesh hood vents and at the chrome seven-slot grille.",
       wrong: "On a tall RV side with ladders and a pink graphic."
     },
+    "graphic-installation-1.jpg": {
+      title: "Printed graphic flat on the bench",
+      jobType: "Vehicles",
+      visual: "Shop bench. A white gloss sheet carries a dark printed panel. A row of small color cards lines the top. Hands in a blue sleeve, one with a ring, work the left edge. A plotter is at the left, a red ladder and pallet jack are in the bay, and a blurred red-orange fruit sits in the foreground.",
+      narration: "This is the bench, not a vehicle. The color cards are the graphic reference. Hands are on the left edge of the sheet. The round blur in front is fruit, not part of the job.\n\nKeep the print flat so the graphic does not crease. Square the panel here before it ever goes on a vehicle.",
+      check: ["This is the bench, not a vehicle", "Keep the sheet flat so the print does not kink", "Use the color cards as the reference", "Square the panel on the table before it hits a vehicle"],
+      q: "What does this still actually show?",
+      correct: "A printed graphic on white film, on the shop bench, with color cards and hands at the edge.",
+      wrong: "An outdoor walkaround of a Ford E-350 Class C motorhome."
+    },
+    "squeegee-strokes.jpg": {
+      title: "Squeegee on the printed bench sheet",
+      jobType: "Vehicles",
+      visual: "Same bench job. A person in a blue sleeve squeegees the white gloss sheet with a small white tool and a green felt edge. Color cards sit along the top and a dark printed panel is on the sheet. A peach with a green leaf is in the foreground. The sheet sits in a wood frame.",
+      narration: "The hand is squeegeeing a printed sheet on the bench. The print is already on the film. A peach sits in the foreground and is not part of the graphic.\n\nOverlap the strokes so air moves ahead of the felt. Do not crease the print. This is still the table, not a vehicle panel.",
+      check: ["See the squeegee on the white sheet", "Keep the print flat under the felt", "Overlap strokes so air moves out", "Ignore the fruit in the foreground"],
+      q: "What is the hand doing?",
+      correct: "Squeegeeing a printed white sheet on the bench so the graphic stays flat.",
+      wrong: "Glassing film onto a vehicle panel."
+    },
     "architectural-wall-wrap-squeegee-sequence.jpg": {
       title: "Squeegee on grey wood-grain",
       jobType: "Interior",
