@@ -69,6 +69,20 @@
     return false;
   }
 
+  /* Live trainer origin. Capacitor serves the shell on wrap911:// / capacitor://;
+     WKWebView + local Range handling still fails many H.264 clips even after the HEAD
+     bypass (ionic-team/capacitor#6790 / #7258). Stream the same HTTPS mp4s that work
+     on wrap911.com. Web / github.io keep relative paths. */
+  var MEDIA_BASE = "https://wrap911.com/trainer/";
+  function resolveMediaUrl(src) {
+    src = String(src || "").trim();
+    if (!src) return src;
+    if (/^(https?:|blob:|data:)/i.test(src)) return src;
+    src = src.replace(/^\.\//, "");
+    if (inNativeWebView()) return MEDIA_BASE + src.replace(/^\/+/, "");
+    return src;
+  }
+
   function headDecision(res) {
     if (!res || res.status === 0) return "inconclusive";
     var rtype = "";
@@ -91,14 +105,20 @@
     video.controls = true;
     video.playsInline = true;
     video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
     video.preload = "metadata";
-    if (still) video.poster = still;
+    var poster = still ? resolveMediaUrl(still) : "";
+    if (poster) video.poster = poster;
     video.style.cssText = "width:100%;max-height:70vh;margin:0 0 8px;border-radius:8px;background:#000;display:block";
     video.addEventListener("error", function () { showMissing(host, btn); });
-    video.src = src;
+    video.src = resolveMediaUrl(src);
     card.insertBefore(video, card.firstChild);
     var playPromise = video.play();
-    if (playPromise && playPromise.catch) playPromise.catch(function () {});
+    if (playPromise && playPromise.catch) {
+      playPromise.catch(function () {
+        /* Unmuted autoplay can be blocked even after a tap; controls stay so the user can start. */
+      });
+    }
   }
 
   function playSafe(btn) {
@@ -279,7 +299,7 @@
   window.renderVideos = renderVideos;
   window.WRAP911_APP = window.WRAP911_APP || {};
   window.WRAP911_APP.renderVideos = renderVideos;
-  window.WRAP911_VIDEO_PLAYBACK = { inNativeWebView: inNativeWebView, headDecision: headDecision };
+  window.WRAP911_VIDEO_PLAYBACK = { inNativeWebView: inNativeWebView, headDecision: headDecision, resolveMediaUrl: resolveMediaUrl, MEDIA_BASE: MEDIA_BASE };
 
   function tidyVideos() {
     var list = document.getElementById("video-list");
