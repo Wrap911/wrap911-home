@@ -492,7 +492,7 @@
     }
     var input = $("unlock-code");
     var lic = loadLicense();
-    if (input && lic && lic.code && !lic.expired && !input.value) input.value = lic.code;
+    if (input && lic && lic.code && !lic.expired && !input.value && /^W911-/.test(String(lic.code))) input.value = lic.code; /* 2.7.0: never prefill STRIPE/SHOP */
     var stripeWrap = $("stripe-link-wrap");
     var stripeBtn = $("btn-stripe-pay");
     var link = (cfg.stripeTestMode ? (cfg.stripeTestPackLink || "") : (cfg.stripePaymentLink || "")).trim();
@@ -501,7 +501,7 @@
     }
     if (stripeBtn) {
       var test = cfg.stripeTestMode === true;
-      stripeBtn.textContent = test ? "Open configured payment link (TEST)" : "Open configured payment link";
+      stripeBtn.textContent = test ? "Buy shop pack · $149 (TEST)" : "Buy shop pack · $149";
       stripeBtn.onclick = function () {
         if (link) window.location.href = link;
       };
@@ -528,7 +528,7 @@
     library: "home",
     videos: "home",
     calc: "home",
-    pricing: "home",
+    pricing: "pricing", /* 2.7.1: was "home" — highlighted Home while on Pricing */
     contact: "home",
     drills: "home",
     "practice-hub": "practice-hub",
@@ -551,6 +551,9 @@
       renderPricingStatus();
       updatePlanChip();
     }
+    /* 2.7.0: every way into Pricing (locked tab, photo/video paywall card, seat card) shows the buy buttons.
+       Before, only Home's Pricing card ran renderPricing(), so a locked tab landed on Pricing with no way to pay. */
+    if (name === "pricing") { try { renderPricing(); } catch (eP) {} }
     /* Hotfix 2.6.1: photo list depends on plan (free = 14), so rebuild it whenever Photos opens. */
     if (name === "photos") { try { renderPhotosList(); } catch (eR) {} }
     var screens = document.querySelectorAll(".screen");

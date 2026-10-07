@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wrap911 — Vinyl Wrap Installer Trainer</title>
+<meta name="description" content="Job-simulation training for commercial and fleet vinyl-wrap installers.">
+<style>
+:root{--bg:#0e0f11;--card:#17191c;--text:#eceff2;--mute:#9aa1a9;--accent:#ff4d2e}
+*{box-sizing:border-box;margin:0}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1040px;margin:auto;padding:0 20px}
+header{padding:18px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;font-size:1.3rem}.logo span{color:var(--accent)}
+.hero{padding:70px 0 50px;text-align:center}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:16px}
+.hero p{color:var(--mute);font-size:1.15rem;max-width:620px;margin:0 auto 28px}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:14px 26px;border-radius:8px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:1rem}
+.btn.ghost{background:transparent;border:1px solid #333;margin-left:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:40px 0}
+.card{background:var(--card);padding:22px;border-radius:12px}.card h3{margin-bottom:6px}.card p{color:var(--mute);font-size:.95rem}
+h2{font-size:1.8rem;text-align:center;margin-top:40px}
+.who{padding-bottom:30px}
+.lead{background:var(--card);border-radius:16px;padding:40px;text-align:center;margin:40px 0}
+.lead form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+input{padding:14px;border-radius:8px;border:1px solid #333;background:#0e0f11;color:var(--text);min-width:260px;font-size:1rem}
+footer{color:var(--mute);text-align:center;padding:30px 0;font-size:.85rem}
+</style></head><body>
+<div class="wrap">
+<header><div class="logo">Wrap<span>911</span></div><a class="btn" href="#get">Get the App</a></header>
+<section class="hero">
+<h1>Make your mistakes in the app,<br>not on the vehicle.</h1>
+<p>Wrap911 is a job-simulation trainer for commercial and fleet vinyl-wrap installers. Practice real jobs, master technique, and stop wasting film.</p>
+<a class="btn" href="#get">Download Free</a><a class="btn ghost" href="#lead">Free Mistakes Guide</a>
+</section>
+<h2>What you'll master</h2>
+<div class="grid">
+<div class="card"><h3>Surface Prep</h3><p>Wash, degrease, clay, IPA — the step behind 80% of failures.</p></div>
+<div class="card"><h3>Squeegee Technique</h3><p>Angle, pressure and overlap for bubble-free installs.</p></div>
+<div class="card"><h3>Edges & Rivets</h3><p>Relief cuts, wrap-arounds and rivet work that holds.</p></div>
+<div class="card"><h3>Post-Heating</h3><p>Lock memory out of the film so it never lifts.</p></div>
+</div>
+<h2>Built for</h2>
+<div class="grid who">
+<div class="card"><h3>New Installers</h3><p>Build confidence before your first paid job.</p></div>
+<div class="card"><h3>Pros</h3><p>Sharpen fleet and commercial technique.</p></div>
+<div class="card"><h3>Shop Owners</h3><p>Train your crew to one standard. One avoided redo pays for it.</p></div>
+</div>
+<section class="lead" id="lead">
+<h2 style="margin-top:0">Free: The 10 Most Common Wrap Mistakes</h2>
+<p style="color:var(--mute)">The mistakes that cost shops hundreds per job — and how to avoid them.</p>
+<form id="lead-form">
+<input type="email" name="email" required autocomplete="email" placeholder="you@shop.com"><button class="btn">Send Me the Guide</button></form>
+<script>
+(function () {
+  var f = document.getElementById("lead-form");
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var btn = f.querySelector("button"); btn.disabled = true; btn.textContent = "Opening guide...";
+    var go = function () { window.location.href = "10-wrap-mistakes.pdf"; };
+    var t = setTimeout(go, 2500);
+    fetch("https://wrap911-coach-proxy.wrap911.workers.dev/lead", {
+      method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: f.email.value, source: "start" })
+    }).catch(function () {}).then(function () { clearTimeout(t); go(); });
+  });
+})();
+</script>
+</section>
+<section class="hero" id="get" style="padding-top:20px">
+<h2 style="margin-top:0">Start training today</h2><p>Web app for iPhone and Android. Open it in the browser, then add it to your Home Screen.</p>
+<a class="btn" href="/trainer">Open Web App</a>
+</section>
+<footer>© 2026 Wrap911 · Worcester, MA</footer>
+</div></body></html>

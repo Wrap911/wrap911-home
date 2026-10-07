@@ -1269,7 +1269,7 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-named-graphic-installation-1-1gNZhI",
+    "relatedVideoId": "",
     "failPhoto": "",
     "passPhoto": ""
   },
@@ -1280,7 +1280,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Every panel labeled by unit. Nothing leaves without QC sign-off.",
     "timeBox": "10 min intake per vehicle (starting target — set your own)",
     "badgeId": "badge-fl-multi",
-    "media": "media/videos/fleet/jolly-time-news-van-fleet-side-qc.jpg",
+    "media": "media/videos/fleet/seam-peel-rework-zest-life.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1521,7 +1521,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "btw-qc",
       "title": "Post-Heat & QC",
       "type": "Post-Heat",
-      "media": "media/photos/gallery/airstream-graphic.jpg",
+      "media": "media/photos/gallery/airstream-corner.jpg",
       "instructions": "Post-heat edges and rivets per TDS. Walk for tents/silvering. Door cycle. Photo for job ticket.",
       "tools": [
         "Heat tool",
@@ -1538,26 +1538,28 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     }
   ],
+  /* 2.6.6: steps in job order (prep, layout, heat, cut/post-heat/QC). Was Heat, Layout, Prep, Cut. Step text unchanged. */
   "van": [
     {
-      "id": "vw-recess",
-      "title": "Deep Recess Heating",
-      "type": "Heat",
-      "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
-      "instructions": "Glass ridges first. Foam-roll channels. Heat only to pliable per TDS. Feed, don't bridge-and-stretch.",
+      "id": "vw-roof",
+      "title": "Roof Wrap Safety",
+      "type": "Prep",
+      "media": "../assets/sales/fleet-rv.jpg",
+      "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
       "tools": [
-        "Foam roller",
-        "Heat tool",
-        "Soft pad"
+        "Ladder/scaffold",
+        "Magnets",
+        "Second person"
       ],
       "safety": [
-        "Stable heat base",
-        "Ventilation"
+        "Three points of contact",
+        "No top-cap standing",
+        "Bay traffic awareness"
       ],
-      "technique": "Soft tools win in corrugations — hard center strokes crease and trap air.",
+      "technique": "Height work fails first on footing, then on technique.",
       "mistakes": [
-        "Melting film into channels",
-        "Hard squeegee down tunnel centers"
+        "Climbing with full loose sheet",
+        "Ignoring bay traffic"
       ]
     },
     {
@@ -1581,25 +1583,24 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     },
     {
-      "id": "vw-roof",
-      "title": "Roof Wrap Safety",
-      "type": "Prep",
-      "media": "../assets/sales/fleet-rv.jpg",
-      "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
+      "id": "vw-recess",
+      "title": "Deep Recess Heating",
+      "type": "Heat",
+      "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
+      "instructions": "Glass ridges first. Foam-roll channels. Heat only to pliable per TDS. Feed, don't bridge-and-stretch.",
       "tools": [
-        "Ladder/scaffold",
-        "Magnets",
-        "Second person"
+        "Foam roller",
+        "Heat tool",
+        "Soft pad"
       ],
       "safety": [
-        "Three points of contact",
-        "No top-cap standing",
-        "Bay traffic awareness"
+        "Stable heat base",
+        "Ventilation"
       ],
-      "technique": "Height work fails first on footing, then on technique.",
+      "technique": "Soft tools win in corrugations — hard center strokes crease and trap air.",
       "mistakes": [
-        "Climbing with full loose sheet",
-        "Ignoring bay traffic"
+        "Melting film into channels",
+        "Hard squeegee down tunnel centers"
       ]
     },
     {
@@ -1708,26 +1709,8 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     }
   ],
+  /* 2.6.6: steps in job order (layout, install, rivets heat, cut/heat-set). Was Heat, Layout, Cut, Install. Step text unchanged. */
   "trailer": [
-    {
-      "id": "tw-rivets",
-      "title": "Rivet Row Workflow",
-      "type": "Heat",
-      "media": "media/photos/gallery/airstream-corner.jpg",
-      "instructions": "Hinge dry-fit. Squeegee field. Soften per TDS and set rivets individually, then post-heat per TDS.",
-      "tools": [
-        "Hinge tape",
-        "Heat",
-        "Soft tools"
-      ],
-      "safety": [
-        "Torch stable; clear liner"
-      ],
-      "technique": "Alignment first, heat second.",
-      "mistakes": [
-        "Heating through hinge tape while aligning"
-      ]
-    },
     {
       "id": "tw-roof",
       "title": "Roofline Alignment",
@@ -1748,6 +1731,43 @@ window.WRAP911_DATA.workflowSteps = {
       ]
     },
     {
+      "id": "tw-seg",
+      "title": "Panel Segmentation",
+      "type": "Install",
+      "media": "",
+      "instructions": "Map segments. Hang and QC each before the next. Maintain print continuity.",
+      "tools": [
+        "Segment map",
+        "Registration marks"
+      ],
+      "safety": [
+        "Manage large sheets with two people"
+      ],
+      "technique": "Segment long jobs for control and safety.",
+      "mistakes": [
+        "One impossible full-length sheet"
+      ]
+    },
+    {
+      "id": "tw-rivets",
+      "title": "Rivet Row Workflow",
+      "type": "Heat",
+      "media": "media/photos/gallery/airstream-corner.jpg",
+      "instructions": "Hinge dry-fit. Squeegee field. Soften per TDS and set rivets individually, then post-heat per TDS.",
+      "tools": [
+        "Hinge tape",
+        "Heat",
+        "Soft tools"
+      ],
+      "safety": [
+        "Torch stable; clear liner"
+      ],
+      "technique": "Alignment first, heat second.",
+      "mistakes": [
+        "Heating through hinge tape while aligning"
+      ]
+    },
+    {
       "id": "tw-hinge",
       "title": "Door Hinge Workflow",
       "type": "Cut",
@@ -1764,24 +1784,6 @@ window.WRAP911_DATA.workflowSteps = {
       "technique": "Seat before cut — always.",
       "mistakes": [
         "Flush-short edges that open after shrink"
-      ]
-    },
-    {
-      "id": "tw-seg",
-      "title": "Panel Segmentation",
-      "type": "Install",
-      "media": "",
-      "instructions": "Map segments. Hang and QC each before the next. Maintain print continuity.",
-      "tools": [
-        "Segment map",
-        "Registration marks"
-      ],
-      "safety": [
-        "Manage large sheets with two people"
-      ],
-      "technique": "Segment long jobs for control and safety.",
-      "mistakes": [
-        "One impossible full-length sheet"
       ]
     }
   ],
@@ -1823,7 +1825,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-rear",
       "title": "Rear panel & recesses",
-      "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
+      "media": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
       "steps": [
         "Glass the main rear field first",
         "Feed plate pocket and side channels",
@@ -2385,17 +2387,17 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7689",
     "access": "paid",
-    "title": "Liner peel — box floor hang",
+    "title": "Magenta box floor — 3M Controltac liner peel",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/controltac-liner-peel-box-floor-hang.mp4",
-    "still": "",
+    "still": "media/videos/architectural/controltac-liner-peel-box-floor-hang.jpg",
     "driveId": "1BTZTwmd1vGody0rFOEzwwDaUVLKOxPNj",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~26s). Close-up liner peel of glossy magenta film into the plywood box floor/channel. White liner shows 3M Controltac Graphic Marking System branding. Yellow knife on the blue bench; pre-cuts staged. Clock shows shop time ~1:54. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~26s). Close-up liner peel of glossy magenta film into a plywood box floor. White liner shows 3M Controltac Graphic Marking System branding. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-7690",
@@ -2460,7 +2462,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7696",
     "access": "paid",
-    "title": "Gloss recess — glass it out",
+    "title": "Magenta box — glass out a deep recess",
     "category": "Storefront/Architectural",
     "subcategory": "Recesses",
     "type": "clip",
@@ -2470,37 +2472,37 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~63s). Longer (~63s) detail of tensioning/glassing magenta film and seating it into deep box recesses with a yellow squeegee under bright shop LEDs. High-gloss reflections make dirt and fingers obvious. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~45s trimmed). Tensioning glossy magenta film and seating it into a deep box recess with a yellow squeegee. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-7697",
     "access": "paid",
-    "title": "Corner tuck with relief cut",
+    "title": "Magenta box — corner tuck and relief cut",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/architectural/corner-tuck-relief-knife.mp4",
-    "still": "",
+    "still": "media/videos/architectural/corner-tuck-relief-knife.jpg",
     "driveId": "1YypDVQ4thFuJF8pXOoCuepm3TtYOqphG",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-seam",
-    "note": "Shop clip (~35s). Yellow corner tool seats film, then a slim knife trims/relieves the interior corner. Later frame shows rim trim on the plywood edge with alcohol bottle and printer in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~35s). Yellow corner tool seats glossy magenta film in a deep interior corner; slim knife makes a relief cut and peels the waste strip. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-7699",
     "access": "paid",
-    "title": "Hand-seat the corner, knife trim",
+    "title": "Magenta box — hand-seat corner, knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
     "src": "media/videos/architectural/hand-seat-corner-knife-trim.mp4",
-    "still": "",
+    "still": "media/videos/architectural/hand-seat-corner-knife-trim.jpg",
     "driveId": "1fMmraoQk710YJ57tyyoM4SpAkuAXS8cJ",
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-seam",
-    "note": "Shop clip (~43s). Hand presses magenta film into a vertical interior corner, then knives a clean cut in the crease, removing a curled scrap. Shop cans and broom in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~43s). Hand presses magenta film into a vertical interior corner; craft knife cuts the crease and removes the scrap. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-7701",
@@ -2520,17 +2522,17 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-6788",
     "access": "paid",
-    "title": "Magenta Rivet Field — Tented Heads",
+    "title": "Printed trailer — rivet field with magnet",
     "category": "Trailer",
     "subcategory": "Rivets",
     "type": "clip",
     "src": "media/videos/trailer/magenta-rivet-field-tented-heads.mp4",
-    "still": "",
+    "still": "media/videos/trailer/magenta-rivet-field-tented-heads.jpg",
     "driveId": "1kl1IJtrS_u21qfn8E1GevF0rtrMOBq1T",
     "recommendedModule": "bt-rivet-mastery",
     "recommendedWorkflow": "tw-rivets",
     "recommendedPractice": "prac-rivet",
-    "note": "Shop clip (~8s). Close-up of glossy magenta film over seated/tented hardware heads on a commercial panel; neon-yellow accents nearby. Still replaced to show real rivet/hardware heads (prior still was a flat Music Den graphic). Use for rivet-field teaching. Follow product TDS for heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~8s). Close-up of printed pink/orange/grey stripe film over rivet heads; yellow crescent magnet sweeps the field. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-0020",
@@ -2550,17 +2552,17 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-3884",
     "access": "paid",
-    "title": "GMC C-pillar tuck from the ladder",
+    "title": "Dusty-rose GMC — C-pillar tuck from the ladder",
     "category": "Fleet",
     "subcategory": "Doors",
     "type": "clip",
     "src": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.mp4",
-    "still": "",
+    "still": "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
     "driveId": "1bFtjkKr3iGsnReQXsjgq6Pvgjf8gcnlD",
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "vw-hinge",
     "recommendedPractice": "prac-seam",
-    "note": "Shop clip (~38s). Installer on step stool tucks dusty-rose film into upper C-pillar / roof-rail trim on black GMC SUV; liner scrap on floor. Height + edge tuck lesson. Same series as IMG_3886. Follow product TDS — no invented temperatures."
+    "note": "Shop clip (~38s). Installer on a step stool tucks dusty-rose film into the upper C-pillar and roof-rail area on a black GMC SUV with the rear door open. Follow the film TDS for any heat."
   },
   {
     "id": "v-mid-3885",
@@ -2640,17 +2642,17 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-1039",
     "access": "paid",
-    "title": "Class C RV stripe walkaround",
+    "title": "Class C RV — finished stripe walkaround",
     "category": "RV/Bus",
     "subcategory": "QC",
     "type": "clip",
     "src": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4",
-    "still": "",
+    "still": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "driveId": "1j729uUuKImAECzbpusZpYGY-qT7UcYO7",
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "tw-seg",
     "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~33s). Outdoor walkaround of a finished Ford E-350 Class C motorhome with multi-color horizontal stripe graphics (blue / yellow / orange) aligned across door gaps and body sections. Stripe continuity / finished-job QC. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~33s). Outdoor walkaround of a finished Class C motorhome on a Ford E-series cab with horizontal blue and yellow stripe graphics aligned across cab, body, doors, and rear. No heat in frame."
   },
   {
     "id": "v-mid-6796",
@@ -3013,36 +3015,6 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "note": "Shop clip (~52s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
   },
   {
-    "id": "v-named-graphic-installation-1-1gNZhI",
-    "access": "paid",
-    "title": "Graphic installation 1",
-    "category": "Fleet",
-    "subcategory": "Panels",
-    "type": "clip",
-    "src": "media/videos/fleet/graphic-installation-1.mp4",
-    "still": "media/videos/fleet/graphic-installation-1.jpg",
-    "driveId": "1gNZhIF4PxyFy5Y5hIMi-j1-budREb386",
-    "recommendedModule": "fl-alignment",
-    "recommendedWorkflow": "",
-    "recommendedPractice": "",
-    "note": "Shop clip (~67s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
-  },
-  {
-    "id": "v-named-squeegee-strokes-1NBAg_",
-    "access": "paid",
-    "title": "Squeegee strokes",
-    "category": "Prep",
-    "subcategory": "Technique",
-    "type": "clip",
-    "src": "media/videos/prep/squeegee-strokes.mp4",
-    "still": "media/videos/prep/squeegee-strokes.jpg",
-    "driveId": "1NBAg_uLvUcbfrqn3RTrZ0nuuYByfp0kd",
-    "recommendedModule": "bt-prep-cleaning",
-    "recommendedWorkflow": "",
-    "recommendedPractice": "",
-    "note": "Shop clip (~47s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
-  },
-  {
     "id": "v-named-pink-wrap-caddy-1-1G1W_l",
     "access": "free",
     "title": "Pink Caddy wrap 1",
@@ -3225,17 +3197,17 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wrap-cutting-a-1otK4E",
     "access": "paid",
-    "title": "Cutting around hinges",
+    "title": "Wood-grain panel — cut and tuck at piano hinge",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wrap-cutting-around-hinges.mp4",
-    "still": "",
+    "still": "media/videos/architectural/architectural-wrap-cutting-around-hinges.jpg",
     "driveId": "1otK4E0_yIUhe5dvSZ03mpXjhhuhlc5vY",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~36s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~36s). Same wood-grain job. Knife trims film along a long silver piano hinge; blue squeegee tucks the edge into the hinge gap. Follow the film TDS for any heat."
   },
   {
     "id": "v-named-architectural-wall-panel-wra-1mdavr",
@@ -3270,62 +3242,62 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-post-heating-v-1FFpMa",
     "access": "paid",
-    "title": "Wall panel — post-heat",
+    "title": "Wood-grain wall — torch post-heat",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-post-heating-vinyl-2.mp4",
-    "still": "",
+    "still": "media/videos/architectural/architectural-post-heating-vinyl-2.jpg",
     "driveId": "1FFpMabcX9LxxSkJjhKdgy2SwE_46Wsqt",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~57s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~42s trimmed). Handheld propane torch post-heats grey wood-grain wall film across flat faces and recessed grooves. Follow the film TDS — do not invent temperatures."
   },
   {
     "id": "v-named-post-heat-panel-1-10LIlU",
     "access": "paid",
-    "title": "Wall panel — post-heat 1",
+    "title": "Wood-grain wall — heat gun into plank grooves",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/post-heat-panel-1.mp4",
-    "still": "",
+    "still": "media/videos/architectural/post-heat-panel-1.jpg",
     "driveId": "10LIlU-xcVB5j3FqBuxBPF4lmXZoxnk9O",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~30s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~30s). Heat gun softens distressed wood-grain film; blue squeegee presses film into vertical plank recesses. Follow the film TDS — do not invent temperatures."
   },
   {
     "id": "v-named-architectural-cutting-vinyl--1NXkcT",
     "access": "paid",
-    "title": "Cutting around hinges 2",
+    "title": "Wood-grain wall — knife trim into plank recess",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-cutting-vinyl-around-hinges.mp4",
-    "still": "",
+    "still": "media/videos/architectural/architectural-cutting-vinyl-around-hinges.jpg",
     "driveId": "1NXkcT7HqQeJB7VlNK_81S2TtPp2Dtz57",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~38s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~38s). Distressed grey wood-grain architectural film. Installer knives a vertical cut into a recessed plank groove, then peels the narrow waste strip. Blue squeegee seats the edge. Follow the film TDS for any heat — do not invent temperatures."
   },
   {
     "id": "v-named-architectural-wall-wrap-pane-1dNBb4",
     "access": "paid",
-    "title": "Wall panel — squeegee styles",
+    "title": "Wood-grain wall — squeegee stroke sequence",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
     "src": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.mp4",
-    "still": "",
+    "still": "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.jpg",
     "driveId": "1dNBb49FDPg34i5ppfEy_22VwhV1EYTRp",
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~91s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~45s trimmed). Blue felt-edge squeegee works distressed wood-grain film on a flat interior wall, stroking along the vertical plank grain. Follow the film TDS for any heat."
   },
   {
     "id": "v-named-architectural-wall-panel-ins-1V50KW",
@@ -3341,6 +3313,66 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedWorkflow": "",
     "recommendedPractice": "",
     "note": "Shop clip (~113s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+  },
+  {
+    "id": "v-271-kiosk-brick",
+    "access": "paid",
+    "title": "Kiosk panel — brick film hang, heat, knife trim",
+    "category": "Storefront/Architectural",
+    "subcategory": "Panels",
+    "type": "clip",
+    "src": "media/videos/architectural/kiosk-brick-film-corner-knife-trim.mp4",
+    "still": "media/videos/architectural/kiosk-brick-film-corner-knife-trim.jpg",
+    "driveId": "",
+    "recommendedModule": "sf-multipane",
+    "recommendedWorkflow": "sw-pane",
+    "recommendedPractice": "prac-panel-align",
+    "note": "Shop clip (~26s). Installer peels liner and hangs black brick-pattern film on a tall flat metal kiosk panel, squeegees with a red tool, post-heats with a torch, then knives the vertical edge. Follow the film TDS for any heat."
+  },
+  {
+    "id": "v-271-corner-tool",
+    "access": "paid",
+    "title": "Magenta box — yellow hard-card corner seat",
+    "category": "Storefront/Architectural",
+    "subcategory": "Corners",
+    "type": "clip",
+    "src": "media/videos/architectural/corner-tool-seat-yellow-hard-card.mp4",
+    "still": "media/videos/architectural/corner-tool-seat-yellow-hard-card.jpg",
+    "driveId": "",
+    "recommendedModule": "sf-multipane",
+    "recommendedWorkflow": "sw-pane",
+    "recommendedPractice": "prac-recess",
+    "note": "Shop clip (~37s). Yellow triangular hard card seats glossy magenta film into a deep three-way interior corner of a plywood fixture box. Follow the film TDS for any heat."
+  },
+  {
+    "id": "v-271-gmc-tailgate",
+    "access": "paid",
+    "title": "Dusty-rose GMC — tailgate emblem bridge",
+    "category": "Fleet",
+    "subcategory": "Emblems",
+    "type": "clip",
+    "src": "media/videos/fleet/dusty-rose-tailgate-gmc-emblem-bridge.mp4",
+    "still": "media/videos/fleet/dusty-rose-tailgate-gmc-emblem-bridge.jpg",
+    "driveId": "",
+    "recommendedModule": "fl-alignment",
+    "recommendedWorkflow": "fw-brand",
+    "recommendedPractice": "prac-recess",
+    "note": "Shop clip (~30s). Dusty-rose film over the raised GMC OEM tailgate emblem; heat gun, red tuck tool, and knife work the letter recesses. Follow the film TDS for any heat."
+  },
+  {
+    "id": "v-271-blue-panel-e450",
+    "access": "paid",
+    "title": "Ford E-450 cab door — blue panel hang",
+    "category": "Box Truck",
+    "subcategory": "Cab door",
+    "type": "clip",
+    "src": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.mp4",
+    "still": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
+    "driveId": "",
+    "recommendedModule": "bt-rivets",
+    "recommendedWorkflow": "",
+    "recommendedPractice": "prac-panel-align",
+    "note": "Shop clip (~25s). Installer hangs a large blue panel on the driver cab door of a white Ford E-450 cutaway, peeling liner and smoothing top-to-bottom. Follow the film TDS for any heat."
   }
 ];
 window.WRAP911_DATA.panels = [
@@ -3420,8 +3452,6 @@ window.WRAP911_DATA.VIDEO_ON_PAGE = {
   "media/videos/prep/torch-on-vinyl2.mp4": true,
   "media/videos/prep/vinyl-squeegee-sequence.mp4": true,
   "media/videos/trailer/wrapping-around-trailer-marking-light.mp4": true,
-  "media/videos/fleet/graphic-installation-1.mp4": true,
-  "media/videos/prep/squeegee-strokes.mp4": true,
   "media/videos/fleet/pink-wrap-caddy-1.mp4": true,
   "media/videos/fleet/pink-caddy-wrap5.mp4": true,
   "media/videos/prep/dull-blade-cut.mp4": true,

@@ -79,17 +79,6 @@
       quiz: { q: "What is under the cream film in the oval?", correct: "A marker light that still needs to be cut out.", wrong: "A rivet dome to mash flat." }
     },
     {
-      id: "bay-airstream-graphic",
-      title: "Airstream mountain graphic",
-      image: "media/photos/gallery/airstream-graphic.jpg",
-      module: "post-heat",
-      jobType: "Vehicles",
-      visual: "Blue and cream Airstream. Mountain and pine graphic is down. Blue tape is still on the nose curve. Rear wheels and a Toyota badge are in frame.",
-      narration: "The graphic is seated. Tape is still on the nose curve. Pull that tape low and slow after the panel is glassed. Check the rivet line and the wheel-well edge before you call it done.",
-      checklist: ["Confirm the graphic is glassed", "Pull the blue tape low and slow", "Check rivets and the wheel-well edge", "Do not heat a panel that is already down just to look busy"],
-      quiz: { q: "Tape is still on the nose. Move?", correct: "Pull the tape low and slow, then seat the edge it was holding.", wrong: "Leave the tape. It holds the edge." }
-    },
-    {
       /* 2.6.5: replaces prob-pickup-quarter (sage-green bottle-print film; no green wraps on Photos). */
       id: "bay-trailer-door",
       title: "Orange side, door outline at the ladder",
@@ -140,13 +129,27 @@
     return String(path || "").split("?")[0].split("#")[0].replace(/^.*\//, "").toLowerCase();
   }
 
+  /* 2.6.6: known same-frame copies count as one image, and stock / screenshot stills never render
+     (lists live in labels-fix.js: WRAP911_SAME_FRAME, WRAP911_NOT_SHOP). First in list order wins, so it stays deterministic. */
+  function frame(b) {
+    var m = window.WRAP911_SAME_FRAME || {};
+    return m[b] || b;
+  }
+
+  function notShop(b) {
+    var m = window.WRAP911_NOT_SHOP || {};
+    return !!m[b];
+  }
+
   function dedupe(list) {
     if (!list) return [];
     var seen = {};
     var out = [];
     for (var i = 0; i < list.length; i++) {
       var it = list[i];
-      var key = base(it.image || it.still || "");
+      var raw = base(it.image || it.still || "");
+      if (raw && notShop(raw)) continue;
+      var key = frame(raw);
       if (!key) key = String(it.id || i);
       if (seen[key]) continue;
       seen[key] = 1;
@@ -169,15 +172,15 @@
     var haveImg = {};
     for (i = 0; i < d.photoLessons.length; i++) {
       haveId[d.photoLessons[i].id] = 1;
-      var b = base(d.photoLessons[i].image);
+      var b = frame(base(d.photoLessons[i].image));
       if (b) haveImg[b] = 1;
     }
     for (i = 0; i < EXTRA.length; i++) {
       var ex = EXTRA[i];
-      if (haveId[ex.id] || haveImg[base(ex.image)]) continue;
+      if (haveId[ex.id] || haveImg[frame(base(ex.image))]) continue;
       d.photoLessons.unshift(ex);
       haveId[ex.id] = 1;
-      haveImg[base(ex.image)] = 1;
+      haveImg[frame(base(ex.image))] = 1;
     }
     d.photoLessons = dedupe(d.photoLessons);
   }

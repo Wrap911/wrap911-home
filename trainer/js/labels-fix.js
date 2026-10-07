@@ -10,7 +10,6 @@
     "media/videos/architectural/cabinet-done.mp4": 1,
     "media/videos/architectural/vinyl-cabinet-installed.mp4": 1,
     "media/videos/architectural/vinyl-oncabinet8.mp4": 1,
-    "media/videos/fleet/graphic-installation-1.mp4": 1,
     "media/videos/fleet/pink-caddy-wrap3.mp4": 1,
     "media/videos/fleet/pink-caddy-wrap4.mp4": 1,
     "media/videos/fleet/pink-caddy-wrap5.mp4": 1,
@@ -22,7 +21,6 @@
     "media/videos/prep/cutting-vinyl3.mp4": 1,
     "media/videos/prep/dull-blade-cut.mp4": 1,
     "media/videos/prep/grey-overlay-peel-magenta-base-stack.mp4": 1,
-    "media/videos/prep/squeegee-strokes.mp4": 1,
     "media/videos/prep/stroke-of-the-squeegee.mp4": 1,
     "media/videos/prep/torch-in-vinyl-3.mp4": 1,
     "media/videos/prep/torch-on-vinyl1.mp4": 1,
@@ -34,17 +32,50 @@
     "media/videos/qc/corngraphic.mp4": 1,
     "media/videos/trailer/trailer-rivets-and-marker-lights.mp4": 1,
     "media/videos/trailer/wrapping-around-trailer-marking-light.mp4": 1,
-    "media/videos/van/rear-vehicle-gate-wrap.mp4": 1
+    "media/videos/van/rear-vehicle-gate-wrap.mp4": 1,
+    "media/videos/architectural/architectural-cutting-vinyl-around-hinges.mp4": 1,
+    "media/videos/architectural/architectural-wrap-cutting-around-hinges.mp4": 1,
+    "media/videos/architectural/post-heat-panel-1.mp4": 1,
+    "media/videos/architectural/architectural-post-heating-vinyl-2.mp4": 1,
+    "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.mp4": 1,
+    "media/videos/architectural/kiosk-brick-film-corner-knife-trim.mp4": 1,
+    "media/videos/architectural/controltac-liner-peel-box-floor-hang.mp4": 1,
+    "media/videos/architectural/corner-tool-seat-yellow-hard-card.mp4": 1,
+    "media/videos/architectural/corner-tuck-relief-knife.mp4": 1,
+    "media/videos/architectural/hand-seat-corner-knife-trim.mp4": 1,
+    "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.mp4": 1,
+    "media/videos/fleet/dusty-rose-gmc-c-pillar-ladder-tuck.mp4": 1,
+    "media/videos/fleet/dusty-rose-tailgate-gmc-emblem-bridge.mp4": 1,
+    "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.mp4": 1,
+    "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4": 1,
+    "media/videos/trailer/magenta-rivet-field-tented-heads.mp4": 1,
   };
 
   /* 2.6.5: real repo stills under media/videos/ that have no mp4 but are used as photo lessons.
      Without this they read as "missing" and got swapped for a pool still at runtime. */
   var STILL_OK = {
-    "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg": 1,
     "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg": 1
   };
 
-  /* 2.6.5: pickup-panels.jpg (sage-green film) removed from the Vehicles pool; no green wraps on Photos. */
+  /* 2.6.6: the same frame saved under two file names (checked by eye and by image hash). Photos dedupe keys on
+     the file name, so both copies used to render (black trailer twice, Escalade headlight twice). Every name here
+     counts as the name it points to, here and in photos-unique.js, so only the first copy in list order can show. */
+  var SAME_FRAME = {
+    "trailer-rivets.jpg": "trailer-spot-graphics.jpg",
+    "front-bumper-wrap.jpg": "edge-detail.jpg",
+    "multipane_office_glass_partitions.jpg": "architectural.jpg"
+  };
+  /* 2.6.6: not real shop photos (stock photo, social-media screenshot). Never shown on Photos, never a pool pick. */
+  var NOT_SHOP = {
+    "architectural.jpg": 1,
+    "multipane_office_glass_partitions.jpg": 1,
+    "vinyl-removal.jpg": 1
+  };
+  window.WRAP911_SAME_FRAME = SAME_FRAME;
+  window.WRAP911_NOT_SHOP = NOT_SHOP;
+
+  /* 2.6.5: pickup-panels.jpg (sage-green film) removed from the Vehicles pool; no green wraps on Photos.
+     2.6.6: architectural.jpg (stock) and vinyl-removal.jpg (screenshot) removed from the pools. */
   var POOL = {
     Vehicles: [
       "media/videos/fleet/pink-wrap-caddy-1.jpg",
@@ -52,7 +83,6 @@
       "media/videos/fleet/pink-caddy-wrap4.jpg",
       "media/videos/fleet/pink-caddy-wrap5.jpg",
       "media/videos/fleet/satin-wrap-cherokee.jpg",
-      "media/videos/fleet/graphic-installation-1.jpg",
       "media/photos/gallery/front-bumper-wrap.jpg",
       "media/photos/gallery/front-bumper-wrap-caddy.jpg",
       "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
@@ -78,16 +108,14 @@
       "media/photos/gallery/cabinet-pic-sides.jpg",
       "media/photos/gallery/kiosk-box.jpg",
       "media/photos/gallery/measuring-bleed2.jpg",
-      "media/photos/gallery/demonstration-of-a-half-moon.jpg",
-      "../assets/sales/architectural.jpg"
+      "media/photos/gallery/demonstration-of-a-half-moon.jpg"
     ],
     Problems: [
       "../assets/sales/edge-detail.jpg",
       "../assets/sales/trailer-rivets.jpg",
       "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
       "media/photos/gallery/front-bumper-wrap.jpg",
-      "media/videos/prep/dull-blade-cut.jpg",
-      "media/videos/prep/vinyl-removal.jpg"
+      "media/videos/prep/dull-blade-cut.jpg"
     ],
     Prep: [
       "media/videos/prep/cutting-vinyl-4.jpg",
@@ -95,14 +123,12 @@
       "media/videos/prep/cutting-vinyl-6.jpg",
       "media/videos/prep/cutting-vinyl3.jpg",
       "media/videos/prep/vinyl-cutting1.jpg",
-      "media/videos/prep/squeegee-strokes.jpg",
       "media/videos/prep/stroke-of-the-squeegee.jpg",
       "media/videos/prep/torch-on-vinyl1.jpg",
       "media/videos/prep/torch-on-vinyl2.jpg",
       "media/videos/prep/torch-in-vinyl-3.jpg",
       "media/videos/prep/translucent-vinyl.jpg",
       "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
-      "media/videos/prep/vinyl-removal.jpg",
       "media/videos/prep/dull-blade-cut.jpg",
       "media/videos/prep/vinyl-squeegee-sequence.jpg"
     ]
@@ -148,6 +174,12 @@
     return String(path || "").split("?")[0].split("#")[0].replace(/^.*\//, "").toLowerCase();
   }
 
+  /* 2.6.6: dedupe key = file name, with known same-frame copies folded onto one name. */
+  function frameKey(path) {
+    var b = basename(path);
+    return SAME_FRAME[b] || b;
+  }
+
   function isCover(path) {
     return !path;
   }
@@ -184,7 +216,7 @@
     if (/cut|torch|squeegee|prep|removal|blade/.test(title)) add(POOL.Prep);
     add(ALL);
     for (var j = 0; j < want.length; j++) {
-      if (!used[basename(want[j])]) return want[j];
+      if (!used[frameKey(want[j])] && !NOT_SHOP[basename(want[j])]) return want[j];
     }
     return want[0] || COVER;
   }
@@ -197,7 +229,7 @@
     for (var i = 0; i < list.length; i++) {
       var item = list[i];
       var img = item.image || item.still || "";
-      var bn = basename(img);
+      var bn = frameKey(img);
       var bad = missingStill(img) || isCover(img) || (swapDupes && bn && used[bn]);
       if (bad) {
         img = pickByTitle(item, used);
@@ -206,7 +238,7 @@
         item.thumb = img;
         item.poster = img;
       }
-      used[basename(item.image)] = 1;
+      used[frameKey(item.image)] = 1;
     }
   }
 
