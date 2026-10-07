@@ -1,4 +1,5 @@
 name: iOS build and upload to App Store Connect
+# A push of this file to ios-capacitor starts an upload. workflow_dispatch is the other trigger.
 on:
   workflow_dispatch:
   push:
