@@ -1,5 +1,6 @@
 /* Playback policy for trainer/js/video-fix.js.
-   Web HEAD 404 / non-video stays "missing". Capacitor status 0 and the native shell play. */
+   Web HEAD 404 / non-video stays "missing". Capacitor status 0 and the native shell play.
+   Native Capacitor also rewrites relative mp4s to https://wrap911.com/trainer/... */
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
@@ -254,7 +255,13 @@ function flush() { return new Promise(function (r) { setImmediate(r); }); }
   const nativeVideo = native.card.querySelector("video.catalog-clip");
   assert(!!nativeVideo, "Capacitor mounts the clip");
   assert(nativeVideo.src.indexOf("rear-vehicle-gate-wrap.mp4") >= 0, "Capacitor sets the mp4 src");
+  assert(nativeVideo.src.indexOf("https://wrap911.com/trainer/") === 0, "Capacitor uses absolute HTTPS media URL");
+  assert(nativeSandbox.window.WRAP911_VIDEO_PLAYBACK.resolveMediaUrl("media/videos/van/x.mp4") === "https://wrap911.com/trainer/media/videos/van/x.mp4", "resolveMediaUrl prefixes live origin");
   assert(!native.host.querySelector(".video-play-error"), "Capacitor does not show still-only before an error");
+
+  // Web keeps relative src (no live-origin rewrite)
+  assert(okVideo.src.indexOf("https://wrap911.com/") !== 0, "web keeps relative/local src");
+  assert(okVideo.src.indexOf("rear-vehicle-gate-wrap.mp4") >= 0, "web still points at the catalog mp4");
 
   nativeVideo.listeners.error.forEach(function (fn) { fn(); });
   assert(native.host.querySelector(".video-play-error"), "a real media error still shows still-only");

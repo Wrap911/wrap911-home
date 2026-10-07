@@ -2,5 +2,14 @@
   "appId": "com.wrap911.trainer",
   "appName": "Wrap911",
   "webDir": "www",
-  "ios": { "contentInset": "automatic", "scheme": "Wrap911" }
+  "server": {
+    "allowNavigation": [
+      "wrap911.com",
+      "*.wrap911.com"
+    ]
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "scheme": "Wrap911"
+  }
 }
