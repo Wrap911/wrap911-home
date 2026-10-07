@@ -52,3 +52,22 @@
   border-color: #5a2848;
   color: var(--text);
 }
+
+/* 2.7.1: Just-paid / seat-plan card links were browser-default blue on dark */
+#seat-plan-card a { color: #ffb000; text-decoration: underline; }
+#seat-plan-card a:visited { color: #ffc94d; }
+
+/* 2.7.1: #goto-pricing inside home-secondary collapsed to ~0 height */
+details.home-secondary .card.tap {
+  display: block;
+  margin: 0.35rem 0 0.55rem;
+  padding: 0.85rem 1rem;
+  min-height: 2.75rem;
+  background: #24182a;
+  border: 1px solid #5a304c;
+  border-radius: 14px;
+}
+details.home-secondary .card.tap .card-title {
+  color: #fff6ee;
+  font-size: 1.05rem;
+}

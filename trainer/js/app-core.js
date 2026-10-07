@@ -528,7 +528,7 @@
     library: "home",
     videos: "home",
     calc: "home",
-    pricing: "home",
+    pricing: "pricing", /* 2.7.1: was "home" — highlighted Home while on Pricing */
     contact: "home",
     drills: "home",
     "practice-hub": "practice-hub",

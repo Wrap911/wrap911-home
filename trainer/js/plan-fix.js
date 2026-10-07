@@ -138,11 +138,6 @@
     return d + " days left";
   }
 
-  function crewLink(lic) {
-    var origin = window.location.origin + window.location.pathname.replace(/index\.html$/, "");
-    if (origin.slice(-1) !== "/") origin += "/";
-    return origin + "?license=CREW-" + lic.crewCode;
-  }
 
   /* Hotfix 2.6.4: one plan label for every chip. app-core planMeta() calls this too, so the header chip
      no longer flips between PACK (painted here) and PRO (painted by app-core on other screens). */
