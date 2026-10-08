@@ -1,0 +1,26 @@
+name: TestFlight internal access
+# Compares builds 11 and 12, then gives 12 the same internal TestFlight access as 11.
+# A push of this file to ios-capacitor starts a run. Does not submit for review or change purchases.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-testflight-access.yml
+      - scripts/asc-testflight-access.py
+jobs:
+  access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Compare builds and open internal testing
+        run: python3 scripts/asc-testflight-access.py
