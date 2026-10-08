@@ -13,7 +13,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-VERSIONS = ("11", "13")
+VERSIONS = ("11", "13")  # build 13 is the purchase-diagnostic upload
 BANNED = (
     "reviewSubmissions",
     "reviewSubmissionItems",
