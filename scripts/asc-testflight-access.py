@@ -114,11 +114,23 @@ def beta_detail(build_id):
     return {"id": data.get("id"), **(data.get("attributes") or {})}
 
 
-def groups(build_id):
+def app_groups():
     return pages(
-        f"builds/{build_id}/betaGroups",
+        f"apps/{APP_ID}/betaGroups",
         {"limit": 50, "fields[betaGroups]": "name,isInternalGroup"},
     )
+
+
+def group_has_build(group_id, version):
+    rows = pages(
+        f"betaGroups/{group_id}/builds",
+        {
+            "filter[version]": version,
+            "limit": 5,
+            "fields[builds]": "version,expired,processingState",
+        },
+    )
+    return any(str((row.get("attributes") or {}).get("version")) == version for row in rows)
 
 
 def testers(build_id):
@@ -141,9 +153,13 @@ def encryption_declaration(build_id):
 def describe(label, row):
     attrs = row.get("attributes") or {}
     detail = beta_detail(row["id"])
-    group_rows = groups(row["id"])
     tester_rows = testers(row["id"])
     declaration = encryption_declaration(row["id"])
+    group_rows = []
+    for group in app_groups():
+        attrs = group.get("attributes") or {}
+        if group_has_build(group["id"], str(row.get("attributes", {}).get("version"))):
+            group_rows.append(group)
     internal = [g for g in group_rows if (g.get("attributes") or {}).get("isInternalGroup")]
     external = [g for g in group_rows if not (g.get("attributes") or {}).get("isInternalGroup")]
     print(f"== {label} ==")
@@ -209,6 +225,16 @@ def add_testers(build_id, tester_ids):
 
 
 def main():
+    print("GROUPS")
+    listed = app_groups()
+    if not listed:
+        print("no beta groups returned")
+    for group in listed:
+        attrs = group.get("attributes") or {}
+        kind = "internal" if attrs.get("isInternalGroup") else "external"
+        has11 = group_has_build(group["id"], "11")
+        has12 = group_has_build(group["id"], "12")
+        print(f"{kind} {attrs.get('name') or group['id']}: build11={has11} build12={has12}")
     print("BEFORE")
     found = {}
     for version in VERSIONS:
