@@ -154,8 +154,11 @@ def describe(label, row):
             group_rows.append(group)
     internal = [g for g in group_rows if (g.get("attributes") or {}).get("isInternalGroup")]
     external = [g for g in group_rows if not (g.get("attributes") or {}).get("isInternalGroup")]
+    status, release = call("GET", f"builds/{row['id']}/preReleaseVersion")
+    release_version = ((release.get("data") or {}).get("attributes") or {}).get("version") if status < 400 else "error"
     print(f"== {label} ==")
     print(f"id {row['id']}")
+    print(f"train {release_version}")
     print(f"version {attrs.get('version')} processing {attrs.get('processingState')} expired {attrs.get('expired')}")
     print(f"uploaded {attrs.get('uploadedDate')} expiration {attrs.get('expirationDate')} audience {attrs.get('buildAudienceType')}")
     print(f"usesNonExemptEncryption {attrs.get('usesNonExemptEncryption')}")
