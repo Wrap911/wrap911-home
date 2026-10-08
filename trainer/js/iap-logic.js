@@ -116,6 +116,16 @@
 
   /* Background sync must not wipe a longer website license. A new Apple
      purchase replaces it, except a live Shop Pack is not downgraded to a Seat. */
+  /* Shown when StoreKit returns no Shop Pack or Seat. The buttons stay usable. */
+  function missingProductsMessage() {
+    return "The App Store did not return Shop Pack and Seat. Check your connection, then open Pricing again. You were not charged.";
+  }
+
+  /* Shown when purchaseProduct never calls back, so the Apple sheet never opened. */
+  function purchaseStallMessage() {
+    return "The App Store purchase sheet did not open, so you were not charged. Try again.";
+  }
+
   function shouldWrite(existing, next, now, force) {
     if (!next || !next.expiresAt) return false;
     if (!stillPaid(existing, now)) return true;
@@ -134,6 +144,8 @@
     isUsStorefront: isUsStorefront,
     pickEntitlement: pickEntitlement,
     licenseFrom: licenseFrom,
-    shouldWrite: shouldWrite
+    shouldWrite: shouldWrite,
+    missingProductsMessage: missingProductsMessage,
+    purchaseStallMessage: purchaseStallMessage
   };
 });
