@@ -1,5 +1,11 @@
 name: App Store status check (read-only)
-on: workflow_dispatch
+# Read-only. A push of this file to ios-capacitor runs the check. workflow_dispatch is the other trigger.
+# Does not submit for review, attach a build, or change purchases, prices, or availability.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths: [".github/workflows/asc-status.yml"]
 jobs:
   status:
     runs-on: ubuntu-latest
