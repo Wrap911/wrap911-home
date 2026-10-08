@@ -121,16 +121,9 @@ def app_groups():
     )
 
 
-def group_has_build(group_id, version):
-    rows = pages(
-        f"betaGroups/{group_id}/builds",
-        {
-            "filter[version]": version,
-            "limit": 5,
-            "fields[builds]": "version,expired,processingState",
-        },
-    )
-    return any(str((row.get("attributes") or {}).get("version")) == version for row in rows)
+def group_build_ids(group_id):
+    rows = pages(f"betaGroups/{group_id}/relationships/builds", {"limit": 200})
+    return {row.get("id") for row in rows if row.get("id")}
 
 
 def testers(build_id):
@@ -157,8 +150,7 @@ def describe(label, row):
     declaration = encryption_declaration(row["id"])
     group_rows = []
     for group in app_groups():
-        attrs = group.get("attributes") or {}
-        if group_has_build(group["id"], str(row.get("attributes", {}).get("version"))):
+        if row["id"] in group_build_ids(group["id"]):
             group_rows.append(group)
     internal = [g for g in group_rows if (g.get("attributes") or {}).get("isInternalGroup")]
     external = [g for g in group_rows if not (g.get("attributes") or {}).get("isInternalGroup")]
@@ -225,28 +217,36 @@ def add_testers(build_id, tester_ids):
 
 
 def main():
-    print("GROUPS")
-    listed = app_groups()
-    if not listed:
-        print("no beta groups returned")
-    for group in listed:
-        attrs = group.get("attributes") or {}
-        kind = "internal" if attrs.get("isInternalGroup") else "external"
-        has11 = group_has_build(group["id"], "11")
-        has12 = group_has_build(group["id"], "12")
-        print(f"{kind} {attrs.get('name') or group['id']}: build11={has11} build12={has12}")
-    print("BEFORE")
     found = {}
     for version in VERSIONS:
         row = find_build(version)
         if not row:
             print(f"build {version} not found")
             continue
-        found[version] = describe(f"build {version}", row)
-    if "12" not in found:
+        found[version] = row
+    build11 = (found.get("11") or {}).get("id")
+    build12 = (found.get("12") or {}).get("id")
+    print("GROUPS")
+    listed = app_groups()
+    if not listed:
+        print("no beta groups returned")
+    membership = {}
+    for group in listed:
+        attrs = group.get("attributes") or {}
+        kind = "internal" if attrs.get("isInternalGroup") else "external"
+        ids = group_build_ids(group["id"])
+        membership[group["id"]] = ids
+        has11 = build11 in ids if build11 else False
+        has12 = build12 in ids if build12 else False
+        print(f"{kind} {attrs.get('name') or group['id']}: builds={len(ids)} build11={has11} build12={has12}")
+    print("BEFORE")
+    described = {}
+    for version, row in found.items():
+        described[version] = describe(f"build {version}", row)
+    if "12" not in described:
         raise SystemExit("build 12 was not found")
-    current = found["12"]
-    previous = found.get("11")
+    current = described["12"]
+    previous = described.get("11")
     print("ACTIONS")
     changed = False
     build_id = current["row"]["id"]
