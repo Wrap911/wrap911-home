@@ -64,7 +64,18 @@ assert.strictEqual(L.isUsStorefront(""), false);
 assert.strictEqual(L.isUsStorefront(null), false);
 assert.strictEqual(L.isNativeApp(), false);
 
+var missing = L.missingProductsMessage();
+var stall = L.purchaseStallMessage();
+assert.ok(missing.indexOf("not charged") !== -1);
+assert.ok(stall.indexOf("did not open") !== -1);
+assert.ok(stall.indexOf("not charged") !== -1);
+["$149", "$49", "$29"].forEach(function (bad) {
+  assert.strictEqual(missing.indexOf(bad), -1);
+  assert.strictEqual(stall.indexOf(bad), -1);
+});
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
+assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instead of leaving the button disabled");
+assert.ok(iap.indexOf("missingProductsMessage") !== -1);
 ["$149", "$49", "$29"].forEach(function (bad) {
   assert.strictEqual(iap.indexOf(bad), -1, "iap.js must not hardcode " + bad);
 });

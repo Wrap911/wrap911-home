@@ -19,7 +19,9 @@
   var cap = window.Capacitor;
   var NP = cap.Plugins && cap.Plugins.NativePurchases;
   var products = {};
+  var productError = "";
   var us = false;
+  var PURCHASE_WAIT_MS = 45000;
 
   function readLic() {
     try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
@@ -237,12 +239,25 @@
       var m = document.getElementById("iap-msg");
       if (m) m.textContent = t;
     };
+    if (productError) msg(productError);
     Array.prototype.forEach.call(card.querySelectorAll("[data-iap]"), function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-iap");
+        if (!products[id]) {
+          msg(Logic.missingProductsMessage());
+          return;
+        }
         btn.disabled = true;
         msg("Opening App Store checkout…");
+        var finished = false;
+        var timer = setTimeout(function () {
+          if (finished) return;
+          btn.disabled = false;
+          msg(Logic.purchaseStallMessage());
+        }, PURCHASE_WAIT_MS);
         NP.purchaseProduct({ productIdentifier: id, productType: "inapp", quantity: 1 }).then(function (tx) {
+          finished = true;
+          clearTimeout(timer);
           var stamped = tx || {};
           if (!stamped.purchaseDate) stamped.purchaseDate = new Date().toISOString();
           if (!stamped.productIdentifier) stamped.productIdentifier = id;
@@ -253,8 +268,13 @@
           msg("This phone is unlocked.");
           render();
         }).catch(function (e) {
+          finished = true;
+          clearTimeout(timer);
           btn.disabled = false;
-          msg(/cancel/i.test(String(e && (e.message || e))) ? "" : "Purchase did not finish. Please try again.");
+          var raw = String(e && (e.message || e) || "");
+          if (/cancel/i.test(raw)) msg("");
+          else if (/cannot find product|not found/i.test(raw)) msg(Logic.missingProductsMessage());
+          else msg("Purchase did not finish, so you were not charged. Please try again.");
         });
       };
     });
@@ -276,10 +296,15 @@
   function loadProducts() {
     if (!NP || !NP.getProducts) return Promise.resolve();
     return NP.getProducts({ productIdentifiers: IDS, productType: "inapp" }).then(function (r) {
+      var next = {};
       ((r && r.products) || []).forEach(function (p) {
-        products[p.identifier || p.productIdentifier] = p;
+        next[p.identifier || p.productIdentifier] = p;
       });
-    }).catch(function () {});
+      products = next;
+      productError = (products[PACK] && products[SEAT]) ? "" : Logic.missingProductsMessage();
+    }).catch(function () {
+      productError = Logic.missingProductsMessage();
+    });
   }
   function loadStorefront() {
     window.WRAP911_IAP_US = false;
