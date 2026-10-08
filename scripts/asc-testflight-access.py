@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Compare TestFlight builds 11 and 12, then give 12 the same internal access as 11.
+"""Compare TestFlight builds 11 and 13, then give 13 the same internal access as 11.
 
-Sets export compliance only to match build 11, and adds build 12 to the internal
+Sets export compliance only to match build 11, and adds build 13 to the internal
 beta groups (and individual testers) that already have build 11. Does not submit
 for review and does not change in-app purchases.
 """
@@ -13,7 +13,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-VERSIONS = ("11", "12")
+VERSIONS = ("11", "13")
 BANNED = (
     "reviewSubmissions",
     "reviewSubmissionItems",
@@ -228,7 +228,7 @@ def main():
             continue
         found[version] = row
     build11 = (found.get("11") or {}).get("id")
-    build12 = (found.get("12") or {}).get("id")
+    build13 = (found.get("13") or {}).get("id")
     print("GROUPS")
     listed = app_groups()
     if not listed:
@@ -240,15 +240,15 @@ def main():
         ids = group_build_ids(group["id"])
         membership[group["id"]] = ids
         has11 = build11 in ids if build11 else False
-        has12 = build12 in ids if build12 else False
-        print(f"{kind} {attrs.get('name') or group['id']}: builds={len(ids)} build11={has11} build12={has12}")
+        has13 = build13 in ids if build13 else False
+        print(f"{kind} {attrs.get('name') or group['id']}: builds={len(ids)} build11={has11} build13={has13}")
     print("BEFORE")
     described = {}
     for version, row in found.items():
         described[version] = describe(f"build {version}", row)
-    if "12" not in described:
-        raise SystemExit("build 12 was not found")
-    current = described["12"]
+    if "13" not in described:
+        raise SystemExit("build 13 was not found")
+    current = described["13"]
     previous = described.get("11")
     print("ACTIONS")
     changed = False
@@ -262,13 +262,13 @@ def main():
         "READY_FOR_BETA_TESTING",
         "IN_BETA_TESTING",
     ):
-        print("build 11 is already available to testers and did not record a true encryption flag; marking 12 exempt")
+        print("build 11 is already available to testers and did not record a true encryption flag; marking 13 exempt")
         changed = patch_encryption(build_id, False) or changed
     elif flag is not None and previous_flag is not None and flag != previous_flag and state == "MISSING_EXPORT_COMPLIANCE":
-        print(f"build 12 encryption flag {flag} does not match build 11 {previous_flag}")
+        print(f"build 13 encryption flag {flag} does not match build 11 {previous_flag}")
         changed = patch_encryption(build_id, previous_flag) or changed
     else:
-        print(f"encryption left unchanged (12={flag}, 11={previous_flag}, state={state})")
+        print(f"encryption left unchanged (13={flag}, 11={previous_flag}, state={state})")
 
     if previous and previous["declaration"] and not current["declaration"]:
         declaration_id = previous["declaration"]["id"]
@@ -309,9 +309,9 @@ def main():
     if changed:
         time.sleep(8)
     print("AFTER")
-    row = find_build("12")
+    row = find_build("13")
     if row:
-        describe("build 12", row)
+        describe("build 13", row)
 
 
 if __name__ == "__main__":
