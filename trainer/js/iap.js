@@ -21,7 +21,11 @@
   var products = {};
   var productError = "";
   var us = false;
+  var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
+  var JS_MARK = "iap-3";
+  var diag = null;
+  var steps = [];
 
   function readLic() {
     try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
@@ -67,6 +71,23 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
     });
   }
+  function note(line) {
+    steps.push(String(line));
+    if (steps.length > 6) steps = steps.slice(steps.length - 6);
+    var el = document.getElementById("iap-steps");
+    if (el) el.textContent = steps.join(" · ");
+  }
+  function diagText() {
+    var plugin = !!(NP && NP.purchaseProduct);
+    var pay = !diag ? "payments ?" : (diag.canMakePayments ? "payments yes" : "payments NO");
+    var build = diag && diag.build ? diag.build : "?";
+    var scenes = diag ? String(diag.sceneCount) : "?";
+    var windows = diag ? String(diag.windowCount) : "?";
+    var onScreen = !diag ? "window ?" : (diag.rootInWindow ? "window yes" : "window NO");
+    var store = storeCode || "?";
+    return "Build " + build + " · js " + JS_MARK + " · plugin " + (plugin ? "yes" : "NO") +
+      " · " + pay + " · store " + store + " · scenes " + scenes + " · windows " + windows + " · " + onScreen;
+  }
   function contactMail() {
     var cfg = window.WRAP911_CONFIG || {};
     return cfg.contactEmail || "";
@@ -87,6 +108,7 @@
       ".iap-card .fine{font-size:12px;opacity:.8;margin:12px 0 0;line-height:1.45}" +
       ".iap-card a{color:#ffb000}" +
       ".iap-card .msg{font-size:14px;margin-top:10px;line-height:1.4}" +
+      ".iap-card .diag{font-size:12px;line-height:1.35;color:#ffb000;margin:0 0 8px;word-break:break-word}" +
       ".iap-card .code{font-size:1.15rem;letter-spacing:.06em}";
     document.head.appendChild(s);
   }
@@ -224,6 +246,8 @@
       : "";
     card.innerHTML =
       "<h2>Buy with Apple</h2>" +
+      '<p class="diag" id="iap-diag">' + escapeText(diagText()) + "</p>" +
+      '<p class="diag" id="iap-steps">' + escapeText(steps.join(" · ")) + "</p>" +
       '<p class="iap-lead">Full trainer on this phone for 12 months. Shop Pack is the crew buy: this phone plus four more.</p>' +
       buttons +
       status +
@@ -243,21 +267,31 @@
     Array.prototype.forEach.call(card.querySelectorAll("[data-iap]"), function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-iap");
+        note("tap " + (id === SEAT ? "seat" : "pack"));
         if (!products[id]) {
+          note("product missing");
           msg(Logic.missingProductsMessage());
+          return;
+        }
+        if (diag && diag.canMakePayments === false) {
+          note("payments off");
+          msg("In-App Purchases are turned off on this iPhone. Check Screen Time and Restrictions. You were not charged.");
           return;
         }
         btn.disabled = true;
         msg("Opening App Store checkout…");
+        note("purchase called");
         var finished = false;
         var timer = setTimeout(function () {
           if (finished) return;
           btn.disabled = false;
+          note("timed out");
           msg(Logic.purchaseStallMessage());
         }, PURCHASE_WAIT_MS);
         NP.purchaseProduct({ productIdentifier: id, productType: "inapp", quantity: 1 }).then(function (tx) {
           finished = true;
           clearTimeout(timer);
+          note("purchase returned");
           var stamped = tx || {};
           if (!stamped.purchaseDate) stamped.purchaseDate = new Date().toISOString();
           if (!stamped.productIdentifier) stamped.productIdentifier = id;
@@ -272,9 +306,16 @@
           clearTimeout(timer);
           btn.disabled = false;
           var raw = String(e && (e.message || e) || "");
-          if (/cancel/i.test(raw)) msg("");
-          else if (/cannot find product|not found/i.test(raw)) msg(Logic.missingProductsMessage());
-          else msg("Purchase did not finish, so you were not charged. Please try again.");
+          if (/cancel/i.test(raw)) {
+            note("cancelled");
+            msg("");
+          } else if (/cannot find product|not found/i.test(raw)) {
+            note("product not found");
+            msg(Logic.missingProductsMessage());
+          } else {
+            note(raw ? raw.slice(0, 140) : "purchase failed");
+            msg(raw ? raw : "Purchase did not finish, so you were not charged. Please try again.");
+          }
         });
       };
     });
@@ -310,11 +351,15 @@
     window.WRAP911_IAP_US = false;
     if (!NP || !NP.getStorefront) return Promise.resolve();
     return NP.getStorefront().then(function (r) {
-      us = Logic.isUsStorefront(r && r.countryCode);
+      storeCode = String((r && r.countryCode) || "");
+      us = Logic.isUsStorefront(storeCode);
       window.WRAP911_IAP_US = us;
+      note("store " + (storeCode || "none"));
     }).catch(function () {
+      storeCode = "";
       us = false;
       window.WRAP911_IAP_US = false;
+      note("store failed");
     });
   }
   function hookCore() {
@@ -328,9 +373,22 @@
     };
     core._iapHook = true;
   }
+  function loadDiagnostics() {
+    if (!NP || !NP.diagnostics) {
+      note(NP ? "no diagnostics" : "no plugin");
+      return Promise.resolve();
+    }
+    return NP.diagnostics().then(function (d) {
+      diag = d || {};
+      note("diag build " + (diag.build || "?") + " pay " + (diag.canMakePayments ? "yes" : "no"));
+    }).catch(function (e) {
+      note("diag failed " + String((e && e.message) || e || "").slice(0, 80));
+    });
+  }
   function boot() {
     render();
     hookCore();
+    loadDiagnostics().then(render);
     loadStorefront().then(function () {
       try { if (window.WRAP911_PLAN_FIX_PAINT) window.WRAP911_PLAN_FIX_PAINT(); } catch (e) {}
       render();

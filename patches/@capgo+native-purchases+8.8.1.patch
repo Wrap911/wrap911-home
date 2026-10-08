@@ -1,0 +1,117 @@
+diff --git a/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift b/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
+index e4ab9e1..4b7960f 100644
+--- a/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
++++ b/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
+@@ -1,7 +1,18 @@
+ import Foundation
++import UIKit
+ import Capacitor
+ import StoreKit
+ 
++private enum PurchaseSheetError: LocalizedError {
++    case message(String)
++    var errorDescription: String? {
++        switch self {
++        case .message(let text):
++            return text
++        }
++    }
++}
++
+ @objc(NativePurchasesPlugin)
+ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+     public let identifier = "NativePurchasesPlugin"
+@@ -20,7 +31,8 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+         CAPPluginMethod(name: "consumePurchase", returnType: CAPPluginReturnPromise),
+         CAPPluginMethod(name: "getAppTransaction", returnType: CAPPluginReturnPromise),
+         CAPPluginMethod(name: "isEntitledToOldBusinessModel", returnType: CAPPluginReturnPromise),
+-        CAPPluginMethod(name: "getStorefront", returnType: CAPPluginReturnPromise)
++        CAPPluginMethod(name: "getStorefront", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "diagnostics", returnType: CAPPluginReturnPromise)
+     ]
+ 
+     private let pluginVersion: String = "8.8.1"
+@@ -109,6 +121,10 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+ 
+         Task { @MainActor in
+             do {
++                guard SKPaymentQueue.canMakePayments() else {
++                    call.reject("In-App Purchases are turned off on this iPhone. Check Screen Time and Restrictions.")
++                    return
++                }
+                 let products = try await Product.products(for: [productIdentifier])
+                 guard let product = products.first else {
+                     call.reject("Cannot find product for id \(productIdentifier)")
+@@ -130,7 +146,7 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+                     return
+                 }
+ 
+-                let result = try await product.purchase(options: purchaseOptions)
++                let result = try await self.purchase(product, options: purchaseOptions)
+                 print("purchaseProduct result \(result)")
+                 await self.handlePurchaseResult(result, call: call, autoFinish: autoAcknowledge)
+             } catch {
+@@ -140,6 +156,63 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+         }
+     }
+ 
++    @objc func diagnostics(_ call: CAPPluginCall) {
++        Task { @MainActor in
++            let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
++            let active = scenes.first { $0.activationState == .foregroundActive } ?? scenes.first
++            let window = active?.windows.first { $0.isKeyWindow } ?? active?.windows.first
++            let root = window?.rootViewController
++            let info = Bundle.main.infoDictionary ?? [:]
++            call.resolve([
++                "build": info["CFBundleVersion"] as? String ?? "",
++                "version": info["CFBundleShortVersionString"] as? String ?? "",
++                "canMakePayments": SKPaymentQueue.canMakePayments(),
++                "sceneCount": scenes.count,
++                "windowCount": active?.windows.count ?? 0,
++                "keyWindow": window?.isKeyWindow ?? false,
++                "rootInWindow": root?.viewIfLoaded?.window != nil,
++                "root": root.map { String(describing: type(of: $0)) } ?? ""
++            ])
++        }
++    }
++
++    @MainActor
++    private func purchase(_ product: Product, options: Set<Product.PurchaseOption>) async throws -> Product.PurchaseResult {
++        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
++        guard let scene = scenes.first(where: { $0.activationState == .foregroundActive }) ?? scenes.first else {
++            throw PurchaseSheetError.message("No window scene for the App Store sheet")
++        }
++        let window = scene.windows.first { $0.isKeyWindow } ?? scene.windows.first
++        guard let root = window?.rootViewController else {
++            throw PurchaseSheetError.message("No root view controller for the App Store sheet")
++        }
++        guard root.viewIfLoaded?.window != nil else {
++            throw PurchaseSheetError.message("The store sheet has no on-screen window")
++        }
++        let presenter = Self.topViewController(from: root)
++        if #available(iOS 18.2, *) {
++            return try await product.purchase(confirmIn: presenter, options: options)
++        } else if #available(iOS 17.0, *) {
++            return try await product.purchase(confirmIn: scene, options: options)
++        } else {
++            return try await product.purchase(options: options)
++        }
++    }
++
++    @MainActor
++    private static func topViewController(from root: UIViewController) -> UIViewController {
++        if let presented = root.presentedViewController {
++            return topViewController(from: presented)
++        }
++        if let nav = root as? UINavigationController, let visible = nav.visibleViewController {
++            return topViewController(from: visible)
++        }
++        if let tab = root as? UITabBarController, let selected = tab.selectedViewController {
++            return topViewController(from: selected)
++        }
++        return root
++    }
++
+     @objc func restorePurchases(_ call: CAPPluginCall) {
+         print("restorePurchases")
+         Task {
