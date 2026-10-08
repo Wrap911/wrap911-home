@@ -1,7 +1,7 @@
 name: App Store status check (read-only)
 # Read-only. A push of this file to ios-capacitor runs the check. workflow_dispatch is the other trigger.
 # Does not submit for review, attach a build, or change purchases, prices, or availability.
-# Recheck build 11 after the upload.
+# Recheck build 12 after the purchase-sheet upload.
 on:
   workflow_dispatch:
   push:
