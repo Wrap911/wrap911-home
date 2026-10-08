@@ -5,7 +5,8 @@
   "scripts": {
     "build:www": "rm -rf www && mkdir www && cp -r index.html privacy.html sample.html templates.html templates.js trainer.html trainer assets fonts www/ && mv www/index.html www/home.html && printf '<!doctype html><meta http-equiv=\"refresh\" content=\"0;url=trainer/index.html\">' > www/index.html",
     "ios:sync": "npm run build:www && npx cap sync ios",
-    "ios:open": "npx cap open ios"
+    "ios:open": "npx cap open ios",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
@@ -13,6 +14,7 @@
     "@capgo/native-purchases": "^8.8.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.6.9"
+    "@capacitor/cli": "^7.6.9",
+    "patch-package": "^8.0.1"
   }
 }

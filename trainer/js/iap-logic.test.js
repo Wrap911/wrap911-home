@@ -75,6 +75,8 @@ assert.ok(stall.indexOf("not charged") !== -1);
 });
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
 assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instead of leaving the button disabled");
+assert.ok(iap.indexOf("iap-3") !== -1, "pricing must show the js bundle marker");
+assert.ok(iap.indexOf("diagnostics") !== -1);
 assert.ok(iap.indexOf("missingProductsMessage") !== -1);
 ["$149", "$49", "$29"].forEach(function (bad) {
   assert.strictEqual(iap.indexOf(bad), -1, "iap.js must not hardcode " + bad);
