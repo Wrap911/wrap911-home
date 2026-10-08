@@ -1,6 +1,7 @@
 name: iOS build and upload to App Store Connect
 # A push of this file to ios-capacitor starts an upload. workflow_dispatch is the other trigger.
 # Upload the build that carries the approved aqua-outlined app icon.
+# Upload the build that presents the App Store purchase sheet.
 on:
   workflow_dispatch:
   push:
