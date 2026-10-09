@@ -73,7 +73,7 @@
       narration:"Feed the channel. Do not stretch across it. Finish-trim off the show face.",
       checklist:["Feed the channel","No bridge","Trim off the show face","Post-heat the edge"],
       quiz:{q:"Channel in the panel. Move?",correct:"Feed film in. Do not bridge.",wrong:"Pull tight so the channel disappears."} },
-    { id:"pk-tall", title:"Tall side — height and long panel", image:"../assets/sales/fleet-rv.jpg", module:"squeegee", jobType:"Tall side",
+    { id:"pk-tall", title:"Tall side \u2014 height and long panel", image:"../assets/sales/fleet-rv.jpg", module:"squeegee", jobType:"Tall side",
       visual:"Tall commercial side in the yard.",
       narration:"Height is a layout problem. Stage the panel. Two people on a long hang. TDS heat only.",
       checklist:["Stage the panel","Two people on a long hang","Keep the graphic level","Heat only to TDS"],
@@ -84,7 +84,7 @@
       narration:"This is black brick-print film on an interior panel. The installer is trimming the edge where the brick meets the stainless panel.\n\nCheck that the brick rows run straight across the panel before you trim. Keep the blade on the edge line and off the stainless face, and use a fresh blade so the print does not tear. Any heat on the edge follows the film TDS.",
       checklist:["Check the brick rows run straight first","Trim on the edge line, off the stainless face","Fresh blade","Heat on the edge only per the film TDS"],
       quiz:{q:"Where is the knife on this brick panel?",correct:"On the edge where the brick film meets the stainless panel.",wrong:"In the middle of the brick face."} },
-    { id:"pk-cut4", title:"Table cut — square the sheet", image:"media/videos/prep/cutting-vinyl-4.jpg", module:"cutting", jobType:"Fleet",
+    { id:"pk-cut4", title:"Table cut \u2014 square the sheet", image:"media/videos/prep/cutting-vinyl-4.jpg", module:"cutting", jobType:"Fleet",
       visual:"Cutting vinyl on the table.",
       narration:"Square the sheet before it leaves the table. Fresh blade. Cut the liner side you planned.",
       checklist:["Fresh blade","Square the sheet","Cut once","Bag the scrap"],
@@ -94,7 +94,7 @@
       narration:"Relief first on inside corners. Do not stretch a corner around a box.",
       checklist:["Mark the corner","Relief first","Seat one face","Then the next"],
       quiz:{q:"Inside corner. First cut?",correct:"Relief, then one face at a time.",wrong:"Stretch the sheet around the box."} },
-    { id:"pk-grey", title:"Overlay peel — two-color stack", image:"media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg", module:"film-types", jobType:"Fleet",
+    { id:"pk-grey", title:"Overlay peel \u2014 two-color stack", image:"media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg", module:"film-types", jobType:"Fleet",
       visual:"Grey overlay peeling off a magenta base.",
       narration:"Peel low and slow. Stop if a corner lifts. Do not yank a stack and take the base with it.",
       checklist:["Low pull","Stop if a corner lifts","Keep the base seated","Bag the overlay"],
@@ -113,7 +113,12 @@
       visual:"Heat used to pull fingers out of wall film.",
       narration:"Fingers come out with TDS heat and a reset, not a hard mash. Keep the torch moving.",
       checklist:["Heat to TDS","Lift and reset","Keep the torch moving","Do not mash a dry finger"],
-      quiz:{q:"Dry finger in wall film. Move?",correct:"Warm to TDS, lift, reset.",wrong:"Mash it flat so the gloss matches."} }
+      quiz:{q:"Dry finger in wall film. Move?",correct:"Warm to TDS, lift, reset.",wrong:"Mash it flat so the gloss matches."} },
+    { id:"pk-door-glass", title:"Door glass edge \u2014 squeegee at the seal", image:"media/videos/IMG_8345.jpeg", module:"squeegee", jobType:"Vehicles",
+      visual:"Black hoodie and cap. Felt squeegee working film at the door glass seal. Door handle is in the shot. Dark door skin.",
+      narration:"This is the door glass edge, not a flat panel. Stroke into the seal. Do not bridge the glass channel. The door handle is a cutout, not a stretch.",
+      checklist:["Stroke into the glass seal","Do not bridge the channel","Door handle is a cutout","Post-heat the edge per TDS"],
+      quiz:{q:"What is the squeegee working here?",correct:"The film at the door glass seal.",wrong:"A flat panel with no recess."} }
   ];
 
   var have = {};
