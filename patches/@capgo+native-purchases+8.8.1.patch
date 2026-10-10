@@ -59,7 +59,8 @@ index e4ab9e1..4b7960f 100644
 +        Task { @MainActor in
 +            let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
 +            let active = scenes.first { $0.activationState == .foregroundActive } ?? scenes.first
-+            let window = active?.windows.first { $0.isKeyWindow } ?? active?.windows.first
++            let windows = active?.windows ?? []
++            let window = windows.first { $0.isKeyWindow } ?? windows.first
 +            let root = window?.rootViewController
 +            let info = Bundle.main.infoDictionary ?? [:]
 +            call.resolve([
@@ -67,7 +68,8 @@ index e4ab9e1..4b7960f 100644
 +                "version": info["CFBundleShortVersionString"] as? String ?? "",
 +                "canMakePayments": SKPaymentQueue.canMakePayments(),
 +                "sceneCount": scenes.count,
-+                "windowCount": active?.windows.count ?? 0,
++                "windowCount": windows.count,
++                "windows": windows.map { String(describing: type(of: $0)) }.joined(separator: "+"),
 +                "keyWindow": window?.isKeyWindow ?? false,
 +                "rootInWindow": root?.viewIfLoaded?.window != nil,
 +                "root": root.map { String(describing: type(of: $0)) } ?? ""

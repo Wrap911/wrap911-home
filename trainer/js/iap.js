@@ -23,9 +23,10 @@
   var us = false;
   var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
-  var JS_MARK = "iap-3";
+  var JS_MARK = "iap-4";
   var diag = null;
   var steps = [];
+  var buyingId = "";
 
   function readLic() {
     try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
@@ -83,10 +84,11 @@
     var build = diag && diag.build ? diag.build : "?";
     var scenes = diag ? String(diag.sceneCount) : "?";
     var windows = diag ? String(diag.windowCount) : "?";
+    var kinds = diag && diag.windows ? (" " + diag.windows) : "";
     var onScreen = !diag ? "window ?" : (diag.rootInWindow ? "window yes" : "window NO");
     var store = storeCode || "?";
     return "Build " + build + " · js " + JS_MARK + " · plugin " + (plugin ? "yes" : "NO") +
-      " · " + pay + " · store " + store + " · scenes " + scenes + " · windows " + windows + " · " + onScreen;
+      " · " + pay + " · store " + store + " · scenes " + scenes + " · windows " + windows + kinds + " · " + onScreen;
   }
   function contactMail() {
     var cfg = window.WRAP911_CONFIG || {};
@@ -132,6 +134,140 @@
     }
     refreshUi();
     try { render(); } catch (e3) {}
+  }
+  function setMsg(t) {
+    var m = document.getElementById("iap-msg");
+    if (m) m.textContent = t;
+  }
+  function reportJs(text) {
+    var line = String(text || "error").replace(/\s+/g, " ").slice(0, 140);
+    note("JS " + line);
+    var m = document.getElementById("iap-msg");
+    if (m) m.textContent = line;
+  }
+  function buttonFromEvent(ev) {
+    var node = ev.target;
+    if (!node || !node.closest) return null;
+    return node.closest("[data-iap], #iap-restore");
+  }
+  function finishBuying(btn) {
+    buyingId = "";
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("data-buying");
+    }
+  }
+  function purchase(btn) {
+    var id = btn.getAttribute("data-iap");
+    if (!btn.getAttribute("data-tap")) note("tap " + (id === SEAT ? "seat" : "pack"));
+    if (!NP || !NP.purchaseProduct) {
+      note("no purchase method");
+      setMsg("App Store purchasing is not available in this build. You were not charged.");
+      return;
+    }
+    if (!products[id]) {
+      note("product missing");
+      setMsg(Logic.missingProductsMessage());
+      return;
+    }
+    if (diag && diag.canMakePayments === false) {
+      note("payments off");
+      setMsg("In-App Purchases are turned off on this iPhone. Check Screen Time and Restrictions. You were not charged.");
+      return;
+    }
+    if (buyingId) {
+      note("purchase already running");
+      return;
+    }
+    buyingId = id;
+    btn.setAttribute("data-buying", "1");
+    btn.disabled = true;
+    setMsg("Opening App Store checkout…");
+    note("purchase called");
+    var finished = false;
+    var timer = setTimeout(function () {
+      if (finished) return;
+      finishBuying(btn);
+      note("timed out");
+      setMsg(Logic.purchaseStallMessage());
+    }, PURCHASE_WAIT_MS);
+    NP.purchaseProduct({ productIdentifier: id, productType: "inapp", quantity: 1 }).then(function (tx) {
+      finished = true;
+      clearTimeout(timer);
+      note("purchase returned");
+      var stamped = tx || {};
+      if (!stamped.purchaseDate) stamped.purchaseDate = new Date().toISOString();
+      if (!stamped.productIdentifier) stamped.productIdentifier = id;
+      var row = Logic.pickEntitlement([stamped], Date.now());
+      if (row) grantRow(row, true);
+      return sync();
+    }).then(function () {
+      finishBuying(btn);
+      setMsg("This phone is unlocked.");
+      render();
+    }).catch(function (e) {
+      finished = true;
+      clearTimeout(timer);
+      finishBuying(btn);
+      var raw = String(e && (e.message || e) || "");
+      if (/cancel/i.test(raw)) {
+        note("cancelled");
+        setMsg("");
+      } else if (/cannot find product|not found/i.test(raw)) {
+        note("product not found");
+        setMsg(Logic.missingProductsMessage());
+      } else {
+        note(raw ? raw.slice(0, 140) : "purchase failed");
+        setMsg(raw ? raw : "Purchase did not finish, so you were not charged. Please try again.");
+      }
+    });
+  }
+  function restore() {
+    setMsg("Restoring…");
+    note("tap restore");
+    var done = function () {
+      return sync().then(function (ok) {
+        setMsg(ok ? "Purchase restored on this phone." : "No active Shop Pack or Seat was found for this Apple ID.");
+        render();
+      });
+    };
+    var pending = (NP && NP.restorePurchases ? NP.restorePurchases() : Promise.resolve());
+    pending.then(done).catch(function (e) {
+      reportJs(e && (e.message || e) || "restore failed");
+      setMsg("Restore failed. Check your connection and try again.");
+    });
+  }
+  function installTaps() {
+    if (installTaps.done) return;
+    installTaps.done = true;
+    window.addEventListener("error", function (ev) {
+      reportJs(ev && ev.message);
+    });
+    window.addEventListener("unhandledrejection", function (ev) {
+      var reason = ev && ev.reason;
+      reportJs((reason && (reason.message || reason)) || "rejection");
+    });
+    document.addEventListener("pointerdown", function (ev) {
+      try {
+        var btn = buttonFromEvent(ev);
+        if (!btn || !btn.getAttribute("data-iap")) return;
+        var id = btn.getAttribute("data-iap");
+        btn.setAttribute("data-tap", "1");
+        note("tap " + (id === SEAT ? "seat" : "pack"));
+      } catch (e) {
+        reportJs(e && (e.message || e));
+      }
+    }, true);
+    document.addEventListener("click", function (ev) {
+      var btn = buttonFromEvent(ev);
+      if (!btn) return;
+      try {
+        if (btn.id === "iap-restore") restore();
+        else purchase(btn);
+      } catch (e) {
+        reportJs(e && (e.message || e));
+      }
+    }, true);
   }
   function claimPack(tx, force) {
     var have = crewCode();
@@ -201,11 +337,11 @@
     }
     var unlock = screen.querySelector(".unlock-box");
     if (unlock && !document.getElementById("iap-code-note")) {
-      var note = document.createElement("p");
-      note.id = "iap-code-note";
-      note.className = "muted";
-      note.textContent = "Already have an unlock code? Enter it here.";
-      unlock.parentNode.insertBefore(note, unlock);
+      var codeNote = document.createElement("p");
+      codeNote.id = "iap-code-note";
+      codeNote.className = "muted";
+      codeNote.textContent = "Already have an unlock code? Enter it here.";
+      unlock.parentNode.insertBefore(codeNote, unlock);
     }
     var lic = activeLicense();
     var code = crewCode();
@@ -259,79 +395,10 @@
       '<a href="' + TERMS + '" target="_blank" rel="noopener">Terms of Use (EULA)</a> · ' +
       '<a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>' +
       web;
-    var msg = function (t) {
-      var m = document.getElementById("iap-msg");
-      if (m) m.textContent = t;
-    };
-    if (productError) msg(productError);
-    Array.prototype.forEach.call(card.querySelectorAll("[data-iap]"), function (btn) {
-      btn.onclick = function () {
-        var id = btn.getAttribute("data-iap");
-        note("tap " + (id === SEAT ? "seat" : "pack"));
-        if (!products[id]) {
-          note("product missing");
-          msg(Logic.missingProductsMessage());
-          return;
-        }
-        if (diag && diag.canMakePayments === false) {
-          note("payments off");
-          msg("In-App Purchases are turned off on this iPhone. Check Screen Time and Restrictions. You were not charged.");
-          return;
-        }
-        btn.disabled = true;
-        msg("Opening App Store checkout…");
-        note("purchase called");
-        var finished = false;
-        var timer = setTimeout(function () {
-          if (finished) return;
-          btn.disabled = false;
-          note("timed out");
-          msg(Logic.purchaseStallMessage());
-        }, PURCHASE_WAIT_MS);
-        NP.purchaseProduct({ productIdentifier: id, productType: "inapp", quantity: 1 }).then(function (tx) {
-          finished = true;
-          clearTimeout(timer);
-          note("purchase returned");
-          var stamped = tx || {};
-          if (!stamped.purchaseDate) stamped.purchaseDate = new Date().toISOString();
-          if (!stamped.productIdentifier) stamped.productIdentifier = id;
-          var row = Logic.pickEntitlement([stamped], Date.now());
-          if (row) grantRow(row, true);
-          return sync();
-        }).then(function () {
-          msg("This phone is unlocked.");
-          render();
-        }).catch(function (e) {
-          finished = true;
-          clearTimeout(timer);
-          btn.disabled = false;
-          var raw = String(e && (e.message || e) || "");
-          if (/cancel/i.test(raw)) {
-            note("cancelled");
-            msg("");
-          } else if (/cannot find product|not found/i.test(raw)) {
-            note("product not found");
-            msg(Logic.missingProductsMessage());
-          } else {
-            note(raw ? raw.slice(0, 140) : "purchase failed");
-            msg(raw ? raw : "Purchase did not finish, so you were not charged. Please try again.");
-          }
-        });
-      };
-    });
-    var restoreBtn = document.getElementById("iap-restore");
-    if (restoreBtn) {
-      restoreBtn.onclick = function () {
-        msg("Restoring…");
-        var done = function () {
-          return sync().then(function (ok) {
-            msg(ok ? "Purchase restored on this phone." : "No active Shop Pack or Seat was found for this Apple ID.");
-            render();
-          });
-        };
-        var pending = (NP.restorePurchases ? NP.restorePurchases() : Promise.resolve());
-        pending.then(done).catch(function () { msg("Restore failed. Check your connection and try again."); });
-      };
+    if (productError) setMsg(productError);
+    if (buyingId) {
+      var pendingBtn = card.querySelector('[data-iap="' + buyingId + '"]');
+      if (pendingBtn) pendingBtn.disabled = true;
     }
   }
   function loadProducts() {
@@ -386,6 +453,7 @@
     });
   }
   function boot() {
+    installTaps();
     render();
     hookCore();
     loadDiagnostics().then(render);

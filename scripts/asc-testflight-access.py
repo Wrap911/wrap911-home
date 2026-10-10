@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Compare TestFlight builds 11 and 13, then give 13 the same internal access as 11.
+"""Give TestFlight build 14 the same internal access as build 11.
 
-Sets export compliance only to match build 11, and adds build 13 to the internal
-beta groups (and individual testers) that already have build 11. Does not submit
-for review and does not change in-app purchases.
+Waits until build 14 has been uploaded, sets export compliance to false, and adds
+it to the internal beta groups (and individual testers) that already have build 11.
+Does not submit for review and does not change in-app purchases.
 """
 import os
 import re
@@ -13,7 +13,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-VERSIONS = ("11", "13")  # build 13 is the purchase-diagnostic upload
+NEW = "14"  # one-window tap fix; build 11 is the internal-access reference
 BANNED = (
     "reviewSubmissions",
     "reviewSubmissionItems",
@@ -219,16 +219,37 @@ def add_testers(build_id, tester_ids):
     print(f"add {len(tester_ids)} individual testers -> {status}")
 
 
+def wait_for_build(version, seconds=75 * 60):
+    deadline = time.time() + seconds
+    while True:
+        row = find_build(version)
+        state = ((row or {}).get("attributes") or {}).get("processingState")
+        if row and state in ("VALID", "INVALID", "FAILED"):
+            print(f"build {version} processing {state}")
+            return row
+        if row:
+            print(f"build {version} processing {state}")
+        else:
+            print(f"build {version} not uploaded yet")
+        if time.time() > deadline:
+            return row
+        time.sleep(30)
+
+
 def main():
     found = {}
-    for version in VERSIONS:
-        row = find_build(version)
-        if not row:
-            print(f"build {version} not found")
-            continue
-        found[version] = row
+    newest = wait_for_build(NEW)
+    if newest:
+        found[NEW] = newest
+    else:
+        print(f"build {NEW} not found")
+    previous_row = find_build("11")
+    if previous_row:
+        found["11"] = previous_row
+    else:
+        print("build 11 not found")
     build11 = (found.get("11") or {}).get("id")
-    build13 = (found.get("13") or {}).get("id")
+    build13 = (found.get(NEW) or {}).get("id")
     print("GROUPS")
     listed = app_groups()
     if not listed:
@@ -241,14 +262,14 @@ def main():
         membership[group["id"]] = ids
         has11 = build11 in ids if build11 else False
         has13 = build13 in ids if build13 else False
-        print(f"{kind} {attrs.get('name') or group['id']}: builds={len(ids)} build11={has11} build13={has13}")
+        print(f"{kind} {attrs.get('name') or group['id']}: builds={len(ids)} build11={has11} build{NEW}={has13}")
     print("BEFORE")
     described = {}
     for version, row in found.items():
         described[version] = describe(f"build {version}", row)
-    if "13" not in described:
-        raise SystemExit("build 13 was not found")
-    current = described["13"]
+    if NEW not in described:
+        raise SystemExit(f"build {NEW} was not found")
+    current = described[NEW]
     previous = described.get("11")
     print("ACTIONS")
     changed = False
@@ -262,13 +283,13 @@ def main():
         "READY_FOR_BETA_TESTING",
         "IN_BETA_TESTING",
     ):
-        print("build 11 is already available to testers and did not record a true encryption flag; marking 13 exempt")
+        print(f"build 11 is already available to testers and did not record a true encryption flag; marking {NEW} exempt")
         changed = patch_encryption(build_id, False) or changed
     elif flag is not None and previous_flag is not None and flag != previous_flag and state == "MISSING_EXPORT_COMPLIANCE":
-        print(f"build 13 encryption flag {flag} does not match build 11 {previous_flag}")
+        print(f"build {NEW} encryption flag {flag} does not match build 11 {previous_flag}")
         changed = patch_encryption(build_id, previous_flag) or changed
     else:
-        print(f"encryption left unchanged (13={flag}, 11={previous_flag}, state={state})")
+        print(f"encryption left unchanged ({NEW}={flag}, 11={previous_flag}, state={state})")
 
     if previous and previous["declaration"] and not current["declaration"]:
         declaration_id = previous["declaration"]["id"]
@@ -309,9 +330,9 @@ def main():
     if changed:
         time.sleep(8)
     print("AFTER")
-    row = find_build("13")
+    row = find_build(NEW)
     if row:
-        describe("build 13", row)
+        describe(f"build {NEW}", row)
 
 
 if __name__ == "__main__":

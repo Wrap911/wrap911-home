@@ -75,7 +75,11 @@ assert.ok(stall.indexOf("not charged") !== -1);
 });
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
 assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instead of leaving the button disabled");
-assert.ok(iap.indexOf("iap-3") !== -1, "pricing must show the js bundle marker");
+assert.ok(iap.indexOf("iap-4") !== -1, "pricing must show the js bundle marker");
+assert.strictEqual(iap.indexOf("btn.onclick"), -1, "buy taps must stay on the document so a re-render cannot drop them");
+assert.strictEqual(iap.indexOf("var note ="), -1, "a local var note would hide the diagnostic function and throw on tap");
+assert.ok(iap.indexOf('addEventListener("error"') !== -1, "a script error must reach the diagnostic line");
+assert.ok(iap.indexOf("pointerdown") !== -1, "a tap must be recorded before the purchase call");
 assert.ok(iap.indexOf("diagnostics") !== -1);
 assert.ok(iap.indexOf("missingProductsMessage") !== -1);
 ["$149", "$49", "$29"].forEach(function (bad) {
