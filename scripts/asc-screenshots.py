@@ -390,8 +390,18 @@ def cycle_version(submission_id, version_id, plan):
             print("version 1.1 is the rejected September submission item 892105462")
             print("removing that item so screenshots can be edited; review was not submitted")
             rejected_item = "N2Q0ZTkyZDQtNDNhNS00OTllLTk1OTQtNDIxYmMzNzE3OGNifDZ8ODkyMTA1NDYy"
-            delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{rejected_item}")
-            print(f"removed rejected version item -> {delete_status}")
+            delete_status, _payload = call(
+                "PATCH",
+                f"reviewSubmissionItems/{rejected_item}",
+                body={
+                    "data": {
+                        "type": "reviewSubmissionItems",
+                        "id": rejected_item,
+                        "attributes": {"removed": True},
+                    }
+                },
+            )
+            print(f"marked rejected version item removed -> {delete_status}")
             if delete_status in (200, 202, 204):
                 if wait_unlocked(version_id):
                     return True
