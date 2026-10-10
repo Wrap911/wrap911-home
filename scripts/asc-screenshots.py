@@ -34,6 +34,7 @@ SHOTS = (
 )
 EDITABLE = {
     "PREPARE_FOR_SUBMISSION",
+    "READY_FOR_REVIEW",
     "DEVELOPER_REJECTED",
     "REJECTED",
     "METADATA_REJECTED",
@@ -69,7 +70,7 @@ def token():
 
 
 def call(method, path, params=None, body=None, raw=None, headers=None, timeout=60):
-    if any(part in path for part in REFUSED):
+    if method != "GET" and any(part in path for part in REFUSED):
         raise SystemExit("refusing " + path)
     if method != "GET" and path.startswith("appStoreVersions/") and "/appScreenshots" not in path and "appScreenshotSets" not in path:
         # Version updates, build attachments, and review details stay untouched.
@@ -140,39 +141,45 @@ def check_files():
 
 
 def choose_version():
-    rows = pages(
-        f"apps/{APP_ID}/appStoreVersions",
-        {"filter[platform]": "IOS", "limit": 20},
-    )
+    rows = pages(f"apps/{APP_ID}/appStoreVersions", {"limit": 20})
     print("VERSIONS")
-    chosen = None
     strings = []
+    editable = []
     for row in rows:
         attrs = row.get("attributes") or {}
         version = str(attrs.get("versionString") or "")
         state = attrs.get("appStoreState")
+        platform = attrs.get("platform")
         strings.append(version)
         print(
             f"id {row['id']} version {version} appStoreState {state} "
-            f"appVersionState {attrs.get('appVersionState')} platform {attrs.get('platform')}"
+            f"appVersionState {attrs.get('appVersionState')} platform {platform}"
         )
-        if version == "1.0" and (chosen is None or state in EDITABLE):
-            chosen = row
-    if not chosen:
-        raise SystemExit("no iOS App Store version 1.0")
-    state = (chosen.get("attributes") or {}).get("appStoreState")
-    if state not in EDITABLE:
-        raise SystemExit(f"version 1.0 is {state}; screenshots were not changed")
-    has_11 = "1.1" in strings
+        if platform in (None, "IOS") and state in EDITABLE:
+            editable.append(row)
+    if not editable:
+        raise SystemExit("no editable iOS App Store version; screenshots were not changed")
+    chosen = next((row for row in editable if str((row.get("attributes") or {}).get("versionString")) == "1.0"), None)
+    if chosen is None:
+        chosen = editable[0]
+    attrs = chosen.get("attributes") or {}
+    state = attrs.get("appStoreState")
+    version = str(attrs.get("versionString") or "")
     print("VERSION STRING CHECK")
-    print(f"editable version 1.0 id {chosen['id']} state {state}")
-    if has_11:
-        print("an App Store version string 1.1 already exists, so 1.0 cannot be renamed to 1.1")
-    else:
+    print(f"editable version {version} id {chosen['id']} state {state}")
+    if version == "1.1":
+        print("the App Store version string is already 1.1. No 1.0 version remains to rename. It was not changed.")
+    elif "1.1" in strings:
+        print("an App Store version string 1.1 already exists, so this version cannot be renamed to 1.1. It was not changed.")
+    elif state in EDITABLE:
         print(
-            "no App Store version uses 1.1. This 1.0 version is in an editable state, "
-            "so a versionString PATCH to 1.1 is allowed by the API. It was not sent."
+            "this version is editable and 1.1 is not used by another App Store version, "
+            "so a versionString PATCH to 1.1 is allowed. It was not sent."
         )
+    submissions = pages("reviewSubmissions", {"filter[app]": APP_ID, "limit": 5})
+    for submission in submissions:
+        sub_attrs = submission.get("attributes") or {}
+        print(f"review submission {submission['id']} state {sub_attrs.get('state')} submitted {sub_attrs.get('submittedDate')}")
     trains = pages(f"apps/{APP_ID}/preReleaseVersions", {"limit": 10})
     train_names = sorted({str((row.get("attributes") or {}).get("version") or "") for row in trains})
     print("build trains " + ", ".join(name for name in train_names if name) or "(none read)")
