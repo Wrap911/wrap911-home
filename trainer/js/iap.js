@@ -220,19 +220,64 @@
       }
     });
   }
+  function readStore() {
+    if (!NP || !NP.getPurchases) {
+      return Promise.reject(new Error("App Store purchasing is not available in this build."));
+    }
+    function one(opts) {
+      return NP.getPurchases(opts).then(function (r) {
+        return { purchases: (r && r.purchases) || [], error: "" };
+      }, function (e) {
+        return { purchases: [], error: String((e && (e.message || e)) || "Could not read App Store purchases.") };
+      });
+    }
+    /* Transaction.all, then currentEntitlements. Both stay on the phone. */
+    return Promise.all([
+      one(),
+      one({ onlyCurrentEntitlements: true })
+    ]).then(function (parts) {
+      var list = [];
+      var errors = [];
+      parts.forEach(function (part) {
+        if (part.error) errors.push(part.error);
+        for (var i = 0; i < part.purchases.length; i++) list.push(part.purchases[i]);
+      });
+      return { list: list, error: errors.length === parts.length ? errors[0] : "" };
+    });
+  }
+  function finishRestore(row, errorText) {
+    if (row) grantRow(row, true);
+    render();
+    setMsg(Logic.restoreMessage(!!row, errorText));
+  }
   function restore() {
     setMsg("Restoring…");
     note("tap restore");
-    var done = function () {
-      return sync().then(function (ok) {
-        setMsg(ok ? "Purchase restored on this phone." : "No active Shop Pack or Seat was found for this Apple ID.");
-        render();
+    readStore().then(function (first) {
+      if (first.error && !first.list.length) throw new Error(first.error);
+      var row = Logic.pickEntitlement(first.list, Date.now());
+      if (row) {
+        note("restored " + row.sku);
+        finishRestore(row, "");
+        return;
+      }
+      /* A new phone has an empty local history until Apple syncs it. */
+      if (!NP.restorePurchases) {
+        finishRestore(null, "");
+        return;
+      }
+      return NP.restorePurchases().then(function () {
+        return readStore();
+      }).then(function (second) {
+        if (second.error && !second.list.length) throw new Error(second.error);
+        var again = Logic.pickEntitlement(second.list, Date.now());
+        if (again) note("restored " + again.sku);
+        finishRestore(again, "");
       });
-    };
-    var pending = (NP && NP.restorePurchases ? NP.restorePurchases() : Promise.resolve());
-    pending.then(done).catch(function (e) {
-      reportJs(e && (e.message || e) || "restore failed");
-      setMsg("Restore failed. Check your connection and try again.");
+    }).catch(function (e) {
+      var raw = String((e && (e.message || e)) || "Restore failed.");
+      note(raw.slice(0, 140));
+      finishRestore(null, raw);
     });
   }
   function installTaps() {
