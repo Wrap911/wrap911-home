@@ -44,6 +44,22 @@ EDITABLE = {
 REFUSED = (
     "appStoreVersionSubmissions",
 )
+# Removed from the unsubmitted draft on the previous run. Put them back
+# even if that run stops before it can read them again.
+KNOWN_DRAFT_ITEMS = (
+    {
+        "id": None,
+        "entity": "fbb301a1-3160-4f92-bc09-5c4049c89a16",
+        "relationship": "subscriptionVersion",
+        "resource_type": "subscriptionVersions",
+    },
+    {
+        "id": None,
+        "entity": "a2bd9dea-e1f3-4df9-95ca-cb471a078765",
+        "relationship": "subscriptionVersion",
+        "resource_type": "subscriptionVersions",
+    },
+)
 
 
 def pem():
@@ -71,7 +87,9 @@ def token():
 def call(method, path, params=None, body=None, raw=None, headers=None, timeout=60):
     segments = [piece.split("?", 1)[0] for piece in path.split("/") if piece]
     if method == "PATCH" and segments[:1] == ["reviewSubmissions"]:
-        raise SystemExit("refusing review submission update")
+        attrs = ((body or {}).get("data") or {}).get("attributes") or {}
+        if set(attrs) != {"canceled"} or attrs.get("canceled") is not True:
+            raise SystemExit("refusing review submission update")
     if method == "POST" and segments[:1] == ["reviewSubmissions"] and len(segments) > 1:
         raise SystemExit("refusing " + path)
     if method != "GET" and any(part in path for part in REFUSED):
@@ -144,7 +162,7 @@ def check_files():
         print(f"file {shot['file_name']} {width}x{height} rgb {os.path.getsize(shot['path'])} bytes")
 
 
-def choose_version():
+def choose_version(plan):
     rows = pages(f"apps/{APP_ID}/appStoreVersions", {"limit": 20})
     print("VERSIONS")
     strings = []
@@ -184,8 +202,8 @@ def choose_version():
     for submission in submissions:
         sub_attrs = submission.get("attributes") or {}
         print(f"review submission {submission['id']} state {sub_attrs.get('state')} submitted {sub_attrs.get('submittedDate')}")
-    plan = {"submission_id": None, "items": [], "deleted_submission": False}
     chosen["restorePlan"] = plan
+    explain_version(chosen["id"])
     unlock_unsubmitted(chosen["id"], plan)
     trains = pages(f"apps/{APP_ID}/preReleaseVersions", {"limit": 10})
     train_names = sorted({str((row.get("attributes") or {}).get("version") or "") for row in trains})
@@ -279,55 +297,112 @@ def describe_item(item):
     return entity, "", "", ""
 
 
+def explain_version(version_id):
+    status, payload = call("GET", f"appStoreVersions/{version_id}/appStoreVersionSubmission")
+    submission = payload.get("data") or {}
+    print(
+        f"legacy appStoreVersionSubmission {status} "
+        f"id {submission.get('id') or 'none'} state {(submission.get('attributes') or {}).get('state')}"
+    )
+    status, payload = call("GET", f"appStoreVersions/{version_id}")
+    rels = ((payload.get("data") or {}).get("relationships") or {}) if status < 400 else {}
+    for key, value in rels.items():
+        data = (value or {}).get("data")
+        ident = data.get("id") if isinstance(data, dict) else ""
+        print(f"version relationship {key} {ident or 'none'}")
+
+
+def remember_items(submission_id, plan):
+    saved = []
+    for item in draft_items(submission_id):
+        entity, relationship, resource_type, label = describe_item(item)
+        saved.append(
+            {
+                "id": item["id"],
+                "entity": entity,
+                "relationship": relationship,
+                "resource_type": resource_type,
+            }
+        )
+        print(
+            f"draft item {item['id']} entity {entity} link {label or 'unknown'} "
+            f"state {(item.get('attributes') or {}).get('state')}"
+        )
+    if saved:
+        plan["items"] = saved
+        plan["needs_restore"] = False
+    else:
+        plan["needs_restore"] = True
+        print("unsubmitted draft has no items; the two subscription versions will be put back")
+    return saved
+
+
+def cancel_unsubmitted(submission_id):
+    """Cancel the draft that was never submitted. This does not send it to App Review."""
+    status, payload = call(
+        "PATCH",
+        f"reviewSubmissions/{submission_id}",
+        body={
+            "data": {
+                "type": "reviewSubmissions",
+                "id": submission_id,
+                "attributes": {"canceled": True},
+            }
+        },
+    )
+    state = ((payload.get("data") or {}).get("attributes") or {}).get("state")
+    print(f"canceled unsubmitted review submission {submission_id} -> {status} {state or ''}")
+    return status < 400
+
+
 def unlock_unsubmitted(version_id, plan):
     """Ready for Review locks screenshots. Clear the unsubmitted draft, then restore it later.
 
     The rejected September submission is left alone. Nothing is submitted, and
-    in-app purchase products, prices, and availability are not edited.
+    subscription products, prices, and availability are not edited.
     """
     submissions = pages("reviewSubmissions", {"filter[app]": APP_ID, "limit": 10})
+    draft = None
     for submission in submissions:
         attrs = submission.get("attributes") or {}
         version_link = ((submission.get("relationships") or {}).get("appStoreVersionForReview") or {}).get("data") or {}
         print(
             f"submission link {submission['id']} appStoreVersionForReview {version_link.get('id') or 'none'} "
-            f"state {attrs.get('state')}"
+            f"state {attrs.get('state')} submitted {attrs.get('submittedDate')}"
         )
-        if attrs.get("state") != "READY_FOR_REVIEW" or attrs.get("submittedDate"):
-            print(f"leaving review submission {submission['id']} state {attrs.get('state')}")
+        unsubmitted = attrs.get("state") == "READY_FOR_REVIEW" and not attrs.get("submittedDate")
+        if unsubmitted and draft is None:
+            draft = submission
+            plan["submission_id"] = submission["id"]
+            remember_items(submission["id"], plan)
             continue
-        saved = []
-        for item in draft_items(submission["id"]):
-            entity, relationship, resource_type, label = describe_item(item)
-            saved.append(
-                {
-                    "id": item["id"],
-                    "entity": entity,
-                    "relationship": relationship,
-                    "resource_type": resource_type,
-                }
-            )
-            print(
-                f"draft item {item['id']} entity {entity} link {label or 'unknown'} "
-                f"state {(item.get('attributes') or {}).get('state')}"
-            )
-        plan["submission_id"] = submission["id"]
-        plan["items"] = saved
-        for item in saved:
-            delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
-            print(f"removed draft review item {item['id']} -> {delete_status}")
-            if delete_status not in (200, 202, 204):
-                raise SystemExit("could not remove a draft review item")
-        if wait_unlocked(version_id):
-            return
-        delete_status, _payload = call("DELETE", f"reviewSubmissions/{submission['id']}")
-        print(f"removed unsubmitted review submission {submission['id']} -> {delete_status}")
-        if delete_status not in (200, 202, 204):
-            raise SystemExit("could not remove the unsubmitted review submission")
-        plan["deleted_submission"] = True
-        if wait_unlocked(version_id):
-            return
+        print(f"leaving review submission {submission['id']} state {attrs.get('state')}")
+        try:
+            left_items = draft_items(submission["id"])
+        except SystemExit as exc:
+            print(f"could not list items for {submission['id']}: {exc}")
+            continue
+        for item in left_items:
+            entity, _relationship, _resource_type, label = describe_item(item)
+            print(f"left item {item['id']} entity {entity} link {label or 'unknown'}")
+    if wait_unlocked(version_id):
+        return
+    if draft is None:
         raise SystemExit("version stayed locked; screenshots were not changed")
+    plan["submission_id"] = draft["id"]
+    for item in list(plan.get("items") or []):
+        if not item.get("id"):
+            continue
+        delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
+        plan["needs_restore"] = True
+        print(f"removed draft review item {item['id']} -> {delete_status}")
+        if delete_status not in (200, 202, 204):
+            raise SystemExit("could not remove a draft review item")
+    if wait_unlocked(version_id):
+        return
+    if not cancel_unsubmitted(draft["id"]):
+        raise SystemExit("could not cancel the unsubmitted review submission; screenshots were not changed")
+    plan["deleted_submission"] = True
     if wait_unlocked(version_id):
         return
     raise SystemExit("version stayed locked; screenshots were not changed")
@@ -355,6 +430,9 @@ def add_review_item(submission_id, relationship, resource_type, resource_id):
 def restore_unsubmitted(plan, version_id):
     plan = plan or {}
     submission_id = plan.get("submission_id")
+    if not plan.get("needs_restore"):
+        print("draft items were left in place and review was not submitted")
+        return
     if not submission_id and not plan.get("items"):
         print("no unsubmitted review submission to restore")
         return
@@ -563,9 +641,18 @@ def upload_shot(set_id, shot):
 
 def main():
     check_files()
-    version = None
+    holder = {
+        "version": None,
+        "plan": {
+            "submission_id": None,
+        "items": [dict(item) for item in KNOWN_DRAFT_ITEMS],
+        "deleted_submission": False,
+        "needs_restore": True,
+    },
+    }
     try:
-        version = choose_version()
+        version = choose_version(holder["plan"])
+        holder["version"] = version
         version_id = version["id"]
         localizations = pages(f"appStoreVersions/{version_id}/appStoreVersionLocalizations", {"limit": 10})
         if not localizations:
@@ -598,8 +685,8 @@ def main():
                     results.append({"display": display, "state": "UNREPLACED", "locale": locale})
         report_gaps(version_id, localizations, results)
     finally:
-        if version is not None:
-            restore_unsubmitted(version.get("restorePlan"), version["id"])
+        version = holder["version"] or {}
+        restore_unsubmitted(holder["plan"], version.get("id") or "")
 
 
 if __name__ == "__main__":
