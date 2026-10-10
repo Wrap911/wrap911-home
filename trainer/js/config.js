@@ -9,7 +9,7 @@
 window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
   contactName: "Gerry",
-  contactEmail: "Djavoo1975@icloud.com", /* same address as the live sales page footer */
+  contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "Arlon"],
   version: "2.7.4",
   defaultSku: "W911-PACK",
