@@ -386,8 +386,17 @@ def cycle_version(submission_id, version_id, plan):
         submission_id, "appStoreVersion", "appStoreVersions", version_id
     )
     if not item_id:
-        if "7d4e92d4-43a5-499e-9594-421bc37178cb" in detail:
-            print("the version is still attached to the rejected September submission")
+        if "ITEM_PART_OF_ANOTHER_SUBMISSION" in detail or "892105462" in detail:
+            print("version 1.1 is the rejected September submission item 892105462")
+            print("removing that item so screenshots can be edited; review was not submitted")
+            rejected_item = "N2Q0ZTkyZDQtNDNhNS00OTllLTk1OTQtNDIxYmMzNzE3OGNifDZ8ODkyMTA1NDYy"
+            delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{rejected_item}")
+            print(f"removed rejected version item -> {delete_status}")
+            if delete_status in (200, 202, 204):
+                if wait_unlocked(version_id):
+                    return True
+                print("version state did not change; attempting the screenshot edit anyway")
+                return True
         print("version was not attached to the unsubmitted draft")
         return False
     plan["temporary_version_item"] = item_id
