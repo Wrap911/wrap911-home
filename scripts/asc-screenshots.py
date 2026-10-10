@@ -201,12 +201,25 @@ def unlock_unsubmitted(version_id):
         if attrs.get("state") != "READY_FOR_REVIEW" or attrs.get("submittedDate"):
             print(f"leaving review submission {submission['id']} state {attrs.get('state')}")
             continue
-        items = pages(f"reviewSubmissions/{submission['id']}/items", {"limit": 20})
-        for item in items:
-            _status, detail = call("GET", f"reviewSubmissionItems/{item['id']}", {"include": "appStoreVersion"})
-            relationships = (detail.get("data") or {}).get("relationships") or {}
+        status, payload = call(
+            "GET",
+            f"reviewSubmissions/{submission['id']}/items",
+            {"limit": 20, "include": "appStoreVersion"},
+        )
+        if status >= 400:
+            raise SystemExit("could not list draft review items")
+        included = {row.get("id"): row for row in (payload.get("included") or [])}
+        for item in payload.get("data") or []:
+            relationships = item.get("relationships") or {}
             related = (relationships.get("appStoreVersion") or {}).get("data") or {}
-            print(f"review item {item['id']} links {list(relationships)} version {related.get('id')}")
+            if not related.get("id"):
+                link_status, link = call("GET", f"reviewSubmissionItems/{item['id']}/appStoreVersion")
+                if link_status < 400:
+                    related = link.get("data") or {}
+            print(
+                f"review item {item['id']} links {str(relationships)[:400]} "
+                f"version {related.get('id')}"
+            )
             if related.get("id") != version_id:
                 continue
             status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
