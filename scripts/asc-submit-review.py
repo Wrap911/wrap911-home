@@ -889,6 +889,28 @@ def age_and_privacy():
     return gaps
 
 
+def territory_code(value):
+    """App availability ids are sometimes base64 JSON, with the territory in t."""
+    if not value:
+        return ""
+    text = str(value)
+    if len(text) == 3 and text.isalpha():
+        return text
+    padded = text + "=" * ((4 - len(text) % 4) % 4)
+    try:
+        decoded = base64.b64decode(padded).decode()
+    except (ValueError, UnicodeDecodeError):
+        return text
+    if decoded.startswith("{"):
+        try:
+            parsed = json.loads(decoded)
+        except json.JSONDecodeError:
+            return text
+        if parsed.get("t"):
+            return str(parsed["t"])
+    return text
+
+
 def availability_ids(path, params):
     available = []
     new_flag = None
@@ -909,14 +931,14 @@ def availability_ids(path, params):
             row_type = row.get("type")
             row_attrs = row.get("attributes") or {}
             if row_type == "territories":
-                available.append(row.get("id"))
+                available.append(territory_code(row.get("id")))
             elif row_type == "territoryAvailabilities" and row_attrs.get("available") is True:
                 territory = ((row.get("relationships") or {}).get("territory") or {}).get("data") or {}
-                available.append(territory.get("id") or row.get("id"))
+                available.append(territory_code(territory.get("id") or row.get("id")))
         related = ((payload.get("data") or {}).get("relationships") or {}).get("availableTerritories") or {}
         for row in related.get("data") or []:
             if isinstance(row, dict) and row.get("id"):
-                available.append(row["id"])
+                available.append(territory_code(row["id"]))
         next_url = ((payload.get("links") or {}).get("next")) or ""
         if "/v2/" in next_url:
             path = "v2/" + next_url.split("/v2/", 1)[1]
