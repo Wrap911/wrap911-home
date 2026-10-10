@@ -51,7 +51,7 @@ index e4ab9e1..4b7960f 100644
                  print("purchaseProduct result \(result)")
                  await self.handlePurchaseResult(result, call: call, autoFinish: autoAcknowledge)
              } catch {
-@@ -140,6 +156,63 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+@@ -140,6 +156,65 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
          }
      }
  

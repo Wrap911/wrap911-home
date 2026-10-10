@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Give TestFlight build 14 the same internal access as build 11.
+"""Give TestFlight build 15 the same internal access as build 11.
 
-Waits until build 14 has been uploaded, sets export compliance to false, and adds
+Waits until build 15 has been uploaded, sets export compliance to false, and adds
 it to the internal beta groups (and individual testers) that already have build 11.
 Does not submit for review and does not change in-app purchases.
 """
@@ -13,7 +13,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-NEW = "14"  # one-window tap fix; build 11 is the internal-access reference
+NEW = "15"  # one-window tap fix; build 11 is the internal-access reference
 BANNED = (
     "reviewSubmissions",
     "reviewSubmissionItems",
