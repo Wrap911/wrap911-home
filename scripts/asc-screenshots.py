@@ -355,6 +355,51 @@ def cancel_unsubmitted(submission_id):
     return status < 400
 
 
+def probe_numeric(entity):
+    if not entity or not str(entity).isdigit():
+        return
+    for kind in (
+        "builds",
+        "preReleaseVersions",
+        "appInfos",
+        "appStoreReviewDetails",
+        "appCustomProductPages",
+        "appStoreVersionExperimentTreatments",
+        "apps",
+    ):
+        status, payload = call("GET", f"{kind}/{entity}")
+        if status < 400 and payload.get("data"):
+            attrs = payload["data"].get("attributes") or {}
+            print(f"entity {entity} is {kind} {str(attrs)[:180]}")
+            return
+    print(f"entity {entity} numeric id was not identified")
+
+
+def cycle_version(submission_id, version_id, plan):
+    """Attach this version to the unsubmitted draft, then remove that item.
+
+    Ready for Review blocks screenshot edits. The draft is not submitted.
+    Subscription items already on the draft stay there.
+    """
+    print(f"version state before cycle {version_state(version_id)}")
+    _status, detail, item_id = add_review_item(
+        submission_id, "appStoreVersion", "appStoreVersions", version_id
+    )
+    if not item_id:
+        if "7d4e92d4-43a5-499e-9594-421bc37178cb" in detail:
+            print("the version is still attached to the rejected September submission")
+        print("version was not attached to the unsubmitted draft")
+        return False
+    plan["temporary_version_item"] = item_id
+    print(f"version state after attach {version_state(version_id)}")
+    delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{item_id}")
+    print(f"removed temporary version item {item_id} -> {delete_status}")
+    if delete_status not in (200, 202, 204):
+        return False
+    plan["temporary_version_item"] = None
+    return wait_unlocked(version_id)
+
+
 def unlock_unsubmitted(version_id, plan):
     """Ready for Review locks screenshots. Clear the unsubmitted draft, then restore it later.
 
@@ -384,26 +429,15 @@ def unlock_unsubmitted(version_id, plan):
             continue
         for item in left_items:
             entity, _relationship, _resource_type, label = describe_item(item)
-            print(f"left item {item['id']} entity {entity} link {label or 'unknown'}")
-    if wait_unlocked(version_id):
-        return
+            print(
+                f"left item {item['id']} entity {entity} link {label or 'unknown'} "
+                f"rels {item.get('relationships')}"
+            )
+            probe_numeric(entity)
     if draft is None:
         raise SystemExit("version stayed locked; screenshots were not changed")
     plan["submission_id"] = draft["id"]
-    for item in list(plan.get("items") or []):
-        if not item.get("id"):
-            continue
-        delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
-        plan["needs_restore"] = True
-        print(f"removed draft review item {item['id']} -> {delete_status}")
-        if delete_status not in (200, 202, 204):
-            raise SystemExit("could not remove a draft review item")
-    if wait_unlocked(version_id):
-        return
-    if not cancel_unsubmitted(draft["id"]):
-        raise SystemExit("could not cancel the unsubmitted review submission; screenshots were not changed")
-    plan["deleted_submission"] = True
-    if wait_unlocked(version_id):
+    if cycle_version(draft["id"], version_id, plan):
         return
     raise SystemExit("version stayed locked; screenshots were not changed")
 
@@ -422,13 +456,18 @@ def add_review_item(submission_id, relationship, resource_type, resource_id):
             }
         },
     )
-    item_id = (payload.get("data") or {}).get("id")
-    print(f"draft item {relationship} {resource_id} -> {status} {item_id or ''}")
-    return status < 400
+    item_id = (payload.get("data") or {}).get("id") or ""
+    print(f"draft item {relationship} {resource_id} -> {status} {item_id}")
+    return status, str(payload)[:800], item_id
 
 
 def restore_unsubmitted(plan, version_id):
     plan = plan or {}
+    temporary = plan.get("temporary_version_item")
+    if temporary:
+        delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{temporary}")
+        print(f"removed temporary version item {temporary} -> {delete_status}")
+        plan["temporary_version_item"] = None
     submission_id = plan.get("submission_id")
     if not plan.get("needs_restore"):
         print("draft items were left in place and review was not submitted")
@@ -458,7 +497,7 @@ def restore_unsubmitted(plan, version_id):
             print(f"could not restore draft item {item.get('id')} entity {item.get('entity')}")
             continue
         add_review_item(submission_id, item["relationship"], item["resource_type"], item["entity"])
-    print(f"app version {version_id} was not attached to the draft and review was not submitted")
+    print(f"app version {version_id} was not left on the draft and review was not submitted")
 
 
 def blank(value):
