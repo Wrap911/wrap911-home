@@ -12,7 +12,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-PERSONAL = "djavoo1975@icloud.com"
+PERSONAL = {"djavoo1975@icloud.com", "djavoo75@gmail.com"}
 PUBLIC = "info@wrap911.com"
 PATCHABLE = re.compile(r"^(appStoreReviewDetails|betaAppReviewDetails)/[0-9a-fA-F-]{36}$")
 
@@ -99,7 +99,7 @@ def show_email(label, resource):
 
 def patch_email(resource_type, resource):
     email = ((resource or {}).get("attributes") or {}).get("contactEmail") or ""
-    if email.lower() != PERSONAL:
+    if email.lower() not in PERSONAL:
         print("left", resource_type, "unchanged")
         return
     status, payload = call(
