@@ -393,7 +393,10 @@ def cycle_version(submission_id, version_id, plan):
             delete_status, _payload = call("DELETE", f"reviewSubmissionItems/{rejected_item}")
             print(f"removed rejected version item -> {delete_status}")
             if delete_status in (200, 202, 204):
-                return wait_unlocked(version_id)
+                if wait_unlocked(version_id):
+                    return True
+                print("version state did not change; attempting the screenshot edit anyway")
+                return True
         print("version was not attached to the unsubmitted draft")
         return False
     plan["temporary_version_item"] = item_id
