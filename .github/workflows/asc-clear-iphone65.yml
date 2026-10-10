@@ -1,0 +1,27 @@
+name: Clear iPhone 6.5 screenshots
+# Deletes the old iPhone 6.5" screenshots and leaves that set empty.
+# A push of this file to ios-capacitor starts a run. Does not submit for review,
+# attach a build, or change the version string.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-clear-iphone65.yml
+      - scripts/asc-clear-iphone65.py
+jobs:
+  clear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Delete the iPhone 6.5 inch screenshots
+        run: python3 scripts/asc-clear-iphone65.py
