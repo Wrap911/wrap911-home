@@ -66,6 +66,15 @@ assert.strictEqual(L.isNativeApp(), false);
 
 var missing = L.missingProductsMessage();
 var stall = L.purchaseStallMessage();
+var seatDay = Date.parse("2026-10-10T15:00:00.000Z");
+var seatBuy = new Date(seatDay).toISOString();
+var restoredSeat = L.pickEntitlement([tx(SEAT, seatBuy)], seatDay + 1000);
+assert.strictEqual(restoredSeat.sku, "seat");
+assert.strictEqual(restoredSeat.expiresAt, seatDay + YEAR);
+assert.strictEqual(L.restoreMessage(true, "AppStore.sync failed"), "Purchase restored on this phone.");
+assert.strictEqual(L.restoreMessage(false, ""), "No active Shop Pack or Seat was found for this Apple ID.");
+assert.strictEqual(L.restoreMessage(false, "  Request failed.  "), "Request failed.");
+
 assert.ok(missing.indexOf("not charged") !== -1);
 assert.ok(stall.indexOf("did not open") !== -1);
 assert.ok(stall.indexOf("not charged") !== -1);
@@ -85,6 +94,11 @@ assert.ok(iap.indexOf('addEventListener("error"') !== -1, "a script error must r
 assert.ok(iap.indexOf("pointerdown") !== -1, "a tap must be recorded before the purchase call");
 assert.ok(iap.indexOf("diagnostics") !== -1);
 assert.ok(iap.indexOf("missingProductsMessage") !== -1);
+assert.ok(iap.indexOf("onlyCurrentEntitlements") !== -1, "restore must also read currentEntitlements");
+assert.ok(iap.indexOf("restoreMessage") !== -1, "restore must show the logic message");
+assert.strictEqual(iap.indexOf("Check your connection"), -1, "a thrown restore must show the real error");
+var restoreFn = iap.slice(iap.indexOf("function restore()"), iap.indexOf("function installTaps"));
+assert.ok(restoreFn.indexOf("readStore()") < restoreFn.indexOf("restorePurchases"), "local StoreKit history comes before AppStore.sync");
 ["$149", "$49", "$29"].forEach(function (bad) {
   assert.strictEqual(iap.indexOf(bad), -1, "iap.js must not hardcode " + bad);
 });

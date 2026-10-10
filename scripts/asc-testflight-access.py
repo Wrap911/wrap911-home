@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Give TestFlight build 17 the same internal access as build 11.
+"""Give TestFlight build 18 the same internal access as build 11.
 
-Waits until build 17 has been uploaded, sets export compliance to false, and adds
+Waits until build 18 has been uploaded, sets export compliance to false, and adds
 it to the internal beta groups (and individual testers) that already have build 11.
 Does not submit for review and does not change in-app purchases.
 """
@@ -13,7 +13,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
-NEW = "17"  # customer email is info@wrap911.com
+NEW = "18"  # restore a non-renewing Seat or Shop Pack from StoreKit
 BANNED = (
     "reviewSubmissions",
     "reviewSubmissionItems",

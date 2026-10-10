@@ -7,6 +7,7 @@ name: iOS build and upload to App Store Connect
 # Re-upload after the native-purchases patch hunk count is corrected.
 # Upload the release build with the purchase diagnostics hidden.
 # Upload the build whose customer email is info@wrap911.com.
+# Upload the build that restores a non-renewing Seat or Shop Pack from StoreKit.
 on:
   workflow_dispatch:
   push:
