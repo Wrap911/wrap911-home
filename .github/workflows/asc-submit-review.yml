@@ -1,0 +1,27 @@
+name: Submit App Review
+# Attaches TestFlight build 18 to App Store version 1.1 and submits that
+# version with both non-renewing IAPs. A push of this file to ios-capacitor
+# starts a run. Does not change prices, IAP configuration, or the worker.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-submit-review.yml
+      - scripts/asc-submit-review.py
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Submit version 1.1 with build 18
+        run: python3 scripts/asc-submit-review.py
