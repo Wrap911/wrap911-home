@@ -41,8 +41,6 @@ EDITABLE = {
     "INVALID_BINARY",
 }
 REFUSED = (
-    "reviewSubmissions",
-    "reviewSubmissionItems",
     "appStoreVersionSubmissions",
 )
 
@@ -70,6 +68,9 @@ def token():
 
 
 def call(method, path, params=None, body=None, raw=None, headers=None, timeout=60):
+    segments = [piece.split("?", 1)[0] for piece in path.split("/") if piece]
+    if method != "GET" and "reviewSubmissions" in segments:
+        raise SystemExit("refusing " + path)
     if method != "GET" and any(part in path for part in REFUSED):
         raise SystemExit("refusing " + path)
     if method != "GET" and path.startswith("appStoreVersions/") and "/appScreenshots" not in path and "appScreenshotSets" not in path:
@@ -180,10 +181,72 @@ def choose_version():
     for submission in submissions:
         sub_attrs = submission.get("attributes") or {}
         print(f"review submission {submission['id']} state {sub_attrs.get('state')} submitted {sub_attrs.get('submittedDate')}")
+    chosen["draftSubmission"] = unlock_unsubmitted(chosen["id"])
     trains = pages(f"apps/{APP_ID}/preReleaseVersions", {"limit": 10})
     train_names = sorted({str((row.get("attributes") or {}).get("version") or "") for row in trains})
     print("build trains " + ", ".join(name for name in train_names if name) or "(none read)")
     return chosen
+
+
+def unlock_unsubmitted(version_id):
+    """A draft review submission locks screenshots. Remove this version from it.
+
+    Submissions that were already sent stay as they are, and nothing is submitted.
+    The returned submission id is only so the version can be put back after the upload.
+    """
+    opened = None
+    submissions = pages("reviewSubmissions", {"filter[app]": APP_ID, "limit": 10})
+    for submission in submissions:
+        attrs = submission.get("attributes") or {}
+        if attrs.get("state") != "READY_FOR_REVIEW" or attrs.get("submittedDate"):
+            print(f"leaving review submission {submission['id']} state {attrs.get('state')}")
+            continue
+        items = pages(f"reviewSubmissions/{submission['id']}/items", {"limit": 20})
+        for item in items:
+            _status, detail = call("GET", f"reviewSubmissionItems/{item['id']}", {"include": "appStoreVersion"})
+            relationships = (detail.get("data") or {}).get("relationships") or {}
+            related = (relationships.get("appStoreVersion") or {}).get("data") or {}
+            print(f"review item {item['id']} links {list(relationships)} version {related.get('id')}")
+            if related.get("id") != version_id:
+                continue
+            status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
+            print(f"removed version from unsubmitted review submission {submission['id']} -> {status}")
+            if status not in (200, 202, 204):
+                raise SystemExit("could not unlock the version for screenshot edits")
+            opened = submission["id"]
+    for _ in range(8):
+        _status, payload = call("GET", f"appStoreVersions/{version_id}")
+        state = ((payload.get("data") or {}).get("attributes") or {}).get("appStoreState")
+        print(f"version state {state}")
+        if state in EDITABLE and state != "READY_FOR_REVIEW":
+            return opened
+        time.sleep(3)
+    raise SystemExit("version stayed locked; screenshots were not changed")
+
+
+def restore_unsubmitted(submission_id, version_id):
+    if not submission_id:
+        print("version was not on an unsubmitted review submission")
+        return
+    status, payload = call(
+        "POST",
+        "reviewSubmissionItems",
+        body={
+            "data": {
+                "type": "reviewSubmissionItems",
+                "relationships": {
+                    "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": submission_id}},
+                    "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version_id}},
+                },
+            }
+        },
+    )
+    print(f"put version back on unsubmitted review submission {submission_id} -> {status}")
+    if status >= 400:
+        print("the version was not submitted; add it back to the draft submission before sending it for review")
+        return
+    item = (payload.get("data") or {}).get("id")
+    print(f"draft review item {item} restored; review was not submitted")
 
 
 def blank(value):
@@ -393,6 +456,7 @@ def main():
             states = [((item.get("attributes") or {}).get("assetDeliveryState") or {}).get("state") for item in shots]
             print(f"{locale} {display} set {row['id']} count {len(shots)} {states}")
     report_gaps(version_id, localizations, results)
+    restore_unsubmitted(version.get("draftSubmission"), version_id)
 
 
 if __name__ == "__main__":
