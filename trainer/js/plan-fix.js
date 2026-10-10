@@ -202,7 +202,7 @@
       if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(shown)) {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. On each of the other four phones, open WRAP 911, tap Unlock, and type <b>" + shown.replace(/[^A-Z0-9-]/g, "") + "</b>.</p>";
       } else if (lic.source === "apple") {
-        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. The code for the other four phones shows here when it is ready. Until then, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20Apple%20crew%20code\">" + mail + "</a>" : "us") + " with your Apple receipt.</p>";
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is unlocked for 12 months. Your extra seat codes will appear here. Until then, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20Apple%20crew%20code\">" + mail + "</a>" : "us") + " and we will send the codes for the other four phones.</p>";
       } else {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. For the other four phones, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20crew%20code\">" + mail + "</a>" : "us") + " with your Stripe receipt and we send your crew code.</p>";
       }

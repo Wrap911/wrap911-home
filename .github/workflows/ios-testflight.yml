@@ -5,6 +5,7 @@ name: iOS build and upload to App Store Connect
 # Upload the build that shows the purchase diagnostic and presents the sheet on the visible window.
 # Upload the build that keeps one window and records the Seat tap.
 # Re-upload after the native-purchases patch hunk count is corrected.
+# Upload the release build with the purchase diagnostics hidden.
 on:
   workflow_dispatch:
   push:

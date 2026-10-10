@@ -142,8 +142,6 @@
   function reportJs(text) {
     var line = String(text || "error").replace(/\s+/g, " ").slice(0, 140);
     note("JS " + line);
-    var m = document.getElementById("iap-msg");
-    if (m) m.textContent = line;
   }
   function buttonFromEvent(ev) {
     var node = ev.target;
@@ -357,7 +355,7 @@
           var shown = /^W911-/.test(code) ? code : lic.code;
           status += '<p class="msg">Crew code <b class="code">' + escapeText(shown) + "</b><br>Type it in Unlock on up to 4 other phones.</p>";
         } else {
-          status += '<p class="msg">This phone is unlocked for 12 months. The code for the other four phones is not ready yet. Email ' + mailHtml + " with your Apple receipt and we will send it.</p>";
+          status += '<p class="msg">Your extra seat codes will appear here. This phone is already unlocked. Until then, email ' + mailHtml + " and we will send the codes for the other four phones.</p>";
         }
       }
     }
@@ -382,8 +380,6 @@
       : "";
     card.innerHTML =
       "<h2>Buy with Apple</h2>" +
-      '<p class="diag" id="iap-diag">' + escapeText(diagText()) + "</p>" +
-      '<p class="diag" id="iap-steps">' + escapeText(steps.join(" · ")) + "</p>" +
       '<p class="iap-lead">Full trainer on this phone for 12 months. Shop Pack is the crew buy: this phone plus four more.</p>' +
       buttons +
       status +
