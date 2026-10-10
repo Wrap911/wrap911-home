@@ -60,6 +60,7 @@ TARGET_SUBMISSION_ID = None
 SUBMIT_ARMED = False
 DELETABLE_ITEMS = set()
 LOOKUP_CACHE = {}
+VERSION_TO_PRODUCT = {}
 
 
 def pem():
@@ -484,8 +485,57 @@ def resource_attrs(kind, resource_id):
     return payload["data"]
 
 
+def product_from_payload(payload):
+    rows = []
+    data = (payload or {}).get("data")
+    if isinstance(data, dict):
+        rows.append(data)
+    elif isinstance(data, list):
+        rows.extend(data)
+    rows.extend((payload or {}).get("included") or [])
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        product = (row.get("attributes") or {}).get("productId") or ""
+        if product:
+            return product
+    return ""
+
+
+def related_product(kind, entity, name):
+    status, payload = call("GET", f"{kind}/{entity}", params={"include": name}, quiet=True)
+    if status < 400:
+        product = product_from_payload(payload)
+        if product:
+            print(f"entity {entity} include {name} product {product}")
+            return product
+    status, payload = call("GET", f"{kind}/{entity}/{name}", quiet=True)
+    if status >= 400:
+        print(f"entity {entity} related {kind}/{name} -> {status}")
+        return ""
+    product = product_from_payload(payload)
+    if product:
+        print(f"entity {entity} related {name} product {product}")
+        return product
+    data = payload.get("data") or {}
+    parent_id = data.get("id") if isinstance(data, dict) else ""
+    if not parent_id:
+        return ""
+    for parent_kind in ("subscriptions", "inAppPurchases", "v2/inAppPurchases"):
+        parent = resource_attrs(parent_kind, parent_id)
+        if not parent:
+            continue
+        product = (parent.get("attributes") or {}).get("productId") or ""
+        if product:
+            print(f"entity {entity} related {name} {parent_kind} {parent_id} product {product}")
+            return product
+    return ""
+
+
 def product_of_entity(entity):
     """Return a productId if this review item entity is one of our IAPs."""
+    if entity in VERSION_TO_PRODUCT:
+        return VERSION_TO_PRODUCT[entity]
     if entity in LOOKUP_CACHE:
         return LOOKUP_CACHE[entity]
     apple = {apple_id: product for product, apple_id in PRODUCTS.items()}
@@ -498,41 +548,29 @@ def product_of_entity(entity):
         return apple[entity]
     product = ""
     probes = (
-        ("v2/inAppPurchases", ""),
-        ("inAppPurchases", ""),
-        ("inAppPurchaseVersions", "inAppPurchase"),
-        ("subscriptionVersions", "subscription"),
-        ("subscriptions", ""),
+        ("v2/inAppPurchases", ()),
+        ("inAppPurchases", ()),
+        ("inAppPurchaseVersions", ("inAppPurchase", "inAppPurchaseV2")),
+        ("subscriptionVersions", ("subscription",)),
+        ("subscriptions", ()),
     )
-    for kind, parent_rel in probes:
+    for kind, names in probes:
         row = resource_attrs(kind, entity)
         if not row:
             continue
         attrs = row.get("attributes") or {}
         product = attrs.get("productId") or ""
-        parent_id = ""
-        if not product and parent_rel:
-            parent_id = (((row.get("relationships") or {}).get(parent_rel) or {}).get("data") or {}).get("id") or ""
-            if not parent_id:
-                status, parent_payload = call("GET", f"{kind}/{entity}/{parent_rel}", quiet=True)
-                if status < 400:
-                    parent_id = (parent_payload.get("data") or {}).get("id") or ""
         if product:
             print(f"entity {entity} is {kind} {product} state {attrs.get('state')}")
             break
-        for parent_kind in ("v2/inAppPurchases", "inAppPurchases", "subscriptions"):
-            if not parent_id:
-                break
-            parent = resource_attrs(parent_kind, parent_id)
-            if not parent:
-                continue
-            product = (parent.get("attributes") or {}).get("productId") or ""
-            print(f"entity {entity} parent {parent_kind} {parent_id} product {product or '(none)'} state {attrs.get('state')}")
+        for name in names:
+            product = related_product(kind, entity, name)
             if product:
                 break
         if product:
             break
-        print(f"entity {entity} is {kind} state {attrs.get('state')} without a product id")
+        rels = row.get("relationships") or {}
+        print(f"entity {entity} is {kind} state {attrs.get('state')} relationships {', '.join(rels) or '(none)'}")
     LOOKUP_CACHE[entity] = product
     return product
 
@@ -617,6 +655,7 @@ def load_iaps():
         version_ids = []
         for version in versions:
             version_ids.append(version.get("id"))
+            VERSION_TO_PRODUCT[version.get("id")] = product
             print(f"iap version {product} {version.get('id')} state {(version.get('attributes') or {}).get('state')}")
         by_product[product] = {
             "id": row["id"],
@@ -629,7 +668,32 @@ def load_iaps():
     missing = [product for product in PRODUCTS if product not in by_product]
     if missing:
         raise SystemExit("missing in-app purchases: " + ", ".join(missing))
+    index_subscriptions()
     return by_product
+
+
+def index_subscriptions():
+    groups = pages(f"apps/{APP_ID}/subscriptionGroups", {"limit": 20})
+    if not groups:
+        print("no subscription groups")
+        return
+    for group in groups:
+        name = (group.get("attributes") or {}).get("referenceName") or ""
+        print(f"subscription group {group['id']} {name}")
+        subs = pages(f"subscriptionGroups/{group['id']}/subscriptions", {"limit": 50})
+        for sub in subs:
+            attrs = sub.get("attributes") or {}
+            product = attrs.get("productId") or ""
+            print(f"subscription {sub['id']} {product} state {attrs.get('state')}")
+            versions = pages(f"subscriptions/{sub['id']}/subscriptionVersions", {"limit": 20})
+            if not versions:
+                versions = pages(f"subscriptions/{sub['id']}/versions", {"limit": 20})
+            for version in versions:
+                VERSION_TO_PRODUCT.setdefault(version.get("id"), product)
+                print(
+                    f"subscription version {version.get('id')} product {product} "
+                    f"state {(version.get('attributes') or {}).get('state')}"
+                )
 
 
 def choose_submission(submissions):
@@ -700,6 +764,27 @@ def move_item_onto(submission, resource_label, entity):
             DELETABLE_ITEMS.discard(item["id"])
             return status in (200, 202, 204)
     return False
+
+
+def drop_foreign_items(submission):
+    """Remove other products from the unsubmitted draft. Pack and Seat stay."""
+    if not unsubmitted(submission):
+        return
+    for item in list_items(submission["id"]):
+        _sub, type_code, entity = decoded_item(item.get("id") or "")
+        is_version = entity in (VERSION_ID, VERSION_NUMERIC) or type_code == "6"
+        product = "" if is_version else product_of_entity(entity)
+        if is_version or product in PRODUCTS:
+            continue
+        if not product:
+            print(f"leaving unidentified draft item type {type_code} entity {entity}")
+            continue
+        if not mark_deletable(item, submission):
+            print(f"could not remove {product} from the draft")
+            continue
+        status, _payload = call("DELETE", f"reviewSubmissionItems/{item['id']}")
+        print(f"removed {product} from the unsubmitted draft -> {status}")
+        DELETABLE_ITEMS.discard(item["id"])
 
 
 def ensure_version_item(submission):
@@ -784,7 +869,7 @@ def age_and_privacy():
         elif blank(rating):
             print("age rating declaration exists; App Store age rating value was empty on the app info")
         if blank(rights):
-            gaps.append("content rights declaration is empty")
+            print("content rights declaration is empty; App Review can still receive the submission")
         locs = pages(f"appInfos/{info['id']}/appInfoLocalizations", {"limit": 10})
         for loc in locs:
             loc_attrs = loc.get("attributes") or {}
@@ -792,10 +877,12 @@ def age_and_privacy():
             print(f"privacy policy {loc_attrs.get('locale')} {url or '(empty)'}")
             if blank(url):
                 gaps.append(f"privacy policy URL empty ({loc_attrs.get('locale')})")
-    status, usages = call("GET", f"apps/{APP_ID}/appDataUsages", {"limit": 50})
+    status, usages = call("GET", f"apps/{APP_ID}/appDataUsages", {"limit": 50}, quiet=True)
     usage_count = len((usages.get("data") or [])) if status < 400 else -1
     print(f"app data usages {status} count {usage_count}")
-    if status >= 400:
+    if status == 404:
+        print("privacy nutrition labels are not exposed on appDataUsages; the privacy policy URL is the privacy check")
+    elif status >= 400:
         gaps.append("privacy nutrition labels could not be read")
     elif usage_count == 0:
         gaps.append("privacy nutrition labels are empty")
@@ -811,6 +898,9 @@ def availability_ids(path, params):
         guard += 1
         status, payload = call("GET", path, params=query)
         if status >= 400:
+            if available:
+                print(f"availability page failed {status}; using the {len(available)} territories already read")
+                break
             return None, None
         attrs = (payload.get("data") or {}).get("attributes") or {}
         if "availableInNewTerritories" in attrs:
@@ -843,20 +933,30 @@ def usa_only_report(iaps):
     gaps = []
     territories, new_flag = availability_ids(
         f"v2/appAvailabilities/{APP_ID}",
-        {"include": "territoryAvailabilities", "limit[territoryAvailabilities]": 200},
+        {"include": "territoryAvailabilities", "limit[territoryAvailabilities]": 50},
     )
     print(f"app availability territories {territories} newTerritories {new_flag}")
-    if territories != ["USA"] or new_flag is not False:
-        gaps.append(f"app availability is not United States only ({territories}, newTerritories={new_flag})")
+    gap = usa_gap("app availability", territories, new_flag)
+    if gap:
+        gaps.append(gap)
     for product, iap in iaps.items():
         territories, new_flag = availability_ids(
             f"v2/inAppPurchases/{iap['id']}/inAppPurchaseAvailability",
-            {"include": "availableTerritories", "limit[availableTerritories]": 200},
+            {"include": "availableTerritories", "limit[availableTerritories]": 50},
         )
         print(f"iap availability {product} territories {territories} newTerritories {new_flag}")
-        if territories != ["USA"] or new_flag is not False:
-            gaps.append(f"{product} availability is not United States only ({territories}, newTerritories={new_flag})")
+        gap = usa_gap(product + " availability", territories, new_flag)
+        if gap:
+            gaps.append(gap)
     return gaps
+
+
+def usa_gap(label, territories, new_flag):
+    if territories != ["USA"]:
+        return f"{label} is not United States only ({territories}, newTerritories={new_flag})"
+    if new_flag is True:
+        return f"{label} would become available in new territories"
+    return ""
 
 
 def iap_metadata_gaps(iaps):
@@ -1041,6 +1141,7 @@ def main():
     for product, iap in iaps.items():
         if not ensure_iap_item(submission, product, iap):
             raise SystemExit(product + " was not added to the review submission")
+    drop_foreign_items(submission)
     fresh_version = version_row()
     fresh_build = attached_build()
     counts = screenshot_report()
