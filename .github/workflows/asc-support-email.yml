@@ -1,0 +1,27 @@
+name: App Store support email
+# Sets the review contact email when it is still the personal address.
+# A push of this file to ios-capacitor starts a run. Does not submit for review
+# or change the attached build.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-support-email.yml
+      - scripts/asc-support-email.py
+jobs:
+  contact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Update the review contact email
+        run: python3 scripts/asc-support-email.py
