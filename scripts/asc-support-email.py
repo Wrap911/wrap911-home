@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Point App Store review contact email at info@wrap911.com.
 
-Updates the review contact only when it is the personal iCloud address.
+Updates the review contact only when it is a known personal address.
 Does not submit for review, attach a build, or change a login.
 """
 import os
