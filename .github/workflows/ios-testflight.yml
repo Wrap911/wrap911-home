@@ -3,6 +3,7 @@ name: iOS build and upload to App Store Connect
 # Upload the build that carries the approved aqua-outlined app icon.
 # Upload the build that presents the App Store purchase sheet.
 # Upload the build that shows the purchase diagnostic and presents the sheet on the visible window.
+# Upload the build that keeps one window and records the Seat tap.
 on:
   workflow_dispatch:
   push:
