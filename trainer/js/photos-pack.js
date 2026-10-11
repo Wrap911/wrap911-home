@@ -16,7 +16,6 @@
     "media/videos/trailer/magenta-neon-corner-riveted-trim-finish.jpg": "media/photos/gallery/trailer-spot-graphics.jpg",
     "media/videos/van/d-pillar-taillight-mid-install.jpg": "media/videos/van/rear-vehicle-gate-wrap.jpg",
     "media/videos/trailer/showing-rivets.jpg": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
-    "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.jpg": "../assets/sales/trailer-rivets.jpg",
     "media/videos/trailer/orange-99-month-ladder-tall-side-hang.jpg": "../assets/sales/fleet-rv.jpg",
     "media/videos/trailer/orange-99-month-ladder-roofline-seat.jpg": "../assets/sales/edge-detail.jpg",
     "media/videos/van/carbon-fiber-pattern-bumper-recess-seat.jpg": "media/photos/gallery/front-bumper-wrap-caddy.jpg",

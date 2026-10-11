@@ -8,6 +8,7 @@ name: iOS build and upload to App Store Connect
 # Upload the release build with the purchase diagnostics hidden.
 # Upload the build whose customer email is info@wrap911.com.
 # Upload the build that restores a non-renewing Seat or Shop Pack from StoreKit.
+# Upload the build that ships trainer 2.7.6 photo cards and scenarios.
 on:
   workflow_dispatch:
   push:
