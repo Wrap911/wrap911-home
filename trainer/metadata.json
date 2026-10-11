@@ -2,7 +2,7 @@
  "app": {
   "name": "WRAP 911 Trainer",
   "shortName": "WRAP 911",
-  "version": "2.7.4",
+  "version": "2.7.6",
   "stripeTestMode": false,
   "generated": "2026-09-26",
   "canonical": "https://wrap911.github.io/wrap911-home/trainer/",
@@ -615,8 +615,7 @@
    "related": {
     "vehicle": "trailer",
     "practice": "prac-panel-align",
-    "badge": "badge-tr-seg",
-    "video": "v-mid-6790"
+    "badge": "badge-tr-seg"
    }
   },
   {
@@ -1782,13 +1781,143 @@
    "source": "photos-boost.js"
   },
   {
-   "id": "pb-removal",
-   "title": "Vinyl removal",
-   "category": "Fleet",
+   "id": "pb-276-hard-card-corner",
+   "title": "Magenta box, hard card in the inside corner",
+   "category": "Interior",
+   "module": "squeegee",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/magenta-box-inside-corner-hard-card.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-gmc-emblem",
+   "title": "GMC tailgate, film bridged over the letters",
+   "category": "Problems",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/dusty-rose-tailgate-gmc-emblem-bridge.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-controltac-liner",
+   "title": "Box floor, Controltac liner coming off",
+   "category": "Interior",
+   "module": "film-types",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/magenta-box-floor-controltac-liner-peel.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-corner-lip-relief",
+   "title": "Magenta box, tuck at the top lip of a corner",
+   "category": "Interior",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/magenta-box-corner-tuck-top-lip.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-alcohol-flash",
+   "title": "Magenta strip going in, alcohol on the bench",
+   "category": "Interior",
    "module": "prep",
    "access": "paid",
    "media": {
-    "path": "media/videos/prep/vinyl-removal.jpg",
+    "path": "media/photos/gallery/magenta-strip-box-wall-alcohol-bottle.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-plank-groove-knife",
+   "title": "Barnwood wall, knife in the plank groove",
+   "category": "Interior",
+   "module": "cutting",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/barnwood-wall-knife-in-plank-groove.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-plank-torch",
+   "title": "Barnwood wall, torch along the grooves",
+   "category": "Interior",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/barnwood-wall-torch-post-heat.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-print-rivet-rail",
+   "title": "Cut-out print over a rivet rail",
+   "category": "Vehicles",
+   "module": "seams-rivets",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/printed-bacon-rivet-rail.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-rv-rear-ladder",
+   "title": "RV rear, bottle on the ladder and scraps underfoot",
+   "category": "Vehicles",
+   "module": "safety",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-door-gap-cross",
+   "title": "Red door gap where two cuts cross",
+   "category": "Vehicles",
+   "module": "post-heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/red-door-gap-cross-junction.jpg",
+    "local": true,
+    "live": true
+   },
+   "source": "photos-boost.js"
+  },
+  {
+   "id": "pb-276-deep-recess-fingers",
+   "title": "Pink film pulled over a deep recess",
+   "category": "Problems",
+   "module": "heat",
+   "access": "paid",
+   "media": {
+    "path": "media/photos/gallery/pink-film-deep-recess-fingers.jpg",
     "local": true,
     "live": true
    },
@@ -2412,29 +2541,6 @@
     "lesson": "van-deep-recess",
     "workflowStep": "vw-recess",
     "practice": "prac-recess"
-   }
-  },
-  {
-   "id": "v-mid-6790",
-   "title": "Trailer side graphic \u2014 hang stage",
-   "category": "Trailer",
-   "subcategory": "Panels",
-   "access": "paid",
-   "shownInApp": false,
-   "src": {
-    "path": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.mp4",
-    "local": false,
-    "live": false
-   },
-   "still": {
-    "path": "../assets/sales/trailer-rivets.jpg",
-    "local": true,
-    "live": true
-   },
-   "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": "tw-seg",
-    "practice": "prac-panel-align"
    }
   },
   {
@@ -3550,7 +3656,7 @@
  "drills": {
   "spotMistake": 8,
   "checklistDrills": 4,
-  "scenarios": 6,
+  "scenarios": 17,
   "flashcards": 10
  },
  "certLevels": [
@@ -3577,18 +3683,18 @@
   "workflows": 6,
   "workflowSteps": 25,
   "practice": 4,
-  "photoLessons": 63,
+  "photoLessons": 73,
   "photoLessonsFree": 14,
   "problemLessons": 8,
   "badges": 24,
-  "videos": 68,
+  "videos": 67,
   "videosFree": 8,
   "videosShownInApp": 33,
   "gallery": 10,
   "drills": {
    "spotMistake": 8,
    "checklistDrills": 4,
-   "scenarios": 6,
+   "scenarios": 17,
    "flashcards": 10
   },
   "lessonsMissingFailPassPhotos": 20,

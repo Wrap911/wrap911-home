@@ -1029,6 +1029,161 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       why: "Controlled heat + low pull angle keeps adhesive on the film. Stable torch base; never melt to soup."
+    },
+    /* 2.7.6: one scenario per new Photos card (pb-276-*). Feeds the scenario picker and full Fix It Fast rounds. */
+    {
+      id: "sc07",
+      title: "Inside box corner",
+      icon: "📦",
+      setup: "Gloss magenta film is down on the back wall of a plywood box. The side wall is still loose and the film is bridging the inside corner.",
+      question: "Best move?",
+      choices: [
+        "Push it in with your thumb and pull the sheet tight across both walls.",
+        "Run a hard card point down the corner line, then lay the second wall off the corner.",
+        "Heat the corner until the film goes soft and press it flat with your palm."
+      ],
+      answer: 1,
+      why: "A bridged corner pulls back out and tents. Set the corner line with a hard tool, then lay the next wall. Heat only as the film TDS allows."
+    },
+    {
+      id: "sc08",
+      title: "Tailgate emblem",
+      icon: "🛻",
+      setup: "Dusty-rose film is glassed on a pickup tailgate. The raised GMC letters are still under the film, and it is tenting at every letter edge.",
+      question: "Best move?",
+      choices: [
+        "Torch the letters and stretch the film down tight around each one.",
+        "Cut on the emblem edge with a sharp blade and tuck. Keep the knife off the paint.",
+        "Leave the tents. Nobody sees them from the street."
+      ],
+      answer: 1,
+      why: "Film stretched down around raised letters gets thin and lifts. Relieve it at the emblem edge, or pull the emblem before the hang if it comes off."
+    },
+    {
+      id: "sc09",
+      title: "Controltac off its mark",
+      icon: "📐",
+      setup: "A 3M Controltac panel is on a box floor. You pressed it down with your palms while lining it up, and one edge is a quarter inch off your mark.",
+      question: "Best move?",
+      choices: [
+        "Squeegee hard and stretch the edge over to the mark.",
+        "Lift it slowly, reposition with a light touch, then squeegee from the center out.",
+        "Throw it out. Controltac can never come back up."
+      ],
+      answer: 1,
+      why: "Controltac repositions until firm pressure is applied. Lift slowly where your palms pressed. Never stretch film to hit a mark."
+    },
+    {
+      id: "sc10",
+      title: "Corner at the box lip",
+      icon: "✂️",
+      setup: "Gloss film is up both walls of a cabinet box. Right where the top lip meets the inside corner, the film is bunched into a fold.",
+      question: "Best move?",
+      choices: [
+        "Squeegee the fold flat and post-heat it.",
+        "Small relief cut at the corner off the show face, then tuck each side on its own.",
+        "Pull the whole wall and start over with a bigger sheet."
+      ],
+      answer: 1,
+      why: "One sheet cannot fold two ways at a corner lip. A small relief lets each side lay down. Fresh blade, film only."
+    },
+    {
+      id: "sc11",
+      title: "Alcohol wipe timing",
+      icon: "🧴",
+      setup: "You just sprayed alcohol on the inside wall of a box. The magenta strip is cut and ready, and the wall is still wet.",
+      question: "Best move?",
+      choices: [
+        "Lay the strip now so it slides into place on the wet alcohol.",
+        "Wipe with a clean towel and wait until the wall is completely dry, then lay the strip.",
+        "Hit the wet wall with the torch to dry it fast."
+      ],
+      answer: 1,
+      why: "Alcohol trapped under film keeps the adhesive from grabbing, and the edges lift later. Let it flash off dry. Never put flame on a wet solvent wipe."
+    },
+    {
+      id: "sc12",
+      title: "Plank wall trim",
+      icon: "🪵",
+      setup: "Barnwood-print film is glassed on a plank wall. You need to trim the excess where two planks meet.",
+      question: "Where does the blade go?",
+      choices: [
+        "On the plank face, a little out from the groove, so the line is straight.",
+        "In the bottom of the groove, light pressure, film only, after the film is seated.",
+        "Across the groove at an angle so the cut grabs both planks."
+      ],
+      answer: 1,
+      why: "The groove hides the cut and gives the edge a place to sit. Cuts on the face show every wobble."
+    },
+    {
+      id: "sc13",
+      title: "Plank grooves lifting",
+      icon: "🔥",
+      setup: "You seated and trimmed every groove on a barnwood wall yesterday. This morning the film has pulled up out of several grooves.",
+      question: "What got skipped?",
+      choices: [
+        "Post-heat along the grooves to the film TDS.",
+        "A harder squeegee on the plank faces.",
+        "More alcohol in the final wipe."
+      ],
+      answer: 0,
+      why: "Film pushed into a recess has memory. Post-heat to the TDS locks it in. Keep the flame moving and off the scraps."
+    },
+    {
+      id: "sc14",
+      title: "Rivets under a print",
+      icon: "🔩",
+      setup: "A contour-cut food print is glassed on a black riveted side. The film is standing up in a ring around three rivet heads.",
+      question: "Best move?",
+      choices: [
+        "Pin-prick each ring and squeegee hard over the heads.",
+        "Warm per the film TDS and work each head down with a rivet brush or soft tool, then post-heat.",
+        "Leave it. The sun will pull it down."
+      ],
+      answer: 1,
+      why: "Rings around rivets are tents. Heat per TDS and work each head. Pricking and smashing leaves scars and the film still lifts."
+    },
+    {
+      id: "sc15",
+      title: "Ladder at the RV rear",
+      icon: "🪜",
+      setup: "You are finishing the rear of an RV. A spray bottle is sitting on a ladder step and liner scraps are on the floor by the ladder feet.",
+      question: "Before you climb?",
+      choices: [
+        "Climb carefully and grab the bottle on the way up.",
+        "Bottle off the ladder, scraps picked up, feet on clean floor, spreaders locked.",
+        "Kick the scraps aside with your boot and go."
+      ],
+      answer: 1,
+      why: "Bottles fall from steps and liner slides under ladder feet. Clear it, lock it, then climb."
+    },
+    {
+      id: "sc16",
+      title: "Door gap cross",
+      icon: "🚪",
+      setup: "Red film is cut at a door gap. Where the gap crosses a body line, the film is pinched into a kink at the corner.",
+      question: "Best move?",
+      choices: [
+        "Post-heat the kink hard until it melts flat.",
+        "Lift the corner, relief it, tuck each edge on its own, then post-heat per the film TDS.",
+        "Put a drop of glue under the kink."
+      ],
+      answer: 1,
+      why: "Four edges meeting at one point need a relief so each can tuck. A melted pinch still lifts."
+    },
+    {
+      id: "sc17",
+      title: "Deep recess fingers",
+      icon: "🌀",
+      setup: "Pink film is pulled tight over a deep molded recess. Fingers are forming along the bottom edge of the recess.",
+      question: "Best move?",
+      choices: [
+        "Torch the fingers until they shrink and press them flat.",
+        "Lift back to the flat, give the recess slack, warm per TDS, and push into the deepest part first.",
+        "Squeegee harder from the flats toward the recess."
+      ],
+      answer: 1,
+      why: "Fingers here mean the film ran out of material. Slack and the deepest point first. If it will not reach without thinning, plan an inlay."
     }
   ],
 

@@ -1202,7 +1202,7 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-mid-6790",
+    "relatedVideoId": "",
     "failPhoto": "",
     "passPhoto": ""
   },
@@ -2593,21 +2593,6 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-recess",
     "note": "Shop clip (~31s). Gloss carbon-fiber–pattern vinyl seating into a rear bumper recess beside mesh vent; excess film still bunched. Texture film in a pocket/recess. Follow product TDS — no invented temperatures."
-  },
-  {
-    "id": "v-mid-6790",
-    "access": "paid",
-    "title": "Trailer side graphic — hang stage",
-    "category": "Trailer",
-    "subcategory": "Panels",
-    "type": "clip",
-    "src": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.mp4",
-    "still": "",
-    "driveId": "1bI7vgCEz4yt7vfcGUz8s5BkrTqYAJlBe",
-    "recommendedModule": "tr-panel-seg",
-    "recommendedWorkflow": "tw-seg",
-    "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~15s). Wider white trailer side with magenta/orange DONUTS graphic mid-hang; transfer-tape/liner bunched at top edge; rivets visible under film and on white upper. Same job as IMG_6788. Follow product TDS — no invented temperatures."
   },
   {
     "id": "v-mid-8962",
