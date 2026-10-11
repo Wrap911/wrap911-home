@@ -615,8 +615,7 @@
    "related": {
     "vehicle": "trailer",
     "practice": "prac-panel-align",
-    "badge": "badge-tr-seg",
-    "video": "v-mid-6790"
+    "badge": "badge-tr-seg"
    }
   },
   {
@@ -2545,29 +2544,6 @@
    }
   },
   {
-   "id": "v-mid-6790",
-   "title": "Trailer side graphic \u2014 hang stage",
-   "category": "Trailer",
-   "subcategory": "Panels",
-   "access": "paid",
-   "shownInApp": false,
-   "src": {
-    "path": "media/videos/trailer/donuts-trailer-side-graphic-hang-stage.mp4",
-    "local": false,
-    "live": false
-   },
-   "still": {
-    "path": "../assets/sales/trailer-rivets.jpg",
-    "local": true,
-    "live": true
-   },
-   "related": {
-    "lesson": "tr-panel-seg",
-    "workflowStep": "tw-seg",
-    "practice": "prac-panel-align"
-   }
-  },
-  {
    "id": "v-mid-8962",
    "title": "Tall trailer side hang from the ladder",
    "category": "Trailer",
@@ -3711,7 +3687,7 @@
   "photoLessonsFree": 14,
   "problemLessons": 8,
   "badges": 24,
-  "videos": 68,
+  "videos": 67,
   "videosFree": 8,
   "videosShownInApp": 33,
   "gallery": 10,

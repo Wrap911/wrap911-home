@@ -17,7 +17,7 @@
     /* QA S12: swapped stills in 2.6.3 (2.6.4 dedupe drops these ids; kept so they can never come back). pb-cab-on stays: in 2.6.4 it always carries its own still. */
     "pb-caddy-5": 1, "pb-caddy-1": 1, "pb-cherokee": 1, "pb-cut-ex1": 1, "pb-office": 1, "pb-wall": 1, "pb-cab-done": 1,
     /* QA S13-S16: pl18 = same frame as pl12; stock photo; social-media screenshot (pb-caddy-4 in 2.6.3); bubbles vs reflections.
-       2.7.6: pb-removal (DONUTS trailer card) is gone from Photos, so its skip entry is gone too. */
+       2.7.6: pb-removal (removed trailer card) is gone from Photos, so its skip entry is gone too. */
     "pl18": 1, "pk-interior-sales": 1, "pb-caddy-4": 1, "prob-half-moon": 1 };
   var LOCK_MSG = "Full game rounds are in the pack. Free look has one sample round of each game. Pack $149 (5 seats) or seat $49.";
   var S = { game: null, round: null, timer: null, play: null };
