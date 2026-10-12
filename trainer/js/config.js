@@ -31,6 +31,8 @@ window.WRAP911_CONFIG = {
   stripeTestMode: false,
   shopPhoneOpen: false,
   problemUploadEndpoint: "",
+  /* Photo Fix is on: POST /coach/photo is live (paid Pack/Seat only, server-enforced). */
+  photoFix: true,
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
   freeVideoSamples: 8,
@@ -45,7 +47,8 @@ window.WRAP911_CONFIG = {
     "lesson", "vehicle", "library",
     "practice-hub", "practice",
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
-    "games", "game"
+    "games", "game",
+    "photo-fix"
   ],
   plans: [
     {

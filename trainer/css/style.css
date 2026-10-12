@@ -510,6 +510,25 @@ input, select, textarea {
   border-radius: 10px;
   padding: 0.55rem 0.7rem;
 }
+/* Photo Fix notes: label above a full-width field so the placeholder is not clipped. */
+#photo-fix-form > label {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  margin: 0 0 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+#photo-fix-form > label input,
+#photo-fix-form > label textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
 .quiz-box, .modal-card, .flash-card, .narration {
   border: 1px solid #5a304c;
   border-radius: 16px;

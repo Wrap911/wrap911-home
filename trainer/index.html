@@ -134,6 +134,9 @@
       <button type="button" class="secondary" id="btn-hide-job-types">Hide job types</button>
     </div>
     <div id="home-nav-cards" class="home-nav-grid hidden"></div>
+    <div class="card tap hidden" id="goto-photo-fix" role="button" tabindex="0" hidden>
+      <div class="card-body"><div class="card-title">Photo Fix</div><div class="card-sub">A photo of the vinyl problem, then a diagnosis and a fix</div></div>
+    </div>
     <div class="card tap" id="goto-about" role="button" tabindex="0">
       <div class="card-body"><div class="card-title">About WRAP 911 · Pricing · FAQ</div><div class="card-sub">Why it exists, who it's for, free samples</div></div>
     </div>
@@ -194,6 +197,11 @@
   <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><p class="muted" id="flash-hint"></p><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
   <section id="screen-photos" class="screen"><h1 id="photos-heading">Browse photos</h1><div class="filter-chips" id="photo-filter-chips"></div><div class="thumb-grid" id="photo-list"></div><div class="photos-empty hidden" id="photos-empty"></div></section>
   <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt="" decoding="async"><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
+  <section id="screen-photo-fix" class="screen" aria-label="Photo Fix">
+    <button type="button" class="back-link" id="btn-back-photo-fix">← Back to home</button>
+    <h1>Photo Fix</h1>
+    <div id="photo-fix-wrap"></div>
+  </section>
   <section id="screen-problem-upload" class="screen">
     <button type="button" class="back-link" id="btn-back-problem-upload">← Back to home</button>
     <h1>Report a problem</h1>
@@ -251,7 +259,7 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=276"></script>
+  <script src="js/config.js?v=277pf"></script>
   <script src="js/plan-fix.js?v=276"></script>
   <script src="js/ios-license-bridge.js?v=276"></script>
   <script src="js/data.js?v=276"></script>
@@ -270,5 +278,6 @@
   <script src="js/practice-fix.js?v=276"></script>
   <script src="js/about.js?v=276"></script>
   <script src="js/games.js?v=276"></script>
+  <script src="js/photo-fix.js?v=photofix1"></script>
 </body>
 </html>
