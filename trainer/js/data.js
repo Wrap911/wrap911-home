@@ -10,7 +10,7 @@ window.WRAP911_DATA = {
         "WRAP 911 starts every job with safety—not film. Tall RV sides, box vans, and architectural walls put you on ladders and around open flame. Set ladders on level ground, lock spreaders, and keep three points of contact. Never stand on the top cap of an A-frame.",
         "Stage or hinge large panels from the ground when you can. Do not climb while wrestling a full sheet of vinyl. Clear liner scraps and tape from under ladder feet so nobody slides mid-pull.",
         "Heat tools (propane torch or heat gun) need a stable base when idle. Keep combustible scraps away from open flame. Knives stay sharp and controlled—cut into voids and gaps, never toward your body or across finished paint without a plan.",
-        "Forklifts, open bay doors, and other crews mean situational awareness. Know what is moving behind you. Platform first, then technique. Brands we use—3M, Avery Dennison, and Arlon—do not replace jobsite common sense."
+        "Forklifts, open bay doors, and other crews mean situational awareness. Know what is moving behind you. Platform first, then technique. Brands we use—3M, Avery Dennison, and BriteLine—do not replace jobsite common sense."
       ],
       quiz: [
         {

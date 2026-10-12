@@ -73,7 +73,7 @@
 
   function compressFile(file) {
     return new Promise(function (resolve, reject) {
-      if (!file || !/^image\//.test(file.type || "")) { reject(new Error("Choose a photo.")); return; }
+      if (!file || !/^image\//.test(file.type || "")) { reject(new Error("Choose a photo or a short video.")); return; }
       var url = URL.createObjectURL(file);
       var img = new Image();
       img.onload = function () {
@@ -99,6 +99,62 @@
     });
   }
 
+  /* 2.8.0: short video. Pull 4 evenly spaced frames on the phone, 1024px JPEG each. The video is not uploaded. */
+  var FRAMES = 4, MAX_CLIP_S = 60;
+  function videoFrames(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var v = document.createElement("video");
+      v.muted = true; v.defaultMuted = true; v.playsInline = true;
+      v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.setAttribute("muted", "");
+      v.preload = "auto";
+      var frames = [], times = [], idx = 0, finished = false, dur = 0, w = 0, h = 0;
+      var guard = setTimeout(function () { fail("That video took too long to read. Try a shorter clip or a photo."); }, 30000);
+      function cleanup() { clearTimeout(guard); try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {} URL.revokeObjectURL(url); }
+      function fail(msg) { if (finished) return; finished = true; cleanup(); reject(new Error(msg)); }
+      function grab() {
+        try {
+          var scale = Math.min(1, MAX_EDGE / Math.max(w, h, 1));
+          var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+          var c = document.createElement("canvas"); c.width = cw; c.height = ch;
+          c.getContext("2d").drawImage(v, 0, 0, cw, ch);
+          frames.push(c.toDataURL("image/jpeg", JPEG_Q));
+        } catch (e) { fail("Could not read frames from that video."); return; }
+        idx++;
+        if (idx >= times.length) { finished = true; cleanup(); resolve({ frames: frames, width: Math.round(w * Math.min(1, MAX_EDGE / Math.max(w, h, 1))), height: Math.round(h * Math.min(1, MAX_EDGE / Math.max(w, h, 1))), duration: dur }); return; }
+        seek();
+      }
+      function seek() {
+        var done = false;
+        function onSeeked() { if (done) return; done = true; v.removeEventListener("seeked", onSeeked); setTimeout(grab, 60); }
+        v.addEventListener("seeked", onSeeked);
+        try { v.currentTime = times[idx]; } catch (e) { fail("Could not read frames from that video."); }
+      }
+      v.addEventListener("error", function () { fail("This browser cannot open that video. Try a photo instead."); });
+      v.addEventListener("loadedmetadata", function () {
+        dur = v.duration; w = v.videoWidth; h = v.videoHeight;
+        if (!isFinite(dur) || dur <= 0 || !w || !h) { fail("Could not read that video."); return; }
+        if (dur > MAX_CLIP_S + 1) { fail("Keep the clip to " + MAX_CLIP_S + " seconds or less."); return; }
+        for (var i = 0; i < FRAMES; i++) times.push(Math.min(dur - 0.05, Math.max(0.05, dur * (i + 0.5) / FRAMES)));
+      });
+      v.addEventListener("loadeddata", function () {
+        if (!times.length || idx || finished) return;
+        /* iOS Safari needs a play/pause before seeks paint a frame. */
+        var pr = null; try { pr = v.play(); } catch (e) {}
+        var go = function () { try { v.pause(); } catch (e) {} seek(); };
+        if (pr && pr.then) pr.then(go, go); else go();
+      });
+      v.src = url;
+      try { v.load(); } catch (e) {}
+    });
+  }
+
+  function readMedia(file) {
+    if (file && /^video\//.test(file.type || "")) return videoFrames(file);
+    if (file && !file.type && /\.(mov|mp4|m4v)$/i.test(file.name || "")) return videoFrames(file);
+    return compressFile(file).then(function (o) { return { frames: [o.dataUrl], width: o.width, height: o.height }; });
+  }
+
   function field(id) {
     var el = $(id);
     return el ? String(el.value || "").trim().slice(0, 400) : "";
@@ -115,7 +171,7 @@
         "The panel was still dirty or the adhesive never wet out."
       ],
       fix: [
-        "Warm the film only as the current 3M, Avery Dennison, or Arlon TDS allows for that SKU.",
+        "Warm the film only as the current 3M, Avery Dennison, or BriteLine TDS allows for that SKU.",
         "Lift the loose film back to sound adhesive. Do not pull a tear through the rivet.",
         "Seat the ring first, then the dome, with a rivet tool. Work one rivet at a time.",
         "Post-heat the edge the way that TDS describes, then look at it in raking light."
@@ -150,7 +206,7 @@
     }
     return (
       '<div class="passion-note"><strong>AI suggestion, verify on the job</strong>' +
-      "<p>" + escapeHtml(data.disclaimer || "AI suggestion, verify on the job.") + " Check the current TDS for that 3M, Avery Dennison, or Arlon film before you heat or chemical anything.</p></div>" +
+      "<p>" + escapeHtml(data.disclaimer || "AI suggestion, verify on the job.") + " Check the current TDS for that 3M, Avery Dennison, or BriteLine film before you heat or chemical anything.</p></div>" +
       "<h3>What the photo likely shows</h3><p>" + escapeHtml(data.shows || "") + "</p>" +
       "<h3>Likely causes</h3>" + items(causes, "ul") +
       "<h3>Fix</h3>" + items(fix, "ol") +
@@ -162,24 +218,24 @@
   function teaserHtml() {
     return (
       '<div class="passion-note"><strong>Pack or Seat</strong>' +
-      "<p>Photo Fix reads a vinyl problem from a photo and suggests a fix. It is in the Shop Pack ($149, 5 phones, 12 months) and the Seat ($49, this phone, 12 months).</p></div>" +
+      "<p>Photo Fix reads a vinyl problem from a photo or short video and suggests a fix. It comes with the Shop Pack and the Seat.</p></div>" +
       '<button type="button" id="photo-fix-pricing">See Pack and Seat</button>'
     );
   }
 
   function formHtml() {
     return (
-      '<p class="lead">Take or choose a photo of the problem. Add a note if you know the film, the surface, or what it is doing. The photo is resized on this phone and is not saved.</p>' +
+      '<p class="lead">Photo or short video of the problem (video up to 60 seconds). Add a note if you know the film, the surface, or what it is doing. The phone resizes the photo or pulls 4 still frames from the video. Nothing is saved, and the video itself is never uploaded.</p>' +
       '<form id="photo-fix-form" class="job-form" onsubmit="return false;">' +
-      '<div class="quiz-nav"><button type="button" id="photo-fix-take">Take photo</button> <button type="button" class="secondary" id="photo-fix-pick">Choose photo</button></div>' +
-      '<input type="file" id="photo-fix-cam" accept="image/*" capture="environment" hidden>' +
-      '<input type="file" id="photo-fix-file" accept="image/*" hidden>' +
-      '<img id="photo-fix-preview" class="photo-hero" alt="" hidden>' +
+      '<div class="quiz-nav"><button type="button" id="photo-fix-take">Take photo or video</button> <button type="button" class="secondary" id="photo-fix-pick">Choose photo or video</button></div>' +
+      '<input type="file" id="photo-fix-cam" accept="image/*,video/*" capture="environment" hidden>' +
+      '<input type="file" id="photo-fix-file" accept="image/*,video/*" hidden>' +
+      '<img id="photo-fix-preview" class="photo-hero" alt="" hidden><div id="photo-fix-thumbs" style="display:none;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0"></div>' +
       '<p class="muted" id="photo-fix-size"></p>' +
-      '<label>Material<input type="text" id="photo-fix-material" placeholder="Optional. 3M, Avery Dennison, or Arlon film"></label>' +
+      '<label>Material<input type="text" id="photo-fix-material" placeholder="Optional. 3M, Avery Dennison, or BriteLine film"></label>' +
       '<label>Surface<input type="text" id="photo-fix-surface" placeholder="Optional. Rivets, recess, door edge, wall"></label>' +
       '<label>Symptom<textarea id="photo-fix-symptom" rows="2" placeholder="Optional. Lifting, bubbles, tenting, silvering"></textarea></label>' +
-      '<div class="accept-row"><input type="checkbox" id="photo-fix-consent"><label for="photo-fix-consent">Send this photo for an AI suggestion. It is not stored.</label></div>' +
+      '<div class="accept-row"><input type="checkbox" id="photo-fix-consent"><label for="photo-fix-consent">Send this photo or the video frames for an AI suggestion. Nothing is stored.</label></div>' +
       '<button type="button" id="photo-fix-submit" disabled>Get a fix</button>' +
       '</form>' +
       '<div id="photo-fix-result"></div>' +
@@ -213,24 +269,39 @@
     say("", "");
     var result = $("photo-fix-result");
     if (result) result.innerHTML = "";
-    compressFile(file).then(function (out) {
-      pending = out.dataUrl;
-      var img = $("photo-fix-preview");
-      if (img) { img.src = out.dataUrl; img.hidden = false; }
+    pending = null; syncSubmit();
+    var isVid = file && (/^video\//.test(file.type || "") || /\.(mov|mp4|m4v)$/i.test(file.name || ""));
+    if (isVid) say("", "Pulling frames from the video…");
+    readMedia(file).then(function (out) {
+      pending = out.frames.length > 1 ? out.frames : out.frames[0];
+      var img = $("photo-fix-preview"), thumbs = $("photo-fix-thumbs");
+      if (out.frames.length > 1) {
+        if (img) img.hidden = true;
+        if (thumbs) {
+          thumbs.innerHTML = out.frames.map(function (f, i) { return '<img src="' + f + '" alt="Frame ' + (i + 1) + '" style="width:100%;border-radius:6px">'; }).join("");
+          thumbs.style.display = "grid";
+        }
+      } else {
+        if (thumbs) { thumbs.innerHTML = ""; thumbs.style.display = "none"; }
+        if (img) { img.src = out.frames[0]; img.hidden = false; }
+      }
       var size = $("photo-fix-size");
-      if (size) size.textContent = "Resized to " + out.width + "×" + out.height + " JPEG. Not saved on this phone.";
+      if (size) size.textContent = out.frames.length > 1
+        ? out.frames.length + " frames from a " + Math.round(out.duration) + " s clip, " + out.width + "×" + out.height + " JPEG. The video is not uploaded or saved."
+        : "Resized to " + out.width + "×" + out.height + " JPEG. Not saved on this phone.";
+      say("", "");
       syncSubmit();
     }).catch(function (err) {
       pending = null;
       syncSubmit();
-      say("bad", err && err.message ? err.message : "Could not read that photo.");
+      say("bad", err && err.message ? err.message : "Could not read that file.");
     });
   }
 
   function submit() {
-    if (!pending) { say("bad", "Add a photo first."); return; }
+    if (!pending) { say("bad", "Add a photo or a short video first."); return; }
     var consent = $("photo-fix-consent");
-    if (!consent || !consent.checked) { say("bad", "Confirm that the photo can be sent. It is not stored."); return; }
+    if (!consent || !consent.checked) { say("bad", "Confirm that the photo or frames can be sent. Nothing is stored."); return; }
     var btn = $("photo-fix-submit");
     if (btn) btn.disabled = true;
     say("", "Reading the photo…");
@@ -245,7 +316,8 @@
     var endpoint = String(cfg().aiEndpoint || "").replace(/\/$/, "") + "/coach/photo";
     var body = {
       consent: true,
-      image: pending,
+      image: Array.isArray(pending) ? undefined : pending,
+      images: Array.isArray(pending) ? pending : undefined,
       code: licenseCode(),
       device: deviceId(),
       material: field("photo-fix-material"),
@@ -256,7 +328,7 @@
        and say what really went wrong instead of "could not reach the server". */
     var started = Date.now();
     var ticker = setInterval(function () {
-      say("", "Reading the photo… " + Math.round((Date.now() - started) / 1000) + " s. This takes up to a minute. Keep this screen open.");
+      say("", (Array.isArray(pending) ? "Reading the video frames… " : "Reading the photo… ") + Math.round((Date.now() - started) / 1000) + " s. This takes up to a minute. Keep this screen open.");
     }, 1000);
     var ctrl = typeof AbortController === "function" ? new AbortController() : null;
     var killer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 100000);

@@ -83,14 +83,14 @@
       keys: ["prep", "clean", "cleaning", "dirt", "degrease", "ipa", "contaminat", "residue", "soap", "silicone", "wash"],
       topic: "Commercial prep / cleaning",
       answer:
-        "Prep (commercial vehicle): wash the panel, degrease, then detail dirt traps before any film — seams, rivet bases, door bottoms, wheel-well lips, light pockets, awning rails. Work top to bottom so runoff does not re-contaminate lower paint. Finish with a two-cloth IPA wipe (wet then dry) until microfiber comes away clean. If silicone seals leave an oily feel, stop and address silicone with an appropriate remover before layout. Contaminants under wrap become lift lines and dirt nibs. Confirm cleaner compatibility with your 3M / Avery Dennison / Arlon film TDS."
+        "Prep (commercial vehicle): wash the panel, degrease, then detail dirt traps before any film — seams, rivet bases, door bottoms, wheel-well lips, light pockets, awning rails. Work top to bottom so runoff does not re-contaminate lower paint. Finish with a two-cloth IPA wipe (wet then dry) until microfiber comes away clean. If silicone seals leave an oily feel, stop and address silicone with an appropriate remover before layout. Contaminants under wrap become lift lines and dirt nibs. Confirm cleaner compatibility with your 3M / Avery Dennison / BriteLine film TDS."
     },
     {
       id: "layout",
       keys: ["layout", "hinge", "dry fit", "dry-fit", "register", "registration", "measure", "pattern", "hang panel", "stage panel"],
       topic: "Layout & panel hang",
       answer:
-        "Layout: dry-fit or hinge large graphics with masking tape before committing adhesive. Mark centerlines and key landmarks (door gaps, body lines, rivet rows). Stage oversized panels from the ground when you can; two-person hang on tall sides with the ladder locked before you squeegee. Glass the main field first, then work excess toward edges and hardware. Plan seam placement for water shed on vertical overlaps. Brands: 3M · Avery Dennison · Arlon — match construction to the job substrate."
+        "Layout: dry-fit or hinge large graphics with masking tape before committing adhesive. Mark centerlines and key landmarks (door gaps, body lines, rivet rows). Stage oversized panels from the ground when you can; two-person hang on tall sides with the ladder locked before you squeegee. Glass the main field first, then work excess toward edges and hardware. Plan seam placement for water shed on vertical overlaps. Brands: 3M · Avery Dennison · BriteLine — match construction to the job substrate."
     },
     {
       id: "glass-first",
@@ -104,7 +104,7 @@
       keys: ["rivet", "rivets", "tent", "tenting", "weld", "weld line", "nugget", "articulate"],
       topic: "Rivets & weld texture (no tenting)",
       answer:
-        "Rivets / weld texture: glass the flat first, then warm per the film maker’s TDS and set each head — press and purge air around the rivet. Bridging tents over rivets and weld texture; tents trap dirt and moisture and lift later. Soften, work from the flat into the seam, set individually — do not force a whole row in one stretch. Soft pad or rivet brush helps. Brands: 3M · Avery Dennison · Arlon."
+        "Rivets / weld texture: glass the flat first, then warm per the film maker’s TDS and set each head — press and purge air around the rivet. Bridging tents over rivets and weld texture; tents trap dirt and moisture and lift later. Soften, work from the flat into the seam, set individually — do not force a whole row in one stretch. Soft pad or rivet brush helps. Brands: 3M · Avery Dennison · BriteLine."
     },
     {
       id: "rivet-wrinkle",
@@ -115,7 +115,7 @@
       ],
       topic: "Pressed wrinkle / locked crease on a rivet",
       answer:
-        "Pressed wrinkle on a rivet (process): a hard crease over a rivet head is usually a locked crease from bridging — film stretched across the head instead of set around it. Do not mash harder; that sets the crease and can stress or whiten the face. If adhesive will still release, lift a small area, re-lay on and around the head, purge air, and seat with a soft pad or rivet brush. Post-heat only as the film maker’s TDS / Application Guide allows for that SKU — never invent a temperature or dwell. If the film shows white stress marks, a sharp permanent crease, or stretched-thin face, stop fighting it: patch or replace that panel/section. Brands: 3M · Avery Dennison · Arlon — open the exact TDS for heat and stretch limits."
+        "Pressed wrinkle on a rivet (process): a hard crease over a rivet head is usually a locked crease from bridging — film stretched across the head instead of set around it. Do not mash harder; that sets the crease and can stress or whiten the face. If adhesive will still release, lift a small area, re-lay on and around the head, purge air, and seat with a soft pad or rivet brush. Post-heat only as the film maker’s TDS / Application Guide allows for that SKU — never invent a temperature or dwell. If the film shows white stress marks, a sharp permanent crease, or stretched-thin face, stop fighting it: patch or replace that panel/section. Brands: 3M · Avery Dennison · BriteLine — open the exact TDS for heat and stretch limits."
     },
     {
       id: "corrugation",
@@ -143,7 +143,7 @@
       keys: ["post-heat", "post heat", "postheat", "lock", "lock-down", "memory", "heat set", "torch", "heat gun"],
       topic: "Post-heat discipline",
       answer:
-        "Post-heat locks film into the new shape after the field is down — squeegee alone is not the finish line. Focus edges, rivets, corrugations, deep recesses, and seam lips with controlled heat. Never invent a target temperature or dwell time; open the exact 3M, Avery Dennison, or Arlon TDS / Application Guide for that SKU. Keep the torch or gun on a stable base when idle. After post-heat, re-check tents and edge lift before release."
+        "Post-heat locks film into the new shape after the field is down — squeegee alone is not the finish line. Focus edges, rivets, corrugations, deep recesses, and seam lips with controlled heat. Never invent a target temperature or dwell time; open the exact 3M, Avery Dennison, or BriteLine TDS / Application Guide for that SKU. Keep the torch or gun on a stable base when idle. After post-heat, re-check tents and edge lift before release."
     },
     {
       id: "edges-trim",
@@ -178,7 +178,7 @@
       keys: ["storefront", "multipane", "multi-pane", "multi pane", "pane", "window graphic", "bay", "mullion", "architectural", "architecture"],
       topic: "Architectural / multipane",
       answer:
-        "Architectural / storefront multipane: survey lighting, mullions, and substrate before you cut. Align graphics across panes so logos and copy read continuous from the curb — dry-fit registration marks on each lite. Work one pane at a time; do not stretch a single sheet across mullions unless the design and film TDS support it. Plan cutouts and reliefs at hardware. Outdoor exposures need weather-minded edge finishing and product choice from 3M / Avery Dennison / Arlon architectural or window lines."
+        "Architectural / storefront multipane: survey lighting, mullions, and substrate before you cut. Align graphics across panes so logos and copy read continuous from the curb — dry-fit registration marks on each lite. Work one pane at a time; do not stretch a single sheet across mullions unless the design and film TDS support it. Plan cutouts and reliefs at hardware. Outdoor exposures need weather-minded edge finishing and product choice from 3M / Avery Dennison / BriteLine architectural or window lines."
     },
     {
       id: "wet-dry",
@@ -199,14 +199,14 @@
       keys: ["outdoor", "weather", "exposure", "sun", "uv", "rain", "wash bay", "fleet wash"],
       topic: "Outdoor exposure",
       answer:
-        "Outdoor exposure: choose film construction rated for the duty cycle (vehicle side vs storefront glass vs façade). Edge quality and post-heat discipline matter more outdoors — wind and wash attack weak edges first. Avoid tenting anywhere water can pool. Confirm outdoor / vertical / glass ratings on the 3M, Avery Dennison, or Arlon TDS for that SKU — never assume one product’s outdoor rating transfers to another."
+        "Outdoor exposure: choose film construction rated for the duty cycle (vehicle side vs storefront glass vs façade). Edge quality and post-heat discipline matter more outdoors — wind and wash attack weak edges first. Avoid tenting anywhere water can pool. Confirm outdoor / vertical / glass ratings on the 3M, Avery Dennison, or BriteLine TDS for that SKU — never assume one product’s outdoor rating transfers to another."
     },
     {
       id: "substrates",
       keys: ["substrate", "substrates", "painted metal", "acm", "aluminum composite", "powder coat", "laminate", "drywall", "fixture", "glass substrate"],
       topic: "Substrates (process level)",
       answer:
-        "Substrates (process level): glass — clean, inspect for sealant/silicone contamination, follow wet or dry rules from the product guide. Painted metal / commercial vehicle paint — full degrease + IPA; beware fresh paint outgas. ACM / aluminum composite — check coating type and edge condition; do not assume vehicle-wrap technique equals façade technique. Powder coat / laminate / fixtures — test adhesion in a small area and match to architectural-rated products in the 3M / Avery Dennison / Arlon lines. Always confirm film-to-substrate approval on the current TDS."
+        "Substrates (process level): glass — clean, inspect for sealant/silicone contamination, follow wet or dry rules from the product guide. Painted metal / commercial vehicle paint — full degrease + IPA; beware fresh paint outgas. ACM / aluminum composite — check coating type and edge condition; do not assume vehicle-wrap technique equals façade technique. Powder coat / laminate / fixtures — test adhesion in a small area and match to architectural-rated products in the 3M / Avery Dennison / BriteLine lines. Always confirm film-to-substrate approval on the current TDS."
     },
     {
       id: "tooling",
@@ -220,14 +220,14 @@
       keys: ["temp", "temperature", "degree", "fahrenheit", "celsius", "°f", "°c", "how hot", "what temp", "dwell", "stretch percent", "stretch %"],
       topic: "Temperatures & numbers",
       answer:
-        "Never invent install temperatures, post-heat targets, stretch percentages, dwell times, or solvent ratios. Open the exact 3M, Avery Dennison, or Arlon TDS / Application Guide for the film on the roll and follow that product’s guidance for the SKU and substrate."
+        "Never invent install temperatures, post-heat targets, stretch percentages, dwell times, or solvent ratios. Open the exact 3M, Avery Dennison, or BriteLine TDS / Application Guide for the film on the roll and follow that product’s guidance for the SKU and substrate."
     },
     {
       id: "film-choice",
       keys: ["controltac", "control tac", "ij180", "cast", "calendared", "film type", "vinyl type", "air egress", "reposition"],
       topic: "Film choice",
       answer:
-        "Film choice belongs to the maker’s line (3M, Avery Dennison, Arlon). Match product to substrate and job lifespan — cast for deep compound curves and long-term vehicle graphics; calendared where geometry and duty cycle allow; architectural products for walls, glass, and fixtures when specified. Confirm air-egress / repositionability and wet/dry method from the TDS — do not assume one brand’s behavior on another’s film."
+        "Film choice belongs to the maker’s line (3M, Avery Dennison, BriteLine). Match product to substrate and job lifespan — cast for deep compound curves and long-term vehicle graphics; calendared where geometry and duty cycle allow; architectural products for walls, glass, and fixtures when specified. Confirm air-egress / repositionability and wet/dry method from the TDS — do not assume one brand’s behavior on another’s film."
     },
     {
       id: "fleet",
@@ -248,7 +248,7 @@
       keys: ["commercial", "box truck", "boxtruck", "vehicle wrap", "wrap a truck", "van wrap", "trailer wrap"],
       topic: "Commercial vehicle overview",
       answer:
-        "Commercial vehicle flow: (1) prep/clean dirt traps, (2) layout & hinge large panels, (3) glass flats first, (4) set rivets/corrugation without tenting, (5) feed deep recesses, (6) manage seams, (7) finish edges/trim, (8) doors & hardware reliefs, (9) post-heat discipline, (10) QC walkaround. Use 3M · Avery Dennison · Arlon only. Ask the coach about any step by name."
+        "Commercial vehicle flow: (1) prep/clean dirt traps, (2) layout & hinge large panels, (3) glass flats first, (4) set rivets/corrugation without tenting, (5) feed deep recesses, (6) manage seams, (7) finish edges/trim, (8) doors & hardware reliefs, (9) post-heat discipline, (10) QC walkaround. Use 3M · Avery Dennison · BriteLine only. Ask the coach about any step by name."
     },
     {
       id: "getting-started",
@@ -259,7 +259,7 @@
       ],
       topic: "Getting started",
       answer:
-        "Where to begin: pick the job type first — Box truck, Van, Trailer, or Storefront — then work the process in order: prep/clean → layout/hinge → glass flats → set rivets/channels → feed recesses → seams → edges/trim → doors & hardware → post-heat → QC walkaround. Tap Coach chips (Rivets, Prep, QC, Post-heat…) for focused answers, or ask about a vehicle part (bumper, door handle, recess, seam). This trainer covers commercial + architectural process with 3M · Avery Dennison · Arlon only — open the film maker’s TDS for any number (temp, dwell, stretch)."
+        "Where to begin: pick the job type first — Box truck, Van, Trailer, or Storefront — then work the process in order: prep/clean → layout/hinge → glass flats → set rivets/channels → feed recesses → seams → edges/trim → doors & hardware → post-heat → QC walkaround. Tap Coach chips (Rivets, Prep, QC, Post-heat…) for focused answers, or ask about a vehicle part (bumper, door handle, recess, seam). This trainer covers commercial + architectural process with 3M · Avery Dennison · BriteLine only — open the film maker’s TDS for any number (temp, dwell, stretch)."
     },
     {
       id: "bumper-fascia",
@@ -336,7 +336,7 @@
       ],
       topic: "Boat / marine (high-level)",
       answer:
-        "Boat / marine (high-level only): marine duty needs film construction rated for the exposure — confirm marine / exterior suitability on the 3M, Avery Dennison, or Arlon TDS for that SKU. Expect gelcoat, fiberglass, and hardware that differ from fleet paint; prep and adhesion rules come from the maker’s guide for that substrate, not from vehicle-wrap shortcuts. Plan reliefs at fittings, rails, and through-hulls; edge finish matters where water and wash flow constantly. This coach is not a full marine course — use marine-grade product selection + the current TDS, and escalate complex hull geometry to experienced marine installers."
+        "Boat / marine (high-level only): marine duty needs film construction rated for the exposure — confirm marine / exterior suitability on the 3M, Avery Dennison, or BriteLine TDS for that SKU. Expect gelcoat, fiberglass, and hardware that differ from fleet paint; prep and adhesion rules come from the maker’s guide for that substrate, not from vehicle-wrap shortcuts. Plan reliefs at fittings, rails, and through-hulls; edge finish matters where water and wash flow constantly. This coach is not a full marine course — use marine-grade product selection + the current TDS, and escalate complex hull geometry to experienced marine installers."
     },
     {
       id: "handles-mirrors",
@@ -718,7 +718,7 @@
       /* True empty only when nothing scored — helpful mini-menu, not keyword shrug */
       parts.push(helpfulMiniMenu());
     }
-    parts.push("Brands in this trainer: 3M · Avery Dennison · Arlon only.");
+    parts.push("Brands in this trainer: 3M · Avery Dennison · BriteLine only.");
     return appendTds(parts.join("\n\n"));
   }
 
@@ -1341,7 +1341,7 @@
 
   var COACH_GREETING =
     "Ask anything about commercial or architectural wrap installs. " +
-    "Tap a topic below or name a vehicle part. Covers 3M · Avery Dennison · Arlon films. " +
+    "Tap a topic below or name a vehicle part. Covers 3M · Avery Dennison · BriteLine films. " +
     TDS_FOOTER;
 
   function renderCoach() {
