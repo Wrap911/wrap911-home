@@ -1466,7 +1466,7 @@
       emailEl.innerHTML = '<span class="muted">Contact email coming soon.</span>';
     }
     var brandsEl = $("contact-brands");
-    if (brandsEl) brandsEl.textContent = (cfg.brands || ["3M", "Avery Dennison", "Arlon"]).join(", ");
+    if (brandsEl) brandsEl.textContent = (cfg.brands || ["3M", "Avery Dennison", "BriteLine"]).join(", ");
   }
 
   function bindNav() {
