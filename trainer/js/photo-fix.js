@@ -6,7 +6,7 @@
 
   var APP = window.WRAP911_APP = window.WRAP911_APP || {};
   var pending = null;
-  var MAX_EDGE = 1280;
+  var MAX_EDGE = 1024; /* 2.7.9: smaller upload for phones on cell data */
   var JPEG_Q = 0.82;
 
   function core() { return APP.core || null; }
@@ -252,11 +252,22 @@
       surface: field("photo-fix-surface"),
       symptom: field("photo-fix-symptom")
     };
+    /* 2.7.9: the AI read takes 30-60 s. Show a timer, keep the request alive up to 100 s,
+       and say what really went wrong instead of "could not reach the server". */
+    var started = Date.now();
+    var ticker = setInterval(function () {
+      say("", "Reading the photo… " + Math.round((Date.now() - started) / 1000) + " s. This takes up to a minute. Keep this screen open.");
+    }, 1000);
+    var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+    var killer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 100000);
+    function done() { clearInterval(ticker); clearTimeout(killer); }
     fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
+      done();
       return res.json().catch(function () { return null; }).then(function (data) {
         return { status: res.status, data: data };
       });
@@ -284,12 +295,18 @@
       var resultOk = $("photo-fix-result");
       if (resultOk) resultOk.innerHTML = renderAnswer(out.data);
       say("ok", "AI suggestion, verify on the job. The photo was not saved.");
-    }).catch(function () {
-      pending = null;
+    }).catch(function (err) {
+      done();
+      /* keep the resized photo so Get a fix can be tapped again */
       syncSubmit();
+      var timedOut = err && err.name === "AbortError";
+      var hidden = typeof document !== "undefined" && document.visibilityState === "hidden";
       var result = $("photo-fix-result");
-      if (result) result.innerHTML = '<div class="passion-note"><strong>Coming soon</strong><p>Photo Fix could not reach the server. Your photo was not saved.</p></div>';
-      say("", "Nothing was stored.");
+      if (result) result.innerHTML = '<div class="passion-note"><strong>' + (timedOut ? "Took too long" : "Connection dropped") + '</strong><p>' +
+        (timedOut ? "The AI did not answer in time." : "The phone lost the connection before the answer came back" + (hidden ? " (the screen was locked or you left Safari)." : ".")) +
+        " Keep this screen open and tap Get a fix again. Your photo was not saved.</p></div>";
+      say("bad", "No answer yet. Try again.");
+      try { console.warn("photo-fix", err && (err.name + ": " + err.message)); } catch (e) {}
     });
   }
 
