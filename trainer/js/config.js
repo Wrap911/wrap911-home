@@ -31,8 +31,8 @@ window.WRAP911_CONFIG = {
   stripeTestMode: false,
   shopPhoneOpen: false,
   problemUploadEndpoint: "",
-  /* Photo Fix is off until POST /coach/photo is deployed. ?photoFix=1 opens the section. */
-  photoFix: false,
+  /* Photo Fix is on: POST /coach/photo is live (paid Pack/Seat only, server-enforced). */
+  photoFix: true,
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
   freeVideoSamples: 8,
