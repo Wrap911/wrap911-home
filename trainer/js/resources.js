@@ -1,0 +1,39 @@
+/* WRAP 911 — Resources (paid only) */
+(function () {
+  "use strict";
+  var APP = window.WRAP911_APP = window.WRAP911_APP || {};
+
+  function core() { return APP.core || null; }
+  function $(id) {
+    var c = core();
+    return c ? c.$(id) : document.getElementById(id);
+  }
+
+  APP.renderResources = function () {
+    var c = core();
+    var box = $("resources-body");
+    if (!box || !c) return;
+    if (!c.hasFullAccess || !c.hasFullAccess()) {
+      box.innerHTML = '<p class="lead">Resources are included with the Shop Pack or Seat.</p>' +
+        '<p>Unlock on this phone to see the plugins, visualizers, and training film that pair with the lesson cards.</p>' +
+        '<button type="button" id="resources-to-pricing">Unlock</button>';
+      var btn = $("resources-to-pricing");
+      if (btn) btn.onclick = function () { c.showScreen("pricing"); };
+      return;
+    }
+    box.innerHTML =
+      '<p class="muted">These tools support the lesson cards. They are not required and Wrap 911 is not affiliated with them.</p>' +
+      '<h3>Design plugins (Illustrator)</h3>' +
+      '<div class="card"><strong>WrapsDesigner plugin</strong><br>Live 3D vehicle next to your artboard. Pairs with film types and design handoff. <a href="https://app.wrapsdesigner.com/" target="_blank" rel="noopener">Open</a></div>' +
+      '<div class="card"><strong>Vulcan (VinylMaster)</strong><br>Alignment marks + QR codes from Illustrator for cutting. <a href="https://vinylmaster.software/vulcan-plugin" target="_blank" rel="noopener">Open</a></div>' +
+      '<div class="card"><strong>XFCut / Easy Cut Studio</strong><br>Direct cut from Illustrator to common plotters.</div>' +
+      '<h3>Visualizers</h3>' +
+      '<div class="card"><strong>Avery Dennison free visualizer</strong> — Quick color check before film arrives.</div>' +
+      '<div class="card"><strong>Zeno, WrapConfigurator, DreamRide.AI, WrapUp, WrapsDesigner browser</strong><br>Customer previews. Use for sales; keep Wrap 911 for the bay technique.</div>' +
+      '<h3>Training film</h3>' +
+      '<div class="card"><strong>Thermochromic training vinyl (Teckwrap Redshift or similar)</strong><br>Changes color near 40°C + grid. Makes heat and stretch visible. Matches the heat, rivet, and edge cards. Practice on this before customer film.</div>' +
+      '<h3>Shop software</h3>' +
+      '<div class="card"><strong>Wraptor, Wrapstart, QuoteIQ, Tint Wiz, ShopVOX, GarageTool</strong><br>Quoting, inventory, job tracking. Run alongside the trainer.</div>' +
+      '<p class="muted">Always follow the TDS for the film on the job.</p>';
+  };
+})();
