@@ -1,0 +1,14 @@
+{
+  "appId": "com.wrap911.trainer",
+  "appName": "WRAP 911",
+  "webDir": "trainer",
+  "bundledWebRuntime": false,
+  "ios": {
+    "contentInset": "automatic",
+    "allowsLinkPreview": false
+  },
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https"
+  }
+}
