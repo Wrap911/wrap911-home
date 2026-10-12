@@ -555,3 +555,13 @@ input, select, textarea {
 .xp-chip { color: #1a0c00; background: #ffb000; border-color: #ffb000; }
 .plan-chip { color: #fff; background: #ff2d8c; border-color: #ff2d8c; }
 
+
+/* 2.7.8: Seat $49 buy was a dark .secondary button nested inside an inline link, so on a phone it sat
+   behind the unlock box and read as missing. Now a full-width CTA under the Pack button. */
+#stripe-link-wrap { display: flex; flex-direction: column; gap: 0.6rem; margin: 0.8rem 0 1rem; }
+#stripe-link-wrap.hidden { display: none; }
+a.buy-seat-cta {
+  display: block; width: 100%; box-sizing: border-box; text-align: center; text-decoration: none;
+  padding: 0.8rem 1rem; border-radius: 12px; border: 2px solid #ffb000; color: #fff6ee;
+  background: rgba(255, 176, 0, 0.12); font-family: var(--display); letter-spacing: 0.06em; text-transform: uppercase;
+}
