@@ -314,6 +314,7 @@
       return;
     }
     var endpoint = String(cfg().aiEndpoint || "").replace(/\/$/, "") + "/coach/photo";
+    var sentClip = Array.isArray(pending);
     var body = {
       consent: true,
       image: Array.isArray(pending) ? undefined : pending,
@@ -365,8 +366,17 @@
         return;
       }
       var resultOk = $("photo-fix-result");
-      if (resultOk) resultOk.innerHTML = renderAnswer(out.data);
-      say("ok", "AI suggestion, verify on the job. The photo was not saved.");
+      if (resultOk) {
+        resultOk.innerHTML = renderAnswer(out.data) + '<p><button type="button" class="secondary" id="photo-fix-share">Share this fix (text only)</button></p>';
+        var shareBtn = $("photo-fix-share"), ans = out.data;
+        if (shareBtn) shareBtn.addEventListener("click", function () {
+          /* Text only. The photo and video frames are never shared. */
+          var steps = (Array.isArray(ans.fix) ? ans.fix : []).slice(0, 4).map(function (x, i) { return (i + 1) + ". " + x; }).join("\n");
+          var txt = "WRAP 911 Photo Fix (AI suggestion, verify on the job):\n" + String(ans.shows || "").slice(0, 300) + (steps ? "\nFix:\n" + steps : "") + "\nCommercial vinyl wrap installer training:";
+          if (window.WRAP911_SHARE) window.WRAP911_SHARE.share({ text: txt.slice(0, 1200), url: "https://wrap911.com" });
+        });
+      }
+      say("ok", "AI suggestion, verify on the job. " + (sentClip ? "The video frames were not saved." : "The photo was not saved."));
     }).catch(function (err) {
       done();
       /* keep the resized photo so Get a fix can be tapped again */
