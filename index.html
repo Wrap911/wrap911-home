@@ -29,36 +29,72 @@
   <meta name="twitter:image" content="https://wrap911.com/assets/sales/trailer-rivets.jpg" />
   <meta name="twitter:image:alt" content="Black trailer mid-install in the shop" />
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Wrap 911 Trainer",
-    "applicationCategory": "EducationalApplication",
-    "operatingSystem": "Web, iOS, Android browser",
-    "url": "https://wrap911.com/",
-    "description": "Installer-built shop trainer for vinyl wrap crews. Lesson cards for real bay jobs including commercial and fleet wrapping, rivets, edges, and heat application. Brands: 3M, Avery Dennison, BriteLine.",
-    "author": {
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
       "@type": "Organization",
-      "name": "Wrap 911"
+      "@id": "https://wrap911.com/#org",
+      "name": "Wrap 911",
+      "url": "https://wrap911.com/",
+      "logo": "https://wrap911.com/assets/wrap911-logo.jpg",
+      "email": "info@wrap911.com"
     },
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "W911-PACK",
-        "price": "149.00",
-        "priceCurrency": "USD",
-        "description": "One-time license for 5 seats, 12 months"
+    {
+      "@type": "WebSite",
+      "@id": "https://wrap911.com/#website",
+      "name": "Wrap 911",
+      "url": "https://wrap911.com/",
+      "publisher": {
+        "@id": "https://wrap911.com/#org"
       },
-      {
-        "@type": "Offer",
-        "name": "W911-SEAT",
-        "price": "49.00",
-        "priceCurrency": "USD",
-        "description": "One-time license for one tech, 12 months"
-      }
-    ],
-    "keywords": "vinyl wrapping, commercial wrapping, fleet wraps, wrap shop training, vinyl install training, 3M, Avery Dennison, BriteLine"
-  }
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://wrap911.com/#app",
+      "name": "Wrap 911 Trainer",
+      "url": "https://wrap911.com/trainer/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Installer-built shop trainer for vinyl wrap crews. Lesson cards for real bay jobs including commercial and fleet wrapping, rivets, edges, and heat application. Brands: 3M, Avery Dennison, BriteLine.",
+      "image": "https://wrap911.com/assets/sales/trailer-rivets.jpg",
+      "publisher": {
+        "@id": "https://wrap911.com/#org"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "W911-PACK",
+          "sku": "W911-PACK",
+          "price": "149.00",
+          "priceCurrency": "USD",
+          "description": "One-time license for 5 seats, 12 months",
+          "availability": "https://schema.org/InStock",
+          "url": "https://wrap911.com/trainer/?buy=pack",
+          "seller": {
+            "@id": "https://wrap911.com/#org"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "W911-SEAT",
+          "sku": "W911-SEAT",
+          "price": "49.00",
+          "priceCurrency": "USD",
+          "description": "One-time license for one tech, 12 months",
+          "availability": "https://schema.org/InStock",
+          "url": "https://wrap911.com/trainer/?buy=seat",
+          "seller": {
+            "@id": "https://wrap911.com/#org"
+          }
+        }
+      ],
+      "keywords": "vinyl wrapping, commercial wrapping, fleet wraps, wrap shop training, vinyl install training, 3M, Avery Dennison, BriteLine"
+    }
+  ]
+}
   </script>
   <style>
     @font-face {
@@ -593,6 +629,6 @@
     Wrap 911 — shop trainer. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.<br />
     <a href="#faq">FAQ &amp; refunds</a> · <a href="mailto:info@wrap911.com">info@wrap911.com</a> · <a href="privacy.html">Privacy</a> · <a href="#" data-w911-share>Share WRAP 911</a>
   </footer>
-  <script src="assets/share.js?v=1" defer></script>
+  <script src="assets/share.min.js?v=2" defer></script>
 </body>
 </html>
