@@ -1,0 +1,67 @@
+name: ASC read-only status (temp)
+on:
+  push:
+    branches: [asc-readonly-status]
+    paths: [".github/workflows/asc-readonly-status.yml"]
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - run: pip install -q pyjwt cryptography requests
+      - name: Query (GET only)
+        shell: python
+        run: |
+          import os,re,time,jwt,requests,json
+          b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b)
+          key='-----BEGIN PRIVATE KEY-----\n'+'\n'.join(b[i:i+64] for i in range(0,len(b),64))+'\n-----END PRIVATE KEY-----\n'
+          tok=jwt.encode({"iss":os.environ["ASC_ISSUER_ID"],"iat":int(time.time()),"exp":int(time.time())+1200,"aud":"appstoreconnect-v1"},key,algorithm="ES256",headers={"kid":os.environ["ASC_KEY_ID"]})
+          H={"Authorization":"Bearer "+tok}
+          def g(p):
+            u=p if p.startswith('http') else "https://api.appstoreconnect.apple.com/"+p
+            r=requests.get(u,headers=H)
+            try: j=r.json()
+            except Exception: j={}
+            if r.status_code>=400: print(f"ERR GET {p}: {r.status_code} {json.dumps(j.get('errors',''))[:400]}"); return {}
+            return j
+          aid="6816763473"
+          print("== app"); a=g(f"v1/apps/{aid}").get("data",{}); print(a.get("attributes",{}).get("name"), a.get("attributes",{}).get("bundleId"))
+          print("== versions")
+          for v in g(f"v1/apps/{aid}/appStoreVersions?limit=10&include=build").get("data",[]):
+            at=v["attributes"]; bid=(v.get("relationships",{}).get("build",{}).get("data") or {}).get("id")
+            bn=g(f"v1/builds/{bid}").get("data",{}).get("attributes",{}).get("version") if bid else None
+            print(f"Version {at.get('versionString')} id={v['id']} appStoreState={at.get('appStoreState')} appVersionState={at.get('appVersionState')} releaseType={at.get('releaseType')} created={at.get('createdDate')} build={bn}")
+            ph=g(f"v1/appStoreVersions/{v['id']}/appStoreVersionPhasedRelease").get("data")
+            if ph: print("  phasedRelease", ph.get("attributes"))
+          print("== reviewSubmissions")
+          for s in g(f"v1/reviewSubmissions?filter[app]={aid}&limit=20").get("data",[]):
+            at=s["attributes"]; print(f"Submission {s['id']} state={at.get('state')} platform={at.get('platform')} submittedDate={at.get('submittedDate')} attrs={json.dumps(at)}")
+            for it in g(f"v1/reviewSubmissions/{s['id']}/items?limit=50").get("data",[]):
+              rel={k:(v.get('data') or {}).get('id') for k,v in it.get('relationships',{}).items() if isinstance(v,dict) and v.get('data')}
+              print(f"  item {it['id']} state={it['attributes'].get('state')} rel={rel}")
+          print("== IAPs")
+          for p in g(f"v1/apps/{aid}/inAppPurchasesV2?limit=50").get("data",[]):
+            at=p["attributes"]; print(f"IAP {p['id']} {at.get('productId')} type={at.get('inAppPurchaseType')} state={at.get('state')} name={at.get('name')}")
+            ss=g(f"v2/inAppPurchases/{p['id']}/appStoreReviewScreenshot").get("data")
+            print("  reviewScreenshot:", (ss or {}).get("attributes",{}).get("assetDeliveryState") if ss else None, (ss or {}).get("attributes",{}).get("fileName") if ss else None)
+            for l in g(f"v2/inAppPurchases/{p['id']}/inAppPurchaseLocalizations").get("data",[]):
+              la=l["attributes"]; print(f"  loc {la.get('locale')} name={la.get('name')} state={la.get('state')}")
+            av=g(f"v2/inAppPurchases/{p['id']}/iapPriceSchedule").get("data")
+            print("  priceSchedule:", bool(av))
+            ia=g(f"v2/inAppPurchases/{p['id']}/inAppPurchaseAvailability?include=availableTerritories")
+            print("  iapTerritories:", [t['id'] for t in ia.get('included',[])], (ia.get('data') or {}).get('attributes'))
+          print("== subscriptionGroups")
+          for sg in g(f"v1/apps/{aid}/subscriptionGroups").get("data",[]):
+            for s in g(f"v1/subscriptionGroups/{sg['id']}/subscriptions").get("data",[]):
+              print("  sub", s['id'], s['attributes'].get('productId'), s['attributes'].get('state'))
+          print("== app availability")
+          av=g(f"v1/apps/{aid}/appAvailabilityV2").get("data")
+          if av:
+            print("availableInNewTerritories:", av["attributes"].get("availableInNewTerritories"))
+            for t in g(f"v2/appAvailabilities/{av['id']}/territoryAvailabilities?limit=200&include=territory").get("data",[]):
+              if t['attributes'].get('available'): print("  available:", t['relationships']['territory']['data']['id'], t['attributes'].get('contentStatuses'))
+          print("== agreements/banking/tax: not exposed by ASC API (no endpoint)")
+          print("== done")
