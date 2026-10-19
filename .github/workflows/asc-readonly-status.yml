@@ -1,5 +1,5 @@
 name: ASC read-only status (temp)
-# rerun 2026-10-17
+# rerun 2026-10-19
 on:
   push:
     branches: [asc-readonly-status]
