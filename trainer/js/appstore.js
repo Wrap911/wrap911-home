@@ -1,9 +1,9 @@
-/* App Store compliance: AI Coach consent (5.1.2), in-app privacy link (5.1.1),
-   and iOS checkout notice (3.1.1(a) US link-out to web checkout). */
+/* App Store compliance: AI Coach consent (5.1.2) and in-app privacy link (5.1.1).
+   iOS sells Shop Pack and Seat only through StoreKit (Guideline 3.1.1). */
 (function () {
   var KEY = "wrap911_ai_consent";
   var PRIVACY = "https://wrap911.com/privacy.html";
-  var isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  var isNative = !!(window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === "ios");
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html; return d.firstChild; }
   function css() {

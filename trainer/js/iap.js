@@ -1,6 +1,7 @@
-/* Apple In-App Purchase on the iOS app only.
-   Non-renewing Shop Pack and Seat. Prices come from StoreKit (priceString).
-   A purchase unlocks this phone for 365 days, same as an unlock code.
+/* Apple In-App Purchase on the iOS app only (Capacitor.getPlatform() === "ios").
+   Non-renewing Shop Pack and Seat through StoreKit 2 (@capgo/native-purchases).
+   Prices come from StoreKit (priceString). A purchase unlocks this phone for
+   365 days. No Stripe link, website buy button, or unlock-code field.
    Web and PWA: this file returns immediately. */
 (function () {
   var Logic = window.WRAP911_IAP_LOGIC;
@@ -13,14 +14,12 @@
   var CREW_KEY = "wrap911_crew_code";
   var CLAIM_TRY = "wrap911_apple_claim_tried";
   var LS = "wrap911_license";
-  var WEB = "https://wrap911.com";
   var TERMS = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   var PRIVACY = "https://wrap911.com/privacy.html";
   var cap = window.Capacitor;
   var NP = cap.Plugins && cap.Plugins.NativePurchases;
   var products = {};
   var productError = "";
-  var us = false;
   var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
   var JS_MARK = "iap-4";
@@ -358,17 +357,51 @@
       return false;
     }).catch(function () { return false; });
   }
+  function removeNode(node) {
+    if (node && node.parentNode) node.parentNode.removeChild(node);
+  }
+  /* Guideline 3.1.1: the iOS binary must not offer Stripe, a website checkout,
+     or a license-key field. The same HTML is the website, so this runs only
+     after isNativeApp() has already returned for web. */
+  function stripExternalPurchase() {
+    removeNode(document.getElementById("stripe-link-wrap"));
+    removeNode(document.getElementById("iap-code-note"));
+    removeNode(document.querySelector("#screen-pricing .unlock-box"));
+    removeNode(document.getElementById("unlock-code"));
+    removeNode(document.getElementById("btn-unlock"));
+    var links = document.querySelectorAll("a.iap-web, a[href*='buy.stripe.com']");
+    for (var i = 0; i < links.length; i++) removeNode(links[i]);
+  }
+  function exposePaywall() {
+    var card = document.getElementById("goto-pricing");
+    var home = document.getElementById("screen-home");
+    var about = document.getElementById("goto-about");
+    if (card && home && about && about.parentNode === home && card.parentNode !== home) {
+      home.insertBefore(card, about);
+    }
+    if (card) {
+      var title = card.querySelector(".card-title");
+      if (title) title.textContent = "Pricing";
+    }
+    var details = document.getElementById("home-pricing-collapse");
+    if (details) {
+      details.open = true;
+      var summary = details.querySelector("summary");
+      if (summary) summary.textContent = "Pricing";
+    }
+    var detail = document.getElementById("home-plan-detail");
+    if (detail && /\$\d/.test(detail.textContent || "")) {
+      detail.textContent = "Free look is open. A Shop Pack or Seat unlocks the rest.";
+    }
+  }
   function render() {
     var screen = document.getElementById("screen-pricing");
     if (!screen) return;
     css();
+    stripExternalPurchase();
+    exposePaywall();
     var lead = screen.querySelector(".lead");
     if (lead) lead.textContent = "Shop Pack is 5 seats for 12 months. Seat is 1 tech for 12 months. One payment. It does not auto-renew.";
-    var stripe = document.getElementById("stripe-link-wrap");
-    if (stripe) {
-      stripe.classList.add("hidden");
-      stripe.innerHTML = "";
-    }
     var card = document.getElementById("iap-card");
     if (!card) {
       card = document.createElement("div");
@@ -377,14 +410,6 @@
       var h1 = screen.querySelector("h1");
       if (h1 && h1.nextSibling) screen.insertBefore(card, h1.nextSibling);
       else screen.insertBefore(card, screen.firstChild);
-    }
-    var unlock = screen.querySelector(".unlock-box");
-    if (unlock && !document.getElementById("iap-code-note")) {
-      var codeNote = document.createElement("p");
-      codeNote.id = "iap-code-note";
-      codeNote.className = "muted";
-      codeNote.textContent = "Already have an unlock code? Enter it here.";
-      unlock.parentNode.insertBefore(codeNote, unlock);
     }
     var lic = activeLicense();
     var code = crewCode();
@@ -406,7 +431,7 @@
     }
     var buttons = "";
     if (!NP) {
-      buttons = '<p class="msg">App Store purchasing is not available in this build. You can still enter an unlock code.</p>';
+      buttons = '<p class="msg">App Store purchasing is not available in this build.</p>';
     } else if (!lic) {
       buttons =
         '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>" +
@@ -415,9 +440,6 @@
       buttons = '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>";
     }
     var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore Purchases</button>' : "";
-    var web = us
-      ? '<a class="iap-web" href="' + WEB + '" target="_blank" rel="noopener noreferrer">Buy on wrap911.com</a>'
-      : "";
     var packP = priceText(PACK);
     var seatP = priceText(SEAT);
     var priceLine = (packP || seatP)
@@ -434,8 +456,7 @@
       "One-time purchase. Access lasts 12 months from the purchase date and does not auto-renew. " +
       "Payment is charged to your Apple ID. " +
       '<a href="' + TERMS + '" target="_blank" rel="noopener">Terms of Use (EULA)</a> · ' +
-      '<a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>' +
-      web;
+      '<a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>';
     if (productError) setMsg(productError);
     if (buyingId) {
       var pendingBtn = card.querySelector('[data-iap="' + buyingId + '"]');
@@ -460,12 +481,10 @@
     if (!NP || !NP.getStorefront) return Promise.resolve();
     return NP.getStorefront().then(function (r) {
       storeCode = String((r && r.countryCode) || "");
-      us = Logic.isUsStorefront(storeCode);
-      window.WRAP911_IAP_US = us;
+      window.WRAP911_IAP_US = false;
       note("store " + (storeCode || "none"));
     }).catch(function () {
       storeCode = "";
-      us = false;
       window.WRAP911_IAP_US = false;
       note("store failed");
     });

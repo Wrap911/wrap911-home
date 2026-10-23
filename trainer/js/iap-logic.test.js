@@ -109,4 +109,25 @@ webFiles.forEach(function (name) {
   assert.ok(src.indexOf("$149") !== -1, name + " still has the website pack price");
 });
 
+var logicSrc = fs.readFileSync(path.join(__dirname, "iap-logic.js"), "utf8");
+assert.ok(logicSrc.indexOf('getPlatform() === "ios"') !== -1, "iOS is Capacitor.getPlatform() === ios");
+assert.ok(iap.indexOf("Restore Purchases") !== -1, "Pricing keeps Restore Purchases");
+assert.ok(iap.indexOf("com.wrap911.trainer.seat.12mo") !== -1);
+assert.ok(iap.indexOf("com.wrap911.trainer.pack.12mo") !== -1);
+assert.ok(iap.indexOf('productType: "inapp"') !== -1, "non-renewing products go through native-purchases");
+assert.ok(iap.indexOf("stripExternalPurchase") !== -1);
+assert.ok(iap.indexOf("unlock-box") !== -1, "iOS removes the unlock-code field");
+assert.strictEqual(iap.indexOf("Buy on wrap911.com"), -1, "iOS has no website buy CTA");
+assert.strictEqual(iap.indexOf("buy.stripe.com"), -1, "iOS has no Stripe link");
+assert.strictEqual(iap.indexOf("Already have an unlock code"), -1);
+["about.js", "plan-fix.js"].forEach(function (name) {
+  var src = fs.readFileSync(path.join(__dirname, name), "utf8");
+  assert.strictEqual(src.indexOf("Buy on wrap911.com"), -1, name + " has no website buy CTA");
+});
+var plan = fs.readFileSync(path.join(__dirname, "plan-fix.js"), "utf8");
+assert.ok(plan.indexOf("buy.stripe.com") !== -1, "the website Stripe Payment Links stay");
+var privacy = fs.readFileSync(path.join(__dirname, "../../privacy.html"), "utf8");
+assert.ok(/Apple In-App Purchase/i.test(privacy), "privacy.html mentions Apple IAP");
+assert.ok(/Stripe/i.test(privacy), "privacy.html keeps the website Stripe paragraph");
+
 console.log("iap-logic tests ok");

@@ -7,6 +7,15 @@
      Now stored as SHA-256 only. It is still in git history, so retire it once Worker seat codes work. */
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
 
+  function iosApp() {
+    try {
+      var cap = window.Capacitor;
+      return !!(cap && typeof cap.getPlatform === "function" && cap.getPlatform() === "ios");
+    } catch (e) {
+      return false;
+    }
+  }
+
   function packLicense() {
     var now = Date.now();
     return {
@@ -159,6 +168,7 @@
       if (core && core.showScreen) core.showScreen("pricing");
       else { var nb = document.querySelector('[data-nav="pricing"]'); if (nb) nb.click(); }
     } catch (e) {}
+    if (iosApp()) return;
     setTimeout(function () {
       var inp = document.getElementById("unlock-code");
       if (inp) { try { inp.scrollIntoView({ block: "center" }); inp.focus(); } catch (e2) {} }
@@ -174,6 +184,11 @@
   function showSeatCard() {
     var home = document.getElementById("screen-home");
     if (!home) return;
+    if (iosApp()) {
+      var iosCard = home.querySelector(".seat-carry");
+      if (iosCard && iosCard.parentNode) iosCard.parentNode.removeChild(iosCard);
+      return;
+    }
     var paid = paidNow();
     var mode = !paid ? "free" : (!standalone() ? "browser" : "");
     var old = home.querySelector(".seat-carry");
@@ -232,6 +247,7 @@
     } catch (e) { return Promise.resolve(""); }
   }
   function takeCode(code, fb) {
+    if (iosApp()) return false;
     if (!/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) return false;
     redeemRemote(code).then(function () {
       if (fb) { fb.className = "quiz-feedback ok"; fb.textContent = "Seat accepted. Full trainer is open on this phone."; }
@@ -263,7 +279,11 @@
     var q;
     try { q = new URLSearchParams(window.location.search); } catch (e) { q = new URLSearchParams(); }
     var sid = q.get("session_id") || "";
-    if (/^cs_/.test(sid)) {
+    if (iosApp() && sid) {
+      q.delete("session_id");
+      var iosQs = q.toString();
+      try { history.replaceState({}, "", window.location.pathname + (iosQs ? "?" + iosQs : "") + window.location.hash); } catch (eIos) {}
+    } else if (/^cs_/.test(sid)) {
       claimSession(sid).then(function () {
         q.delete("session_id");
         var qs = q.toString();

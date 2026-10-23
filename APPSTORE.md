@@ -14,15 +14,15 @@ npm run ios:sync      # copies site into www/ and pod installs
 npm run ios:open      # opens Xcode
 ```
 In Xcode > App target > Signing & Capabilities: tick "Automatically manage signing", pick your Team.
-Set Version 1.0.0 / Build 1. Add 1024px icon in Assets > AppIcon.
+Version is 1.1. Build is 20. Add 1024px icon in Assets > AppIcon.
 Product > Archive > Distribute App > App Store Connect > Upload. Then submit in App Store Connect (TestFlight first).
 
 ## Payments
 The download is free. Full access is a one-time 12-month Shop Pack (5 seats) or Seat (1 phone).
 
-Apple In-App Purchase is the primary way to buy inside the iOS app. On the US storefront only, a secondary **Buy on wrap911.com** link opens Safari. That link is allowed without the external-purchase entitlement under Guideline 3.1.1(a) / 3.1.3 (May 2025). Other storefronts do not show the website button or the website prices. Keep App Store Connect availability set to **United States only** until you intend to sell elsewhere.
+Inside the iOS app (`Capacitor.getPlatform() === "ios"`), Shop Pack and Seat are sold only through StoreKit 2 (`@capgo/native-purchases`). There is no Stripe link, no "Buy on wrap911.com" button, and no unlock-code field. The paywall is the Pricing screen. It opens from Home with no account. Restore Purchases is on that screen. Entitlement comes from the StoreKit transaction.
 
-People who already paid on wrap911.com still type their unlock code on the Pricing screen.
+The website at wrap911.com still sells the same plans with Stripe. That checkout is not linked from the iOS app.
 
 ### In-App Purchase products to create
 Type: **Non-Renewing Subscription**, duration **1 year**. Not auto-renewable (those renew). Not non-consumable (those never expire). StoreKit does not send an expiration for this type, so the app uses the same 365-day window as an unlock code, starting at `purchaseDate`.
@@ -54,9 +54,7 @@ Data Not Used to Track You. Data Not Linked to You: **User Content > Other User 
 
 ## Review notes (paste into App Review Information)
 > Guideline 2.3.8: the app icon is now the WRAP 911 wordmark. The previous build used Capacitor's placeholder icon.
-> Guideline 3.1.1: Shop Pack and Seat are for sale as non-renewing In-App Purchases on the Pricing screen (Shop Pack first). Restore Purchases is on that screen. A purchase unlocks the full trainer on this phone for 12 months.
-> On the United States storefront only, a secondary Buy on wrap911.com button opens Safari. That is the external-purchase link allowed by Guideline 3.1.1(a) and 3.1.3. The website button and website prices are hidden on every other storefront. Availability is United States only.
-> Unlock code entry remains for people who already bought on wrap911.com. The app does not sell access only by license key.
+> Guideline 3.1.1: Shop Pack and Seat are for sale only as non-renewing In-App Purchases on the Pricing screen (Shop Pack first). Version 1.1, build 20. Restore Purchases is on that screen. A purchase unlocks the full trainer on this phone for 12 months from the StoreKit purchase date. The Pricing screen opens with no account. The iOS app has no Stripe link, no website buy button, and no unlock-code field.
 > The AI Coach asks permission before sending a question to our server and xAI. Declining uses the offline answers.
 
 ## Review risks
