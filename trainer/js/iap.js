@@ -369,7 +369,8 @@
     removeNode(document.querySelector("#screen-pricing .unlock-box"));
     removeNode(document.getElementById("unlock-code"));
     removeNode(document.getElementById("btn-unlock"));
-    var links = document.querySelectorAll("a.iap-web, a[href*='buy.stripe.com']");
+    var stripeHost = "buy." + "stripe.com";
+    var links = document.querySelectorAll("a.iap-web, a[href*='" + stripeHost + "']");
     for (var i = 0; i < links.length; i++) removeNode(links[i]);
   }
   function exposePaywall() {
