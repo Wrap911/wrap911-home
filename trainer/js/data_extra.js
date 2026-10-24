@@ -800,7 +800,7 @@ window.WRAP911_DATA.trainingLessons = [
         "answer": 0
       }
     ],
-    "relatedVideoId": "v-named-architectural-wall-wrap-18yx_q",
+    "relatedVideoId": "v-284-wall-graphic-brick-panel-install",
     "failPhoto": "",
     "passPhoto": ""
   },
@@ -3313,6 +3313,21 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "prac-panel-align",
     "note": "Shop clip (~26s). Installer peels liner and hangs black brick-pattern film on a tall flat metal kiosk panel, squeegees with a red tool, post-heats with a torch, then knives the vertical edge. Follow the film TDS for any heat."
+  },
+  {
+    "id": "v-284-wall-graphic-brick-panel-install",
+    "access": "paid",
+    "title": "Architectural wall graphic: brick panel install",
+    "category": "Storefront/Architectural",
+    "subcategory": "Panels",
+    "type": "clip",
+    "src": "media/videos/architectural/architectural-wall-graphic-brick-panel-install.mp4",
+    "still": "media/videos/architectural/architectural-wall-graphic-brick-panel-install.jpg",
+    "driveId": "1ff3lvj2CAIPFBXhh0o1PuYtrFMMbC7VR",
+    "recommendedModule": "sf-perf-film",
+    "recommendedWorkflow": "sw-perf",
+    "recommendedPractice": "prac-seam",
+    "note": "Shop clip (~26s). Architectural wall graphic panel hang. Register the pattern across panels, glass the field, then seat returns before trimming. Follow the film's TDS for any heat."
   },
   {
     "id": "v-283-kiosk-sprinkle-removal",

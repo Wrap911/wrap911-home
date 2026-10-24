@@ -39,6 +39,7 @@
     "media/videos/architectural/architectural-post-heating-vinyl-2.mp4": 1,
     "media/videos/architectural/architectural-wall-wrap-panel-squeegeeing-styles.mp4": 1,
     "media/videos/architectural/kiosk-brick-film-corner-knife-trim.mp4": 1,
+    "media/videos/architectural/architectural-wall-graphic-brick-panel-install.mp4": 1,
     "media/videos/architectural/kiosk-sprinkle-film-heat-peel-removal.mp4": 1,
     "media/videos/architectural/cabinet-door-printed-film-heat-peel-removal.mp4": 1,
     "media/videos/architectural/controltac-liner-peel-box-floor-hang.mp4": 1,
