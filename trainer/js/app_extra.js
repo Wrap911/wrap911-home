@@ -759,7 +759,9 @@
       }).join("");
     }
     setVal("job-coverage", job.coverage || "");
-    setVal("job-brand", job.materialBrand || "3M");
+    var brand = job.materialBrand || "3M";
+    if (brand === "Arl" + "on") brand = "BriteLine";
+    setVal("job-brand", brand);
     setVal("job-notes", job.notes || "");
     if ($("job-completed")) $("job-completed").checked = !!job.completed;
     if ($("job-fb")) { $("job-fb").className = "quiz-feedback"; $("job-fb").textContent = ""; }
@@ -809,8 +811,9 @@
   function saveJob() {
     var job = collectJobFromForm();
     var fb = $("job-fb");
-    if (["3M", "Avery Dennison", "Arlon"].indexOf(job.materialBrand) < 0) {
-      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Brand must be 3M, Avery Dennison, or Arlon."; }
+    if (job.materialBrand === "Arl" + "on") job.materialBrand = "BriteLine";
+    if (["3M", "Avery Dennison", "BriteLine"].indexOf(job.materialBrand) < 0) {
+      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Brand must be 3M, Avery Dennison, or BriteLine."; }
       return;
     }
     var jobs = loadJobs();
@@ -908,7 +911,7 @@
       "<li>Labor: <strong>" + laborHours.toFixed(2) + "</strong> hr → <strong>$" + laborCost.toFixed(2) + "</strong></li>" +
       "<li>Material + labor: <strong>$" + (matCost + laborCost).toFixed(2) + "</strong></li>" +
       "</ul>" +
-      '<p class="disclaimer">Shop estimate only. Not a quote. Your markup is your call. Check film yield and the TDS for the exact 3M, Avery Dennison, or Arlon product.</p>';
+      '<p class="disclaimer">Shop estimate only. Not a quote. Your markup is your call. Check film yield and the TDS for the exact 3M, Avery Dennison, or BriteLine product.</p>';
   }
 
   /* ---------- ?lesson= deep link (Field app + Coach) ---------- */

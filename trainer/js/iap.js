@@ -57,6 +57,7 @@
     if (cur && cur.source === "apple" && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(cur.code || ""))) {
       lic.code = cur.code;
     }
+    if (cur && cur.source === "apple" && !lic.jws && cur.jws) lic.jws = cur.jws;
     try { localStorage.setItem(LS, JSON.stringify(lic)); } catch (e) {}
     refreshUi();
     return lic;
@@ -331,9 +332,20 @@
       return "";
     }).catch(function () { return ""; });
   }
+  function rememberJws(tx) {
+    var jws = Logic.signedTransaction(tx);
+    if (!jws) return;
+    try { localStorage.setItem("wrap911_apple_jws", jws); } catch (e) {}
+    var lic = readLic();
+    if (lic && lic.source === "apple" && lic.jws !== jws) {
+      lic.jws = jws;
+      try { localStorage.setItem(LS, JSON.stringify(lic)); } catch (e2) {}
+    }
+  }
   function grantRow(row, force) {
     if (!row) return null;
     var lic = writeLicense(Logic.licenseFrom(row, Date.now()), force);
+    rememberJws(row.tx);
     if (row.sku === "pack") claimPack(row.tx, !!force);
     return lic;
   }

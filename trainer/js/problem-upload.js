@@ -79,7 +79,7 @@
         '<label>What failed<textarea id="pu-what" rows="2" placeholder="e.g. Rivet tented after heat, film lifted at sensor"></textarea></label>' +
         '<label>What you did to fix it<textarea id="pu-fix" rows="2" placeholder="e.g. Lifted, warmed to TDS, reseated ring then dome"></textarea></label>' +
         '<label>Vehicle / area (optional)<input type="text" id="pu-area" placeholder="e.g. Pickup rear bumper, headlight pocket"></label>' +
-        '<label>Your name or shop (optional)<input type="text" id="pu-by" placeholder="e.g. Gerry / Rivera Wraps"></label>' +
+        '<label>Your name or shop (optional)<input type="text" id="pu-by" placeholder="Optional"></label>' +
         '<label>Photo<input type="file" id="pu-file" accept="image/*"></label>' +
         '<div id="pu-preview" class="pu-preview hidden"></div>' +
         '<p class="muted" style="font-size:0.82rem">Photos stay on this device until a backend is wired. Max 6 MB.</p>' +

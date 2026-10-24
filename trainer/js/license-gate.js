@@ -128,8 +128,8 @@
     if (mediaAsked) return;
     mediaAsked = true;
     var srcs = [];
-    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=276");
-    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=276");
+    if (!window.WRAP911_PACK) srcs.push("js/photos-pack.js?v=12");
+    if (!window.WRAP911_BOOST) srcs.push("js/photos-boost.js?v=12");
     var left = srcs.length;
     if (!left) { afterMedia(); return; }
     function done() { if (--left === 0) afterMedia(); }

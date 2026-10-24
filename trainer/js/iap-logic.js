@@ -90,6 +90,12 @@
     };
   }
 
+  function signedTransaction(tx) {
+    var jws = tx && (tx.jwsRepresentation || tx.jws);
+    jws = String(jws || "");
+    return jws.split(".").length === 3 ? jws : "";
+  }
+
   function licenseFrom(row, now) {
     var tx = row.tx || {};
     return {
@@ -100,6 +106,7 @@
       source: "apple",
       productId: row.productId,
       transactionId: String(tx.transactionId || tx.transactionIdentifier || ""),
+      jws: signedTransaction(tx),
       unlockedAt: row.unlockedAt,
       expiresAt: row.expiresAt,
       checkedAt: now
@@ -152,6 +159,7 @@
     isNativeApp: isNativeApp,
     isUsStorefront: isUsStorefront,
     pickEntitlement: pickEntitlement,
+    signedTransaction: signedTransaction,
     licenseFrom: licenseFrom,
     shouldWrite: shouldWrite,
     missingProductsMessage: missingProductsMessage,

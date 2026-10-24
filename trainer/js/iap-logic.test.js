@@ -130,4 +130,11 @@ var privacy = fs.readFileSync(path.join(__dirname, "../../privacy.html"), "utf8"
 assert.ok(/Apple In-App Purchase/i.test(privacy), "privacy.html mentions Apple IAP");
 assert.ok(/Stripe/i.test(privacy), "privacy.html keeps the website Stripe paragraph");
 
+var seatJws = L.licenseFrom(L.pickEntitlement([tx(SEAT, recent, { jwsRepresentation: "eyJ.e30.sig" })], NOW), NOW);
+assert.strictEqual(seatJws.source, "apple");
+assert.strictEqual(seatJws.code, "APPLE");
+assert.strictEqual(seatJws.jws, "eyJ.e30.sig");
+assert.strictEqual(L.signedTransaction({ jws: "not-a-jws" }), "");
+assert.strictEqual(L.licenseFrom(L.pickEntitlement([tx(PACK, recent)], NOW), NOW).jws, "");
+
 console.log("iap-logic tests ok");

@@ -22,6 +22,12 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Photo Fix uses the camera so you can photograph or record a short video of a vinyl problem and get a fix suggestion.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Photo Fix uses the microphone only while you record a short video of a vinyl problem. The video stays on this iPhone. Four still frames are sent for the suggestion, and the video is not uploaded.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Fix lets you choose a photo or short video of a vinyl problem from your library so it can suggest a fix.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

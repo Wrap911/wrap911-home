@@ -86,7 +86,7 @@
     </div>
     <ul class="rules-list">
       <li><strong>Who may wrap:</strong> Only trained crew, under the shop lead's direction.</li>
-      <li><strong>Brands only:</strong> 3M, Avery Dennison, Arlon, as spec'd for the job.</li>
+      <li><strong>Brands only:</strong> 3M, Avery Dennison, BriteLine, as spec'd for the job.</li>
       <li><strong>Follow the TDS:</strong> Do not invent temperatures or chemical recipes.</li>
       <li><strong>Safety:</strong> Ladders, heat, knives. Soften the film. Do not melt it.</li>
     </ul>
@@ -134,6 +134,9 @@
       <button type="button" class="secondary" id="btn-hide-job-types">Hide job types</button>
     </div>
     <div id="home-nav-cards" class="home-nav-grid hidden"></div>
+    <div class="card tap hidden" id="goto-photo-fix" role="button" tabindex="0" hidden>
+      <div class="card-body"><div class="card-title">Photo Fix</div><div class="card-sub">Photo or short video of the vinyl problem, then a diagnosis and a fix</div></div>
+    </div>
     <div class="card tap" id="goto-about" role="button" tabindex="0">
       <div class="card-body"><div class="card-title">About WRAP 911 · Pricing · FAQ</div><div class="card-sub">Why it exists, who it's for, free samples</div></div>
     </div>
@@ -180,7 +183,7 @@
   <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
   <section id="screen-practice" class="screen"><button type="button" class="back-link" id="btn-back-practice">← Practice hub</button><h1 id="prac-title">Practice</h1><img class="photo-hero" id="prac-image" src="" alt="" decoding="async"><p class="lead" id="prac-desc"></p><div id="prac-checklist" class="cl-steps"></div><div id="prac-mistakes"></div><div class="quiz-box" id="prac-quiz"></div><div class="quiz-nav"><button type="button" class="secondary" id="prac-redo">Redo</button><button type="button" id="prac-finish">Score & save</button></div><div class="quiz-feedback" id="prac-fb"></div></section>
   <section id="screen-jobs" class="screen"><button type="button" class="back-link" id="btn-back-jobs">← Back to home</button><h1>Job manager</h1><button type="button" id="btn-new-job">+ New job</button><div id="jobs-list" class="jobs-list"></div></section>
-  <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>Arlon</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
+  <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>BriteLine</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
   <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
   <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
@@ -214,7 +217,12 @@
     </div>
     <div class="about-panel" id="about-panel"></div>
   </section>
-  <section id="screen-contact" class="screen"><button type="button" class="back-link" id="btn-back-contact">← Back to home</button><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p><p class="muted">Brands we train on: <span id="contact-brands">3M, Avery Dennison, Arlon</span>. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.</p></div></section>
+  <section id="screen-photo-fix" class="screen" aria-label="Photo Fix">
+    <button type="button" class="back-link" id="btn-back-photo-fix">← Back to home</button>
+    <h1>Photo Fix</h1>
+    <div id="photo-fix-wrap"></div>
+  </section>
+  <section id="screen-contact" class="screen"><button type="button" class="back-link" id="btn-back-contact">← Back to home</button><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p><p class="muted">Brands we train on: <span id="contact-brands">3M, Avery Dennison, BriteLine</span>. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.</p></div></section>
   <div id="xp-modal" class="modal hidden" role="dialog"><div class="modal-card"><div class="modal-emoji" id="xp-modal-emoji">🎉</div><h2 id="xp-modal-title">Drill complete!</h2><p id="xp-modal-msg">+25 XP</p><button type="button" id="xp-modal-ok">Nice</button></div></div>
   <nav class="bottom-nav hidden" id="bottom-nav">
     <button type="button" data-nav="home">Home</button>
@@ -273,5 +281,7 @@
   <script src="js/practice-fix.js?v=271"></script>
   <script src="js/about.js?v=272"></script>
   <script src="js/games.js?v=276"></script>
+  <script src="js/photo-fix-logic.js?v=12"></script>
+  <script src="js/photo-fix.js?v=12"></script>
 </body>
 </html>
