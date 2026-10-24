@@ -112,7 +112,12 @@
       visual:"Heat used to pull fingers out of wall film.",
       narration:"Fingers come out with TDS heat and a reset, not a hard mash. Keep the torch moving.",
       checklist:["Heat to TDS","Lift and reset","Keep the torch moving","Do not mash a dry finger"],
-      quiz:{q:"Dry finger in wall film. Move?",correct:"Warm to TDS, lift, reset.",wrong:"Mash it flat so the gloss matches."} }
+      quiz:{q:"Dry finger in wall film. Move?",correct:"Warm to TDS, lift, reset.",wrong:"Mash it flat so the gloss matches."} },
+    { id:"pk-door-glass", title:"Door glass edge — squeegee at the seal", image:"media/videos/IMG_8345.jpeg", module:"squeegee", jobType:"Vehicles",
+      visual:"Black hoodie and cap. Felt squeegee working film at the door glass seal. Door handle is in the shot. Dark door skin.",
+      narration:"This is the door glass edge, not a flat panel. Stroke into the seal. Do not bridge the glass channel. The door handle is a cutout, not a stretch.",
+      checklist:["Stroke into the glass seal","Do not bridge the channel","Door handle is a cutout","Post-heat the edge per TDS"],
+      quiz:{q:"What is the squeegee working here?",correct:"The film at the door glass seal.",wrong:"A flat panel with no recess."} }
   ];
 
   var have = {};

@@ -7,11 +7,17 @@
  * Optional vars:
  *   LLM_BASE_URL  default https://api.x.ai/v1/chat/completions
  *   LLM_MODEL     default grok-4
+ *
+ * This file is the copy on the iOS branch. It is not the live coach worker.
+ * Do not wrangler-deploy it over wrap911-coach-proxy. That would drop
+ * /coach/photo, /lead, and the live /license/apple behavior version 1.1 uses.
+ * StoreKit Photo Fix belongs in the live worker via coach-photo-access.cjs.
  */
 import { handleLicense } from "./license.js";
 
 const ALLOWED_ORIGINS = [
   "capacitor://localhost",
+  "wrap911://localhost",
   "https://wrap911.com",
   "https://www.wrap911.com",
   "https://wrap911.github.io",
@@ -19,7 +25,7 @@ const ALLOWED_ORIGINS = [
 ];
 
 const SYSTEM = `You are the WRAP 911 shop coach for commercial and architectural vinyl wrap installs.
-Brands only: 3M, Avery Dennison, Arlon.
+Brands only: 3M, Avery Dennison, BriteLine.
 Never invent temperatures, dwell times, stretch percentages, or chemical recipes.
 Tell the tech to confirm heat and film steps on the current TDS / Application Guide for that SKU.
 Process language only. Short. Direct. Shop floor, not marketing.
