@@ -128,6 +128,16 @@
 
   /* AppStore.sync() does not restore non-renewing purchases and throws in the
      sandbox. Restore reads Transaction.all / currentEntitlements first. */
+  var PHOTO_CODE_RE = /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+
+  /* /coach/photo accepts only a W911 code whose device list already includes this phone.
+     The live /license/apple `code` field is a crew code with an empty device list (or "" for a Seat).
+     Photo Fix must use `deviceCode`, which the worker binds to this phone. */
+  function photoCodeFromApple(data) {
+    var code = data && data.deviceCode != null ? String(data.deviceCode).trim().toUpperCase() : "";
+    return PHOTO_CODE_RE.test(code) ? code : "";
+  }
+
   function restoreMessage(found, errorText) {
     if (found) return "Purchase restored on this phone.";
     var reason = String(errorText || "").replace(/\s+/g, " ").trim();
@@ -156,6 +166,7 @@
     shouldWrite: shouldWrite,
     missingProductsMessage: missingProductsMessage,
     purchaseStallMessage: purchaseStallMessage,
-    restoreMessage: restoreMessage
+    restoreMessage: restoreMessage,
+    photoCodeFromApple: photoCodeFromApple
   };
 });

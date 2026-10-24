@@ -15,7 +15,7 @@
   function core() { return APP.core || {}; }
   function show(name) { if (core().showScreen) core().showScreen(name); }
   function n(a) { return Array.isArray(a) ? a.length : 0; }
-  function brands() { return (CFG.brands || ["3M", "Avery Dennison", "Arlon"]).join(", "); }
+  function brands() { return (CFG.brands || ["3M", "Avery Dennison", "BriteLine"]).join(", "); }
   function email() { return (CFG.contactEmail || "").trim(); }
   function contactLine() {
     var e = email();
@@ -33,7 +33,7 @@
   function why() {
     return '' +
       '<h2>Built by an installer</h2>' +
-      '<p>WRAP 911 is built by ' + esc(CFG.contactName || "Gerry") + ', a commercial vinyl installer with 8 years on the tools in Worcester, MA. Not a marketing team. Not a film maker.</p>' +
+      '<p>WRAP 911 is built by ' + esc(CFG.contactName || "Gerry") + ', a commercial vinyl installer with 8 years on the tools in Worcester, MA. He is an installer, not a shop owner. Not a marketing team. Not a film maker.</p>' +
       '<p>I have wrapped name-brand retail stores, stadiums and event venues, trailers (including office trailer interiors), RVs, buses, dozens of transit vans, and a lot of ad and branding pieces.</p>' +
       '<p>I did not get here by getting it right the first time. I have had plenty of failures: lifted edges, wrinkles, panels that would not line up. Every one taught me something. WRAP 911 is built from those lessons, so you learn from my mistakes instead of paying for your own.</p>' +
       '<h2>Trains the jobs that walk in</h2>' +
@@ -102,8 +102,8 @@
         ? ("Ask first: " + contactLine() + ". Apple bills the purchase.")
         : ("Ask first: " + contactLine() + ". Send your Stripe receipt.")],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
-      ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or Arlon certification, and it does not replace one."],
-      ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or Arlon."],
+      ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or BriteLine certification, and it does not replace one."],
+      ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or BriteLine."],
       ["Does it give heat or temperature numbers?", "No. Heat, post-heat and cleaning come from the film's TDS. Read the sheet for the film on the job."],
       ["Does it work offline?", "Lesson text and photos you already opened work offline. Videos need signal."]
     ];

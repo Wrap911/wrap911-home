@@ -10,7 +10,7 @@ window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
   contactName: "Gerry",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
-  brands: ["3M", "Avery Dennison", "Arlon"],
+  brands: ["3M", "Avery Dennison", "BriteLine"],
   version: "2.7.6",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
@@ -31,6 +31,8 @@ window.WRAP911_CONFIG = {
   stripeTestMode: false,
   shopPhoneOpen: false,
   problemUploadEndpoint: "",
+  /* Photo Fix calls POST /coach/photo. Paid Shop Pack and Seat only. The worker checks a device-bound W911 code. */
+  photoFix: true,
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
   freeVideoSamples: 8,
@@ -45,7 +47,8 @@ window.WRAP911_CONFIG = {
     "lesson", "vehicle", "library",
     "practice-hub", "practice",
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
-    "games", "game"
+    "games", "game",
+    "photo-fix"
   ],
   plans: [
     {
