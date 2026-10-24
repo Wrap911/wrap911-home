@@ -3315,6 +3315,36 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "note": "Shop clip (~26s). Installer peels liner and hangs black brick-pattern film on a tall flat metal kiosk panel, squeegees with a red tool, post-heats with a torch, then knives the vertical edge. Follow the film TDS for any heat."
   },
   {
+    "id": "v-283-kiosk-sprinkle-removal",
+    "access": "paid",
+    "title": "Kiosk panel: heat and peel vinyl removal",
+    "category": "Storefront/Architectural",
+    "subcategory": "Panels",
+    "type": "clip",
+    "src": "media/videos/architectural/kiosk-sprinkle-film-heat-peel-removal.mp4",
+    "still": "media/videos/architectural/kiosk-sprinkle-film-heat-peel-removal.jpg",
+    "driveId": "1PnjcfUiK76o9CWSRonmFC4cfiSFqyViS",
+    "recommendedModule": "sf-multipane",
+    "recommendedWorkflow": "",
+    "recommendedPractice": "",
+    "note": "Warm the film with a torch, peel low and slow panel by panel, and keep the substrate clean. Clear any leftover adhesive and debris before the next install. Follow the film's TDS."
+  },
+  {
+    "id": "v-283-cabinet-printed-removal",
+    "access": "paid",
+    "title": "Cabinet door: torch and hand-peel printed film removal",
+    "category": "Storefront/Architectural",
+    "subcategory": "Panels",
+    "type": "clip",
+    "src": "media/videos/architectural/cabinet-door-printed-film-heat-peel-removal.mp4",
+    "still": "media/videos/architectural/cabinet-door-printed-film-heat-peel-removal.jpg",
+    "driveId": "1YKd738o7S0knlmB7KmkX7KpPSz4y0ClW",
+    "recommendedModule": "sf-multipane",
+    "recommendedWorkflow": "",
+    "recommendedPractice": "",
+    "note": "Keep the torch moving, warm one panel at a time, lift a corner, then pull by hand low and slow so the film comes off in big sheets and the finish underneath stays safe. Reheat if the film cools and starts to tear. Clear leftover adhesive and debris. Follow the film's TDS."
+  },
+  {
     "id": "v-271-corner-tool",
     "access": "paid",
     "title": "Magenta box — yellow hard-card corner seat",
