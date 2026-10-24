@@ -1,5 +1,5 @@
 name: ASC read-only status (temp)
-# rerun 2026-10-19
+# rerun 2026-10-23
 on:
   push:
     branches: [asc-readonly-status]
@@ -28,6 +28,12 @@ jobs:
             except Exception: j={}
             if r.status_code>=400: print(f"ERR GET {p}: {r.status_code} {json.dumps(j.get('errors',''))[:400]}"); return {}
             return j
+          def allp(p):
+            out=[]; j=g(p)
+            while j:
+              out+=j.get("data",[]); n=j.get("links",{}).get("next")
+              j=g(n) if n else None
+            return out
           aid="6816763473"
           print("== app"); a=g(f"v1/apps/{aid}").get("data",{}); print(a.get("attributes",{}).get("name"), a.get("attributes",{}).get("bundleId"))
           print("== versions")
@@ -36,34 +42,22 @@ jobs:
             bn=g(f"v1/builds/{bid}").get("data",{}).get("attributes",{}).get("version") if bid else None
             print(f"Version {at.get('versionString')} id={v['id']} appStoreState={at.get('appStoreState')} appVersionState={at.get('appVersionState')} releaseType={at.get('releaseType')} created={at.get('createdDate')} build={bn}")
             print("  attrs:", json.dumps({k:at.get(k) for k in ('earliestReleaseDate','downloadable','copyright','reviewType')}))
-            ph=g(f"v1/appStoreVersions/{v['id']}/appStoreVersionPhasedRelease").get("data")
-            if ph: print("  phasedRelease", ph.get("attributes"))
           print("== reviewSubmissions")
           for s in g(f"v1/reviewSubmissions?filter[app]={aid}&limit=20").get("data",[]):
-            at=s["attributes"]; print(f"Submission {s['id']} state={at.get('state')} platform={at.get('platform')} submittedDate={at.get('submittedDate')} attrs={json.dumps(at)}")
+            at=s["attributes"]; print(f"Submission {s['id']} state={at.get('state')} submittedDate={at.get('submittedDate')}")
             for it in g(f"v1/reviewSubmissions/{s['id']}/items?limit=50").get("data",[]):
-              rel={k:(v.get('data') or {}).get('id') for k,v in it.get('relationships',{}).items() if isinstance(v,dict) and v.get('data')}
-              print(f"  item {it['id']} state={it['attributes'].get('state')} rel={rel}")
-          print("== IAPs")
-          for p in g(f"v1/apps/{aid}/inAppPurchasesV2?limit=50").get("data",[]):
-            at=p["attributes"]; print(f"IAP {p['id']} {at.get('productId')} type={at.get('inAppPurchaseType')} state={at.get('state')} name={at.get('name')}")
-            ss=g(f"v2/inAppPurchases/{p['id']}/appStoreReviewScreenshot").get("data")
-            print("  reviewScreenshot:", (ss or {}).get("attributes",{}).get("assetDeliveryState") if ss else None, (ss or {}).get("attributes",{}).get("fileName") if ss else None)
-            for l in g(f"v2/inAppPurchases/{p['id']}/inAppPurchaseLocalizations").get("data",[]):
-              la=l["attributes"]; print(f"  loc {la.get('locale')} name={la.get('name')} state={la.get('state')}")
-            av=g(f"v2/inAppPurchases/{p['id']}/iapPriceSchedule").get("data")
-            print("  priceSchedule:", bool(av))
-            ia=g(f"v2/inAppPurchases/{p['id']}/inAppPurchaseAvailability?include=availableTerritories")
-            print("  iapTerritories:", [t['id'] for t in ia.get('included',[])], (ia.get('data') or {}).get('attributes'))
-          print("== subscriptionGroups")
-          for sg in g(f"v1/apps/{aid}/subscriptionGroups").get("data",[]):
-            for s in g(f"v1/subscriptionGroups/{sg['id']}/subscriptions").get("data",[]):
-              print("  sub", s['id'], s['attributes'].get('productId'), s['attributes'].get('state'))
+              print(f"  item {it['id']} state={it['attributes'].get('state')}")
+          print("== ALL IAPs (v2)")
+          for p in allp(f"v1/apps/{aid}/inAppPurchasesV2?limit=200"):
+            at=p["attributes"]; print(f"IAP {p['id']} productId={at.get('productId')} type={at.get('inAppPurchaseType')} state={at.get('state')} name={at.get('name')} familySharable={at.get('familySharable')}")
+          print("== ALL subscription groups")
+          for sg in allp(f"v1/apps/{aid}/subscriptionGroups?limit=200"):
+            print(f"Group {sg['id']} ref={sg['attributes'].get('referenceName')}")
+            for s in allp(f"v1/subscriptionGroups/{sg['id']}/subscriptions?limit=200"):
+              at=s['attributes']; print(f"  sub {s['id']} productId={at.get('productId')} type=AUTO_RENEWABLE state={at.get('state')} period={at.get('subscriptionPeriod')} name={at.get('name')} level={at.get('groupLevel')}")
           print("== app availability")
           av=g(f"v1/apps/{aid}/appAvailabilityV2").get("data")
           if av:
-            print("availableInNewTerritories:", av["attributes"].get("availableInNewTerritories"))
             for t in g(f"v2/appAvailabilities/{av['id']}/territoryAvailabilities?limit=200&include=territory").get("data",[]):
-              if t['attributes'].get('available'): print("  available:", t['relationships']['territory']['data']['id'], t['attributes'].get('contentStatuses'), "releaseDate=", t['attributes'].get('releaseDate'), "preOrder=", t['attributes'].get('preOrderEnabled'))
-          print("== agreements/banking/tax: not exposed by ASC API (no endpoint)")
+              if t['attributes'].get('available'): print("  available:", t['relationships']['territory']['data']['id'], t['attributes'].get('contentStatuses'), "releaseDate=", t['attributes'].get('releaseDate'))
           print("== done")
