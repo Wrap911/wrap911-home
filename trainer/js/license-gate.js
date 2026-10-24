@@ -214,6 +214,7 @@
   }
 
   async function tryUnlock(raw) {
+    if (iosApp()) return false;
     var code = String(raw || "").trim();
     if (!code) return false;
     if (/^STRIPE/i.test(code) || /^\?license=/i.test(code) || /^CREW-/i.test(code)) {
@@ -383,6 +384,7 @@
     limitVideos();
     var btn = document.getElementById("btn-unlock");
     var inp = document.getElementById("unlock-code");
+    if (iosApp()) return;
     if (btn && !btn.getAttribute("data-gate")) {
       btn.setAttribute("data-gate", "1");
       btn.addEventListener("click", function (e) {

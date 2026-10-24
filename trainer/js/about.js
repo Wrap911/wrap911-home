@@ -55,15 +55,13 @@
 
   function pricing() {
     if (iosApp()) {
-      var us = window.WRAP911_IAP_US === true;
       return '' +
         '<div class="plan-row">' +
         '<div class="card default"><strong>Shop Pack</strong><p>5 seats. 12 months. One-time. This phone plus four more.</p></div>' +
         '<div class="card"><strong>Seat</strong><p>1 tech. 12 months. One-time. This phone only.</p></div>' +
         '</div>' +
-        '<p class="muted">Buy with Apple on the Pricing screen. The App Store shows the price. It does not auto-renew.</p>' +
-        (us ? '<p><a href="https://wrap911.com" target="_blank" rel="noopener">Buy on wrap911.com</a></p>' : '') +
-        '<p><button type="button" class="secondary" data-about-go="pricing-screen">Enter an unlock code</button></p>';
+        '<p class="muted">Buy with Apple on the Pricing screen. The App Store shows the price. It does not auto-renew. No account.</p>' +
+        '<p><button type="button" class="secondary" data-about-go="pricing-screen">Open Pricing</button></p>';
     }
     var field = CFG.fieldSkuLive ? '<div class="card"><strong>W911-FIELD · $29/mo</strong><p>One tech, month to month. To cancel, contact us.</p><p><a href="?buy=field">Start Field</a></p></div>' : "";
     return '' +
@@ -78,10 +76,13 @@
   }
 
   function shops() {
+    var crew = iosApp()
+      ? '<li>One Shop Pack covers 5 phones for 12 months. Buy it with Apple on the Pricing screen.</li>'
+      : '<li>One Shop Pack covers 5 phones for 12 months.</li>' +
+        '<li>Buy on the lead phone. Type the crew code on up to 4 more phones.</li>';
     return '' +
       '<h2>For shop owners and crew leads</h2>' +
-      '<ul><li>One Shop Pack covers 5 phones for 12 months.</li>' +
-      '<li>Buy on the lead phone. Type the crew code on up to 4 more phones.</li>' +
+      '<ul>' + crew +
       '<li>New hire path: shop rules, a sample lesson, practice, then Coach questions.</li>' +
       '<li>Job manager: pick a job type, tick the workflow steps.</li>' +
       '<li>Same rules for everyone: ' + esc(brands()) + ', follow the TDS, no guessing.</li></ul>' +
@@ -94,10 +95,12 @@
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
       ["How does unlock work?", iosApp()
-        ? ("Buy with Apple on the Pricing screen. This phone unlocks for 12 months. A Shop Pack also covers four more phones with a crew code." + (window.WRAP911_IAP_US ? " On the US App Store you can also buy on wrap911.com and type the unlock code here." : ""))
+        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore Purchases is on that screen."
         : "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
-      ["Refunds?", "Ask first: " + contactLine() + ". Send your Stripe receipt."],
+      ["Refunds?", iosApp()
+        ? ("Ask first: " + contactLine() + ". Apple bills the purchase.")
+        : ("Ask first: " + contactLine() + ". Send your Stripe receipt.")],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
       ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or Arlon certification, and it does not replace one."],
       ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or Arlon."],

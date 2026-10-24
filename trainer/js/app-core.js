@@ -371,12 +371,17 @@
     var map = demoCodesMap();
     var def = map[code];
     var fb = $("unlock-feedback");
+    if (iosApp()) {
+      if (fb) {
+        fb.className = "quiz-feedback bad";
+        fb.textContent = "Buy with Apple on this screen.";
+      }
+      return false;
+    }
     if (!code) {
       if (fb) {
         fb.className = "quiz-feedback bad";
-        fb.textContent = iosApp()
-          ? "Enter an unlock code, or buy with Apple on this screen."
-          : "Buy on this phone. Pack $149 or seat $49.";
+        fb.textContent = "Buy on this phone. Pack $149 or seat $49.";
       }
       return false;
     }
@@ -504,10 +509,16 @@
         modeBanner.innerHTML = "<strong>Checkout</strong> — Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? " · Field $29/mo" : "") + ". One-time for Pack and Seat.";
       }
     }
+    var stripeWrap = $("stripe-link-wrap");
+    if (iosApp()) {
+      var unlockBox = document.querySelector("#screen-pricing .unlock-box");
+      if (unlockBox && unlockBox.parentNode) unlockBox.parentNode.removeChild(unlockBox);
+      if (stripeWrap && stripeWrap.parentNode) stripeWrap.parentNode.removeChild(stripeWrap);
+      return;
+    }
     var input = $("unlock-code");
     var lic = loadLicense();
     if (input && lic && lic.code && !lic.expired && !input.value && /^W911-/.test(String(lic.code))) input.value = lic.code; /* 2.7.0: never prefill STRIPE/SHOP */
-    var stripeWrap = $("stripe-link-wrap");
     var stripeBtn = $("btn-stripe-pay");
     var link = (cfg.stripeTestMode ? (cfg.stripeTestPackLink || "") : (cfg.stripePaymentLink || "")).trim();
     if (stripeWrap) {

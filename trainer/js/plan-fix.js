@@ -233,13 +233,7 @@
     if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field")) return;
     if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
     if (iosApp()) {
-      var us = window.WRAP911_IAP_US === true;
-      var web = us ? '<p><a href="https://wrap911.com" target="_blank" rel="noopener">Buy on wrap911.com</a></p>' : "";
-      if (stripeReturn) {
-        card.innerHTML = "<strong>Just paid on the website?</strong><p>Enter the unlock code on the Pricing screen.</p>" + web;
-        return;
-      }
-      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen.</p>" + web;
+      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore Purchases is on that screen.</p>";
       return;
     }
     if (window.WRAP911_SANDBOX_NO_CHECKOUT) {

@@ -1,7 +1,7 @@
 /* Pure Apple IAP rules for the iOS app. No prices live here.
    Shop Pack and Seat are non-renewing 12-month purchases. StoreKit does not
-   put an expiration on that product type, so expiry is the same 365 days the
-   unlock-code path already uses. The web app never calls these to change UI. */
+   put an expiration on that product type, so expiry is purchaseDate plus 365
+   days. The web app never calls these to change UI. */
 (function (factory) {
   var api = factory();
   if (typeof module !== "undefined" && module.exports) module.exports = api;
@@ -19,7 +19,7 @@
   function isNativeApp() {
     try {
       var cap = typeof window !== "undefined" ? window.Capacitor : null;
-      return !!(cap && typeof cap.isNativePlatform === "function" && cap.isNativePlatform());
+      return !!(cap && typeof cap.getPlatform === "function" && cap.getPlatform() === "ios");
     } catch (e) {
       return false;
     }
