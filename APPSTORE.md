@@ -14,8 +14,9 @@ npm run ios:sync      # copies site into www/ and pod installs
 npm run ios:open      # opens Xcode
 ```
 In Xcode > App target > Signing & Capabilities: tick "Automatically manage signing", pick your Team.
-Version is 1.1. Build is 20. Add 1024px icon in Assets > AppIcon.
-Product > Archive > Distribute App > App Store Connect > Upload. Then submit in App Store Connect (TestFlight first).
+Version is 1.2. Build is 21. Version 1.1 build 20 is in Apple review. Do not archive, upload, or edit that version in App Store Connect. The TestFlight workflow still pins `CURRENT_PROJECT_VERSION=20` and uploads when `.github/workflows/ios-testflight.yml` changes on `ios-capacitor`. Do not run it for 1.2.
+Add 1024px icon in Assets > AppIcon.
+Product > Archive is for a later upload, after 1.1 is finished. Do not upload this branch.
 
 ## Payments
 The download is free. Full access is a one-time 12-month Shop Pack (5 seats) or Seat (1 phone).
@@ -34,7 +35,9 @@ Type: **Non-Renewing Subscription**, duration **1 year**. Not auto-renewable (th
 
 Use the same prices the site already sells: Shop Pack $149, Seat $49. Do not pick a different Apple price. Prices are set in App Store Connect. The app shows StoreKit's localized `priceString` and does not hardcode them. Family Sharing off. No free trial. No introductory offer.
 
-A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. The worker change is in `cloudflare-coach-proxy/license.js` and is **not** deployed by this branch. Until it is, the buying phone still unlocks, and the screen tells the buyer to email the Apple receipt for the other four seats.
+A Shop Pack or Seat purchase unlocks the buying phone immediately from StoreKit. The app also sends the signed transaction to `POST /license/apple`. The live route does not put this phone on a code that `POST /coach/photo` will accept. Photo Fix needs the worker change in `cloudflare-coach-proxy/PHOTO_APPLE.md` (a `deviceCode` whose `devices` list includes this phone, plus up to 4 JPEG frames). That change is described in the repo and is not deployed. `license.js` in this branch is not the live worker. Do not deploy it.
+
+The iOS app has no unlock-code field. Extra Shop Pack phones are handled by email, not by typing a code into this app.
 
 `Restore Purchases` is on the Pricing screen.
 

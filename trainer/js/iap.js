@@ -12,6 +12,7 @@
   var IDS = [PACK, SEAT];
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
   var CREW_KEY = "wrap911_crew_code";
+  var DEVICE_CODE_KEY = "wrap911_device_code";
   var CLAIM_TRY = "wrap911_apple_claim_tried";
   var LS = "wrap911_license";
   var TERMS = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
@@ -32,6 +33,15 @@
   }
   function crewCode() {
     try { return localStorage.getItem(CREW_KEY) || ""; } catch (e) { return ""; }
+  }
+  function deviceCode() {
+    try { return localStorage.getItem(DEVICE_CODE_KEY) || ""; } catch (e) { return ""; }
+  }
+  function saveDeviceCode(code) {
+    var photo = Logic.photoCodeFromApple({ deviceCode: code });
+    if (!photo) return "";
+    try { localStorage.setItem(DEVICE_CODE_KEY, photo); } catch (e) {}
+    return photo;
   }
   function deviceId() {
     var k = "wrap911_device", id = "";
@@ -311,30 +321,47 @@
       }
     }, true);
   }
-  function claimPack(tx, force) {
-    var have = crewCode();
-    if (have && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(have) && !force) return Promise.resolve(have);
-    if (!tx || !tx.jwsRepresentation) return Promise.resolve("");
+  /* Seat and Shop Pack both ask /license/apple. Photo Fix needs deviceCode
+     (this phone already on the code). `code` stays the crew code for other phones
+     and is not sent to /coach/photo. */
+  function claimApple(tx, force) {
+    var photo = Logic.photoCodeFromApple({ deviceCode: deviceCode() });
+    var crewOk = /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(crewCode());
+    var licNow = readLic();
+    var seatOnly = licNow && licNow.sku === "seat";
+    if (!tx || !tx.jwsRepresentation) return Promise.resolve(photo);
+    if (!force && photo && (crewOk || seatOnly)) return Promise.resolve(photo);
     var last = 0;
     try { last = Number(localStorage.getItem(CLAIM_TRY) || 0); } catch (e) {}
-    if (!force && Date.now() - last < 86400000) return Promise.resolve("");
+    var wait = photo ? 86400000 : 5 * 60 * 1000;
+    if (!force && Date.now() - last < wait) return Promise.resolve(photo);
     try { localStorage.setItem(CLAIM_TRY, String(Date.now())); } catch (e2) {}
     return fetch(API + "/license/apple", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ jws: tx.jwsRepresentation, device: deviceId() })
     }).then(function (r) { return r.json(); }).then(function (d) {
-      if (d && d.ok && /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(d.code)) {
-        rememberCode(d.code);
-        return d.code;
-      }
-      return "";
+      var bound = Logic.photoCodeFromApple(d);
+      if (bound) photo = saveDeviceCode(bound);
+      var crew = d && d.code ? String(d.code).trim().toUpperCase() : "";
+      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(crew) && crew !== bound) rememberCode(crew);
+      return photo || "";
+    }).catch(function () { return photo || ""; });
+  }
+  function ensureDeviceCode() {
+    var photo = Logic.photoCodeFromApple({ deviceCode: deviceCode() });
+    if (photo) return Promise.resolve(photo);
+    if (!NP || !NP.getPurchases) return Promise.resolve("");
+    return NP.getPurchases().then(function (r) {
+      var row = Logic.pickEntitlement((r && r.purchases) || [], Date.now());
+      if (!row) return "";
+      return claimApple(row.tx, true);
     }).catch(function () { return ""; });
   }
   function grantRow(row, force) {
     if (!row) return null;
     var lic = writeLicense(Logic.licenseFrom(row, Date.now()), force);
-    if (row.sku === "pack") claimPack(row.tx, !!force);
+    claimApple(row.tx, !!force);
     return lic;
   }
   function sync() {
@@ -413,7 +440,6 @@
       else screen.insertBefore(card, screen.firstChild);
     }
     var lic = activeLicense();
-    var code = crewCode();
     var mail = contactMail();
     var mailHtml = mail ? '<a href="mailto:' + escapeText(mail) + '?subject=WRAP%20911%20Apple%20crew%20code">' + escapeText(mail) + "</a>" : "us";
     var status = "";
@@ -422,12 +448,7 @@
       var name = lic.sku === "pack" ? "Shop Pack" : "Seat";
       status = '<p class="msg"><b>' + name + " is active</b> until " + escapeText(when) + ".</p>";
       if (lic.sku === "pack") {
-        if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) || /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
-          var shown = /^W911-/.test(code) ? code : lic.code;
-          status += '<p class="msg">Crew code <b class="code">' + escapeText(shown) + "</b><br>Type it in Unlock on up to 4 other phones.</p>";
-        } else {
-          status += '<p class="msg">Your extra seat codes will appear here. This phone is already unlocked. Until then, email ' + mailHtml + " and we will send the codes for the other four phones.</p>";
-        }
+        status += '<p class="msg">This phone is unlocked with Apple. For the other phones on a Shop Pack, email ' + mailHtml + ".</p>";
       }
     }
     var buttons = "";
@@ -525,7 +546,14 @@
     loadProducts().then(render);
     sync().then(render);
   }
-  window.WRAP911_IAP = { sync: sync, render: render, productIds: IDS, hook: hookCore };
+  window.WRAP911_IAP = {
+    sync: sync,
+    render: render,
+    productIds: IDS,
+    hook: hookCore,
+    deviceCode: deviceCode,
+    ensureDeviceCode: ensureDeviceCode
+  };
   if (NP && NP.addListener) {
     try {
       NP.addListener("transactionUpdated", function (tx) {

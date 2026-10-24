@@ -87,7 +87,8 @@ assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instea
 assert.ok(iap.indexOf("iap-4") !== -1, "the bundle marker stays in source");
 assert.strictEqual(iap.indexOf('id="iap-diag"'), -1, "the build diagnostic line must not render");
 assert.strictEqual(iap.indexOf('id="iap-steps"'), -1, "the tap diagnostic line must not render");
-assert.ok(iap.indexOf("Your extra seat codes will appear here") !== -1);
+assert.ok(iap.indexOf("For the other phones on a Shop Pack, email") !== -1);
+assert.strictEqual(iap.indexOf("Type it in Unlock"), -1, "the app does not ask for an unlock code");
 assert.strictEqual(iap.indexOf("btn.onclick"), -1, "buy taps must stay on the document so a re-render cannot drop them");
 assert.strictEqual(iap.indexOf("var note ="), -1, "a local var note would hide the diagnostic function and throw on tap");
 assert.ok(iap.indexOf('addEventListener("error"') !== -1, "a script error must reach the diagnostic line");
@@ -129,5 +130,19 @@ assert.ok(plan.indexOf("buy.stripe.com") !== -1, "the website Stripe Payment Lin
 var privacy = fs.readFileSync(path.join(__dirname, "../../privacy.html"), "utf8");
 assert.ok(/Apple In-App Purchase/i.test(privacy), "privacy.html mentions Apple IAP");
 assert.ok(/Stripe/i.test(privacy), "privacy.html keeps the website Stripe paragraph");
+
+assert.strictEqual(L.photoCodeFromApple({ deviceCode: "w911-abcd-ef23", code: "W911-ZZZZ-9999" }), "W911-ABCD-EF23");
+assert.strictEqual(L.photoCodeFromApple({ code: "W911-ZZZZ-9999", codes: ["W911-ZZZZ-9999"] }), "");
+assert.strictEqual(L.photoCodeFromApple({ deviceCode: "APPLE" }), "");
+assert.strictEqual(L.photoCodeFromApple(null), "");
+assert.strictEqual(L.photoCodeFromApple({ deviceCode: "" }), "");
+
+var photoFix = fs.readFileSync(path.join(__dirname, "photo-fix.js"), "utf8");
+assert.strictEqual(photoFix.indexOf("buy.stripe.com"), -1, "Photo Fix has no Stripe link");
+assert.strictEqual(photoFix.indexOf("wrap911.com"), -1, "Photo Fix does not link to the website checkout");
+assert.ok(photoFix.indexOf("FRAMES = 4") !== -1, "video pulls 4 frames");
+assert.ok(photoFix.indexOf("/coach/photo") !== -1);
+assert.ok(photoFix.indexOf("wrap911_device_code") !== -1, "Photo Fix sends the device-bound code");
+assert.strictEqual(photoFix.indexOf("unlock-code"), -1);
 
 console.log("iap-logic tests ok");

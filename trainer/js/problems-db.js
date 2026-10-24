@@ -17,7 +17,7 @@
       module: "post-heat",
       jobType: "Problems",
       visual: "Close-up of a riveted side in glossy magenta film. Two round rivet heads sit on a vertical panel line at the left. Each head has a shiny raised ring of film around it, where the film stands off the skin instead of lying down around the head. Two yellow graphic shapes show at the top and the lower right.",
-      narration: "Problem: the film is standing up in a ring around each rivet head. It is not seated down around the head.\n\nSolution: work one head at a time. Lift the film locally, warm it only per the 3M, Avery Dennison, or Arlon TDS for that film, then seat the ring around the head before the dome. Do not mash a tent flat with a hard squeegee. When the row is down, post-heat it per the TDS.",
+      narration: "Problem: the film is standing up in a ring around each rivet head. It is not seated down around the head.\n\nSolution: work one head at a time. Lift the film locally, warm it only per the 3M, Avery Dennison, or BriteLine TDS for that film, then seat the ring around the head before the dome. Do not mash a tent flat with a hard squeegee. When the row is down, post-heat it per the TDS.",
       checklist: [
         "Glass the panel flats before any rivet head",
         "Heat only to the film TDS — no chat-room numbers",
@@ -101,7 +101,7 @@
       module: "squeegee",
       jobType: "Problems",
       visual: "Grey wood-grain wall film. A hand with a ring lifts a vertical seam so a finger stands off the panel. A small metal tool lies on the film. No heat gun is in this frame.",
-      narration: "Problem: a finger is standing in the wood-grain. A hard squeegee will crease the grain.\n\nSolution: do what the hand is doing. Lift the finger, chase the air out to the side, then squeegee from the glassed area back into the seam. There is no torch in this still, so do not invent a temperature. If the film still will not relax, use heat only per the 3M, Avery Dennison, or Arlon TDS after the lift.",
+      narration: "Problem: a finger is standing in the wood-grain. A hard squeegee will crease the grain.\n\nSolution: do what the hand is doing. Lift the finger, chase the air out to the side, then squeegee from the glassed area back into the seam. There is no torch in this still, so do not invent a temperature. If the film still will not relax, use heat only per the 3M, Avery Dennison, or BriteLine TDS after the lift.",
       checklist: [
         "Do not smash a finger flat",
         "Lift, warm to TDS, pull tension sideways",

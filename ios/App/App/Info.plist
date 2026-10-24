@@ -62,5 +62,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>WRAP 911 uses the camera so you can photograph or record a wrap problem for Photo Fix.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>WRAP 911 uses the microphone when you record a short video of a wrap problem for Photo Fix.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>WRAP 911 uses your photo library so you can choose a photo or short video of a wrap problem for Photo Fix.</string>
 </dict>
 </plist>

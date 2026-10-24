@@ -1,5 +1,9 @@
 # WRAP 911 coach proxy
 
+Do not deploy this folder from the iOS branch. `worker.js` here is not the live script. A deploy would replace `wrap911-coach-proxy` and remove `POST /coach/photo` and the live `POST /license/apple`. Photo Fix for App Store purchases needs the live-worker change in `PHOTO_APPLE.md`. That change is not deployed.
+
+The notes below describe an older deploy of this folder. Leave them for history. Do not run them while version 1.1 is in review.
+
 Deploy from this folder after `npx wrangler login`.
 
 ```bash
