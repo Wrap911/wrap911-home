@@ -1,0 +1,84 @@
+name: ASC resubmit v1.1 build 20 (temp)
+on:
+  push:
+    branches: [asc-resubmit-v11]
+    paths: [".github/workflows/asc-resubmit-v11.yml"]
+jobs:
+  resubmit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - run: pip install -q pyjwt cryptography requests
+      - name: Attach build 20, set notes, resubmit
+        shell: python
+        run: |
+          import os,re,time,jwt,requests,json,sys
+          b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b)
+          key='-----BEGIN PRIVATE KEY-----\n'+'\n'.join(b[i:i+64] for i in range(0,len(b),64))+'\n-----END PRIVATE KEY-----\n'
+          def H():
+            t=jwt.encode({"iss":os.environ["ASC_ISSUER_ID"],"iat":int(time.time()),"exp":int(time.time())+1100,"aud":"appstoreconnect-v1"},key,algorithm="ES256",headers={"kid":os.environ["ASC_KEY_ID"]})
+            return {"Authorization":"Bearer "+t,"Content-Type":"application/json"}
+          A="https://api.appstoreconnect.apple.com/"
+          def req(m,p,body=None):
+            r=requests.request(m,A+p,headers=H(),data=json.dumps(body) if body else None)
+            try: j=r.json()
+            except Exception: j={}
+            if r.status_code>=400: print(f"ERR {m} {p}: {r.status_code} {json.dumps(j.get('errors',''))[:700]}")
+            else: print(f"OK {m} {p}: {r.status_code}")
+            return r.status_code,j
+          aid="6816763473"; vid="ad69dc48-d34b-45e6-bd4a-41e4ec9f1ecd"; sid="6e6b5317-ef80-4ed8-9d52-1f1a3ff79d41"
+          NOTES="Guideline 3.1.1: Shop Pack (com.wrap911.trainer.pack.12mo) and Seat (com.wrap911.trainer.seat.12mo) are non-renewing In-App Purchases on the Pricing screen, reachable without an account. Restore Purchases is on that screen. The app does not link to Stripe or website checkout and has no unlock-code field. Paid access is read from StoreKit."
+          # 1) wait for build 20 of 1.1
+          build=None
+          for i in range(100):
+            c,j=req("GET",f"v1/builds?filter[app]={aid}&filter[version]=20&filter[preReleaseVersion.version]=1.1&limit=5")
+            d=j.get("data",[])
+            if d:
+              at=d[0]["attributes"]; print(time.strftime("%H:%M:%SZ",time.gmtime()),"build 20",at.get("processingState"),"enc=",at.get("usesNonExemptEncryption"))
+              if at.get("processingState")=="VALID": build=d[0]; break
+              if at.get("processingState") in ("FAILED","INVALID"): print("BUILD NOT VALID"); sys.exit(1)
+            else: print(time.strftime("%H:%M:%SZ",time.gmtime()),"build 20 not yet visible")
+            time.sleep(60)
+          if not build: print("TIMEOUT waiting for build 20"); sys.exit(1)
+          bid=build["id"]
+          # 2) encryption
+          if build["attributes"].get("usesNonExemptEncryption") is None:
+            req("PATCH",f"v1/builds/{bid}",{"data":{"type":"builds","id":bid,"attributes":{"usesNonExemptEncryption":False}}})
+          else: print("usesNonExemptEncryption already", build["attributes"].get("usesNonExemptEncryption"))
+          # 3) attach build
+          req("PATCH",f"v1/appStoreVersions/{vid}/relationships/build",{"data":{"type":"builds","id":bid}})
+          c,j=req("GET",f"v1/appStoreVersions/{vid}/build"); print("attached build:", j.get("data",{}).get("attributes",{}).get("version"))
+          # 4) review notes
+          c,j=req("GET",f"v1/appStoreVersions/{vid}/appStoreReviewDetail")
+          rd=j.get("data")
+          if rd:
+            req("PATCH",f"v1/appStoreReviewDetails/{rd['id']}",{"data":{"type":"appStoreReviewDetails","id":rd["id"],"attributes":{"notes":NOTES}}})
+          else:
+            req("POST","v1/appStoreReviewDetails",{"data":{"type":"appStoreReviewDetails","attributes":{"notes":NOTES},"relationships":{"appStoreVersion":{"data":{"type":"appStoreVersions","id":vid}}}}})
+          c,j=req("GET",f"v1/appStoreVersions/{vid}/appStoreReviewDetail"); print("notes match:", j.get("data",{}).get("attributes",{}).get("notes")==NOTES)
+          # 5) items in submission
+          c,j=req("GET",f"v1/reviewSubmissions/{sid}?include=items")
+          print("submission state:", j.get("data",{}).get("attributes",{}).get("state"))
+          c,j=req("GET",f"v1/reviewSubmissions/{sid}/items?limit=50&include=appStoreVersion,inAppPurchaseV2")
+          for it in j.get("data",[]):
+            print(" item", it["id"][-12:], it["attributes"])
+            if it["attributes"].get("state") in ("REJECTED","UNRESOLVED_ISSUES"):
+              req("PATCH",f"v1/reviewSubmissionItems/{it['id']}",{"data":{"type":"reviewSubmissionItems","id":it["id"],"attributes":{"resolved":True}}})
+          # 6) submit
+          c,j=req("PATCH",f"v1/reviewSubmissions/{sid}",{"data":{"type":"reviewSubmissions","id":sid,"attributes":{"submitted":True}}})
+          if c>=400: print("REUSE FAILED; not creating a new submission automatically")
+          time.sleep(20)
+          # 7) verify
+          c,j=req("GET",f"v1/apps/{aid}/appStoreVersions?limit=3")
+          for v in j.get("data",[]): print("Version", v["attributes"]["versionString"], v["attributes"].get("appStoreState"), v["attributes"].get("appVersionState"))
+          c,j=req("GET",f"v1/reviewSubmissions?filter[app]={aid}&limit=10")
+          for s in j.get("data",[]):
+            print("Submission", s["id"], s["attributes"])
+            c2,j2=req("GET",f"v1/reviewSubmissions/{s['id']}/items?limit=50")
+            for it in j2.get("data",[]): print("  item", it["id"][-12:], it["attributes"].get("state"))
+          c,j=req("GET",f"v1/apps/{aid}/inAppPurchasesV2?limit=50")
+          for p in j.get("data",[]): print("IAP", p["attributes"].get("productId"), p["attributes"].get("state"))
