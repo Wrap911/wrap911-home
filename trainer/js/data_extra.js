@@ -59,7 +59,7 @@ window.WRAP911_DATA.certLevels = [
 window.WRAP911_DATA.brands = [
   "3M",
   "Avery Dennison",
-  "Arlon"
+  "BriteLine"
 ];
 window.WRAP911_DATA.trainingLessons = [
   {
@@ -91,7 +91,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Stretching the entire rivet field in one heroic pull"
     ],
     "steps": [
-      "Prep and mark rivet rows; confirm film is 3M, Avery Dennison, or Arlon cast suitable for commercial sides.",
+      "Prep and mark rivet rows; confirm film is 3M, Avery Dennison, or BriteLine cast suitable for commercial sides.",
       "Glass the flat field first; leave rivet lines staged, not crushed.",
       "Soften film per the exact product TDS, then set rivets one by one.",
       "Post-heat edges and rivets so the film remembers the shape.",
@@ -111,7 +111,7 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "What heat guidance should you follow for rivet work?",
         "choices": [
           "Use one fixed heat number for every brand.",
-          "Follow the film maker's TDS for the exact 3M, Avery Dennison, or Arlon product.",
+          "Follow the film maker's TDS for the exact 3M, Avery Dennison, or BriteLine product.",
           "Hold the torch until the film looks melted and glossy."
         ],
         "answer": 1
@@ -372,7 +372,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Most immediate risk from runoff streaks under hardware?",
         "choices": [
-          "Residue that blocks adhesive bond on 3M / Avery Dennison / Arlon film.",
+          "Residue that blocks adhesive bond on 3M / Avery Dennison / BriteLine film.",
           "Nothing. Post-heat burns the residue off.",
           "You must switch to calendared film only."
         ],
@@ -1220,7 +1220,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Same reference heights across every vehicle in the fleet",
       "Photo documentation of first unit as the standard",
       "Measure from fixed OEM points, not eyeball",
-      "Keep brand marks (3M / Avery Dennison / Arlon) consistent per spec"
+      "Keep brand marks (3M / Avery Dennison / BriteLine) consistent per spec"
     ],
     "tools": [
       "Master measurement sheet",
@@ -1262,7 +1262,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Brand consistency on fleet jobs?",
         "choices": [
-          "Stay on the specified 3M, Avery Dennison, or Arlon product.",
+          "Stay on the specified 3M, Avery Dennison, or BriteLine product.",
           "Mix any vinyl to use up scraps.",
           "Brand doesn't matter for fleets."
         ],
@@ -1447,7 +1447,7 @@ window.WRAP911_DATA.workflowSteps = {
         "Keep ladder clear of wet floors",
         "PPE for cleaners per label"
       ],
-      "technique": "Chase dirt traps at every rivet base and hardware edge before any 3M / Avery Dennison / Arlon film goes down.",
+      "technique": "Chase dirt traps at every rivet base and hardware edge before any 3M / Avery Dennison / BriteLine film goes down.",
       "mistakes": [
         "Skipping rivet bases",
         "Wrapping over awning/seal runoff"
@@ -1908,7 +1908,7 @@ window.WRAP911_DATA.practiceScenarios = [
       "Individual rivet set"
     ],
     "checklist": [
-      "Confirm film brand is 3M, Avery Dennison, or Arlon specified for the job",
+      "Confirm film brand is 3M, Avery Dennison, or BriteLine specified for the job",
       "Note bridged rivets before crushing anything",
       "Warm per TDS (no invented temperatures)",
       "Press and purge air at each rivet head",
