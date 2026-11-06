@@ -1,5 +1,5 @@
 diff --git a/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift b/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
-index e4ab9e1..4b7960f 100644
+index e4ab9e1..740280b 100644
 --- a/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
 +++ b/node_modules/@capgo/native-purchases/ios/Sources/NativePurchasesPlugin/NativePurchasesPlugin.swift
 @@ -1,7 +1,18 @@
@@ -51,10 +51,22 @@ index e4ab9e1..4b7960f 100644
                  print("purchaseProduct result \(result)")
                  await self.handlePurchaseResult(result, call: call, autoFinish: autoAcknowledge)
              } catch {
-@@ -140,6 +156,65 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
+@@ -140,19 +156,74 @@ public class NativePurchasesPlugin: CAPPlugin, CAPBridgedPlugin {
          }
      }
  
+-    @objc func restorePurchases(_ call: CAPPluginCall) {
+-        print("restorePurchases")
+-        Task {
+-            do {
+-                try await AppStore.sync()
+-                for transaction in SKPaymentQueue.default().transactions {
+-                    SKPaymentQueue.default().finishTransaction(transaction)
+-                }
+-                await MainActor.run { call.resolve() }
+-            } catch {
+-                await MainActor.run { call.reject(error.localizedDescription) }
+-            }
 +    @objc func diagnostics(_ call: CAPPluginCall) {
 +        Task { @MainActor in
 +            let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
@@ -107,13 +119,22 @@ index e4ab9e1..4b7960f 100644
 +        }
 +        if let nav = root as? UINavigationController, let visible = nav.visibleViewController {
 +            return topViewController(from: visible)
-+        }
+         }
 +        if let tab = root as? UITabBarController, let selected = tab.selectedViewController {
 +            return topViewController(from: selected)
 +        }
 +        return root
 +    }
 +
-     @objc func restorePurchases(_ call: CAPPluginCall) {
-         print("restorePurchases")
-         Task {
++    @objc func restorePurchases(_ call: CAPPluginCall) {
++        // Non-renewing subscriptions are not restored by AppStore.sync() or
++        // SKPaymentQueue.restoreCompletedTransactions(). Both present the
++        // Apple Account password sheet. This method used to call AppStore.sync().
++        // It now returns without touching StoreKit so a caller cannot show that
++        // sheet. The app reads Transaction.all and Transaction.currentEntitlements
++        // through getPurchases.
++        print("restorePurchases on-device only; no Apple Account prompt")
++        call.resolve()
+     }
+ 
+     @objc func getProducts(_ call: CAPPluginCall) {

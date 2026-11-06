@@ -126,13 +126,13 @@
     return "The App Store purchase sheet did not open, so you were not charged. Try again.";
   }
 
-  /* AppStore.sync() does not restore non-renewing purchases and throws in the
-     sandbox. Restore reads Transaction.all / currentEntitlements first. */
+  /* Restore reads Transaction.all and currentEntitlements already on this
+     phone. It does not ask for an Apple Account or password. */
   function restoreMessage(found, errorText) {
     if (found) return "Purchase restored on this phone.";
     var reason = String(errorText || "").replace(/\s+/g, " ").trim();
     if (reason) return reason.slice(0, 280);
-    return "No active Shop Pack or Seat was found for this Apple ID.";
+    return "No active Shop Pack or Seat was found in the App Store purchases on this phone.";
   }
 
   function shouldWrite(existing, next, now, force) {

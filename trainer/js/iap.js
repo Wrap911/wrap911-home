@@ -22,7 +22,7 @@
   var productError = "";
   var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
-  var JS_MARK = "iap-4";
+  var JS_MARK = "iap-5";
   var diag = null;
   var steps = [];
   var buyingId = "";
@@ -230,7 +230,8 @@
         return { purchases: [], error: String((e && (e.message || e)) || "Could not read App Store purchases.") };
       });
     }
-    /* Transaction.all, then currentEntitlements. Both stay on the phone. */
+    /* Transaction.all, then currentEntitlements. Both stay on the phone
+       and neither asks for an Apple Account or password. */
     return Promise.all([
       one(),
       one({ onlyCurrentEntitlements: true })
@@ -249,29 +250,28 @@
     render();
     setMsg(Logic.restoreMessage(!!row, errorText));
   }
+  /* Seat and Shop Pack are non-renewing. Apple's account sign-in sheet does
+     not restore that product type, so this button never calls it. A second
+     on-device read covers a purchase StoreKit surfaces a moment later.
+     A found Shop Pack still claims its crew code from the license server. */
   function restore() {
     setMsg("Restoring…");
     note("tap restore");
+    function from(found) {
+      if (found.error && !found.list.length) return { error: found.error, row: null };
+      return { error: "", row: Logic.pickEntitlement(found.list, Date.now()) };
+    }
     readStore().then(function (first) {
-      if (first.error && !first.list.length) throw new Error(first.error);
-      var row = Logic.pickEntitlement(first.list, Date.now());
-      if (row) {
-        note("restored " + row.sku);
-        finishRestore(row, "");
+      var got = from(first);
+      if (got.row) {
+        note("restored " + got.row.sku);
+        finishRestore(got.row, "");
         return;
       }
-      /* A new phone has an empty local history until Apple syncs it. */
-      if (!NP.restorePurchases) {
-        finishRestore(null, "");
-        return;
-      }
-      return NP.restorePurchases().then(function () {
-        return readStore();
-      }).then(function (second) {
-        if (second.error && !second.list.length) throw new Error(second.error);
-        var again = Logic.pickEntitlement(second.list, Date.now());
-        if (again) note("restored " + again.sku);
-        finishRestore(again, "");
+      return new Promise(function (resolve) { setTimeout(resolve, 700); }).then(readStore).then(function (second) {
+        var again = from(second);
+        if (again.row) note("restored " + again.row.sku);
+        finishRestore(again.row, again.row ? "" : (again.error || got.error || ""));
       });
     }).catch(function (e) {
       var raw = String((e && (e.message || e)) || "Restore failed.");
