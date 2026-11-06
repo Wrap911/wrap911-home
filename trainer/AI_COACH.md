@@ -44,8 +44,8 @@ Keep `stripeTestMode: false` and real `buy.stripe.com` Payment Links.
 ## Client behavior
 
 - `sendQuestion` → cloud first when endpoint set → on failure, local SOP + note.
-- Worker strips client `system` messages and applies WRAP 911 rules (3M / Avery Dennison / Arlon only; **never invent temps / dwell / stretch % / chem** — always TDS).
-- Brands only: **3M · Avery Dennison · Arlon**.
+- Worker strips client `system` messages and applies WRAP 911 rules (3M / Avery Dennison / BriteLine only; **never invent temps / dwell / stretch % / chem** — always TDS).
+- Brands only: **3M · Avery Dennison · BriteLine**.
 
 ## Media drafts / categorize
 

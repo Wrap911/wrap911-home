@@ -15,7 +15,7 @@
   function core() { return APP.core || {}; }
   function show(name) { if (core().showScreen) core().showScreen(name); }
   function n(a) { return Array.isArray(a) ? a.length : 0; }
-  function brands() { return (CFG.brands || ["3M", "Avery Dennison", "Arlon"]).join(", "); }
+  function brands() { return (CFG.brands || ["3M", "Avery Dennison", "BriteLine"]).join(", "); }
   function email() { return (CFG.contactEmail || "").trim(); }
   function contactLine() {
     var e = email();
@@ -95,15 +95,15 @@
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
       ["How does unlock work?", iosApp()
-        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore Purchases is on that screen."
+        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore Purchases uses the App Store purchases already on this phone."
         : "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", iosApp()
         ? ("Ask first: " + contactLine() + ". Apple bills the purchase.")
         : ("Ask first: " + contactLine() + ". Send your Stripe receipt.")],
       ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
-      ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or Arlon certification, and it does not replace one."],
-      ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or Arlon."],
+      ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or BriteLine certification, and it does not replace one."],
+      ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or BriteLine."],
       ["Does it give heat or temperature numbers?", "No. Heat, post-heat and cleaning come from the film's TDS. Read the sheet for the film on the job."],
       ["Does it work offline?", "Lesson text and photos you already opened work offline. Videos need signal."]
     ];
