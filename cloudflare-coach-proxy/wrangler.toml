@@ -1,20 +1,21 @@
 name = "wrap911-coach-proxy"
 main = "worker.js"
-compatibility_date = "2026-09-01"
+# Matches the live worker (settings read 2026-11-12). Do not bump without testing.
+compatibility_date = "2024-11-01"
+workers_dev = true
 
+# Plain-text vars, same values as live.
 [vars]
-LLM_BASE_URL = "https://api.x.ai/v1/chat/completions"
-LLM_MODEL = "grok-4"
-# From address for restore codes. Must be on a domain onboarded to Email Sending.
-RESTORE_FROM_EMAIL = "info@wrap911.com"
+ALLOWED_ORIGIN = "https://wrap911.com"
+LLM_BASE_URL = "https://api.x.ai/v1"
+LLM_MODEL = "grok-4-fast-non-reasoning"
 
-# Unrestricted: the buyer's address is not known ahead of time.
-# Do not set destination_address. Arbitrary recipients need Workers Paid.
-[[send_email]]
-name = "EMAIL"
-
-# License server (seat codes). Namespace wrap911-LICENSES already exists and is bound on the live worker.
-# Web checkout also needs:  npx wrangler secret put STRIPE_SECRET_KEY
+# Seat codes, leads, Photo Fix rate limits, and email restore records.
 [[kv_namespaces]]
 binding = "LICENSES"
 id = "76dac493b0ef4cabb574cff90acb6fae"  # wrap911-LICENSES (live)
+
+# Secrets (set with `npx wrangler secret put NAME`, never in this file).
+# Live today: LLM_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET.
+# Email restore adds: RESEND_API_KEY (Resend, sender info@wrap911.com).
+# Without RESEND_API_KEY, POST /license/restore/start returns 503 EMAIL_NOT_CONFIGURED.

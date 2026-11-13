@@ -1,2 +1,8 @@
-{ "name": "wrap911-coach-proxy", "private": true, "type": "module",
-  "dependencies": { "@peculiar/x509": "^1.12.3" } }
+{
+  "name": "wrap911-coach-proxy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node license-restore.test.js && node email-restore-route.test.mjs && node apple-route.test.mjs && node photo-route.test.mjs"
+  }
+}
