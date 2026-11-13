@@ -17,24 +17,23 @@ Allowed browser origins:
 The live worker was echoing the wrong `Access-Control-Allow-Origin` for wrap911.com and hanging on POST to the model. This worker reflects only the allow-list and fails the upstream call in 10 seconds instead of hanging.
 
 ## License server (seat codes)
-`license.js` adds `/license/apple`, `/license/apple/bind`, `/license/restore/start`, `/license/restore/verify`, `/license/claim`, `/license/redeem`, `/license/check` to this Worker.
+`worker.js` is the live worker source (snapshot of the deployed script from 2026-11-12 in `rollback/worker.live-2026-11-12.js`) plus the email-restore routes. It serves `/lead`, `/coach/photo`, `/stripe/webhook`, `/license/apple`, `/license/claim`, `/license/redeem`, `/license/check`, and the new `/license/apple/bind`, `/license/restore/start`, `/license/restore/verify`. `photo-route.test.mjs` fails if any line of the live snapshot is dropped or reordered.
 
-Email restore (not deployed by the iOS change): after a Shop Pack or Seat purchase the app can `POST /license/apple/bind` with the signed transaction (JWS) and an email. The Worker checks Apple's signature, then stores that JWS in the existing `LICENSES` KV namespace. On another phone, `POST /license/restore/start` emails a 6-digit code when that address has an active purchase, and `POST /license/restore/verify` returns the original purchase with its original 12-month expiry. The mail is sent with Cloudflare Email Sending (`env.EMAIL.send`). That service is not otherwise used in this repo. There is no Resend, MailChannels, or SendGrid client here.
+Email restore: after a Shop Pack or Seat purchase the app can `POST /license/apple/bind` with the signed transaction (JWS) and an email. The Worker checks Apple's signature, then stores that JWS in the `LICENSES` KV namespace. On another phone, `POST /license/restore/start` emails a 6-digit code when that address has an active purchase, and `POST /license/restore/verify` returns the original purchase with its original 12-month expiry. The code is sent through Resend (`https://api.resend.com/emails`) from `WRAP 911 <info@wrap911.com>`. wrap911.com DNS stays at Namecheap; the domain must be verified in Resend (its DKIM/SPF records added at Namecheap) before mail goes to buyers.
 
-What has to be done before those routes work. This branch does not run it:
+Before deploying:
 
-1. Create the KV namespace if it does not exist, and replace `REPLACE_WITH_KV_ID` in `wrangler.toml`.
-2. Onboard `wrap911.com` to Cloudflare Email Sending (Compute > Email Service > Email Sending > Onboard Domain) so `info@wrap911.com` can send. The zone must use Cloudflare DNS. Sending to buyer addresses needs the Workers Paid plan. Leave the `EMAIL` binding unrestricted (no `destination_address`).
-3. `npx wrangler deploy` from this folder. Existing secrets stay as they are: `LLM_API_KEY` for the coach, and `STRIPE_SECRET_KEY` only for web checkout codes. Email restore adds no secret.
+1. Verify `wrap911.com` in Resend and create an API key with sending access.
+2. `npx wrangler secret put RESEND_API_KEY`. Do not touch `LLM_API_KEY`, `STRIPE_SECRET_KEY`, or `STRIPE_WEBHOOK_SECRET`.
+3. `npm test`, then `npx wrangler deploy` from this folder. Until the key is set, `/license/restore/start` returns 503 `EMAIL_NOT_CONFIGURED`.
 
-- Shop Pack bought in the iPhone app (`com.wrap911.trainer.pack.12mo`, non-renewing, 12 months, 5 seats): the app sends Apple's signed transaction to `/license/apple`. The Worker checks Apple's signature chain (Apple Root CA G3). A non-renewing transaction has no `expiresDate`, so expiry is `purchaseDate` plus 365 days. The Worker then returns a W911 code with 5 seats. Seat (`com.wrap911.trainer.seat.12mo`) is 1 seat. This route is in the repo and is not deployed by the iOS change; until it is deployed, the buying phone still unlocks from StoreKit and the other four Pack seats are sent by email.
+- Shop Pack bought in the iPhone app (`com.wrap911.trainer.pack.12mo`, non-renewing, 12 months): the app sends Apple's signed transaction to `/license/apple`. The Worker checks Apple's signature chain (Apple Root CA G3), sets expiry to the purchase date plus 365 days, and returns four 1-seat W911 codes for the other phones (the buying phone unlocks from StoreKit). Seat (`com.wrap911.trainer.seat.12mo`) returns no extra codes.
 - Stripe web checkout: `/license/claim?session_id=...` reads the Checkout Session and returns a code (pack = 5 seats, seat = 1).
 
 One-time setup:
 ```bash
 cd cloudflare-coach-proxy
-npm install
-npx wrangler kv namespace create LICENSES     # paste the id into wrangler.toml
-npx wrangler secret put STRIPE_SECRET_KEY     # sk_live_... (for web checkout codes)
+npm test
+npx wrangler secret put RESEND_API_KEY        # once, for email restore
 npx wrangler deploy
 ```

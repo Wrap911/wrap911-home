@@ -1,9 +1,12 @@
 /**
  * Email restore for non-renewing Apple Shop Pack and Seat.
  * Stores the verified JWS in the existing LICENSES KV namespace.
- * Sends the one-time code with the Worker send_email binding (env.EMAIL).
- * That binding is not in the deployed worker until wrangler deploy.
+ * Sends the one-time code through Resend (https://api.resend.com/emails)
+ * with the Worker secret RESEND_API_KEY. wrap911.com DNS stays at Namecheap.
  */
+export const RESEND_URL = "https://api.resend.com/emails";
+export const RESTORE_FROM = "WRAP 911 <info@wrap911.com>";
+export const RESTORE_REPLY_TO = "info@wrap911.com";
 const DAY_MS = 86400000;
 const CODE_TTL_MS = 15 * 60 * 1000;
 const COOLDOWN_MS = 60 * 1000;
@@ -115,29 +118,45 @@ export function restoreEmailContent(code) {
     "Your WRAP 911 restore code is " + safe + ".\n\n" +
     "Open the WRAP 911 app, tap Restore with email, and enter this code. It expires in 15 minutes.\n\n" +
     "If you did not ask for this, ignore this email.";
-  const html =
-    "<p>Your WRAP 911 restore code is <strong>" + safe + "</strong>.</p>" +
-    "<p>Open the WRAP 911 app, tap Restore with email, and enter this code. It expires in 15 minutes.</p>" +
-    "<p>If you did not ask for this, ignore this email.</p>";
-  return { text, html };
+  return { text };
+}
+
+export function emailRestoreReady(env) {
+  return !!(env && env.LICENSES && env.RESEND_API_KEY);
+}
+
+export function resendPayload(to, code) {
+  const copy = restoreEmailContent(code);
+  return {
+    from: RESTORE_FROM,
+    to: [to],
+    reply_to: RESTORE_REPLY_TO,
+    subject: "Your WRAP 911 restore code",
+    text: copy.text
+  };
 }
 
 export async function sendRestoreCode(env, to, code) {
-  if (!env.EMAIL || typeof env.EMAIL.send !== "function") {
-    const err = new Error("Email sending is not configured");
-    err.code = "NO_EMAIL_BINDING";
+  if (!env || !env.RESEND_API_KEY) {
+    const err = new Error("RESEND_API_KEY is not set");
+    err.code = "NO_RESEND_KEY";
     throw err;
   }
-  const from = String((env.RESTORE_FROM_EMAIL || "info@wrap911.com")).trim();
-  const copy = restoreEmailContent(code);
-  await env.EMAIL.send({
-    to,
-    from: { email: from, name: "WRAP 911" },
-    replyTo: "info@wrap911.com",
-    subject: "Your WRAP 911 restore code",
-    text: copy.text,
-    html: copy.html
+  const res = await fetch(RESEND_URL, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + env.RESEND_API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(resendPayload(to, code))
   });
+  if (!res.ok) {
+    const err = new Error("Resend returned " + res.status);
+    err.code = "RESEND_" + res.status;
+    throw err;
+  }
+  const data = await res.json().catch(() => ({}));
+  return data && data.id ? String(data.id) : "";
 }
 
 export async function storeEmailPurchase(env, purchase) {
@@ -152,8 +171,8 @@ export async function storeEmailPurchase(env, purchase) {
 export async function startEmailRestore(body, env, now) {
   const email = normalizeEmail(body && body.email);
   if (!email) return [{ ok: false, error: "Enter a valid email." }, 400];
-  if (!env.LICENSES || !env.EMAIL || typeof env.EMAIL.send !== "function") {
-    return [{ ok: false, error: "Email restore is not set up yet." }, 503];
+  if (!emailRestoreReady(env)) {
+    return [{ ok: false, error: "Email restore is not set up on the server yet. Email info@wrap911.com and we will restore your purchase.", code: "EMAIL_NOT_CONFIGURED" }, 503];
   }
   const nowMs = now || Date.now();
   const key = await emailStorageKey(email);

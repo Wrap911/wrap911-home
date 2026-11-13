@@ -34,7 +34,7 @@ Type: **Non-Renewing Subscription**, duration **1 year**. Not auto-renewable (th
 
 Use the same prices the site already sells: Shop Pack $149, Seat $49. Do not pick a different Apple price. Prices are set in App Store Connect. The app shows StoreKit's localized `priceString` and does not hardcode them. Family Sharing off. No free trial. No introductory offer.
 
-A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. The worker change is in `cloudflare-coach-proxy/license.js` and is **not** deployed by this branch. Until it is, the buying phone still unlocks, and the screen tells the buyer to email the Apple receipt for the other four seats.
+A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. That route is live in `cloudflare-coach-proxy/worker.js`.
 
 `Restore with email` is on the Pricing screen. Build 22 keeps the on-device StoreKit read for this phone and adds an email code for a new phone. The plugin method `restorePurchases` still returns without calling `AppStore.sync()`. That method is the only `AppStore.sync()` in `@capgo/native-purchases` 8.8.1, and the app does not call it. Non-renewing subscriptions cannot be restored with the Apple Account password sheet.
 
