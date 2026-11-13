@@ -22,10 +22,16 @@
   var productError = "";
   var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
-  var JS_MARK = "iap-5";
+  var JS_MARK = "iap-6";
   var diag = null;
   var steps = [];
   var buyingId = "";
+  var EMAIL_KEY = "wrap911_restore_email";
+  var restorePanel = "";
+  var restoreEmail = "";
+  var restoreCode = "";
+  var saveDraft = "";
+  var lastJws = "";
 
   function readLic() {
     try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
@@ -110,7 +116,9 @@
       ".iap-card a{color:#ffb000}" +
       ".iap-card .msg{font-size:14px;margin-top:10px;line-height:1.4}" +
       ".iap-card .diag{font-size:12px;line-height:1.35;color:#ffb000;margin:0 0 8px;word-break:break-word}" +
-      ".iap-card .code{font-size:1.15rem;letter-spacing:.06em}";
+      ".iap-card .code{font-size:1.15rem;letter-spacing:.06em}" +
+      ".iap-card label{display:block;margin-top:12px}" +
+      ".iap-card input{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border-radius:12px;border:1px solid #4a2a44;background:#100c12;color:#fff6ee;font-size:1rem}";
     document.head.appendChild(s);
   }
   function buyLabel(id, name) {
@@ -145,7 +153,7 @@
   function buttonFromEvent(ev) {
     var node = ev.target;
     if (!node || !node.closest) return null;
-    return node.closest("[data-iap], #iap-restore");
+    return node.closest("[data-iap], #iap-restore, #iap-send-code, #iap-verify-code, #iap-save-email");
   }
   function finishBuying(btn) {
     buyingId = "";
@@ -197,7 +205,7 @@
       if (!stamped.productIdentifier) stamped.productIdentifier = id;
       var row = Logic.pickEntitlement([stamped], Date.now());
       if (row) grantRow(row, true);
-      return sync();
+      return readOnDevice();
     }).then(function () {
       finishBuying(btn);
       setMsg("This phone is unlocked.");
@@ -246,16 +254,117 @@
     });
   }
   function finishRestore(row, errorText) {
-    if (row) grantRow(row, true);
+    if (row) {
+      restorePanel = "";
+      grantRow(row, true);
+    }
     render();
     setMsg(Logic.restoreMessage(!!row, errorText));
   }
-  /* Seat and Shop Pack are non-renewing. Apple's account sign-in sheet does
-     not restore that product type, so this button never calls it. A second
-     on-device read covers a purchase StoreKit surfaces a moment later.
-     A found Shop Pack still claims its crew code from the license server. */
+  function savedEmail() {
+    try { return localStorage.getItem(EMAIL_KEY) || ""; } catch (e) { return ""; }
+  }
+  function rememberSaved(email) {
+    try { localStorage.setItem(EMAIL_KEY, email); } catch (e) {}
+  }
+  function validEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
+  }
+  function postLicense(path, body) {
+    return fetch(API + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().then(function (d) {
+        return { status: r.status, data: d || {} };
+      }, function () {
+        return { status: r.status, data: {} };
+      });
+    });
+  }
+  function openEmailRestore() {
+    restorePanel = restorePanel === "code" ? "code" : "email";
+    if (!restoreEmail) restoreEmail = savedEmail();
+  }
+  function sendCode() {
+    var email = String(restoreEmail || "").trim();
+    if (!validEmail(email)) {
+      setMsg("Enter the email you saved with the purchase.");
+      return;
+    }
+    setMsg("Sending a code…");
+    postLicense("/license/restore/start", { email: email }).then(function (res) {
+      var data = res.data || {};
+      if (data.ok !== true) {
+        setMsg(data.error || "Could not send the code.");
+        return;
+      }
+      restorePanel = "code";
+      restoreEmail = email;
+      render();
+      setMsg("If that email has an active Shop Pack or Seat, we sent a 6-digit code. It expires in 15 minutes.");
+    }).catch(function () {
+      setMsg("Could not reach the restore server.");
+    });
+  }
+  function verifyCode() {
+    var email = String(restoreEmail || "").trim();
+    var code = String(restoreCode || "").replace(/\D/g, "");
+    if (!validEmail(email) || code.length !== 6) {
+      setMsg("Enter the email and the 6-digit code.");
+      return;
+    }
+    setMsg("Checking the code…");
+    postLicense("/license/restore/verify", { email: email, code: code, device: deviceId() }).then(function (res) {
+      var data = res.data || {};
+      var lic = data.ok ? Logic.licenseFromRestore(data, Date.now()) : null;
+      if (!lic) {
+        setMsg(data.error || "That code is not valid. Request a new one.");
+        return;
+      }
+      if (data.jws) lastJws = String(data.jws);
+      writeLicense(lic, true);
+      rememberSaved(email);
+      if (lic.sku === "pack" && data.jws) claimPack({ jwsRepresentation: data.jws }, true);
+      restorePanel = "";
+      restoreCode = "";
+      render();
+      setMsg("Purchase restored on this phone. It expires " + new Date(Number(lic.expiresAt)).toLocaleDateString() + ".");
+    }).catch(function () {
+      setMsg("Could not reach the restore server.");
+    });
+  }
+  function saveEmail() {
+    var email = String(saveDraft || "").trim();
+    if (!validEmail(email)) {
+      setMsg("Enter a valid email.");
+      return;
+    }
+    if (!lastJws) {
+      setMsg("This phone does not have the signed purchase yet. Open Pricing again, then save the email.");
+      return;
+    }
+    setMsg("Saving…");
+    postLicense("/license/apple/bind", { jws: lastJws, email: email, device: deviceId() }).then(function (res) {
+      var data = res.data || {};
+      if (!data.ok) {
+        setMsg(data.error || "Could not save that email.");
+        return;
+      }
+      rememberSaved(email);
+      render();
+      setMsg("Saved. On another phone, tap Restore with email and use this address.");
+    }).catch(function () {
+      setMsg("Could not reach the restore server. This phone stays unlocked.");
+    });
+  }
+  /* Seat and Shop Pack are non-renewing. This button reads the transactions
+     already on the phone, then asks for the email saved with the purchase.
+     It never asks for an Apple Account. A found Shop Pack still claims its
+     crew code from the license server. */
   function restore() {
-    setMsg("Restoring…");
+    setMsg("Checking this phone…");
     note("tap restore");
     function from(found) {
       if (found.error && !found.list.length) return { error: found.error, row: null };
@@ -271,11 +380,13 @@
       return new Promise(function (resolve) { setTimeout(resolve, 700); }).then(readStore).then(function (second) {
         var again = from(second);
         if (again.row) note("restored " + again.row.sku);
+        else openEmailRestore();
         finishRestore(again.row, again.row ? "" : (again.error || got.error || ""));
       });
     }).catch(function (e) {
       var raw = String((e && (e.message || e)) || "Restore failed.");
       note(raw.slice(0, 140));
+      openEmailRestore();
       finishRestore(null, raw);
     });
   }
@@ -300,11 +411,21 @@
         reportJs(e && (e.message || e));
       }
     }, true);
+    document.addEventListener("input", function (ev) {
+      var t = ev.target;
+      if (!t || !t.id) return;
+      if (t.id === "iap-email") restoreEmail = t.value;
+      if (t.id === "iap-code") restoreCode = t.value;
+      if (t.id === "iap-save-email-input") saveDraft = t.value;
+    }, true);
     document.addEventListener("click", function (ev) {
       var btn = buttonFromEvent(ev);
       if (!btn) return;
       try {
         if (btn.id === "iap-restore") restore();
+        else if (btn.id === "iap-send-code") sendCode();
+        else if (btn.id === "iap-verify-code") verifyCode();
+        else if (btn.id === "iap-save-email") saveEmail();
         else purchase(btn);
       } catch (e) {
         reportJs(e && (e.message || e));
@@ -333,11 +454,13 @@
   }
   function grantRow(row, force) {
     if (!row) return null;
+    var jws = row.tx && row.tx.jwsRepresentation;
+    if (jws) lastJws = String(jws);
     var lic = writeLicense(Logic.licenseFrom(row, Date.now()), force);
     if (row.sku === "pack") claimPack(row.tx, !!force);
     return lic;
   }
-  function sync() {
+  function readOnDevice() {
     if (!NP || !NP.getPurchases) return Promise.resolve(false);
     return NP.getPurchases().then(function (r) {
       var row = Logic.pickEntitlement((r && r.purchases) || [], Date.now());
@@ -348,7 +471,7 @@
       var cur = readLic();
       if (cur && cur.source === "apple") {
         /* A purchase just wrote this license. StoreKit can return an empty list
-           for a moment. Keep a fresh unlock; the next sync removes it if it is really gone. */
+           for a moment. Keep a fresh unlock; the next read removes it if it is really gone. */
         var age = Date.now() - Number(cur.checkedAt || 0);
         if (Number(cur.expiresAt) > Date.now() && age < 20000) return true;
         try { localStorage.removeItem(LS); } catch (e) {}
@@ -369,9 +492,23 @@
     removeNode(document.querySelector("#screen-pricing .unlock-box"));
     removeNode(document.getElementById("unlock-code"));
     removeNode(document.getElementById("btn-unlock"));
+    removeNode(document.getElementById("unlock-feedback"));
     var stripeHost = "buy." + "stripe.com";
-    var links = document.querySelectorAll("a.iap-web, a[href*='" + stripeHost + "']");
+    var links = document.querySelectorAll("a.iap-web, a[href*='" + stripeHost + "'], a[href*='?buy=']");
     for (var i = 0; i < links.length; i++) removeNode(links[i]);
+  }
+  /* Pricing on iOS is the Buy with Apple card only. Plan codes, the locked-price
+     rows, the repeated Free look / Apple line, and the no-license banner go. */
+  function stripPricingChrome() {
+    stripExternalPurchase();
+    var screen = document.getElementById("screen-pricing");
+    if (!screen) return;
+    var kids = screen.children;
+    for (var i = kids.length - 1; i >= 0; i--) {
+      var n = kids[i];
+      if (!n || n.id === "iap-card" || n.tagName === "H1") continue;
+      removeNode(n);
+    }
   }
   function exposePaywall() {
     var card = document.getElementById("goto-pricing");
@@ -399,7 +536,7 @@
     var screen = document.getElementById("screen-pricing");
     if (!screen) return;
     css();
-    stripExternalPurchase();
+    stripPricingChrome();
     exposePaywall();
     var lead = screen.querySelector(".lead");
     if (lead) lead.textContent = "Shop Pack is 5 seats for 12 months. Seat is 1 tech for 12 months. One payment. It does not auto-renew.";
@@ -440,7 +577,32 @@
     } else if (lic.sku === "seat") {
       buttons = '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>";
     }
-    var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore Purchases</button>' : "";
+    var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore with email</button>' : "";
+    var emailBox = "";
+    if (restorePanel === "email" || restorePanel === "code") {
+      emailBox =
+        '<label class="fine" for="iap-email">Email you saved with the purchase</label>' +
+        '<input id="iap-email" type="email" autocomplete="email" inputmode="email" value="' + escapeText(restoreEmail) + '">' +
+        (restorePanel === "code"
+          ? '<label class="fine" for="iap-code">6-digit code</label>' +
+            '<input id="iap-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="' + escapeText(restoreCode) + '">' +
+            '<button type="button" class="buy seat" id="iap-verify-code">Restore on this phone</button>'
+          : '<button type="button" class="buy seat" id="iap-send-code">Send code</button>') +
+        '<p class="fine">We email a code. This does not ask for an Apple Account.</p>';
+    }
+    var focusedId = "";
+    var focused = document.activeElement;
+    if (focused && focused.id && /^(iap-email|iap-code|iap-save-email-input)$/.test(focused.id)) focusedId = focused.id;
+    var saveBox = "";
+    if (lic && lastJws) {
+      var known = savedEmail();
+      if (focusedId !== "iap-save-email-input" && !saveDraft && known) saveDraft = known;
+      saveBox =
+        (known ? '<p class="msg">Saved for another phone: <b>' + escapeText(known) + "</b></p>" : "") +
+        '<label class="fine" for="iap-save-email-input">Email for restore on another phone</label>' +
+        '<input id="iap-save-email-input" type="email" autocomplete="email" inputmode="email" value="' + escapeText(saveDraft) + '">' +
+        '<button type="button" class="restore" id="iap-save-email">Save email</button>';
+    }
     var packP = priceText(PACK);
     var seatP = priceText(SEAT);
     var priceLine = (packP || seatP)
@@ -451,7 +613,9 @@
       '<p class="iap-lead">Full trainer on this phone for 12 months. Shop Pack is the crew buy: this phone plus four more.</p>' +
       buttons +
       status +
+      saveBox +
       restore +
+      emailBox +
       '<p class="msg" id="iap-msg"></p>' +
       '<p class="fine">' + escapeText(priceLine) +
       "One-time purchase. Access lasts 12 months from the purchase date and does not auto-renew. " +
@@ -462,6 +626,12 @@
     if (buyingId) {
       var pendingBtn = card.querySelector('[data-iap="' + buyingId + '"]');
       if (pendingBtn) pendingBtn.disabled = true;
+    }
+    if (focusedId) {
+      var again = document.getElementById(focusedId);
+      if (again) {
+        try { again.focus(); } catch (eFocus) {}
+      }
     }
   }
   function loadProducts() {
@@ -523,9 +693,9 @@
       render();
     });
     loadProducts().then(render);
-    sync().then(render);
+    readOnDevice().then(render);
   }
-  window.WRAP911_IAP = { sync: sync, render: render, productIds: IDS, hook: hookCore };
+  window.WRAP911_IAP = { readOnDevice: readOnDevice, render: render, productIds: IDS, hook: hookCore };
   if (NP && NP.addListener) {
     try {
       NP.addListener("transactionUpdated", function (tx) {
@@ -540,6 +710,6 @@
   setTimeout(function () { hookCore(); render(); }, 400);
   setTimeout(function () { hookCore(); render(); }, 1600);
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) sync().then(render);
+    if (!document.hidden) readOnDevice().then(render);
   });
 })();

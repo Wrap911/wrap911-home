@@ -1,0 +1,119 @@
+import assert from "node:assert/strict";
+import {
+  hashRestoreCode,
+  newRestoreCode,
+  normalizeEmail,
+  pickActive,
+  startEmailRestore,
+  storeEmailPurchase,
+  timingSafeEqual,
+  verifyEmailRestore,
+} from "./license-restore.js";
+
+const YEAR = 365 * 86400000;
+const NOW = Date.parse("2026-06-01T00:00:00.000Z");
+const PACK = "com.wrap911.trainer.pack.12mo";
+const SEAT = "com.wrap911.trainer.seat.12mo";
+
+function kv() {
+  const map = new Map();
+  return {
+    map,
+    async get(key, type) {
+      if (!map.has(key)) return null;
+      const v = map.get(key);
+      return type === "json" ? JSON.parse(v) : v;
+    },
+    async put(key, value) { map.set(key, String(value)); },
+    async delete(key) { map.delete(key); },
+  };
+}
+
+assert.equal(normalizeEmail("  Buyer@Example.com "), "buyer@example.com");
+assert.equal(normalizeEmail("not-an-email"), "");
+assert.equal(newRestoreCode(new Uint8Array([0, 0, 1, 44])), "000300");
+assert.equal(timingSafeEqual("abc", "abc"), true);
+assert.equal(timingSafeEqual("abc", "abd"), false);
+
+const bought = NOW - 100 * 86400000;
+const expires = bought + YEAR;
+const chosen = pickActive([
+  { sku: "seat", productId: SEAT, transactionId: "s", purchaseDate: bought, expiresAt: expires, jws: "seat-jws" },
+  { sku: "pack", productId: PACK, transactionId: "p", purchaseDate: bought - 86400000, expiresAt: bought - 86400000 + YEAR, jws: "pack-jws" },
+], NOW);
+assert.equal(chosen.sku, "pack");
+assert.equal(chosen.expiresAt, expires);
+assert.notEqual(chosen.expiresAt, NOW + YEAR);
+assert.equal(pickActive([{ sku: "seat", expiresAt: NOW - 1, jws: "x" }], NOW), null);
+
+const store = kv();
+const sent = [];
+const env = {
+  LICENSES: store,
+  RESTORE_FROM_EMAIL: "info@wrap911.com",
+  EMAIL: {
+    async send(msg) { sent.push(msg); },
+  },
+};
+await storeEmailPurchase(env, {
+  email: "Buyer@Example.com",
+  jws: "signed-jws",
+  productId: SEAT,
+  transactionId: "orig-9",
+  purchaseDate: bought,
+  expiresAt: expires,
+  sku: "seat",
+  seats: 1,
+});
+
+const missing = await startEmailRestore({ email: "nobody@example.com" }, env, NOW);
+assert.equal(missing[1], 200);
+assert.equal(missing[0].ok, true);
+assert.equal(sent.length, 0);
+
+const unconfigured = await startEmailRestore({ email: "buyer@example.com" }, { LICENSES: store }, NOW);
+assert.equal(unconfigured[1], 503);
+
+const started = await startEmailRestore({ email: "buyer@example.com" }, env, NOW);
+assert.equal(started[1], 200);
+assert.equal(sent.length, 1);
+assert.equal(sent[0].from.email, "info@wrap911.com");
+assert.match(sent[0].text, /Restore with email/);
+assert.match(sent[0].html, /<p>/);
+const code = (sent[0].text.match(/\b(\d{6})\b/) || [])[1];
+assert.equal(code.length, 6);
+
+const again = await startEmailRestore({ email: "buyer@example.com" }, env, NOW + 1000);
+assert.equal(again[0].ok, true);
+assert.equal(sent.length, 1);
+
+const badCode = code === "000000" ? "000001" : "000000";
+const bad = await verifyEmailRestore({ email: "buyer@example.com", code: badCode }, env, async () => ({ ok: true }), NOW);
+assert.equal(bad[1], 400);
+
+const verified = await verifyEmailRestore(
+  { email: "buyer@example.com", code },
+  env,
+  async (jws) => {
+    assert.equal(jws, "signed-jws");
+    return { productId: SEAT };
+  },
+  NOW
+);
+assert.equal(verified[1], 200);
+assert.equal(verified[0].sku, "seat");
+assert.equal(verified[0].productId, SEAT);
+assert.equal(verified[0].transactionId, "orig-9");
+assert.equal(verified[0].purchaseDate, bought);
+assert.equal(verified[0].expiresAt, expires);
+assert.equal(verified[0].jws, "signed-jws");
+assert.notEqual(verified[0].expiresAt, NOW + YEAR);
+
+const reused = await verifyEmailRestore({ email: "buyer@example.com", code }, env, async () => ({}), NOW);
+assert.equal(reused[1], 400);
+
+const hash = await hashRestoreCode("buyer@example.com", code);
+assert.equal(typeof hash, "string");
+assert.equal(hash.length, 64);
+
+console.log("license-restore tests ok");

@@ -72,8 +72,22 @@ var restoredSeat = L.pickEntitlement([tx(SEAT, seatBuy)], seatDay + 1000);
 assert.strictEqual(restoredSeat.sku, "seat");
 assert.strictEqual(restoredSeat.expiresAt, seatDay + YEAR);
 assert.strictEqual(L.restoreMessage(true, "read failed"), "Purchase restored on this phone.");
-assert.strictEqual(L.restoreMessage(false, ""), "No active Shop Pack or Seat was found in the App Store purchases on this phone.");
+assert.strictEqual(L.restoreMessage(false, ""), "Nothing active is stored on this phone. Enter the email you saved with the purchase.");
 assert.strictEqual(L.restoreMessage(false, "  Request failed.  "), "Request failed.");
+var boughtAt = Date.parse("2026-02-01T00:00:00.000Z");
+var originalEnd = boughtAt + YEAR;
+var restored = L.licenseFromRestore({
+  sku: "seat",
+  productId: SEAT,
+  transactionId: "orig-1",
+  purchaseDate: boughtAt,
+  expiresAt: originalEnd
+}, NOW);
+assert.strictEqual(restored.sku, "seat");
+assert.strictEqual(restored.expiresAt, originalEnd);
+assert.notStrictEqual(restored.expiresAt, NOW + YEAR);
+assert.strictEqual(L.licenseFromRestore({ sku: "seat", purchaseDate: boughtAt, expiresAt: NOW - 1 }, NOW), null);
+assert.strictEqual(L.licenseFromRestore({ sku: "pack", purchaseDate: boughtAt, expiresAt: originalEnd }, NOW).seats, 5);
 
 assert.ok(missing.indexOf("not charged") !== -1);
 assert.ok(stall.indexOf("did not open") !== -1);
@@ -84,7 +98,7 @@ assert.ok(stall.indexOf("not charged") !== -1);
 });
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
 assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instead of leaving the button disabled");
-assert.ok(iap.indexOf("iap-5") !== -1, "the bundle marker stays in source");
+assert.ok(iap.indexOf("iap-6") !== -1, "the bundle marker stays in source");
 assert.strictEqual(iap.indexOf('id="iap-diag"'), -1, "the build diagnostic line must not render");
 assert.strictEqual(iap.indexOf('id="iap-steps"'), -1, "the tap diagnostic line must not render");
 assert.ok(iap.indexOf("Your extra seat codes will appear here") !== -1);
@@ -122,7 +136,13 @@ webFiles.forEach(function (name) {
 
 var logicSrc = fs.readFileSync(path.join(__dirname, "iap-logic.js"), "utf8");
 assert.ok(logicSrc.indexOf('getPlatform() === "ios"') !== -1, "iOS is Capacitor.getPlatform() === ios");
-assert.ok(iap.indexOf("Restore Purchases") !== -1, "Pricing keeps Restore Purchases");
+assert.ok(iap.indexOf("Restore with email") !== -1, "Pricing says Restore with email");
+assert.strictEqual(iap.indexOf("Restore Purchases"), -1, "the old Apple restore label is gone");
+assert.ok(iap.indexOf("/license/apple/bind") !== -1, "a purchase can be saved against an email");
+assert.ok(iap.indexOf("/license/restore/start") !== -1, "restore emails a code");
+assert.ok(iap.indexOf("/license/restore/verify") !== -1, "the code returns the original purchase");
+assert.ok(iap.indexOf("stripPricingChrome") !== -1, "iOS pricing keeps only the Apple card");
+assert.ok(iap.indexOf('n.id === "iap-card"') !== -1, "the Apple card stays on the pricing screen");
 assert.ok(iap.indexOf("com.wrap911.trainer.seat.12mo") !== -1);
 assert.ok(iap.indexOf("com.wrap911.trainer.pack.12mo") !== -1);
 assert.ok(iap.indexOf('productType: "inapp"') !== -1, "non-renewing products go through native-purchases");

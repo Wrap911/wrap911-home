@@ -95,7 +95,7 @@
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
       ["How does unlock work?", iosApp()
-        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore Purchases uses the App Store purchases already on this phone."
+        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore with email sends a code to the email you saved. It does not ask for an Apple Account."
         : "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", iosApp()

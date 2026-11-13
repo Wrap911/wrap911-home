@@ -233,7 +233,7 @@
     if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field")) return;
     if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
     if (iosApp()) {
-      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore Purchases uses the App Store purchases already on this phone.</p>";
+      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore with email uses the email you saved with the purchase.</p>";
       return;
     }
     if (window.WRAP911_SANDBOX_NO_CHECKOUT) {
