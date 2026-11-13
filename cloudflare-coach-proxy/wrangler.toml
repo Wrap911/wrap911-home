@@ -13,8 +13,8 @@ RESTORE_FROM_EMAIL = "info@wrap911.com"
 [[send_email]]
 name = "EMAIL"
 
-# License server (seat codes). Create once:  npx wrangler kv namespace create LICENSES
-# then paste the id below and deploy.  Web checkout also needs:  npx wrangler secret put STRIPE_SECRET_KEY
+# License server (seat codes). Namespace wrap911-LICENSES already exists and is bound on the live worker.
+# Web checkout also needs:  npx wrangler secret put STRIPE_SECRET_KEY
 [[kv_namespaces]]
 binding = "LICENSES"
-id = "REPLACE_WITH_KV_ID"
+id = "76dac493b0ef4cabb574cff90acb6fae"  # wrap911-LICENSES (live)
