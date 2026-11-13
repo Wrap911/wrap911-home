@@ -3,12 +3,17 @@
  *
  * Bindings / secrets (see README):
  *   KV namespace  LICENSES            (wrangler.toml [[kv_namespaces]])
+ *   send_email    EMAIL               (Cloudflare Email Sending; not a secret)
+ *   var           RESTORE_FROM_EMAIL  (defaults to info@wrap911.com)
  *   secret        STRIPE_SECRET_KEY   (only for /license/claim, web checkout)
  *
  * Routes:
- *   POST /license/apple   { jws, device }  Apple non-renewing Shop Pack / Seat -> seat code
+ *   POST /license/apple        { jws, device }  Apple non-renewing Shop Pack / Seat -> seat code
  *                                 Not deployed with the iOS change. Pack = 5 seats, Seat = 1.
  *                                 Missing expiresDate uses purchaseDate + 365 days.
+ *   POST /license/apple/bind   { jws, email }   store the verified JWS against that email
+ *   POST /license/restore/start  { email }      send a 6-digit code if that email has an active purchase
+ *   POST /license/restore/verify { email, code } return the original purchase and its 12-month expiry
  *   GET  /license/claim?session_id=cs_...&device=...   Stripe Checkout session -> seat code
  *   POST /license/redeem  { code, device } use a seat on this phone
  *   POST /license/check   { code, device } daily re-check (403/404/410 = lock the phone)
@@ -17,13 +22,17 @@
  *   { code, sku: "seat"|"crew"|"pack"|"field", seats, devices: [], expiresAt, source, ref }
  */
 import { X509Certificate } from "@peculiar/x509";
+import { normalizeEmail, startEmailRestore, storeEmailPurchase, verifyEmailRestore } from "./license-restore.js";
 
 const BUNDLE_ID = "com.wrap911.trainer";
 const YEAR_MS = 365 * 86400000;
-const APPLE_PRODUCTS = {
-  /* Current offer: non-renewing 12-month Shop Pack and Seat. */
+const RESTORE_PRODUCTS = {
   "com.wrap911.trainer.pack.12mo": { sku: "pack", seats: 5 },
   "com.wrap911.trainer.seat.12mo": { sku: "seat", seats: 1 },
+};
+const APPLE_PRODUCTS = {
+  /* Current offer: non-renewing 12-month Shop Pack and Seat. */
+  ...RESTORE_PRODUCTS,
   /* Older auto-renewable ids, if they were ever created. */
   "com.wrap911.trainer.seat.yearly": { sku: "seat", seats: 1 },
   "com.wrap911.trainer.crew.yearly": { sku: "pack", seats: 5 },
@@ -116,6 +125,29 @@ async function issue(env, ref, sku, seats, expiresAt, source, device) {
   return rec;
 }
 
+async function bindEmailRoute(body, env) {
+  const email = normalizeEmail(body.email);
+  if (!email) return [{ ok: false, error: "Enter a valid email." }, 400];
+  const tx = await verifyAppleJws(body.jws);
+  if (tx.bundleId !== BUNDLE_ID) return [{ ok: false, error: "Wrong app" }, 400];
+  const p = RESTORE_PRODUCTS[tx.productId];
+  if (!p) return [{ ok: false, error: "Unknown product" }, 400];
+  if (tx.revocationDate) return [{ ok: false, error: "Purchase was refunded" }, 410];
+  const exp = appleExpiry(tx);
+  if (!exp || exp < Date.now()) return [{ ok: false, error: "Purchase expired" }, 410];
+  await storeEmailPurchase(env, {
+    email,
+    jws: String(body.jws || ""),
+    productId: tx.productId,
+    transactionId: String(tx.originalTransactionId || tx.transactionId || ""),
+    purchaseDate: appleMillis(tx.purchaseDate),
+    expiresAt: exp,
+    sku: p.sku,
+    seats: p.seats,
+  });
+  return [{ ok: true, sku: p.sku, expiresAt: exp }, 200];
+}
+
 async function appleRoute(body, env) {
   const tx = await verifyAppleJws(body.jws);
   if (tx.bundleId !== BUNDLE_ID) return [{ ok: false, error: "Wrong app" }, 400];
@@ -179,12 +211,20 @@ async function checkRoute(body, env) {
 export async function handleLicense(request, env) {
   const url = new URL(request.url);
   if (!url.pathname.startsWith("/license/")) return null;
-  if (!env.LICENSES) return [{ ok: false, error: "Seat code server is not live yet. Email us and we will send your code." }, 503];
+  const emailRestore = url.pathname === "/license/apple/bind" || url.pathname.startsWith("/license/restore/");
+  if (!env.LICENSES) {
+    return [emailRestore
+      ? { ok: false, error: "Email restore is not set up yet." }
+      : { ok: false, error: "Seat code server is not live yet. Email us and we will send your code." }, 503];
+  }
   try {
     if (url.pathname === "/license/claim" && request.method === "GET") return await claimRoute(url, env);
     if (request.method !== "POST") return [{ ok: false, error: "Method not allowed" }, 405];
     const body = await request.json().catch(() => ({}));
     if (url.pathname === "/license/apple") return await appleRoute(body, env);
+    if (url.pathname === "/license/apple/bind") return await bindEmailRoute(body, env);
+    if (url.pathname === "/license/restore/start") return await startEmailRestore(body, env);
+    if (url.pathname === "/license/restore/verify") return await verifyEmailRestore(body, env, verifyAppleJws);
     if (url.pathname === "/license/redeem") return await redeemRoute(body, env);
     if (url.pathname === "/license/check") return await checkRoute(body, env);
     return [{ ok: false, error: "Not found" }, 404];

@@ -126,13 +126,33 @@
     return "The App Store purchase sheet did not open, so you were not charged. Try again.";
   }
 
-  /* Restore reads Transaction.all and currentEntitlements already on this
-     phone. It does not ask for an Apple Account or password. */
+  /* Same-phone restore reads Transaction.all and currentEntitlements.
+     A new phone uses the email the buyer saved. Neither asks for an Apple Account. */
   function restoreMessage(found, errorText) {
     if (found) return "Purchase restored on this phone.";
     var reason = String(errorText || "").replace(/\s+/g, " ").trim();
     if (reason) return reason.slice(0, 280);
-    return "No active Shop Pack or Seat was found in the App Store purchases on this phone.";
+    return "Nothing active is stored on this phone. Enter the email you saved with the purchase.";
+  }
+
+  /* Email restore returns the original expiry. Do not start a new 12 months. */
+  function licenseFromRestore(data, now) {
+    var sku = data && data.sku;
+    var exp = Number(data && data.expiresAt);
+    var start = Number(data && data.purchaseDate) || 0;
+    if ((sku !== "pack" && sku !== "seat") || !exp || exp <= now) return null;
+    return {
+      code: "APPLE",
+      plan: "pro",
+      sku: sku,
+      seats: sku === "pack" ? 5 : 1,
+      source: "apple",
+      productId: String(data.productId || ""),
+      transactionId: String(data.transactionId || ""),
+      unlockedAt: start || now,
+      expiresAt: exp,
+      checkedAt: now
+    };
   }
 
   function shouldWrite(existing, next, now, force) {
@@ -156,6 +176,7 @@
     shouldWrite: shouldWrite,
     missingProductsMessage: missingProductsMessage,
     purchaseStallMessage: purchaseStallMessage,
-    restoreMessage: restoreMessage
+    restoreMessage: restoreMessage,
+    licenseFromRestore: licenseFromRestore
   };
 });

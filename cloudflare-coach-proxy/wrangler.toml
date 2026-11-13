@@ -5,6 +5,13 @@ compatibility_date = "2026-09-01"
 [vars]
 LLM_BASE_URL = "https://api.x.ai/v1/chat/completions"
 LLM_MODEL = "grok-4"
+# From address for restore codes. Must be on a domain onboarded to Email Sending.
+RESTORE_FROM_EMAIL = "info@wrap911.com"
+
+# Unrestricted: the buyer's address is not known ahead of time.
+# Do not set destination_address. Arbitrary recipients need Workers Paid.
+[[send_email]]
+name = "EMAIL"
 
 # License server (seat codes). Create once:  npx wrangler kv namespace create LICENSES
 # then paste the id below and deploy.  Web checkout also needs:  npx wrangler secret put STRIPE_SECRET_KEY

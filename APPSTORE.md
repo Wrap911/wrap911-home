@@ -14,13 +14,13 @@ npm run ios:sync      # copies site into www/ and pod installs
 npm run ios:open      # opens Xcode
 ```
 In Xcode > App target > Signing & Capabilities: tick "Automatically manage signing", pick your Team.
-Version is 1.1. Build is 21. Add 1024px icon in Assets > AppIcon.
+Version is 1.1. Build is 22. Add 1024px icon in Assets > AppIcon.
 Product > Archive > Distribute App > App Store Connect > Upload. Then submit in App Store Connect (TestFlight first).
 
 ## Payments
 The download is free. Full access is a one-time 12-month Shop Pack (5 seats) or Seat (1 phone).
 
-Inside the iOS app (`Capacitor.getPlatform() === "ios"`), Shop Pack and Seat are sold only through StoreKit 2 (`@capgo/native-purchases`). There is no Stripe link, no "Buy on wrap911.com" button, and no unlock-code field. The paywall is the Pricing screen. It opens from Home with no account. Restore Purchases is on that screen. It reads StoreKit 2 `Transaction.all` and `Transaction.currentEntitlements` already on the phone. It does not call `AppStore.sync()` or `restoreCompletedTransactions()`, so it does not ask for an Apple Account or password. Entitlement comes from those on-device transactions. A restored Shop Pack still sends its signed transaction to the license server for the crew code.
+Inside the iOS app (`Capacitor.getPlatform() === "ios"`), Shop Pack and Seat are sold only through StoreKit 2 (`@capgo/native-purchases`). There is no Stripe link, no "Buy on wrap911.com" button, and no unlock-code field. The paywall is the Pricing screen. It opens from Home with no account. The button is **Restore with email**. On this phone it still reads StoreKit 2 `Transaction.all` and `Transaction.currentEntitlements` only. It does not call `AppStore.sync()` or `restoreCompletedTransactions()`, so it does not ask for an Apple Account or password. A new phone restores from the email saved after purchase: the worker stores the verified signed transaction and emails a code, then unlocks that phone with the original 12-month expiry. A Shop Pack still sends its signed transaction to the license server for the crew code.
 
 The website at wrap911.com still sells the same plans with Stripe. That checkout is not linked from the iOS app.
 
@@ -36,7 +36,7 @@ Use the same prices the site already sells: Shop Pack $149, Seat $49. Do not pic
 
 A Shop Pack purchase unlocks the buying phone immediately. The app then sends the signed transaction to `POST /license/apple` on the coach-proxy worker. That route, once deployed, returns one `W911-XXXX-XXXX` code with 5 seats (this phone plus four others), the same shape the website Pack already uses. The worker change is in `cloudflare-coach-proxy/license.js` and is **not** deployed by this branch. Until it is, the buying phone still unlocks, and the screen tells the buyer to email the Apple receipt for the other four seats.
 
-`Restore Purchases` is on the Pricing screen. Build 21 reads the on-device StoreKit history only. The previous build called the plugin `restorePurchases` method when that history was empty, and that method called `AppStore.sync()`, which presented the Apple Account password sheet. Non-renewing subscriptions cannot be restored that way.
+`Restore with email` is on the Pricing screen. Build 22 keeps the on-device StoreKit read for this phone and adds an email code for a new phone. The plugin method `restorePurchases` still returns without calling `AppStore.sync()`. That method is the only `AppStore.sync()` in `@capgo/native-purchases` 8.8.1, and the app does not call it. Non-renewing subscriptions cannot be restored with the Apple Account password sheet.
 
 ### Local StoreKit test
 `ios/App/App/WRAP911.storekit` lists both products. In Xcode: Product > Scheme > Edit Scheme > Run > Options > StoreKit Configuration > WRAP911.storekit. The prices in that file are for the simulator only.
@@ -54,7 +54,7 @@ Data Not Used to Track You. Data Not Linked to You: **User Content > Other User 
 
 ## Review notes (paste into App Review Information)
 > Guideline 2.3.8: the app icon is now the WRAP 911 wordmark. The previous build used Capacitor's placeholder icon.
-> Guideline 3.1.1: Shop Pack and Seat are for sale only as non-renewing In-App Purchases on the Pricing screen (Shop Pack first). Version 1.1, build 21. Restore Purchases is on that screen. It restores a Seat or Shop Pack from the StoreKit 2 transactions already on the device (`Transaction.all` and `Transaction.currentEntitlements`). It does not ask for an Apple Account or password. A purchase unlocks the full trainer on this phone for 12 months from the StoreKit purchase date. The Pricing screen opens with no account. The iOS app has no Stripe link, no website buy button, and no unlock-code field.
+> Guideline 3.1.1: Shop Pack (`com.wrap911.trainer.pack.12mo`) and Seat (`com.wrap911.trainer.seat.12mo`) are non-renewing subscriptions, sold only on the Pricing screen. Version 1.1, build 22. Restore does not ask for an Apple Account or password and does not call AppStore.sync() or restoreCompletedTransactions(). The button is Restore with email. On the phone that bought the plan, the app reads StoreKit 2 Transaction.currentEntitlements and Transaction.all and unlocks that phone when the 12-month purchase is already there. On a new device, the buyer enters the email they saved after purchase; we send a one-time code to that email and, after they enter it, restore the same purchase with its original 12-month expiry. The Pricing screen opens with no account. The iOS app has no Stripe link, no website buy button, and no unlock-code field.
 > The AI Coach asks permission before sending a question to our server and xAI. Declining uses the offline answers.
 
 ## Review risks
