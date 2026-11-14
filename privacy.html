@@ -3,23 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Privacy information for Wrap 911." />
+  <meta name="description" content="Privacy policy for the WRAP 911 trainer (web and iOS app)." />
   <link rel="canonical" href="https://wrap911.com/privacy.html" />
-  <title>WRAP 911 — Privacy</title>
+  <title>WRAP 911 — Privacy Policy</title>
   <link rel="stylesheet" href="assets/shop-face.min.css" />
 </head>
 <body>
   <main class="wrap" style="max-width:640px;margin:0 auto;padding:28px 18px 48px">
     <p><a href="index.html">WRAP 911</a></p>
-    <h1>Privacy</h1>
-    <p>WRAP 911 is a shop trainer. It runs in the phone browser, or from the home screen after you add it.</p>
-    <p>The license stays on that phone. The trainer saves it in local storage so the phone stays unlocked. Clearing the browser data removes it.</p>
-    <p>Payment is handled by Stripe. WRAP 911 does not see or store your card number. Stripe’s own privacy rules cover the checkout.</p>
-    <p>The iOS app can also sell the Shop Pack and a Seat through Apple In-App Purchase. Apple processes that payment. WRAP 911 receives a purchase record so it can unlock the trainer on that phone and, for a Shop Pack, issue a code for the other seats. Apple's policy is at <a href="https://www.apple.com/legal/privacy/">apple.com/legal/privacy</a>.</p>
-    <p>The page does not run an account server. There is no password. A shop pack crew link unlocks the other phones that open it.</p>
-    <p>Clips and photos load from this site so a lesson can show the real bay.</p>
-    <p>This page is the privacy policy for the trainer at wrap911.com/trainer/.</p>
-    <p>Questions, or a request to delete something: email <a href="mailto:info@wrap911.com">info@wrap911.com</a>.</p>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: November 14, 2026. This policy covers the WRAP 911 trainer on the web (wrap911.com) and the WRAP 911 iOS app.</p>
+
+    <h2>No account, no tracking</h2>
+    <p>WRAP 911 has no user accounts or passwords. We do not use advertising, analytics or tracking tools, and we do not sell or share your data for advertising.</p>
+
+    <h2>Data stored on your phone</h2>
+    <p>Your license, lesson progress, drill scores, and Coach chat history are saved on your phone. The app also saves a random device id there. Deleting the app or clearing browser data removes that copy.</p>
+
+    <h2>AI Coach</h2>
+    <p>The Coach can answer offline with built-in answers. It sends your question to the online AI only after you tap Allow. With that consent, WRAP 911 sends the text you typed and the current chat to our server (wrap911-coach-proxy.wrap911.workers.dev). That server is a Cloudflare Worker. It passes your text to xAI (Grok), a third-party AI provider, to write the answer. If you send a photo for a diagnosis, the Worker accepts it only when the request includes your consent, then passes that photo to xAI the same way. We do not store Coach text or photos on our server. Please do not type personal or customer information into the Coach. xAI and Cloudflare handle the request under their own privacy policies (<a href="https://x.ai/legal/privacy-policy">xAI</a>, <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>). You can withdraw permission at any time with "Reset AI permission" on the Coach screen.</p>
+
+    <h2>Payments and purchase restore</h2>
+    <p>Payments on wrap911.com are handled by Stripe. WRAP 911 never sees or stores your card number. Stripe may collect your email and payment details under the <a href="https://stripe.com/privacy">Stripe privacy policy</a>.</p>
+    <p>The iOS app sells the Shop Pack and a Seat through Apple In-App Purchase. Apple processes that payment. WRAP 911 receives Apple's signed purchase record so it can unlock the trainer for 12 months. That record includes the product (Shop Pack or Seat), the transaction id, and the purchase date. We do not receive your card number. Apple's policy is at <a href="https://www.apple.com/legal/privacy/">apple.com/legal/privacy</a>.</p>
+    <p>If you save an email with that Apple purchase, the Cloudflare Worker stores the email together with the signed purchase record. We use the email only to send a one-time restore code and to unlock that same 12-month purchase. A Shop Pack can be restored on up to 5 phones. A Seat can be restored on 1 phone. We do not use the email for marketing.</p>
+
+    <h2>Device id</h2>
+    <p>The app creates a random device id on the phone. It is not the Apple advertising identifier. The app sends it to the Cloudflare Worker with a seat code and with email restore. The Worker stores that id on the purchase so it can count phones (5 for a Shop Pack, 1 for a Seat) and recognize the same phone again. We do not use it to track you across other companies' apps or websites.</p>
+
+    <h2>How long we keep it, and deletion</h2>
+    <p>Coach questions and photos are not kept on our server after the answer is returned. The 6-digit restore code is kept for 15 minutes and then deleted. The email, the signed purchase record, and any device id stored with that purchase stay in Cloudflare so restore works during the 12-month term. To ask us to delete them, email <a href="mailto:info@wrap911.com">info@wrap911.com</a> and include the email you saved with the purchase. We will delete the restore record we hold for that address. Deleting the app removes the license, chat, and device id stored on the phone.</p>
+
+    <h2>Videos and photos</h2>
+    <p>Training clips and photos load from wrap911.com. Some clips are embedded from YouTube. When one plays, YouTube may collect data under the <a href="https://policies.google.com/privacy">Google privacy policy</a>.</p>
+
+    <h2>Children</h2>
+    <p>WRAP 911 is a trade trainer for adults and is not directed to children under 13.</p>
+
+    <h2>Contact</h2>
+    <p>Questions and deletion requests: email <a href="mailto:info@wrap911.com">info@wrap911.com</a>.</p>
   </main>
 </body>
 </html>
