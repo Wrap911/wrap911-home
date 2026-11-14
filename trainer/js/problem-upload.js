@@ -63,8 +63,24 @@
     } catch (e) { cb(e); }
   }
 
+  function nativeApp() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+
+  /* The report screen is unfinished. The iOS app does not show it. */
+  function hideUnfinishedReport() {
+    var card = document.getElementById("goto-problem-upload");
+    if (card && card.parentNode) card.parentNode.removeChild(card);
+    var screen = document.getElementById("screen-problem-upload");
+    if (screen && screen.parentNode) screen.parentNode.removeChild(screen);
+  }
+
   /* ---------- Screen: render the upload form ---------- */
   APP.renderProblemUpload = function () {
+    if (nativeApp()) {
+      hideUnfinishedReport();
+      return;
+    }
     var wrap = $("problem-upload-wrap");
     if (!wrap) return;
     var fb = $("problem-upload-fb");
@@ -211,5 +227,7 @@
   APP.bindProblemUpload = function () {
     // listeners are wired inside renderProblemUpload
   };
+
+  if (nativeApp()) hideUnfinishedReport();
 
 })();

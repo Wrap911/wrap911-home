@@ -228,6 +228,17 @@
       var note = document.getElementById("install-note");
       var btn = document.getElementById("install-btn");
       var copy = document.getElementById("install-copy");
+      function hideNativeInstall() {
+        if (!(window.WRAP911_NATIVE && window.WRAP911_NATIVE())) return false;
+        if (note) note.hidden = true;
+        return true;
+      }
+      if (hideNativeInstall()) return;
+      var capIos = !!(window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === "ios");
+      if (capIos) {
+        if (note) note.hidden = true;
+        return;
+      }
       var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone;
       if (standalone && note) { note.hidden = true; }
       else if (copy) {
@@ -253,6 +264,12 @@
   </script>
   <script src="js/config.js?v=276"></script>
   <script src="js/iap-logic.js?v=277"></script>
+  <script>
+    if (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) {
+      var installNote = document.getElementById("install-note");
+      if (installNote) installNote.hidden = true;
+    }
+  </script>
   <script src="js/plan-fix.js?v=277"></script>
   <script src="js/ios-license-bridge.js?v=271"></script>
   <script src="js/iap.js?v=iap8"></script>

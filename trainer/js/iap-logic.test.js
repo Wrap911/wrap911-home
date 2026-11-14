@@ -101,7 +101,9 @@ assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instea
 assert.ok(iap.indexOf("iap-6") !== -1, "the bundle marker stays in source");
 assert.strictEqual(iap.indexOf('id="iap-diag"'), -1, "the build diagnostic line must not render");
 assert.strictEqual(iap.indexOf('id="iap-steps"'), -1, "the tap diagnostic line must not render");
-assert.ok(iap.indexOf("Your extra seat codes will appear here") !== -1);
+assert.ok(iap.indexOf("Restore with email unlocks this Shop Pack on up to 5 phones") !== -1, "Shop Pack restore is email, up to 5 phones");
+assert.strictEqual(iap.indexOf("Type it in Unlock"), -1, "iOS does not tell the crew to type a code");
+assert.ok(iap.indexOf("askForRestoreEmail") !== -1, "a purchase prompts for the restore email");
 assert.strictEqual(iap.indexOf("btn.onclick"), -1, "buy taps must stay on the document so a re-render cannot drop them");
 assert.strictEqual(iap.indexOf("var note ="), -1, "a local var note would hide the diagnostic function and throw on tap");
 assert.ok(iap.indexOf('addEventListener("error"') !== -1, "a script error must reach the diagnostic line");

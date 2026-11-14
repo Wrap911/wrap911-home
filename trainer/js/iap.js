@@ -32,6 +32,7 @@
   var restoreCode = "";
   var saveDraft = "";
   var lastJws = "";
+  var promptEmail = false;
 
   function readLic() {
     try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; }
@@ -95,10 +96,6 @@
     return "Build " + build + " · js " + JS_MARK + " · plugin " + (plugin ? "yes" : "NO") +
       " · " + pay + " · store " + store + " · scenes " + scenes + " · windows " + windows + kinds + " · " + onScreen;
   }
-  function contactMail() {
-    var cfg = window.WRAP911_CONFIG || {};
-    return cfg.contactEmail || "";
-  }
   function css() {
     if (document.getElementById("w911-iap-css")) return;
     var s = document.createElement("style");
@@ -145,6 +142,13 @@
   function setMsg(t) {
     var m = document.getElementById("iap-msg");
     if (m) m.textContent = t;
+  }
+  function askForRestoreEmail() {
+    setMsg("This phone is unlocked. Enter an email and tap Save email so you can restore this purchase.");
+    var input = document.getElementById("iap-save-email-input");
+    if (!input) return;
+    try { input.focus(); } catch (e) {}
+    try { input.scrollIntoView({ block: "center" }); } catch (e2) {}
   }
   function reportJs(text) {
     var line = String(text || "error").replace(/\s+/g, " ").slice(0, 140);
@@ -208,8 +212,13 @@
       return readOnDevice();
     }).then(function () {
       finishBuying(btn);
-      setMsg("This phone is unlocked.");
+      promptEmail = true;
+      var core = window.WRAP911_APP && window.WRAP911_APP.core;
+      if (core && core.showScreen) {
+        try { core.showScreen("pricing"); } catch (eShow) {}
+      }
       render();
+      askForRestoreEmail();
     }).catch(function (e) {
       finished = true;
       clearTimeout(timer);
@@ -353,6 +362,7 @@
         return;
       }
       rememberSaved(email);
+      promptEmail = false;
       render();
       setMsg("Saved. On another phone, tap Restore with email and use this address.");
     }).catch(function () {
@@ -550,21 +560,13 @@
       else screen.insertBefore(card, screen.firstChild);
     }
     var lic = activeLicense();
-    var code = crewCode();
-    var mail = contactMail();
-    var mailHtml = mail ? '<a href="mailto:' + escapeText(mail) + '?subject=WRAP%20911%20Apple%20crew%20code">' + escapeText(mail) + "</a>" : "us";
     var status = "";
     if (lic) {
       var when = new Date(Number(lic.expiresAt)).toLocaleDateString();
       var name = lic.sku === "pack" ? "Shop Pack" : "Seat";
       status = '<p class="msg"><b>' + name + " is active</b> until " + escapeText(when) + ".</p>";
       if (lic.sku === "pack") {
-        if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) || /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
-          var shown = /^W911-/.test(code) ? code : lic.code;
-          status += '<p class="msg">Crew code <b class="code">' + escapeText(shown) + "</b><br>Type it in Unlock on up to 4 other phones.</p>";
-        } else {
-          status += '<p class="msg">Your extra seat codes will appear here. This phone is already unlocked. Until then, email ' + mailHtml + " and we will send the codes for the other four phones.</p>";
-        }
+        status += '<p class="msg">This phone is unlocked. Save an email below. Restore with email unlocks this Shop Pack on up to 5 phones.</p>';
       }
     }
     var buttons = "";
@@ -594,12 +596,12 @@
     var focused = document.activeElement;
     if (focused && focused.id && /^(iap-email|iap-code|iap-save-email-input)$/.test(focused.id)) focusedId = focused.id;
     var saveBox = "";
-    if (lic && lastJws) {
+    if (lic && (lastJws || promptEmail)) {
       var known = savedEmail();
       if (focusedId !== "iap-save-email-input" && !saveDraft && known) saveDraft = known;
       saveBox =
         (known ? '<p class="msg">Saved for another phone: <b>' + escapeText(known) + "</b></p>" : "") +
-        '<label class="fine" for="iap-save-email-input">Email for restore on another phone</label>' +
+        '<label class="fine" for="iap-save-email-input">' + (promptEmail ? "Save an email now to restore this purchase" : "Email for restore on another phone") + "</label>" +
         '<input id="iap-save-email-input" type="email" autocomplete="email" inputmode="email" value="' + escapeText(saveDraft) + '">' +
         '<button type="button" class="restore" id="iap-save-email">Save email</button>';
     }

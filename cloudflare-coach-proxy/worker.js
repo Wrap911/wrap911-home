@@ -4,7 +4,8 @@
  * Seat codes: GET /license/claim?session_id=cs_...  POST /license/redeem {code}
  * Requires secrets STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and KV binding LICENSES.
  * Email restore (Apple non-renewing Shop Pack / Seat) also needs secret RESEND_API_KEY:
- *   POST /license/apple/bind {jws,email}  POST /license/restore/start {email}  POST /license/restore/verify {email,code}
+ *   POST /license/apple/bind {jws,email,device}  POST /license/restore/start {email}  POST /license/restore/verify {email,code,device}
+ * A Shop Pack email restore stores up to 5 device ids. A Seat stores its own seat count (1). Not deployed until `npx wrangler deploy`.
  */
 import { normalizeEmail, startEmailRestore, storeEmailPurchase, verifyEmailRestore } from "./license-restore.js";
 
@@ -421,6 +422,7 @@ async function bindAppleEmail(body, env) {
     expiresAt: expiresAt,
     sku: pack ? "pack" : "seat",
     seats: pack ? 5 : 1,
+    device: body.device,
   });
   return [{ ok: true, sku: pack ? "pack" : "seat", expiresAt: expiresAt }, 200];
 }
