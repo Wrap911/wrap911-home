@@ -117,8 +117,8 @@ export function upsertTransaction(record, tx) {
   };
 }
 
-/* One slot per phone. The same device id does not take a second seat.
-   Shop Pack passes seats 5. Seat passes its own seat count (1). */
+/* A verified restore always succeeds. Seat keeps 1 id and the newest phone replaces the previous one.
+   Shop Pack keeps up to 5 ids. When that list is full, the oldest id is replaced. */
 export function claimRestoreDevice(record, transactionId, deviceId, seats) {
   const rec = record && typeof record === "object" ? record : {};
   const list = Array.isArray(rec.transactions) ? rec.transactions.map((row) => Object.assign({}, row)) : [];
@@ -129,11 +129,10 @@ export function claimRestoreDevice(record, transactionId, deviceId, seats) {
   const row = list[at];
   const devices = Array.isArray(row.devices) ? row.devices.map(cleanDeviceId).filter(Boolean) : [];
   const cap = Number(seats || row.seats) > 0 ? Number(seats || row.seats) : 1;
-  if (!id) return { ok: false, record: rec, error: "This phone could not be identified." };
-  if (devices.indexOf(id) === -1) {
-    if (devices.length >= cap) {
-      return { ok: false, record: rec, error: "All " + cap + " phones on this purchase are already unlocked." };
-    }
+  if (id) {
+    const existing = devices.indexOf(id);
+    if (existing !== -1) devices.splice(existing, 1);
+    else if (devices.length >= cap) devices.shift();
     devices.push(id);
   }
   row.devices = devices;
@@ -273,10 +272,7 @@ export async function verifyEmailRestore(body, env, verifyJws, now) {
     if (!tx || tx.revocationDate) return [{ ok: false, error: "That purchase is no longer active." }, 410];
   }
   const claim = claimRestoreDevice(rec, active.transactionId, body && body.device, active.seats);
-  if (!claim.ok) {
-    const missingPhone = claim.error === "This phone could not be identified.";
-    return [{ ok: false, error: claim.error }, missingPhone ? 400 : 409];
-  }
+  if (!claim.ok) return [{ ok: false, error: claim.error || "That purchase is no longer active." }, 410];
   await env.LICENSES.put(await emailStorageKey(email), JSON.stringify(claim.record));
   return [{
     ok: true,
