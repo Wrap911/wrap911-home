@@ -85,10 +85,17 @@ export function pickActive(transactions, now) {
   };
 }
 
+export function cleanDeviceId(raw) {
+  const id = String(raw || "").trim();
+  return /^[A-Za-z0-9-]{8,64}$/.test(id) ? id : "";
+}
+
 export function upsertTransaction(record, tx) {
   const rec = record && typeof record === "object" ? record : {};
   const list = Array.isArray(rec.transactions) ? rec.transactions.slice() : [];
   const id = String(tx.transactionId || "");
+  const at = list.findIndex((row) => row && String(row.transactionId) === id);
+  const prior = at >= 0 ? list[at] : null;
   const next = {
     jws: String(tx.jws || ""),
     productId: String(tx.productId || ""),
@@ -96,9 +103,11 @@ export function upsertTransaction(record, tx) {
     purchaseDate: Number(tx.purchaseDate) || 0,
     expiresAt: Number(tx.expiresAt) || 0,
     sku: tx.sku,
-    seats: tx.seats
+    seats: tx.seats,
+    devices: Array.isArray(tx.devices)
+      ? tx.devices.map(cleanDeviceId).filter(Boolean)
+      : (prior && Array.isArray(prior.devices) ? prior.devices.map(cleanDeviceId).filter(Boolean) : [])
   };
-  const at = list.findIndex((row) => row && String(row.transactionId) === id);
   if (at >= 0) list[at] = next;
   else list.push(next);
   return {
@@ -106,6 +115,29 @@ export function upsertTransaction(record, tx) {
     transactions: list,
     sends: Array.isArray(rec.sends) ? rec.sends : []
   };
+}
+
+/* A verified restore always succeeds. Seat keeps 1 id and the newest phone replaces the previous one.
+   Shop Pack keeps up to 5 ids. When that list is full, the oldest id is replaced. */
+export function claimRestoreDevice(record, transactionId, deviceId, seats) {
+  const rec = record && typeof record === "object" ? record : {};
+  const list = Array.isArray(rec.transactions) ? rec.transactions.map((row) => Object.assign({}, row)) : [];
+  const id = cleanDeviceId(deviceId);
+  const want = String(transactionId || "");
+  const at = list.findIndex((row) => row && String(row.transactionId) === want);
+  if (at < 0) return { ok: false, record: rec, error: "That purchase is no longer active." };
+  const row = list[at];
+  const devices = Array.isArray(row.devices) ? row.devices.map(cleanDeviceId).filter(Boolean) : [];
+  const cap = Number(seats || row.seats) > 0 ? Number(seats || row.seats) : 1;
+  if (id) {
+    const existing = devices.indexOf(id);
+    if (existing !== -1) devices.splice(existing, 1);
+    else if (devices.length >= cap) devices.shift();
+    devices.push(id);
+  }
+  row.devices = devices;
+  list[at] = row;
+  return { ok: true, record: Object.assign({}, rec, { transactions: list }), devices: devices };
 }
 
 export function recentSends(sends, now) {
@@ -163,7 +195,11 @@ export async function storeEmailPurchase(env, purchase) {
   const email = normalizeEmail(purchase && purchase.email);
   const key = await emailStorageKey(email);
   const current = await env.LICENSES.get(key, "json");
-  const next = upsertTransaction(current, Object.assign({}, purchase, { email }));
+  let next = upsertTransaction(current, Object.assign({}, purchase, { email }));
+  if (cleanDeviceId(purchase && purchase.device)) {
+    const claim = claimRestoreDevice(next, purchase.transactionId, purchase.device, purchase.seats);
+    if (claim.ok) next = claim.record;
+  }
   await env.LICENSES.put(key, JSON.stringify(next));
   return next;
 }
@@ -235,6 +271,9 @@ export async function verifyEmailRestore(body, env, verifyJws, now) {
     const tx = await verifyJws(active.jws);
     if (!tx || tx.revocationDate) return [{ ok: false, error: "That purchase is no longer active." }, 410];
   }
+  const claim = claimRestoreDevice(rec, active.transactionId, body && body.device, active.seats);
+  if (!claim.ok) return [{ ok: false, error: claim.error || "That purchase is no longer active." }, 410];
+  await env.LICENSES.put(await emailStorageKey(email), JSON.stringify(claim.record));
   return [{
     ok: true,
     sku: active.sku,

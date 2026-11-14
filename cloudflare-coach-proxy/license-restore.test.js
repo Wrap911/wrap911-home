@@ -8,6 +8,8 @@ import {
   storeEmailPurchase,
   timingSafeEqual,
   verifyEmailRestore,
+  claimRestoreDevice,
+  emailStorageKey,
 } from "./license-restore.js";
 
 const YEAR = 365 * 86400000;
@@ -106,7 +108,7 @@ const bad = await verifyEmailRestore({ email: "buyer@example.com", code: badCode
 assert.equal(bad[1], 400);
 
 const verified = await verifyEmailRestore(
-  { email: "buyer@example.com", code },
+  { email: "buyer@example.com", code, device: "seatphone1" },
   env,
   async (jws) => {
     assert.equal(jws, "signed-jws");
@@ -129,6 +131,128 @@ assert.equal(reused[1], 400);
 const hash = await hashRestoreCode("buyer@example.com", code);
 assert.equal(typeof hash, "string");
 assert.equal(hash.length, 64);
+
+async function freshCode(env, email, now) {
+  const before = sent.length;
+  const started = await startEmailRestore({ email }, env, now);
+  assert.equal(started[1], 200);
+  assert.equal(sent.length, before + 1);
+  return (sent[sent.length - 1].text.match(/\b(\d{6})\b/) || [])[1];
+}
+
+async function storedDevices(env, email, transactionId) {
+  const rec = await env.LICENSES.get(await emailStorageKey(email), "json");
+  const row = (rec.transactions || []).find((item) => item.transactionId === transactionId);
+  return row.devices;
+}
+
+/* Seat keeps one phone. A new device id replaces the previous one, so delete/reinstall restores.
+   A restore with no device id still returns the purchase. */
+const seatEnv = { LICENSES: kv(), RESEND_API_KEY: "test-resend-key" };
+await storeEmailPurchase(seatEnv, {
+  email: "seat@example.com", jws: "seat-jws", productId: SEAT, transactionId: "seat-1",
+  purchaseDate: bought, expiresAt: expires, sku: "seat", seats: 1, device: "buyerphone",
+});
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+const seatCode = await freshCode(seatEnv, "seat@example.com", NOW);
+const seatMissing = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW
+);
+assert.equal(seatMissing[1], 200);
+assert.equal(seatMissing[0].sku, "seat");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+const seatCode2 = await freshCode(seatEnv, "seat@example.com", NOW + 120000);
+const seatOther = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode2, device: "otherphone" },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW + 120000
+);
+assert.equal(seatOther[1], 200);
+assert.equal(seatOther[0].jws, "seat-jws");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["otherphone"]);
+const seatCode3 = await freshCode(seatEnv, "seat@example.com", NOW + 240000);
+const seatSame = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode3, device: "buyerphone" },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW + 240000
+);
+assert.equal(seatSame[1], 200);
+assert.equal(seatSame[0].sku, "seat");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+
+/* Shop Pack keeps 5 ids. A 6th verified restore replaces the oldest instead of refusing. */
+const packEnv = { LICENSES: kv(), RESEND_API_KEY: "test-resend-key" };
+await storeEmailPurchase(packEnv, {
+  email: "pack@example.com", jws: "pack-jws", productId: PACK, transactionId: "pack-1",
+  purchaseDate: bought, expiresAt: expires, sku: "pack", seats: 5, device: "packphone1",
+});
+for (let n = 2; n <= 5; n++) {
+  const packCode = await freshCode(packEnv, "pack@example.com", NOW + n * 120000);
+  const ok = await verifyEmailRestore(
+    { email: "pack@example.com", code: packCode, device: "packphone" + n },
+    packEnv,
+    async () => ({ productId: PACK }),
+    NOW + n * 120000
+  );
+  assert.equal(ok[1], 200, "phone " + n);
+  assert.equal(ok[0].seats, 5);
+}
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone1", "packphone2", "packphone3", "packphone4", "packphone5",
+]);
+const fullCode = await freshCode(packEnv, "pack@example.com", NOW + 800000);
+const packed = await verifyEmailRestore(
+  { email: "pack@example.com", code: fullCode, device: "packphone6" },
+  packEnv,
+  async () => ({ productId: PACK }),
+  NOW + 800000
+);
+assert.equal(packed[1], 200);
+assert.equal(packed[0].ok, true);
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone2", "packphone3", "packphone4", "packphone5", "packphone6",
+]);
+const againCode = await freshCode(packEnv, "pack@example.com", NOW + 1000000);
+const packAgain = await verifyEmailRestore(
+  { email: "pack@example.com", code: againCode, device: "packphone1" },
+  packEnv,
+  async () => ({ productId: PACK }),
+  NOW + 1000000
+);
+assert.equal(packAgain[1], 200);
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone3", "packphone4", "packphone5", "packphone6", "packphone1",
+]);
+
+const replaced = claimRestoreDevice(
+  { transactions: [{ transactionId: "s", sku: "seat", seats: 1, devices: ["buyerphone"] }] },
+  "s",
+  "otherphone",
+  1
+);
+assert.equal(replaced.ok, true);
+assert.deepEqual(replaced.devices, ["otherphone"]);
+const rotated = claimRestoreDevice(
+  { transactions: [{ transactionId: "p", sku: "pack", seats: 5, devices: ["phoneaaa", "phonebbb", "phoneccc", "phoneddd", "phoneeee"] }] },
+  "p",
+  "phonefff",
+  5
+);
+assert.equal(rotated.ok, true);
+assert.deepEqual(rotated.devices, ["phonebbb", "phoneccc", "phoneddd", "phoneeee", "phonefff"]);
+const kept = claimRestoreDevice(
+  { transactions: [{ transactionId: "s", sku: "seat", seats: 1, devices: ["buyerphone"] }] },
+  "s",
+  "",
+  1
+);
+assert.equal(kept.ok, true);
+assert.deepEqual(kept.devices, ["buyerphone"]);
 
 /* Resend failure: 502, and the pending code is removed so a retry can send. */
 const failStore = kv();
