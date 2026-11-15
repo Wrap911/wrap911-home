@@ -25,7 +25,22 @@
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  /* HOME and CREW are not paid for the rest of the trainer. Problem Doctor still gives them the paid daily cap. */
+  function ownerCodePaid() {
+    var lic = null;
+    var c = core();
+    try { lic = c && c.loadLicense ? c.loadLicense() : null; } catch (e) {}
+    if (!lic) {
+      try { lic = JSON.parse(localStorage.getItem("wrap911_license") || "null"); } catch (e2) { lic = null; }
+    }
+    if (!lic || lic.expired) return false;
+    if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
+    var code = String(lic.code || "").toUpperCase();
+    return code === "HOME" || code === "CREW";
+  }
+
   function isPaid() {
+    if (ownerCodePaid()) return true;
     try {
       if (window.WRAP911_GATE && window.WRAP911_GATE.paid && window.WRAP911_GATE.paid()) return true;
     } catch (e) {}
@@ -264,7 +279,7 @@
 
   function quotaLine() {
     var q = quota();
-    if (q.paid) return "Pack or Seat: " + q.left + " of " + q.limit + " reads left today.";
+    if (q.paid) return q.left + " of " + q.limit + " reads left today.";
     if (q.left > 0) return "Free look: 1 read left today. Pack or Seat includes " + limits().paid + " a day.";
     return "Free look: no reads left today. Pack or Seat includes " + limits().paid + " a day.";
   }

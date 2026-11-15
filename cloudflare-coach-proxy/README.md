@@ -24,7 +24,7 @@ Vision model: `LLM_VISION_MODEL`, default `grok-4.7`. That is the current xAI mo
 
 `store` is false and reasoning effort is `low` so a shop photo is not kept for a follow-up turn and the read stays short. xAI still processes the frames to write the answer.
 
-Limits in this worker: at most 6 images, about 900 KB each, note capped at 500 characters, and 20 reads an hour per IP per isolate (`DOCTOR_RATE_PER_HOUR`). The isolate counter resets when that isolate goes away. It is a burst guard. The daily free and paid caps live in the trainer (`doctorFreePerDay` 1, `doctorPaidPerDay` 15).
+Limits in this worker: at most 6 images, about 900 KB each, note capped at 500 characters, and 20 reads an hour per IP per isolate (`DOCTOR_RATE_PER_HOUR`). The isolate counter resets when that isolate goes away. It is a burst guard. The daily caps live in the trainer (`doctorFreePerDay` 1, `doctorPaidPerDay` 15). Pack, Seat, and owner codes HOME and CREW use the paid cap. A phone with no license uses the free cap.
 
 ### Do not replace the live worker
 
