@@ -140,11 +140,13 @@
       sub: "Install Q&A offline · categorize clips into library categories",
       badge: draftN ? (draftN + " draft" + (draftN === 1 ? "" : "s")) : "Open Coach"
     });
-    cards.push({
-      kind: "problem-upload", id: "problem-upload", icon: "📸",
-      title: "Report a problem", sub: "Show the mistake the before/after hides",
-      badge: "Contribute"
-    });
+    if (!(window.WRAP911_NATIVE && window.WRAP911_NATIVE())) {
+      cards.push({
+        kind: "problem-upload", id: "problem-upload", icon: "📸",
+        title: "Report a problem", sub: "Show the mistake the before/after hides",
+        badge: "Contribute"
+      });
+    }
 
     wrap.innerHTML = "";
     for (var n = 0; n < cards.length; n++) {
@@ -170,6 +172,7 @@
             c.showScreen("coach");
           }
           else if (card.kind === "problem-upload") {
+            if (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) return;
             if (window.WRAP911_APP && window.WRAP911_APP.renderProblemUpload) window.WRAP911_APP.renderProblemUpload();
             c.showScreen("problem-upload");
           }
@@ -255,7 +258,7 @@
     for (var i = 0; i < steps.length; i++) if (doneMap[steps[i].id]) doneCount++;
     var pct = steps.length ? Math.round((doneCount / steps.length) * 100) : 0;
 
-    var html = '<div class="progress-wrap"><div class="progress-label"><span>Workflow progress</span><span>' +
+    var html = '<div class="progress-wrap"><div class="progress-label"><span>Workflow progress </span><span>' +
       doneCount + "/" + steps.length + " (" + pct + "%)</span></div>" +
       '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div></div>';
 

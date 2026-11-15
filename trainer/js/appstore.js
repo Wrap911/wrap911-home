@@ -37,14 +37,17 @@
 
   function addPrivacyLink() {
     css();
-    var main = document.querySelector("main") || document.body;
-    if (document.querySelector(".w911-privacy-link")) return;
-    var a = el('<a class="w911-privacy-link" href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a>');
-    main.appendChild(a);
     var coach = document.getElementById("screen-coach");
-    if (coach) coach.appendChild(el('<p class="w911-privacy-link"><a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a> · <a href="#" id="w911-ai-reset">Reset AI permission</a></p>'));
-    var r = document.getElementById("w911-ai-reset");
-    if (r) r.onclick = function (e) { e.preventDefault(); window.WRAP911_AI_CONSENT_RESET(); r.textContent = "AI permission reset"; };
+    if (coach && !coach.querySelector(".w911-privacy-link")) {
+      coach.appendChild(el('<p class="w911-privacy-link"><a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a> · <a href="#" id="w911-ai-reset">Reset AI permission</a></p>'));
+      var r = document.getElementById("w911-ai-reset");
+      if (r) r.onclick = function (e) { e.preventDefault(); window.WRAP911_AI_CONSENT_RESET(); r.textContent = "AI permission reset"; };
+    }
+    /* iOS Pricing already links the privacy policy inside the Buy with Apple card. */
+    if (isNative) return;
+    if (document.querySelector("body > a.w911-privacy-link, main > a.w911-privacy-link")) return;
+    var main = document.querySelector("main") || document.body;
+    main.appendChild(el('<a class="w911-privacy-link" href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a>'));
   }
 
   function iosCheckoutNote() {

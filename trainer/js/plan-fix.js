@@ -192,14 +192,17 @@
     }
     if (lic.sku === "pack") {
       /* 2.7.0: the old ?license=CREW- link stopped unlocking on 2026-09-27; it showed "CREW-undefined" and did nothing.
-         Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one. */
+         Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one.
+         The iOS app does not ask anyone to type a crew code. Email restore covers the Shop Pack phones. */
       var mail = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.contactEmail) || "";
       var shown = "";
       if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) shown = String(lic.code);
       else if (lic.source === "apple") {
         try { shown = localStorage.getItem("wrap911_crew_code") || ""; } catch (eCode) {}
       }
-      if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(shown)) {
+      if (iosApp()) {
+        card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is unlocked for 12 months. On Pricing, save an email. Restore with email unlocks this Shop Pack on up to 5 phones.</p>";
+      } else if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(shown)) {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in. On each of the other four phones, open WRAP 911, tap Unlock, and type <b>" + shown.replace(/[^A-Z0-9-]/g, "") + "</b>.</p>";
       } else if (lic.source === "apple") {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is unlocked for 12 months. Your extra seat codes will appear here. Until then, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20Apple%20crew%20code\">" + mail + "</a>" : "us") + " and we will send the codes for the other four phones.</p>";
