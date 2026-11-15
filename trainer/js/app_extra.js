@@ -258,7 +258,7 @@
     for (var i = 0; i < steps.length; i++) if (doneMap[steps[i].id]) doneCount++;
     var pct = steps.length ? Math.round((doneCount / steps.length) * 100) : 0;
 
-    var html = '<div class="progress-wrap"><div class="progress-label"><span>Workflow progress</span><span>' +
+    var html = '<div class="progress-wrap"><div class="progress-label"><span>Workflow progress </span><span>' +
       doneCount + "/" + steps.length + " (" + pct + "%)</span></div>" +
       '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div></div>';
 

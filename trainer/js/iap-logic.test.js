@@ -145,6 +145,10 @@ assert.ok(iap.indexOf("/license/restore/start") !== -1, "restore emails a code")
 assert.ok(iap.indexOf("/license/restore/verify") !== -1, "the code returns the original purchase");
 assert.ok(iap.indexOf("stripPricingChrome") !== -1, "iOS pricing keeps only the Apple card");
 assert.ok(iap.indexOf('n.id === "iap-card"') !== -1, "the Apple card stays on the pricing screen");
+assert.ok(iap.indexOf("h1.after") !== -1, "the Apple card is placed after the Pricing heading");
+assert.strictEqual(iap.indexOf("insertBefore(card, screen.firstChild)"), -1, "a missing next sibling must not put the card above the heading");
+assert.ok(iap.indexOf("#iap-card button.buy.seat") !== -1, "Seat is styled apart from the Pack gradient");
+assert.ok(iap.indexOf("#iap-card button.restore") !== -1, "Restore keeps its own outline style");
 assert.ok(iap.indexOf("com.wrap911.trainer.seat.12mo") !== -1);
 assert.ok(iap.indexOf("com.wrap911.trainer.pack.12mo") !== -1);
 assert.ok(iap.indexOf('productType: "inapp"') !== -1, "non-renewing products go through native-purchases");

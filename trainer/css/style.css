@@ -45,7 +45,8 @@ body {
   color: var(--text);
   line-height: 1.5;
   min-height: 100dvh;
-  padding-bottom: calc(72px + var(--safe-bottom));
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  scroll-padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
 }
 .screen { display: none; }
 .screen.active { display: block; }
@@ -73,6 +74,10 @@ body {
 }
 .plan-chip.locked { color: #fca5a5; border-color: #7f1d1d; }
 section.screen { padding: 1rem 1.1rem 2rem; max-width: 720px; margin: 0 auto; }
+/* The fixed tab bar covers the last line of a lesson time box on iPhone. */
+#screen-lesson {
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+}
 h1 { font-size: 1.45rem; margin-bottom: 0.35rem; }
 .lead, .muted { color: var(--text-muted); margin-bottom: 0.8rem; }
 .rules-list { list-style: none; display: grid; gap: 0.5rem; margin: 1rem 0; }
@@ -123,6 +128,27 @@ button.secondary {
 .gamify-val { display: block; color: var(--accent); font-weight: 800; }
 .gamify-lbl { display: block; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.04em; }
 .home-progress { margin: 0.4rem 0 1rem; }
+.progress-label { display: flex; flex-wrap: wrap; column-gap: 0.35rem; align-items: baseline; }
+.check-inline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  width: 100%;
+  margin: 0 0 0.55rem;
+  padding: 0.7rem 0.75rem;
+  min-height: 44px;
+  line-height: 1.35;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.check-inline input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  flex: none;
+}
 .home-progress-label, .home-progress-detail { font-size: 0.75rem; color: var(--text-muted); }
 .home-progress-track { height: 6px; background: #1b2129; border-radius: 99px; overflow: hidden; margin: 0.35rem 0; }
 .home-progress-fill { height: 100%; width: 0; background: var(--accent); }
@@ -285,7 +311,7 @@ body {
   color: #2ee6ff;
   text-shadow: 0 0 16px rgba(46, 230, 255, 0.55);
 }
-button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card) {
+button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card):not(.buy):not(.restore) {
   font-family: var(--display);
   font-weight: 400;
   letter-spacing: 0.06em;
