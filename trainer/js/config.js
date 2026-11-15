@@ -11,7 +11,7 @@ window.WRAP911_CONFIG = {
   contactName: "Gerry",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "BriteLine"],
-  version: "2.8.5",
+  version: "2.8.6",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
@@ -33,6 +33,9 @@ window.WRAP911_CONFIG = {
   problemUploadEndpoint: "",
   /* Photo Fix is on: POST /coach/photo is live (paid Pack/Seat only, server-enforced). */
   photoFix: true,
+  /* Problem Doctor daily reads. Free look is 1. Pack and Seat share the higher cap. */
+  doctorFreePerDay: 1,
+  doctorPaidPerDay: 15,
   /* Free look limits (license-gate.js / video-fix.js read these) */
   freePhotoSamples: 14,
   freeVideoSamples: 8,
@@ -48,7 +51,8 @@ window.WRAP911_CONFIG = {
     "practice-hub", "practice",
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
     "games", "game",
-    "photo-fix"
+    "photo-fix",
+    "problem-doctor"
   ],
   plans: [
     {
