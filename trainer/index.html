@@ -37,6 +37,14 @@
     .app-header .brand { line-height: 0; }
     .pu-preview { margin: .6rem 0; }
     .pu-preview img { display:block; }
+    .doctor-entry { margin: 2.4rem 0 0.8rem; }
+    .doctor-entry button { margin: 0 0.4rem 0.4rem 0; }
+    .doctor-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+    .doctor-thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #1a1520; }
+    .doctor-card h3 { margin: 0.85rem 0 0.3rem; font-size: 1rem; }
+    .doctor-conf { margin: 0 0 0.4rem; color: #ffb000; font-size: 0.82rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .doctor-watch button { margin: 0.15rem 0.35rem 0.15rem 0; }
+    .doctor-note { font-size: 0.82rem; }
     .about-tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .9rem; }
     .about-tabs button { flex:1 1 auto; min-width:0; padding:.5rem .6rem; font-size:.85rem; }
     .about-tabs button.active { background:#ffb000; color:#09070d; }
@@ -138,6 +146,9 @@
     <div class="card tap hidden" id="goto-photo-fix" role="button" tabindex="0" hidden>
       <div class="card-body"><div class="card-title">Photo Fix</div><div class="card-sub">Photo or short video of the vinyl problem, then a diagnosis and a fix</div></div>
     </div>
+    <div class="card tap" id="goto-problem-doctor" role="button" tabindex="0">
+      <div class="card-body"><div class="card-title">Problem Doctor</div><div class="card-sub">Photo or short video of a vinyl problem. A likely cause and a fix.</div></div>
+    </div>
     <div class="card tap" id="goto-about" role="button" tabindex="0">
       <div class="card-body"><div class="card-title">About WRAP 911 · Pricing · FAQ</div><div class="card-sub">Why it exists, who it's for, free samples</div></div>
     </div>
@@ -203,6 +214,11 @@
     <h1>Photo Fix</h1>
     <div id="photo-fix-wrap"></div>
   </section>
+  <section id="screen-problem-doctor" class="screen" aria-label="Problem Doctor">
+    <button type="button" class="back-link" id="btn-back-problem-doctor">← Back to home</button>
+    <h1>Problem Doctor</h1>
+    <div id="problem-doctor-wrap"></div>
+  </section>
   <section id="screen-problem-upload" class="screen">
     <button type="button" class="back-link" id="btn-back-problem-upload">← Back to home</button>
     <h1>Report a problem</h1>
@@ -210,7 +226,7 @@
     <div id="problem-upload-wrap"></div>
   </section>
   <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 one-time (5 seats, 12 months) · Seat $49 one-time (1 tech, 12 months).</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Buy shop pack · $149</button> <a href="?buy=seat" id="btn-stripe-seat" class="buy-seat-cta">Buy 1 seat · $49</a></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
-  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2" placeholder="Ask about a wrap step or vehicle part…"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Where do I start?">Where do I start?</button><button type="button" class="chip" data-coach-prompt="Prep">Prep</button><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button><button type="button" class="chip" data-coach-prompt="Recesses">Recesses</button><button type="button" class="chip" data-coach-prompt="Seams">Seams</button><button type="button" class="chip" data-coach-prompt="Doors">Doors</button><button type="button" class="chip" data-coach-prompt="Post-heat">Post-heat</button><button type="button" class="chip" data-coach-prompt="QC">QC</button></div><div class="card coach-media-panel hidden" hidden><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
+  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><p class="doctor-entry"><button type="button" class="secondary" id="goto-problem-doctor-coach">Problem Doctor</button> Photo or short video of a vinyl problem.</p><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2" placeholder="Ask about a wrap step or vehicle part…"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Where do I start?">Where do I start?</button><button type="button" class="chip" data-coach-prompt="Prep">Prep</button><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button><button type="button" class="chip" data-coach-prompt="Recesses">Recesses</button><button type="button" class="chip" data-coach-prompt="Seams">Seams</button><button type="button" class="chip" data-coach-prompt="Doors">Doors</button><button type="button" class="chip" data-coach-prompt="Post-heat">Post-heat</button><button type="button" class="chip" data-coach-prompt="QC">QC</button></div><div class="card coach-media-panel hidden" hidden><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
   <section id="screen-about" class="screen" aria-label="About WRAP 911">
     <button type="button" class="back-link" id="btn-back-about">← Back to home</button>
     <h1>About WRAP 911</h1>
@@ -281,5 +297,7 @@
   <script src="js/games.min.js?v=285min"></script>
   <script src="../assets/share.min.js?v=2"></script>
   <script src="js/photo-fix.min.js?v=285min"></script>
+  <script src="js/problem-doctor-match.min.js?v=286min"></script>
+  <script src="js/problem-doctor.min.js?v=286min"></script>
 </body>
 </html>

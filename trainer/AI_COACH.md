@@ -47,6 +47,12 @@ Keep `stripeTestMode: false` and real `buy.stripe.com` Payment Links.
 - Worker strips client `system` messages and applies WRAP 911 rules (3M / Avery Dennison / BriteLine only; **never invent temps / dwell / stretch % / chem** — always TDS).
 - Brands only: **3M · Avery Dennison · BriteLine**.
 
+## Problem Doctor
+
+Web only. `trainer/js/problem-doctor.js` posts still frames to `aiEndpoint + "/coach/doctor"`. The worker uses `LLM_VISION_MODEL` (default `grok-4.7`) on the xAI Responses API. Raw video is not uploaded. Free look is 1 read a day. Pack and Seat are 15 a day (`doctorFreePerDay`, `doctorPaidPerDay`). Open `?doctor=sample` to render a sample card without calling the worker.
+
+License and restore routes are not part of this change. Merge `/coach/doctor` into the live worker. Do not deploy `cloudflare-coach-proxy/worker.js` over the live script.
+
 ## Media drafts / categorize
 
 Unchanged: local heuristics; drafts in `localStorage` `wrap911_media_drafts`; does not mutate `VIDEO_CATALOG` on disk.
