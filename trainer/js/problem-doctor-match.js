@@ -96,6 +96,24 @@
     return [v.category, v.subcategory, v.note, v.id, v.recommendedModule, v.src].join(" ");
   }
 
+  /* Rivet reads (tented or bridged film over rivet heads): the fix is rivet brush plus post-heat per TDS,
+     so never point at tuck, slit, or relief-cut lessons, and rank rivet / post-heat lessons first. */
+  var CUT_RE = /\b(tuck|tucks|tucked|tucking|slit|slits|slitting|relief cut|relief cuts)\b/;
+  var RIVET_PREF_RE = /\b(rivet|rivets|rivet brush|post heat|postheat)\b/;
+  function isRivetRead(pack) {
+    var all = pack.phrases.concat(pack.words);
+    var i;
+    for (i = 0; i < all.length; i++) {
+      if (/rivet|tent|bridg/.test(all[i])) return true;
+    }
+    return false;
+  }
+  function rivetAdjust(score, title, about) {
+    if (CUT_RE.test(" " + norm(title) + " " + norm(about) + " ")) return 0;
+    if (RIVET_PREF_RE.test(norm(title))) return score + 15;
+    return score;
+  }
+
   function top(items, limit) {
     items.sort(function (a, b) { return b.score - a.score || String(a.title).localeCompare(String(b.title)); });
     var out = [];
@@ -108,6 +126,7 @@
 
   function matchCatalog(keywords, data, limit) {
     var pack = packKeys(keywords);
+    var rivet = isRivetRead(pack);
     var cap = limit || 3;
     var lessons = [];
     var videos = [];
@@ -118,6 +137,7 @@
       item = list[i];
       if (!item || !item.id) continue;
       s = scoreParts(item.title, lessonBody(item), pack);
+      if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.goal].join(" "));
       if (s) lessons.push({ id: item.id, title: item.title || item.id, score: s, kind: "lesson" });
     }
     var lessonIds = {};
@@ -128,6 +148,7 @@
       if (!item || !item.id) continue;
       s = scoreParts(item.title, videoBody(item), pack);
       if (item.recommendedModule && lessonIds[item.recommendedModule]) s += 6;
+      if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.subcategory, item.note].join(" "));
       if (s) videos.push({
         id: item.id,
         title: item.title || item.id,
@@ -140,5 +161,5 @@
     return { lessons: rankedLessons, videos: top(videos, cap) };
   }
 
-  root.WRAP911_DOCTOR_MATCH = { matchCatalog: matchCatalog, packKeys: packKeys };
+  root.WRAP911_DOCTOR_MATCH = { matchCatalog: matchCatalog, packKeys: packKeys, isRivetRead: isRivetRead };
 })(typeof globalThis !== "undefined" ? globalThis : this);
