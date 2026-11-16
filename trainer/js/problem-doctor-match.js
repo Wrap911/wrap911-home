@@ -114,6 +114,17 @@
     return score;
   }
 
+  /* Rivet reads show only vehicle, trailer, and rivet items (no storefront, wall, prep, or QC clips). */
+  var VEHICLE_IDS = { "box-truck": 1, van: 1, trailer: 1, "rv-bus": 1, fleet: 1 };
+  var VEHICLE_CATS = { van: 1, fleet: 1, trailer: 1, "rv/bus": 1, "box truck": 1 };
+  function rivetText(text) { return /\brivets?\b/.test(norm(text)); }
+  function vehicleLesson(lesson) {
+    return !!VEHICLE_IDS[String(lesson.vehicleId || "").toLowerCase()] || rivetText(lesson.title);
+  }
+  function vehicleVideo(v) {
+    return !!VEHICLE_CATS[norm(v.category)] || rivetText(v.title) || rivetText(v.subcategory);
+  }
+
   function top(items, limit) {
     items.sort(function (a, b) { return b.score - a.score || String(a.title).localeCompare(String(b.title)); });
     var out = [];
@@ -138,6 +149,7 @@
       if (!item || !item.id) continue;
       s = scoreParts(item.title, lessonBody(item), pack);
       if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.goal].join(" "));
+      if (s && rivet && !vehicleLesson(item)) s = 0;
       if (s) lessons.push({ id: item.id, title: item.title || item.id, score: s, kind: "lesson" });
     }
     var lessonIds = {};
@@ -149,6 +161,7 @@
       s = scoreParts(item.title, videoBody(item), pack);
       if (item.recommendedModule && lessonIds[item.recommendedModule]) s += 6;
       if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.subcategory, item.note].join(" "));
+      if (s && rivet && !vehicleVideo(item)) s = 0;
       if (s) videos.push({
         id: item.id,
         title: item.title || item.id,

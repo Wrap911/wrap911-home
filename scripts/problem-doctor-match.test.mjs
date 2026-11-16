@@ -67,3 +67,32 @@ test("non-rivet reads can still match tuck lessons", () => {
   const hit = sandbox.WRAP911_DOCTOR_MATCH.matchCatalog(["seam", "tuck"], data, 3);
   assert.ok(hit.videos.some((item) => item.id === "v-test-tuck"), JSON.stringify(hit.videos));
 });
+
+test("rivet reads show only vehicle, trailer, and rivet items", () => {
+  const sandbox = load();
+  const data = {
+    trainingLessons: sandbox.WRAP911_DATA.trainingLessons,
+    VIDEO_CATALOG: (sandbox.WRAP911_DATA.VIDEO_CATALOG || []).concat([
+      { id: "v-test-wall", title: "Wood-grain wall — torch post-heat", category: "Storefront/Architectural", subcategory: "Technique", note: "Post-heat a wall graphic.", src: "" },
+      { id: "v-test-prep", title: "Rivet-row prep wipe", category: "Prep", subcategory: "Material Prep", note: "Wipe before the rivet row.", src: "" },
+    ]),
+  };
+  const lessonById = {};
+  for (const l of data.trainingLessons) lessonById[l.id] = l;
+  const videoById = {};
+  for (const v of data.VIDEO_CATALOG) videoById[v.id] = v;
+  const hit = sandbox.WRAP911_DOCTOR_MATCH.matchCatalog(["rivet", "tenting", "rivet brush", "post-heat", "trailer", "seam"], data, 3);
+  assert.ok(hit.lessons.length > 0 && hit.videos.length > 0);
+  for (const l of hit.lessons) {
+    const src = lessonById[l.id];
+    assert.ok(["box-truck", "van", "trailer", "rv-bus", "fleet"].includes(src.vehicleId) || /rivet/i.test(src.title), JSON.stringify(l));
+  }
+  for (const v of hit.videos) {
+    const src = videoById[v.id];
+    assert.ok(/^(Van|Fleet|Trailer|RV\/Bus|Box Truck)$/.test(src.category || "") || /rivet/i.test(src.title + " " + (src.subcategory || "")), JSON.stringify(v));
+  }
+  assert.ok(!hit.videos.some((v) => v.id === "v-test-wall"), JSON.stringify(hit.videos));
+  /* Non-rivet post-heat reads can still show the wall clip. */
+  const wall = sandbox.WRAP911_DOCTOR_MATCH.matchCatalog(["post-heat", "wall", "wood grain"], data, 3);
+  assert.ok(wall.videos.some((v) => v.id === "v-test-wall"), JSON.stringify(wall.videos));
+});
