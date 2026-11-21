@@ -1,0 +1,45 @@
+name: ASC screenshots v2 status (read-only)
+on:
+  push:
+    branches: [cursor/asc-screenshots-v2-nov21]
+    paths: [".github/workflows/asc-shots-v2-status.yml"]
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - run: pip install -q pyjwt cryptography requests
+      - name: Query (GET only)
+        shell: python
+        run: |
+          import os,re,time,jwt,requests,json
+          b=re.sub(r'-----(BEGIN|END) PRIVATE KEY-----','',os.environ['RAW']); b=re.sub(r'[^A-Za-z0-9+/=]','',b)
+          key='-----BEGIN PRIVATE KEY-----\n'+'\n'.join(b[i:i+64] for i in range(0,len(b),64))+'\n-----END PRIVATE KEY-----\n'
+          tok=jwt.encode({"iss":os.environ["ASC_ISSUER_ID"],"iat":int(time.time()),"exp":int(time.time())+1200,"aud":"appstoreconnect-v1"},key,algorithm="ES256",headers={"kid":os.environ["ASC_KEY_ID"]})
+          H={"Authorization":"Bearer "+tok}
+          def g(p):
+            u=p if p.startswith('http') else "https://api.appstoreconnect.apple.com/"+p
+            r=requests.get(u,headers=H)
+            try: j=r.json()
+            except Exception: j={}
+            if r.status_code>=400: print(f"ERR GET {p}: {r.status_code} {json.dumps(j.get('errors',''))[:400]}"); return {}
+            return j
+          aid="6816763473"
+          print("== versions")
+          vs=g(f"v1/apps/{aid}/appStoreVersions?limit=10").get("data",[])
+          for v in vs:
+            at=v["attributes"]
+            bid=(g(f"v1/appStoreVersions/{v['id']}/build").get("data") or {})
+            print(f"Version {at.get('versionString')} id={v['id']} platform={at.get('platform')} appStoreState={at.get('appStoreState')} releaseType={at.get('releaseType')} created={at.get('createdDate')} build={(bid.get('attributes') or {}).get('version')}")
+            if at.get('appStoreState') in ('PREPARE_FOR_SUBMISSION','DEVELOPER_REJECTED','REJECTED','METADATA_REJECTED','READY_FOR_REVIEW','READY_FOR_SALE'):
+              for l in g(f"v1/appStoreVersions/{v['id']}/appStoreVersionLocalizations").get("data",[]):
+                print(f"  loc {l['attributes']['locale']} {l['id']}")
+                for s in g(f"v1/appStoreVersionLocalizations/{l['id']}/appScreenshotSets?limit=30").get("data",[]):
+                  shots=g(f"v1/appScreenshotSets/{s['id']}/appScreenshots?limit=20").get("data",[])
+                  print(f"    set {s['attributes']['screenshotDisplayType']} {s['id']} count={len(shots)} {[ (x['attributes'].get('fileName'), (x['attributes'].get('assetDeliveryState') or {}).get('state')) for x in shots]}")
+          print("== reviewSubmissions")
+          for s in g(f"v1/reviewSubmissions?filter[app]={aid}&limit=20").get("data",[]):
+            print(f"Submission {s['id']} state={s['attributes'].get('state')} submitted={s['attributes'].get('submittedDate')}")
