@@ -295,7 +295,7 @@
         badge: "FREE",
         chipClass: "",
         detail: iosApp()
-          ? "Free look is open. A Shop Pack or Seat unlocks the rest on this phone."
+          ? "Free look is open. A 7-Day Pass, Shop Pack, or Seat unlocks the rest on this phone."
           : "Free look is open. Pack $149 or seat $49 unlocks the rest on this phone."
       };
     }
@@ -477,7 +477,7 @@
     if (el) {
       if (!lic) {
         el.textContent = iosApp()
-          ? "No license — training is locked. Shop Pack (5 phones, 12 months) or Seat (this phone, 12 months). Buy with Apple on this screen."
+          ? "No license — training is locked. 7-Day Pass (this phone, 7 days), Shop Pack (5 phones, 12 months), or Seat (this phone, 12 months). Buy with Apple on this screen."
           : "No license — training is locked. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone, 12 months). Buy on this same phone.";
       } else if (lic.expired) {
         el.textContent = "License expired (" + lic.code + "). Buy again on this phone.";
@@ -486,7 +486,7 @@
         if (lic.expiresAt) {
           extra = " Expires: " + new Date(lic.expiresAt).toLocaleDateString() + ".";
         }
-        el.textContent = "Active: " + (lic.sku === "pack" ? "Shop pack" : lic.sku === "seat" ? "Seat" : lic.code) + "." + extra + " " + meta.detail;
+        el.textContent = "Active: " + (lic.sku === "pack" ? "Shop pack" : lic.sku === "pass" ? "7-Day Pass" : lic.sku === "seat" ? "Seat" : lic.code) + "." + extra + " " + meta.detail;
       }
     }
     if (clearBtn) {
@@ -502,7 +502,7 @@
     var modeBanner = $("pricing-mode-banner");
     if (modeBanner) {
       if (iosApp()) {
-        modeBanner.innerHTML = "<strong>Apple</strong> — Shop Pack (5 seats, 12 months) or Seat (1 tech, 12 months). One-time. The App Store shows the price. It does not auto-renew.";
+        modeBanner.innerHTML = "<strong>Apple</strong> — 7-Day Pass (this phone, 7 days), Shop Pack (5 seats, 12 months), or Seat (1 tech, 12 months). One-time. The App Store shows the price. It does not auto-renew.";
       } else if (cfg.stripeTestMode) {
         modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months).";
       } else {
@@ -570,7 +570,7 @@
       if (fb) {
         fb.className = "quiz-feedback bad";
         fb.textContent = iosApp()
-          ? "That part is paid. Open Pricing and buy a Shop Pack or Seat with Apple."
+          ? "That part is paid. Open Pricing and buy a 7-Day Pass, Shop Pack, or Seat with Apple."
           : "That part is paid. Shop pack $149 or seat $49. Buy on this phone.";
       }
       name = "pricing";

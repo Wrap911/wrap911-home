@@ -45,7 +45,7 @@
       if (lic.code === "HOME" || lic.code === "CREW" || lic.code === "SHOP" || lic.sku === "home") return false;
       if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
       if (lic.plan === "free" || lic.plan === "pro" || lic.plan === "trial" || lic.plan === "pack" || lic.plan === "seat") return true;
-      if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "field") return true;
+      if (lic.sku === "pack" || lic.sku === "seat" || lic.sku === "pass" || lic.sku === "field") return true;
       if (lic.code === "SHOP" || lic.code === "STRIPE" || lic.code === "HOME" || lic.code === "CREW") return true;
     } catch (e) {}
     return false;

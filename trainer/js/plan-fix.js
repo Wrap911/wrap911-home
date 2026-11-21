@@ -151,15 +151,16 @@
   /* Hotfix 2.6.4: one plan label for every chip. app-core planMeta() calls this too, so the header chip
      no longer flips between PACK (painted here) and PRO (painted by app-core on other screens). */
   function planLabel(lic) {
-    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack" && lic.sku !== "field")) return null;
+    if (!lic || lic.expired || (lic.sku !== "seat" && lic.sku !== "pack" && lic.sku !== "pass" && lic.sku !== "field")) return null;
     if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return null;
     var left = daysLeft(lic);
-    return {
-      badge: lic.sku === "pack" ? "PACK" : (lic.sku === "field" ? "FIELD" : "SEAT"),
-      detail: lic.sku === "pack"
-        ? "Shop pack · 5 phones · " + left
-        : (lic.sku === "field" ? "Field monthly · this phone · " + left : "1 seat · this phone · " + left)
-    };
+    var badge = lic.sku === "pack" ? "PACK" : (lic.sku === "field" ? "FIELD" : (lic.sku === "pass" ? "PASS" : "SEAT"));
+    var detail = lic.sku === "pack"
+      ? "Shop pack · 5 phones · " + left
+      : (lic.sku === "field"
+        ? "Field monthly · this phone · " + left
+        : (lic.sku === "pass" ? "7-day pass · this phone · " + left : "1 seat · this phone · " + left));
+    return { badge: badge, detail: detail };
   }
   window.WRAP911_PLAN_LABEL = planLabel;
 
@@ -206,6 +207,8 @@
       } else {
         card.innerHTML = "<strong>Shop pack · 5 phones</strong><p>This phone is in for 12 months. For the other four phones, email " + (mail ? "<a href=\"mailto:" + mail + "?subject=WRAP%20911%20crew%20code\">" + mail + "</a>" : "us") + " with your Stripe receipt and we send your crew code.</p>";
       }
+    } else if (lic.sku === "pass") {
+      card.innerHTML = "<strong>7-Day Pass</strong><p>This phone is unlocked for 7 days from the purchase. It does not cover a second phone and it does not auto-renew.</p>";
     } else if (lic.sku === "field") {
       card.innerHTML = iosApp()
         ? "<strong>Field monthly</strong><p>This phone is unlocked month to month.</p>"
@@ -230,10 +233,10 @@
       else home.appendChild(card);
     }
     var lic = read();
-    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field")) return;
+    if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "pass" || lic.sku === "field")) return;
     if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
     if (iosApp()) {
-      card.innerHTML = "<strong>Shop Pack or Seat</strong><p>Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore with email uses the email you saved with the purchase.</p>";
+      card.innerHTML = "<strong>7-Day Pass, Shop Pack, or Seat</strong><p>7-Day Pass is this phone for 7 days. Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore with email uses the email you saved with the purchase.</p>";
       return;
     }
     if (window.WRAP911_SANDBOX_NO_CHECKOUT) {

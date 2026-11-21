@@ -1,5 +1,6 @@
-name: Set up Shop Pack and Seat In-App Purchases
-# Creates the two non-renewing IAPs. Does not submit for review and does not upload a build.
+name: Set up 7-Day Pass In-App Purchase
+# Creates the non-renewing 7-Day Pass. Does not submit for review, does not
+# upload a build, and does not change the version's App Store screenshots.
 # A push of this file to ios-capacitor starts a run. workflow_dispatch is the other trigger.
 on:
   workflow_dispatch:

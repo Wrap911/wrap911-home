@@ -1,7 +1,8 @@
 /* Apple In-App Purchase on the iOS app only (Capacitor.getPlatform() === "ios").
-   Non-renewing Shop Pack and Seat through StoreKit 2 (@capgo/native-purchases).
-   Prices come from StoreKit (priceString). A purchase unlocks this phone for
-   365 days. No Stripe link, website buy button, or unlock-code field.
+   Non-renewing Shop Pack, Seat, and 7-Day Pass through StoreKit 2
+   (@capgo/native-purchases). Prices come from StoreKit (priceString).
+   Shop Pack and Seat unlock this phone for 365 days. The 7-Day Pass unlocks
+   this phone for 7 days. No Stripe link, website buy button, or unlock-code field.
    Web and PWA: this file returns immediately. */
 (function () {
   var Logic = window.WRAP911_IAP_LOGIC;
@@ -9,7 +10,8 @@
 
   var PACK = "com.wrap911.trainer.pack.12mo";
   var SEAT = "com.wrap911.trainer.seat.12mo";
-  var IDS = [PACK, SEAT];
+  var PASS = "com.wrap911.trainer.pass.7d";
+  var IDS = [PACK, SEAT, PASS];
   var API = "https://wrap911-coach-proxy.wrap911.workers.dev";
   var CREW_KEY = "wrap911_crew_code";
   var CLAIM_TRY = "wrap911_apple_claim_tried";
@@ -22,7 +24,7 @@
   var productError = "";
   var storeCode = "";
   var PURCHASE_WAIT_MS = 45000;
-  var JS_MARK = "iap-6";
+  var JS_MARK = "iap-7";
   var diag = null;
   var steps = [];
   var buyingId = "";
@@ -125,11 +127,21 @@
     var price = priceText(id);
     return price ? ("Buy " + name + " · " + price) : ("Buy " + name);
   }
+  function shortId(id) {
+    if (id === SEAT) return "seat";
+    if (id === PASS) return "pass";
+    return "pack";
+  }
+  function planName(sku) {
+    if (sku === "pack") return "Shop Pack";
+    if (sku === "pass") return "7-Day Pass";
+    return "Seat";
+  }
   function activeLicense() {
     var lic = readLic();
     if (!lic || lic.source !== "apple") return null;
     if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return null;
-    if (lic.sku !== "pack" && lic.sku !== "seat") return null;
+    if (lic.sku !== "pack" && lic.sku !== "seat" && lic.sku !== "pass") return null;
     return lic;
   }
   function rememberCode(code) {
@@ -164,7 +176,7 @@
   }
   function purchase(btn) {
     var id = btn.getAttribute("data-iap");
-    if (!btn.getAttribute("data-tap")) note("tap " + (id === SEAT ? "seat" : "pack"));
+    if (!btn.getAttribute("data-tap")) note("tap " + shortId(id));
     if (!NP || !NP.purchaseProduct) {
       note("no purchase method");
       setMsg("App Store purchasing is not available in this build. You were not charged.");
@@ -303,7 +315,7 @@
       restorePanel = "code";
       restoreEmail = email;
       render();
-      setMsg("If that email has an active Shop Pack or Seat, we sent a 6-digit code. It expires in 15 minutes.");
+      setMsg("If that email has an active Shop Pack, Seat, or 7-Day Pass, we sent a 6-digit code. It expires in 15 minutes.");
     }).catch(function () {
       setMsg("Could not reach the restore server.");
     });
@@ -406,7 +418,7 @@
         if (!btn || !btn.getAttribute("data-iap")) return;
         var id = btn.getAttribute("data-iap");
         btn.setAttribute("data-tap", "1");
-        note("tap " + (id === SEAT ? "seat" : "pack"));
+        note("tap " + shortId(id));
       } catch (e) {
         reportJs(e && (e.message || e));
       }
@@ -529,7 +541,7 @@
     }
     var detail = document.getElementById("home-plan-detail");
     if (detail && /\$\d/.test(detail.textContent || "")) {
-      detail.textContent = "Free look is open. A Shop Pack or Seat unlocks the rest.";
+      detail.textContent = "Free look is open. A 7-Day Pass, Shop Pack, or Seat unlocks the rest.";
     }
   }
   function render() {
@@ -539,7 +551,7 @@
     stripPricingChrome();
     exposePaywall();
     var lead = screen.querySelector(".lead");
-    if (lead) lead.textContent = "Shop Pack is 5 seats for 12 months. Seat is 1 tech for 12 months. One payment. It does not auto-renew.";
+    if (lead) lead.textContent = "7-Day Pass is one phone for 7 days. Shop Pack is 5 seats for 12 months. Seat is 1 tech for 12 months. One payment. It does not auto-renew.";
     var card = document.getElementById("iap-card");
     if (!card) {
       card = document.createElement("div");
@@ -556,7 +568,7 @@
     var status = "";
     if (lic) {
       var when = new Date(Number(lic.expiresAt)).toLocaleDateString();
-      var name = lic.sku === "pack" ? "Shop Pack" : "Seat";
+      var name = planName(lic.sku);
       status = '<p class="msg"><b>' + name + " is active</b> until " + escapeText(when) + ".</p>";
       if (lic.sku === "pack") {
         if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) || /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
@@ -573,9 +585,14 @@
     } else if (!lic) {
       buttons =
         '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>" +
-        '<button type="button" class="buy seat" data-iap="' + SEAT + '">' + escapeText(buyLabel(SEAT, "Seat")) + "</button>";
+        '<button type="button" class="buy seat" data-iap="' + SEAT + '">' + escapeText(buyLabel(SEAT, "Seat")) + "</button>" +
+        '<button type="button" class="buy seat" data-iap="' + PASS + '">' + escapeText(buyLabel(PASS, "7-Day Pass")) + "</button>";
     } else if (lic.sku === "seat") {
       buttons = '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>";
+    } else if (lic.sku === "pass") {
+      buttons =
+        '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>" +
+        '<button type="button" class="buy seat" data-iap="' + SEAT + '">' + escapeText(buyLabel(SEAT, "Seat")) + "</button>";
     }
     var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore with email</button>' : "";
     var emailBox = "";
@@ -605,12 +622,13 @@
     }
     var packP = priceText(PACK);
     var seatP = priceText(SEAT);
-    var priceLine = (packP || seatP)
-      ? ("Shop Pack " + (packP || "—") + ". Seat " + (seatP || "—") + ". ")
+    var passP = priceText(PASS);
+    var priceLine = (packP || seatP || passP)
+      ? ("Shop Pack " + (packP || "—") + ". Seat " + (seatP || "—") + ". 7-Day Pass " + (passP || "—") + ". ")
       : "";
     card.innerHTML =
       "<h2>Buy with Apple</h2>" +
-      '<p class="iap-lead">Full trainer on this phone for 12 months. Shop Pack is the crew buy: this phone plus four more.</p>' +
+      '<p class="iap-lead">Full trainer on this phone. A 7-Day Pass lasts 7 days. Shop Pack and Seat last 12 months. Shop Pack is this phone plus four more.</p>' +
       buttons +
       status +
       saveBox +
@@ -618,7 +636,7 @@
       emailBox +
       '<p class="msg" id="iap-msg"></p>' +
       '<p class="fine">' + escapeText(priceLine) +
-      "One-time purchase. Access lasts 12 months from the purchase date and does not auto-renew. " +
+      "One-time purchase. It does not auto-renew. A 7-Day Pass lasts 7 days from the purchase date. Shop Pack and Seat last 12 months from the purchase date. " +
       "Payment is charged to your Apple ID. " +
       '<a href="' + TERMS + '" target="_blank" rel="noopener">Terms of Use (EULA)</a> · ' +
       '<a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a></p>';
@@ -642,7 +660,7 @@
         next[p.identifier || p.productIdentifier] = p;
       });
       products = next;
-      productError = (products[PACK] && products[SEAT]) ? "" : Logic.missingProductsMessage();
+      productError = (products[PACK] && products[SEAT] && products[PASS]) ? "" : Logic.missingProductsMessage();
     }).catch(function () {
       productError = Logic.missingProductsMessage();
     });

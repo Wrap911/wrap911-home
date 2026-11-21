@@ -220,7 +220,7 @@
       var lic = JSON.parse(localStorage.getItem("wrap911_license") || "null");
       if (!lic || lic.expired) return false;
       if (lic.expiresAt && Date.now() > Number(lic.expiresAt)) return false;
-      return lic.plan === "pro" || lic.plan === "free" || lic.plan === "trial" || lic.sku === "seat" || lic.sku === "pack" || lic.sku === "field";
+      return lic.plan === "pro" || lic.plan === "free" || lic.plan === "trial" || lic.sku === "seat" || lic.sku === "pack" || lic.sku === "pass" || lic.sku === "field";
     } catch (e) { return false; }
   }
   function freeMax() {
