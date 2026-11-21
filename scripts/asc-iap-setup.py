@@ -155,8 +155,37 @@ def list_iaps(api: Asc) -> list[dict]:
     return api.get_all(f"/v1/apps/{APP_ID}/inAppPurchasesV2?limit=200")
 
 
+def find_product(api: Asc, product_id: str) -> dict | None:
+    filtered = api.get_all(f"/v1/apps/{APP_ID}/inAppPurchasesV2?filter[productId]={product_id}&limit=20")
+    for row in filtered + list_iaps(api):
+        if (row.get("attributes") or {}).get("productId") == product_id:
+            return row
+    return None
+
+
+def create_attempts(product: dict) -> list[dict]:
+    base = {
+        "name": product["referenceName"],
+        "productId": product["productId"],
+        "inAppPurchaseType": "NON_RENEWING_SUBSCRIPTION",
+        "familySharable": False,
+        "reviewNote": REVIEW_NOTE,
+    }
+    attempts = []
+    if product.get("duration"):
+        with_duration = dict(base)
+        with_duration["duration"] = product["duration"]
+        attempts.append(with_duration)
+    attempts.append(dict(base))
+    without_family = dict(base)
+    without_family.pop("familySharable", None)
+    attempts.append(without_family)
+    return attempts
+
+
 def ensure_iap(api: Asc, product: dict) -> dict:
-    existing = [row for row in list_iaps(api) if (row.get("attributes") or {}).get("productId") == product["productId"]]
+    existing_row = find_product(api, product["productId"])
+    existing = [existing_row] if existing_row else []
     if existing:
         row = existing[0]
         attrs = row.get("attributes") or {}
@@ -219,39 +248,34 @@ def ensure_iap(api: Asc, product: dict) -> dict:
                 print(f"duration left as {attrs.get('duration')}; the app still expires this pass after 7 days")
         return row
 
-    attributes = {
-        "name": product["referenceName"],
-        "productId": product["productId"],
-        "inAppPurchaseType": "NON_RENEWING_SUBSCRIPTION",
-        "familySharable": False,
-        "reviewNote": REVIEW_NOTE,
-    }
-    if product.get("duration"):
-        attributes["duration"] = product["duration"]
-    body = {
-        "data": {
-            "type": "inAppPurchases",
-            "attributes": attributes,
-            "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}},
+    last_detail = ""
+    created = {}
+    status = 0
+    for attributes in create_attempts(product):
+        body = {
+            "data": {
+                "type": "inAppPurchases",
+                "attributes": attributes,
+                "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}},
+            }
         }
-    }
-    status, created = api.request("POST", "/v2/inAppPurchases", body, ok=(201, 409))
-    if status not in (201, 409) and "duration" in body["data"]["attributes"]:
-        body["data"]["attributes"].pop("duration", None)
-        print("create rejected duration; retrying without it. The app still expires this pass after 7 days.")
-        status, created = api.request("POST", "/v2/inAppPurchases", body, ok=(201, 409))
-    if status == 409:
-        # A retry can lose the race with a previous create. Read it back.
-        again = [row for row in list_iaps(api) if (row.get("attributes") or {}).get("productId") == product["productId"]]
-        if not again:
-            raise SystemExit("create conflict but product was not listed: " + product["productId"])
-        return again[0]
-    if status != 201:
-        # Some product types reject familySharable. Retry without it.
-        body["data"]["attributes"].pop("familySharable", None)
         status, created = api.request("POST", "/v2/inAppPurchases", body, ok=(201,))
-        if status != 201:
-            raise SystemExit("could not create " + product["productId"])
+        if status == 201:
+            break
+        last_detail = json.dumps(created)[:800]
+        print(f"create {product['productId']} -> {status} {last_detail}", flush=True)
+        time.sleep(2)
+        found = find_product(api, product["productId"])
+        if found:
+            print(f"found {product['productId']} after create response", flush=True)
+            row = found
+            attrs = row.get("attributes") or {}
+            print(f"created {product['productId']} id={row.get('id')} state={attrs.get('state')} familySharable={attrs.get('familySharable')}")
+            return row
+        if "duration" in attributes and status in (400, 409, 422):
+            print("retrying without duration. The app still expires this pass after 7 days.", flush=True)
+    if status != 201:
+        raise SystemExit("could not create " + product["productId"] + " " + last_detail)
     row = created["data"]
     attrs = row.get("attributes") or {}
     print(f"created {product['productId']} id={row.get('id')} state={attrs.get('state')} familySharable={attrs.get('familySharable')}")
