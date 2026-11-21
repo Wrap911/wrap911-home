@@ -1,0 +1,24 @@
+name: iOS IAP checks
+on:
+  pull_request:
+    branches: [ios-capacitor]
+  push:
+    branches: [ios-capacitor]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Purchase rules
+        run: node trainer/js/iap-logic.test.js
+      - name: App Store script checks
+        run: |
+          python -m pip install --quiet "pyjwt>=2.8" cryptography requests
+          python3 scripts/asc-iap-setup.py --self-check
+          python3 scripts/asc-submit-pass-7d.py --self-check

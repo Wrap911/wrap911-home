@@ -30,6 +30,21 @@
       "productID" : "com.wrap911.trainer.seat.12mo",
       "referenceName" : "Seat 12 months",
       "type" : "NonRenewingSubscription"
+    },
+    {
+      "displayPrice" : "12.99",
+      "familyShareable" : false,
+      "internalID" : "PASS7D",
+      "localizations" : [
+        {
+          "description" : "7 days, full trainer, one phone. One-time.",
+          "displayName" : "WRAP 911 7-Day Pass",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.wrap911.trainer.pass.7d",
+      "referenceName" : "WRAP 911 7-Day Pass",
+      "type" : "NonRenewingSubscription"
     }
   ],
   "products" : [

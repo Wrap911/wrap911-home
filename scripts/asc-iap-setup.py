@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Create the Shop Pack and Seat non-renewing IAPs in App Store Connect.
+"""Create the 7-Day Pass non-renewing IAP in App Store Connect.
 
-Idempotent. Does not submit for review, does not attach a build, and does
-not change the app's price. The API key is read from a file. Nothing in
-this script prints the key, the token, or request headers.
+Idempotent. Does not submit for review, does not attach a build, does not
+change Shop Pack or Seat, and does not change the app's price or screenshots.
+The API key is read from a file. Nothing in this script prints the key, the
+token, or request headers.
 """
 from __future__ import annotations
 
@@ -24,28 +25,23 @@ APP_ID = os.environ.get("ASC_APP_ID", "6816763473")
 BASE = "https://api.appstoreconnect.apple.com"
 ROOT = Path(__file__).resolve().parents[1]
 
+PASS_ID = "com.wrap911.trainer.pass.7d"
 PACK_ID = "com.wrap911.trainer.pack.12mo"
 SEAT_ID = "com.wrap911.trainer.seat.12mo"
 PRODUCTS = [
     {
-        "productId": PACK_ID,
-        "referenceName": "WRAP 911 Shop Pack",
-        "displayName": "WRAP 911 Shop Pack",
-        "description": "5 seats, 12 months, full trainer. One-time.",
-        "price": Decimal("149.00"),
-    },
-    {
-        "productId": SEAT_ID,
-        "referenceName": "WRAP 911 Seat",
-        "displayName": "WRAP 911 Seat",
-        "description": "1 seat, 12 months, full trainer. One-time.",
-        "price": Decimal("49.00"),
+        "productId": PASS_ID,
+        "referenceName": "WRAP 911 7-Day Pass",
+        "displayName": "WRAP 911 7-Day Pass",
+        "description": "7 days, full trainer, one phone. One-time.",
+        "price": Decimal("12.99"),
+        "duration": "ONE_WEEK",
     },
 ]
 REVIEW_NOTE = (
-    "Non-renewing 12-month access. The app unlocks this phone for 365 days "
-    "from the purchase date and does not auto-renew. Shop Pack covers 5 seats. "
-    "Restore Purchases is on the Pricing screen."
+    "Non-renewing 7-day access for one phone. The app unlocks this phone for "
+    "7 days from the purchase date and does not auto-renew. Restore with email "
+    "is on the Pricing screen and does not ask for an Apple Account."
 )
 
 # These calls would submit or attach a build. The client refuses them.
@@ -69,12 +65,15 @@ def self_check() -> None:
             raise SystemExit("description longer than 45: " + desc)
         if "$29" in name or "$29" in desc or "shop owner" in desc.lower():
             raise SystemExit("copy is not allowed")
+        for banned in ("arlon", "temperature", "stripe"):
+            if banned in (name + " " + desc).lower():
+                raise SystemExit("copy is not allowed")
     points = [
-        {"id": "a", "customerPrice": "148.00"},
-        {"id": "b", "customerPrice": "149.00"},
-        {"id": "c", "customerPrice": "149.99"},
+        {"id": "a", "customerPrice": "12.00"},
+        {"id": "b", "customerPrice": "12.99"},
+        {"id": "c", "customerPrice": "13.99"},
     ]
-    found = match_price(points, Decimal("149.00"))
+    found = match_price(points, Decimal("12.99"))
     if found["id"] != "b":
         raise SystemExit("price matcher failed")
     try:
@@ -164,7 +163,14 @@ def ensure_iap(api: Asc, product: dict) -> dict:
         print(f"exists {product['productId']} id={row.get('id')} state={attrs.get('state')} type={attrs.get('inAppPurchaseType')}")
         if attrs.get("inAppPurchaseType") != "NON_RENEWING_SUBSCRIPTION":
             raise SystemExit(product["productId"] + " already exists as " + str(attrs.get("inAppPurchaseType")))
-        if attrs.get("name") != product["referenceName"] or attrs.get("familySharable") not in (False, None):
+        if attrs.get("name") != product["referenceName"] or attrs.get("familySharable") not in (False, None) or attrs.get("reviewNote") != REVIEW_NOTE:
+            patch_attrs = {
+                "name": product["referenceName"],
+                "reviewNote": REVIEW_NOTE,
+                "familySharable": False,
+            }
+            if product.get("duration") and "duration" in attrs:
+                patch_attrs["duration"] = product["duration"]
             status, updated = api.request(
                 "PATCH",
                 f"/v2/inAppPurchases/{row['id']}",
@@ -172,16 +178,14 @@ def ensure_iap(api: Asc, product: dict) -> dict:
                     "data": {
                         "type": "inAppPurchases",
                         "id": row["id"],
-                        "attributes": {
-                            "name": product["referenceName"],
-                            "reviewNote": REVIEW_NOTE,
-                            "familySharable": False,
-                        },
+                        "attributes": patch_attrs,
                     }
                 },
                 ok=(200,),
             )
             if status != 200:
+                patch_attrs.pop("familySharable", None)
+                patch_attrs.pop("duration", None)
                 status, updated = api.request(
                     "PATCH",
                     f"/v2/inAppPurchases/{row['id']}",
@@ -189,29 +193,53 @@ def ensure_iap(api: Asc, product: dict) -> dict:
                         "data": {
                             "type": "inAppPurchases",
                             "id": row["id"],
-                            "attributes": {"name": product["referenceName"], "reviewNote": REVIEW_NOTE},
+                            "attributes": patch_attrs,
                         }
                     },
                     ok=(200,),
                 )
             if status == 200:
                 row = updated["data"]
+        elif product.get("duration") and "duration" in attrs and attrs.get("duration") != product["duration"]:
+            status, updated = api.request(
+                "PATCH",
+                f"/v2/inAppPurchases/{row['id']}",
+                {
+                    "data": {
+                        "type": "inAppPurchases",
+                        "id": row["id"],
+                        "attributes": {"duration": product["duration"]},
+                    }
+                },
+                ok=(200,),
+            )
+            if status == 200:
+                row = updated["data"]
+            else:
+                print(f"duration left as {attrs.get('duration')}; the app still expires this pass after 7 days")
         return row
 
+    attributes = {
+        "name": product["referenceName"],
+        "productId": product["productId"],
+        "inAppPurchaseType": "NON_RENEWING_SUBSCRIPTION",
+        "familySharable": False,
+        "reviewNote": REVIEW_NOTE,
+    }
+    if product.get("duration"):
+        attributes["duration"] = product["duration"]
     body = {
         "data": {
             "type": "inAppPurchases",
-            "attributes": {
-                "name": product["referenceName"],
-                "productId": product["productId"],
-                "inAppPurchaseType": "NON_RENEWING_SUBSCRIPTION",
-                "familySharable": False,
-                "reviewNote": REVIEW_NOTE,
-            },
+            "attributes": attributes,
             "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}},
         }
     }
     status, created = api.request("POST", "/v2/inAppPurchases", body, ok=(201, 409))
+    if status not in (201, 409) and "duration" in body["data"]["attributes"]:
+        body["data"]["attributes"].pop("duration", None)
+        print("create rejected duration; retrying without it. The app still expires this pass after 7 days.")
+        status, created = api.request("POST", "/v2/inAppPurchases", body, ok=(201, 409))
     if status == 409:
         # A retry can lose the race with a previous create. Read it back.
         again = [row for row in list_iaps(api) if (row.get("attributes") or {}).get("productId") == product["productId"]]
@@ -462,7 +490,8 @@ def capture_pricing_screenshot(dest: Path) -> None:
             getStorefront: function () { return Promise.resolve({ countryCode: "USA", storefrontId: "143441" }); },
             getProducts: function () { return Promise.resolve({ products: [
               { identifier: "com.wrap911.trainer.pack.12mo", priceString: "$149.00" },
-              { identifier: "com.wrap911.trainer.seat.12mo", priceString: "$49.00" }
+              { identifier: "com.wrap911.trainer.seat.12mo", priceString: "$49.00" },
+              { identifier: "com.wrap911.trainer.pass.7d", priceString: "$12.99" }
             ] }); },
             getPurchases: function () { return Promise.resolve({ purchases: [] }); },
             restorePurchases: function () { return Promise.resolve(); },
@@ -494,11 +523,14 @@ def capture_pricing_screenshot(dest: Path) -> None:
             )
             text = page.locator("#screen-pricing").inner_text()
             folded = text.casefold()
-            if "$29" in text:
-                raise SystemExit("pricing screenshot contains $29")
-            for needle in ("buy shop pack", "$149.00", "buy seat", "$49.00", "restore purchases", "buy on wrap911.com"):
+            if "$29" in text or "arlon" in folded or "stripe" in folded:
+                raise SystemExit("pricing screenshot contains forbidden copy")
+            for needle in ("buy shop pack", "buy seat", "buy 7-day pass", "$12.99", "restore with email"):
                 if needle not in folded:
                     raise SystemExit("pricing screenshot missing " + needle)
+            for banned in ("buy on wrap911.com", "unlock code"):
+                if banned in folded:
+                    raise SystemExit("pricing screenshot contains " + banned)
             page.evaluate("() => { const screen = document.getElementById('screen-pricing'); if (screen) screen.scrollIntoView({block:'start'}); window.scrollTo(0, 0); }")
             page.screenshot(path=str(dest), full_page=False)
             browser.close()
@@ -685,6 +717,7 @@ def refresh_state(api: Asc, iap_id: str) -> dict:
         "name": attrs.get("name"),
         "productId": attrs.get("productId"),
         "type": attrs.get("inAppPurchaseType"),
+        "duration": attrs.get("duration"),
         "state": attrs.get("state"),
         "familySharable": attrs.get("familySharable"),
     }
@@ -744,10 +777,6 @@ def main() -> None:
             print(label + " failed: " + str(exc)[:400])
             return {"error": type(exc).__name__}
 
-    summary["agreements"] = safe("agreements", lambda: read_agreements(api))
-    summary["build10"] = safe("build", lambda: read_build_10(api))
-    summary["appPriceReadOnly"] = safe("app price", lambda: read_app_price(api))
-    summary["appAvailability"] = safe("app availability", lambda: set_app_us_only(api))
     summary["screenshotCapture"] = screenshot_state
     text = json.dumps(summary, indent=2, sort_keys=True)
     print("SUMMARY_JSON_BEGIN")
@@ -758,7 +787,7 @@ def main() -> None:
         dest = Path(out)
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text + "\n")
-    wanted = {PACK_ID: Decimal("149.00"), SEAT_ID: Decimal("49.00")}
+    wanted = {row["productId"]: row["price"] for row in PRODUCTS}
     bad = []
     for row in summary["products"]:
         try:

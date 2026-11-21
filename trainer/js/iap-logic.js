@@ -1,7 +1,8 @@
 /* Pure Apple IAP rules for the iOS app. No prices live here.
-   Shop Pack and Seat are non-renewing 12-month purchases. StoreKit does not
-   put an expiration on that product type, so expiry is purchaseDate plus 365
-   days. The web app never calls these to change UI. */
+   Shop Pack and Seat are non-renewing 12-month purchases. The 7-Day Pass is
+   a non-renewing 7-day purchase. StoreKit does not put an expiration on that
+   product type, so expiry is purchaseDate plus the product duration. The web
+   app never calls these to change UI. */
 (function (factory) {
   var api = factory();
   if (typeof module !== "undefined" && module.exports) module.exports = api;
@@ -11,9 +12,11 @@
   }
 })(function () {
   var YEAR = 365 * 86400000;
+  var WEEK = 7 * 86400000;
   var PRODUCTS = {
-    "com.wrap911.trainer.pack.12mo": { sku: "pack", seats: 5 },
-    "com.wrap911.trainer.seat.12mo": { sku: "seat", seats: 1 }
+    "com.wrap911.trainer.pack.12mo": { sku: "pack", seats: 5, duration: YEAR },
+    "com.wrap911.trainer.seat.12mo": { sku: "seat", seats: 1, duration: YEAR },
+    "com.wrap911.trainer.pass.7d": { sku: "pass", seats: 1, duration: WEEK }
   };
 
   function isNativeApp() {
@@ -54,7 +57,7 @@
     var start = purchaseMs(tx);
     if (!start) return null;
     var stated = tx.expirationDate ? Date.parse(tx.expirationDate) : NaN;
-    var exp = stated && !isNaN(stated) ? stated : start + YEAR;
+    var exp = stated && !isNaN(stated) ? stated : start + meta.duration;
     if (exp <= now) return null;
     return {
       tx: tx,
@@ -66,27 +69,29 @@
     };
   }
 
-  /* Active Shop Pack wins the label. Expiry is the later of the active purchases
-     so a Seat bought as well does not shorten this phone. */
+  /* Shop Pack wins the label, then Seat, then the 7-Day Pass. Expiry is the
+     later of the active purchases so a shorter pass does not shorten this phone. */
   function pickEntitlement(list, now) {
     var pack = null;
     var seat = null;
+    var pass = null;
     var rows = list || [];
     for (var i = 0; i < rows.length; i++) {
       var row = rowFrom(rows[i], now);
       if (!row) continue;
       if (row.sku === "pack" && (!pack || row.expiresAt > pack.expiresAt)) pack = row;
       if (row.sku === "seat" && (!seat || row.expiresAt > seat.expiresAt)) seat = row;
+      if (row.sku === "pass" && (!pass || row.expiresAt > pass.expiresAt)) pass = row;
     }
-    if (!pack && !seat) return null;
-    var primary = pack || seat;
+    if (!pack && !seat && !pass) return null;
+    var primary = pack || seat || pass;
     return {
       tx: primary.tx,
-      sku: pack ? "pack" : "seat",
+      sku: pack ? "pack" : (seat ? "seat" : "pass"),
       seats: pack ? 5 : 1,
       productId: primary.productId,
       unlockedAt: primary.unlockedAt,
-      expiresAt: Math.max(pack ? pack.expiresAt : 0, seat ? seat.expiresAt : 0)
+      expiresAt: Math.max(pack ? pack.expiresAt : 0, seat ? seat.expiresAt : 0, pass ? pass.expiresAt : 0)
     };
   }
 
@@ -110,7 +115,7 @@
     if (!existing || existing.expired) return false;
     if (existing.expiresAt && Number(existing.expiresAt) <= now) return false;
     if (existing.plan === "pro" || existing.plan === "trial") return true;
-    if (existing.sku === "pack" || existing.sku === "seat") return true;
+    if (existing.sku === "pack" || existing.sku === "seat" || existing.sku === "pass") return true;
     return false;
   }
 
@@ -118,7 +123,7 @@
      purchase replaces it, except a live Shop Pack is not downgraded to a Seat. */
   /* Shown when StoreKit returns no Shop Pack or Seat. The buttons stay usable. */
   function missingProductsMessage() {
-    return "The App Store did not return Shop Pack and Seat. Check your connection, then open Pricing again. You were not charged.";
+    return "The App Store did not return Shop Pack, Seat, and 7-Day Pass. Check your connection, then open Pricing again. You were not charged.";
   }
 
   /* Shown when purchaseProduct never calls back, so the Apple sheet never opened. */
@@ -135,12 +140,12 @@
     return "Nothing active is stored on this phone. Enter the email you saved with the purchase.";
   }
 
-  /* Email restore returns the original expiry. Do not start a new 12 months. */
+  /* Email restore returns the original expiry. Do not start a new term. */
   function licenseFromRestore(data, now) {
     var sku = data && data.sku;
     var exp = Number(data && data.expiresAt);
     var start = Number(data && data.purchaseDate) || 0;
-    if ((sku !== "pack" && sku !== "seat") || !exp || exp <= now) return null;
+    if ((sku !== "pack" && sku !== "seat" && sku !== "pass") || !exp || exp <= now) return null;
     return {
       code: "APPLE",
       plan: "pro",
@@ -168,6 +173,7 @@
 
   return {
     YEAR: YEAR,
+    WEEK: WEEK,
     PRODUCTS: PRODUCTS,
     isNativeApp: isNativeApp,
     isUsStorefront: isUsStorefront,

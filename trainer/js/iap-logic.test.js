@@ -5,9 +5,11 @@ var path = require("path");
 var L = require("./iap-logic.js");
 
 var YEAR = 365 * 86400000;
+var WEEK = 7 * 86400000;
 var NOW = Date.parse("2026-06-01T00:00:00.000Z");
 var PACK = "com.wrap911.trainer.pack.12mo";
 var SEAT = "com.wrap911.trainer.seat.12mo";
+var PASS = "com.wrap911.trainer.pass.7d";
 
 function tx(id, iso, extra) {
   var row = { productIdentifier: id, purchaseDate: iso, transactionId: "t-" + id };
@@ -28,6 +30,28 @@ assert.strictEqual(pack.expiresAt, Date.parse(recent) + YEAR);
 assert.strictEqual(L.pickEntitlement([tx(PACK, old)], NOW), null);
 assert.strictEqual(L.pickEntitlement([tx(SEAT, recent, { revocationDate: "2026-05-01T00:00:00.000Z" })], NOW), null);
 assert.strictEqual(L.pickEntitlement([tx("com.example.other", recent)], NOW), null);
+
+var passRecent = new Date(NOW - 2 * 86400000).toISOString();
+var passBuy = L.pickEntitlement([tx(PASS, passRecent)], NOW);
+assert.strictEqual(passBuy.sku, "pass");
+assert.strictEqual(passBuy.seats, 1);
+assert.strictEqual(passBuy.expiresAt, Date.parse(passRecent) + WEEK);
+assert.ok(passBuy.expiresAt > NOW);
+var passSix = new Date(NOW - 6 * 86400000).toISOString();
+assert.ok(L.pickEntitlement([tx(PASS, passSix)], NOW).expiresAt > NOW);
+assert.strictEqual(L.pickEntitlement([tx(PASS, new Date(NOW - 8 * 86400000).toISOString())], NOW), null);
+var passAndPack = L.pickEntitlement([
+  tx(PASS, passRecent),
+  tx(PACK, new Date(NOW - 20 * 86400000).toISOString())
+], NOW);
+assert.strictEqual(passAndPack.sku, "pack");
+assert.strictEqual(passAndPack.seats, 5);
+var passAndSeat = L.pickEntitlement([
+  tx(PASS, passRecent),
+  tx(SEAT, new Date(NOW - 30 * 86400000).toISOString())
+], NOW);
+assert.strictEqual(passAndSeat.sku, "seat");
+assert.ok(passAndSeat.expiresAt >= Date.parse(passRecent) + WEEK);
 
 var both = L.pickEntitlement([
   tx(SEAT, new Date(NOW - 5 * 86400000).toISOString()),
@@ -56,6 +80,8 @@ assert.strictEqual(L.shouldWrite(stripe, seatNext, NOW, true), false);
 var packNext = { sku: "pack", expiresAt: NOW + YEAR };
 assert.strictEqual(L.shouldWrite(stripe, packNext, NOW, true), true);
 assert.strictEqual(L.shouldWrite(null, seatNext, NOW, true), true);
+var passNext = { sku: "pass", expiresAt: NOW + WEEK };
+assert.strictEqual(L.shouldWrite(stripe, passNext, NOW, true), false);
 
 assert.strictEqual(L.isUsStorefront("USA"), true);
 assert.strictEqual(L.isUsStorefront(" us "), true);
@@ -88,17 +114,30 @@ assert.strictEqual(restored.expiresAt, originalEnd);
 assert.notStrictEqual(restored.expiresAt, NOW + YEAR);
 assert.strictEqual(L.licenseFromRestore({ sku: "seat", purchaseDate: boughtAt, expiresAt: NOW - 1 }, NOW), null);
 assert.strictEqual(L.licenseFromRestore({ sku: "pack", purchaseDate: boughtAt, expiresAt: originalEnd }, NOW).seats, 5);
+var passEnd = NOW + 3 * 86400000;
+var restoredPass = L.licenseFromRestore({
+  sku: "pass",
+  productId: PASS,
+  transactionId: "pass-1",
+  purchaseDate: NOW - 2 * 86400000,
+  expiresAt: passEnd
+}, NOW);
+assert.strictEqual(restoredPass.sku, "pass");
+assert.strictEqual(restoredPass.seats, 1);
+assert.strictEqual(restoredPass.expiresAt, passEnd);
+assert.notStrictEqual(restoredPass.expiresAt, NOW + WEEK);
+assert.strictEqual(L.licenseFromRestore({ sku: "pass", purchaseDate: boughtAt, expiresAt: NOW - 1 }, NOW), null);
 
 assert.ok(missing.indexOf("not charged") !== -1);
 assert.ok(stall.indexOf("did not open") !== -1);
 assert.ok(stall.indexOf("not charged") !== -1);
-["$149", "$49", "$29"].forEach(function (bad) {
+["$149", "$49", "$29", "$12.99"].forEach(function (bad) {
   assert.strictEqual(missing.indexOf(bad), -1);
   assert.strictEqual(stall.indexOf(bad), -1);
 });
 var iap = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
 assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instead of leaving the button disabled");
-assert.ok(iap.indexOf("iap-6") !== -1, "the bundle marker stays in source");
+assert.ok(iap.indexOf("iap-7") !== -1, "the bundle marker stays in source");
 assert.strictEqual(iap.indexOf('id="iap-diag"'), -1, "the build diagnostic line must not render");
 assert.strictEqual(iap.indexOf('id="iap-steps"'), -1, "the tap diagnostic line must not render");
 assert.ok(iap.indexOf("Your extra seat codes will appear here") !== -1);
@@ -124,7 +163,7 @@ assert.ok(pluginPatch.indexOf("\n-                try await AppStore.sync()") !=
 assert.strictEqual(pluginPatch.indexOf("\n+                try await AppStore.sync()"), -1, "the plugin patch must not add an account sync call");
 assert.strictEqual(pluginPatch.indexOf("\n+            try await AppStore.sync()"), -1, "the plugin patch must not add an account sync call");
 assert.ok(pluginPatch.indexOf("no Apple Account prompt") !== -1, "the plugin restore method documents that it does not prompt");
-["$149", "$49", "$29"].forEach(function (bad) {
+["$149", "$49", "$29", "$12.99"].forEach(function (bad) {
   assert.strictEqual(iap.indexOf(bad), -1, "iap.js must not hardcode " + bad);
 });
 
@@ -145,6 +184,8 @@ assert.ok(iap.indexOf("stripPricingChrome") !== -1, "iOS pricing keeps only the 
 assert.ok(iap.indexOf('n.id === "iap-card"') !== -1, "the Apple card stays on the pricing screen");
 assert.ok(iap.indexOf("com.wrap911.trainer.seat.12mo") !== -1);
 assert.ok(iap.indexOf("com.wrap911.trainer.pack.12mo") !== -1);
+assert.ok(iap.indexOf("com.wrap911.trainer.pass.7d") !== -1);
+assert.ok(iap.indexOf("7-Day Pass") !== -1);
 assert.ok(iap.indexOf('productType: "inapp"') !== -1, "non-renewing products go through native-purchases");
 assert.ok(iap.indexOf("stripExternalPurchase") !== -1);
 assert.ok(iap.indexOf("unlock-box") !== -1, "iOS removes the unlock-code field");
@@ -160,5 +201,17 @@ assert.ok(plan.indexOf("buy.stripe.com") !== -1, "the website Stripe Payment Lin
 var privacy = fs.readFileSync(path.join(__dirname, "../../privacy.html"), "utf8");
 assert.ok(/Apple In-App Purchase/i.test(privacy), "privacy.html mentions Apple IAP");
 assert.ok(/Stripe/i.test(privacy), "privacy.html keeps the website Stripe paragraph");
+var storekit = fs.readFileSync(path.join(__dirname, "../../ios/App/App/WRAP911.storekit"), "utf8");
+assert.ok(storekit.indexOf("com.wrap911.trainer.pass.7d") !== -1);
+assert.ok(storekit.indexOf("12.99") !== -1);
+var project = fs.readFileSync(path.join(__dirname, "../../ios/App/App.xcodeproj/project.pbxproj"), "utf8");
+assert.ok(project.indexOf("MARKETING_VERSION = 1.2;") !== -1);
+assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 24;") !== -1);
+assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 22;"), -1);
+assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.1;"), -1);
+var flight = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ios-testflight.yml"), "utf8");
+assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=24") !== -1);
+assert.ok(flight.indexOf("MARKETING_VERSION=1.2") !== -1);
+assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=22"), -1);
 
 console.log("iap-logic tests ok");
