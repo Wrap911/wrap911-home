@@ -14,7 +14,7 @@ npm run ios:sync      # copies site into www/ and pod installs
 npm run ios:open      # opens Xcode
 ```
 In Xcode > App target > Signing & Capabilities: tick "Automatically manage signing", pick your Team.
-Version is 1.2. Build is 24. Add 1024px icon in Assets > AppIcon.
+Version is 1.2. Build is 25. Add 1024px icon in Assets > AppIcon.
 Product > Archive > Distribute App > App Store Connect > Upload. Then submit in App Store Connect (TestFlight first).
 
 ## Payments

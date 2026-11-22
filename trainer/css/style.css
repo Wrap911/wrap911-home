@@ -285,7 +285,7 @@ body {
   color: #2ee6ff;
   text-shadow: 0 0 16px rgba(46, 230, 255, 0.55);
 }
-button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card) {
+button:not(.secondary):not(.chip):not(.back-link):not(.video-play-btn):not([data-nav]):not(.quiz-choice):not(.mode-tab):not(.job-type-card):not(.seat):not(.restore) {
   font-family: var(--display);
   font-weight: 400;
   letter-spacing: 0.06em;

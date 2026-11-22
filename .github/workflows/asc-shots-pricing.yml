@@ -1,0 +1,28 @@
+name: Replace pricing screenshot on version 1.2
+# Replaces only 06-pricing in the iPhone 6.7 and iPad 12.9 sets.
+# Does not attach a build and does not submit for review.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-shots-pricing.yml
+      - scripts/asc-shots-pricing.py
+      - appstore/screenshots-v2/iphone-6.9/06-pricing.png
+      - appstore/screenshots-v2/ipad-13/06-pricing.png
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Replace slot 06
+        run: python3 scripts/asc-shots-pricing.py
