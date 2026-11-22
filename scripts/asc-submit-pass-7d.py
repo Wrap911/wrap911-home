@@ -598,6 +598,9 @@ def listed_iaps() -> dict[str, str]:
         found[product] = f"{row.get('id')} {attrs.get('state')}"
         print(f"iap-final {product} {found[product]}", flush=True)
     return found
+
+
+def write_summary(text: str) -> None:
     path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not path:
         return
@@ -615,6 +618,10 @@ def main() -> None:
     row = confirm_version()
     state = (row.get("attributes") or {}).get("appStoreState")
     if state not in EDITABLE:
+        if state in DONE:
+            print(f"version 1.2 is already {state}; it was not changed")
+            print("Resolution Center was not contacted.")
+            return
         raise SystemExit("version 1.2 is " + str(state) + "; it was not changed")
     screenshot_counts()
     build, product = wait_for_release_bits()
