@@ -1,0 +1,26 @@
+name: Cancel App Review for version 1.2
+# Cancels review submission ceadddf8-544f-4184-b7df-214903396ff6 so version 1.2
+# can be edited. Does not contact Resolution Center and does not submit again.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-capacitor]
+    paths:
+      - .github/workflows/asc-cancel-review.yml
+      - scripts/asc-cancel-review.py
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Cancel the 1.2 review submission
+        run: python3 scripts/asc-cancel-review.py
