@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attach build 24 and the 7-Day Pass to the existing App Store version 1.2.
+"""Attach build 25 and the 7-Day Pass to the existing App Store version 1.2.
 
 Reuses version 600c93dd-0a49-4a1a-9d7c-3c402dadc446. Does not create a version,
 does not change App Store screenshots, does not change prices, and does not
@@ -18,7 +18,7 @@ from decimal import Decimal
 APP_ID = "6816763473"
 VERSION_ID = "600c93dd-0a49-4a1a-9d7c-3c402dadc446"
 TRAIN = "1.2"
-BUILD_NUMBER = "24"
+BUILD_NUMBER = "25"
 PASS_ID = "com.wrap911.trainer.pass.7d"
 PASS_NAME = "WRAP 911 7-Day Pass"
 PUBLIC_EMAIL = "info@wrap911.com"
@@ -31,7 +31,7 @@ NOTES = """Guideline 3.1.1: Shop Pack (com.wrap911.trainer.pack.12mo), Seat (com
 
 Restore does not ask for an Apple Account or password and does not call AppStore.sync() or restoreCompletedTransactions(). The button is Restore with email. On the phone that bought the plan, the app reads StoreKit 2 Transaction.currentEntitlements and Transaction.all. On a new phone, the buyer enters the email saved after purchase, we send a one-time code, and the app restores the original expiry.
 
-The Pricing screen opens with no account. Version 1.2, build 24. The iOS app has no Stripe link, no website buy button, and no unlock-code field.
+The Pricing screen opens with no account. Version 1.2, build 25. The iOS app has no Stripe link, no website buy button, and no unlock-code field.
 
 The AI Coach asks permission before sending a question to the server. Declining uses the offline answers.
 
@@ -323,7 +323,7 @@ def wait_for_release_bits() -> tuple[dict, dict]:
         for row in builds:
             state = (row.get("attributes") or {}).get("processingState")
             if state in ("FAILED", "INVALID"):
-                raise SystemExit("build 24 is " + str(state))
+                raise SystemExit("build " + BUILD_NUMBER + " is " + str(state))
             if state == "VALID":
                 chosen = row
                 break
@@ -344,7 +344,7 @@ def wait_for_release_bits() -> tuple[dict, dict]:
         if processing == "VALID" and encryption is False and iap_ready(product):
             return build, product
         time.sleep(30)
-    raise SystemExit("build 24 or the 7-Day Pass was not ready to submit")
+    raise SystemExit("build " + BUILD_NUMBER + " or the 7-Day Pass was not ready to submit")
 
 
 def screenshot_counts() -> None:
@@ -404,13 +404,13 @@ def attach_build(build_id: str) -> None:
         },
     )
     if status >= 400:
-        raise SystemExit("could not attach build 24")
+        raise SystemExit("could not attach build " + BUILD_NUMBER)
     status, attached = call("GET", f"appStoreVersions/{VERSION_ID}/build")
     attached_version = ((attached.get("data") or {}).get("attributes") or {}).get("version")
     attached_id = (attached.get("data") or {}).get("id")
     print(f"attached build {attached_version} {attached_id}")
     if str(attached_version) != BUILD_NUMBER or attached_id != build_id:
-        raise SystemExit("version 1.2 is not attached to build 24")
+        raise SystemExit("version 1.2 is not attached to build " + BUILD_NUMBER)
 
 
 def set_notes() -> None:
@@ -583,7 +583,21 @@ def submit(submission_id: str) -> str:
     return last
 
 
-def write_summary(text: str) -> None:
+def listed_iaps() -> dict[str, str]:
+    wanted = {
+        PASS_ID,
+        "com.wrap911.trainer.seat.12mo",
+        "com.wrap911.trainer.pack.12mo",
+    }
+    found: dict[str, str] = {}
+    for row in pages(f"apps/{APP_ID}/inAppPurchasesV2", {"limit": 50}):
+        attrs = row.get("attributes") or {}
+        product = str(attrs.get("productId") or "")
+        if product not in wanted:
+            continue
+        found[product] = f"{row.get('id')} {attrs.get('state')}"
+        print(f"iap-final {product} {found[product]}", flush=True)
+    return found
     path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not path:
         return
@@ -610,13 +624,20 @@ def main() -> None:
     set_notes()
     submission = ensure_submission(product)
     submission_state = submit(submission["id"])
+    status, fresh_build = call("GET", f"builds/{build['id']}")
+    if status < 400 and fresh_build.get("data"):
+        build = fresh_build["data"]
     final = version_row()
     final_state = (final.get("attributes") or {}).get("appStoreState")
     encryption = (build.get("attributes") or {}).get("usesNonExemptEncryption")
+    processing = (build.get("attributes") or {}).get("processingState")
+    iaps = listed_iaps()
     text = "\n".join([
         f"VERSION {TRAIN} {VERSION_ID} {final_state}",
-        f"BUILD {BUILD_NUMBER} {build.get('id')} processing VALID encryption {encryption}",
-        f"IAP {PASS_ID} {product.get('id')} state {product.get('state')} price {product.get('price')}",
+        f"BUILD {BUILD_NUMBER} {build.get('id')} processing {processing} encryption {encryption}",
+        f"IAP {PASS_ID} {iaps.get(PASS_ID, product.get('state'))}",
+        f"IAP com.wrap911.trainer.seat.12mo {iaps.get('com.wrap911.trainer.seat.12mo', '')}",
+        f"IAP com.wrap911.trainer.pack.12mo {iaps.get('com.wrap911.trainer.pack.12mo', '')}",
         f"SUBMISSION ID {submission.get('id')}",
         f"SUBMISSION STATE {submission_state}",
         "Resolution Center was not contacted.",
