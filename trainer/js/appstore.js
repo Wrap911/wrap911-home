@@ -14,7 +14,8 @@
       ".w911-modal h2{margin:0 0 10px;font-size:18px}.w911-modal a{color:#ffb020}" +
       ".w911-modal .row{display:flex;gap:10px;margin-top:16px}.w911-modal button{flex:1;padding:12px;border-radius:10px;border:0;font-weight:600;font-size:15px}" +
       ".w911-modal .yes{background:#ffb020;color:#111}.w911-modal .no{background:#2a2d35;color:#eee}" +
-      ".w911-privacy-link{display:block;text-align:center;margin:24px 0 12px;font-size:13px;opacity:.8}" +
+      ".w911-privacy-link{display:block;text-align:center;margin:24px 0 12px;font-size:13px;opacity:.8;color:#ffb000}" +
+      ".w911-privacy-link a{color:#ffb000}" +
       ".w911-ios-note{font-size:13px;margin:10px 0;opacity:.85}";
     document.head.appendChild(s);
   }
@@ -37,14 +38,18 @@
 
   function addPrivacyLink() {
     css();
-    var main = document.querySelector("main") || document.body;
-    if (document.querySelector(".w911-privacy-link")) return;
-    var a = el('<a class="w911-privacy-link" href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a>');
-    main.appendChild(a);
     var coach = document.getElementById("screen-coach");
-    if (coach) coach.appendChild(el('<p class="w911-privacy-link"><a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a> · <a href="#" id="w911-ai-reset">Reset AI permission</a></p>'));
-    var r = document.getElementById("w911-ai-reset");
-    if (r) r.onclick = function (e) { e.preventDefault(); window.WRAP911_AI_CONSENT_RESET(); r.textContent = "AI permission reset"; };
+    if (coach && !document.getElementById("w911-ai-reset")) {
+      coach.appendChild(el('<p class="w911-privacy-link"><a href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a> · <a href="#" id="w911-ai-reset">Reset AI permission</a></p>'));
+      var reset = document.getElementById("w911-ai-reset");
+      if (reset) reset.onclick = function (e) { e.preventDefault(); window.WRAP911_AI_CONSENT_RESET(); reset.textContent = "AI permission reset"; };
+    }
+    /* On iOS the purchase card already has the styled privacy link under the
+       buttons. A second link on the body sits in the empty space on Pricing. */
+    if (isNative) return;
+    if (document.querySelector("body > a.w911-privacy-link")) return;
+    var main = document.querySelector("main") || document.body;
+    main.appendChild(el('<a class="w911-privacy-link" href="' + PRIVACY + '" target="_blank" rel="noopener">Privacy policy</a>'));
   }
 
   function iosCheckoutNote() {

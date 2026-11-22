@@ -110,9 +110,9 @@
       ".iap-card h2{margin:0 0 6px;font-size:1.15rem;letter-spacing:.04em}" +
       ".iap-card .iap-lead{margin:0 0 8px;line-height:1.4}" +
       ".iap-card button,.iap-card .iap-web{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border-radius:12px;padding:14px 12px;font-weight:800;margin-top:10px}" +
-      ".iap-card .buy{background:linear-gradient(100deg,#ff2d8c,#ffb000);color:#fff;border:0;font-size:1.05rem}" +
-      ".iap-card .buy.seat{background:#24182a;color:#fff6ee;border:1px solid #ffb000}" +
-      ".iap-card .restore{background:transparent;color:#ffb000;border:1px solid #4a2a44;font-weight:700}" +
+      ".iap-card button.buy{background:linear-gradient(100deg,#ff2d8c,#ffb000);color:#fff;border:0;box-shadow:0 0 0 1px rgba(255,176,0,.35),0 10px 24px rgba(255,45,140,.32);font-size:1.05rem}" +
+      ".iap-card button.buy.seat{background:#24182a;color:#fff6ee;border:1px solid #ffb000;box-shadow:none}" +
+      ".iap-card button.restore{background:transparent;color:#ffb000;border:1px solid #4a2a44;box-shadow:none;font-weight:700}" +
       ".iap-card .iap-web{background:transparent;color:#fff6ee;border:1px solid #4a2a44;font-weight:700;font-size:.95rem}" +
       ".iap-card .fine{font-size:12px;opacity:.8;margin:12px 0 0;line-height:1.45}" +
       ".iap-card a{color:#ffb000}" +
@@ -557,10 +557,12 @@
       card = document.createElement("div");
       card.id = "iap-card";
       card.className = "iap-card";
-      var h1 = screen.querySelector("h1");
-      if (h1 && h1.nextSibling) screen.insertBefore(card, h1.nextSibling);
-      else screen.insertBefore(card, screen.firstChild);
+      screen.appendChild(card);
     }
+    /* The heading stays above the card. insertBefore(card, null) appends when
+       the heading is the only child left after the other pricing rows go. */
+    var h1 = screen.querySelector("h1");
+    if (h1 && card.parentNode === screen) screen.insertBefore(card, h1.nextSibling);
     var lic = activeLicense();
     var code = crewCode();
     var mail = contactMail();
