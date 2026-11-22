@@ -1,0 +1,28 @@
+name: App Store sales read-only
+# GET only. Does not create or change App Store Connect resources.
+# Runs when this file is pushed to the read-only branch. Do not merge it.
+on:
+  push:
+    branches: [cursor/asc-sales-readonly-23b0]
+    paths:
+      - .github/workflows/asc-sales-readonly.yml
+      - scripts/asc-sales-readonly.py
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+      ASC_VENDOR_NUMBER: ${{ secrets.ASC_VENDOR_NUMBER }}
+      APPLE_VENDOR_NUMBER: ${{ secrets.APPLE_VENDOR_NUMBER }}
+      VENDOR_NUMBER: ${{ secrets.VENDOR_NUMBER }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Read sales and analytics
+        run: python3 scripts/asc-sales-readonly.py
