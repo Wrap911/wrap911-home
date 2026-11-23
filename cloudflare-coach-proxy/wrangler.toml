@@ -9,9 +9,10 @@ workers_dev = true
 ALLOWED_ORIGIN = "https://wrap911.com"
 LLM_BASE_URL = "https://api.x.ai/v1"
 LLM_MODEL = "grok-4-fast-non-reasoning"
+# Problem Doctor (POST /coach/doctor). Responses API vision model.
+LLM_VISION_MODEL = "grok-4.7"
 
-# Seat codes, leads, Photo Fix rate limits, email restore records,
-# and Problem Doctor daily counts (doctorrl:*). No new binding.
+# Seat codes, leads, Photo Fix rate limits, and email restore records.
 [[kv_namespaces]]
 binding = "LICENSES"
 id = "76dac493b0ef4cabb574cff90acb6fae"  # wrap911-LICENSES (live)

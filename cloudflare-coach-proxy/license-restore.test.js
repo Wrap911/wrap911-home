@@ -8,12 +8,16 @@ import {
   storeEmailPurchase,
   timingSafeEqual,
   verifyEmailRestore,
+  claimRestoreDevice,
+  emailStorageKey,
 } from "./license-restore.js";
 
 const YEAR = 365 * 86400000;
+const WEEK = 7 * 86400000;
 const NOW = Date.parse("2026-06-01T00:00:00.000Z");
 const PACK = "com.wrap911.trainer.pack.12mo";
 const SEAT = "com.wrap911.trainer.seat.12mo";
+const PASS = "com.wrap911.trainer.pass.7d";
 
 function kv() {
   const map = new Map();
@@ -45,6 +49,40 @@ assert.equal(chosen.sku, "pack");
 assert.equal(chosen.expiresAt, expires);
 assert.notEqual(chosen.expiresAt, NOW + YEAR);
 assert.equal(pickActive([{ sku: "seat", expiresAt: NOW - 1, jws: "x" }], NOW), null);
+
+const passBought = NOW - 2 * 86400000;
+const passExp = passBought + WEEK;
+const passOnly = pickActive([
+  { sku: "pass", productId: PASS, transactionId: "p7", purchaseDate: passBought, expiresAt: passExp, jws: "pass-jws" },
+], NOW);
+assert.equal(passOnly.sku, "pass");
+assert.equal(passOnly.seats, 1);
+assert.equal(passOnly.productId, PASS);
+assert.equal(passOnly.expiresAt, passExp);
+assert.equal(pickActive([{ sku: "pass", productId: PASS, expiresAt: NOW - 1, jws: "x" }], NOW), null);
+
+const seatAndPass = pickActive([
+  { sku: "seat", productId: SEAT, transactionId: "s", purchaseDate: bought, expiresAt: expires, jws: "seat-jws" },
+  { sku: "pass", productId: PASS, transactionId: "p7", purchaseDate: passBought, expiresAt: passExp, jws: "pass-jws" },
+], NOW);
+assert.equal(seatAndPass.sku, "seat");
+assert.equal(seatAndPass.seats, 1);
+assert.equal(seatAndPass.expiresAt, expires);
+
+const packAndPass = pickActive([
+  { sku: "pack", productId: PACK, transactionId: "p", purchaseDate: bought, expiresAt: expires, jws: "pack-jws" },
+  { sku: "pass", productId: PASS, transactionId: "p7", purchaseDate: passBought, expiresAt: passExp, jws: "pass-jws" },
+], NOW);
+assert.equal(packAndPass.sku, "pack");
+assert.equal(packAndPass.seats, 5);
+assert.equal(packAndPass.expiresAt, expires);
+
+const expiredSeatActivePass = pickActive([
+  { sku: "seat", productId: SEAT, transactionId: "s", expiresAt: NOW - 1, jws: "old-seat" },
+  { sku: "pass", productId: PASS, transactionId: "p7", purchaseDate: passBought, expiresAt: passExp, jws: "pass-jws" },
+], NOW);
+assert.equal(expiredSeatActivePass.sku, "pass");
+assert.equal(expiredSeatActivePass.expiresAt, passExp);
 
 const store = kv();
 const sent = [];
@@ -106,7 +144,7 @@ const bad = await verifyEmailRestore({ email: "buyer@example.com", code: badCode
 assert.equal(bad[1], 400);
 
 const verified = await verifyEmailRestore(
-  { email: "buyer@example.com", code },
+  { email: "buyer@example.com", code, device: "seatphone1" },
   env,
   async (jws) => {
     assert.equal(jws, "signed-jws");
@@ -129,6 +167,183 @@ assert.equal(reused[1], 400);
 const hash = await hashRestoreCode("buyer@example.com", code);
 assert.equal(typeof hash, "string");
 assert.equal(hash.length, 64);
+
+async function freshCode(env, email, now) {
+  const before = sent.length;
+  const started = await startEmailRestore({ email }, env, now);
+  assert.equal(started[1], 200);
+  assert.equal(sent.length, before + 1);
+  return (sent[sent.length - 1].text.match(/\b(\d{6})\b/) || [])[1];
+}
+
+async function storedDevices(env, email, transactionId) {
+  const rec = await env.LICENSES.get(await emailStorageKey(email), "json");
+  const row = (rec.transactions || []).find((item) => item.transactionId === transactionId);
+  return row.devices;
+}
+
+/* Seat keeps one phone. A new device id replaces the previous one, so delete/reinstall restores.
+   A restore with no device id still returns the purchase. */
+const seatEnv = { LICENSES: kv(), RESEND_API_KEY: "test-resend-key" };
+await storeEmailPurchase(seatEnv, {
+  email: "seat@example.com", jws: "seat-jws", productId: SEAT, transactionId: "seat-1",
+  purchaseDate: bought, expiresAt: expires, sku: "seat", seats: 1, device: "buyerphone",
+});
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+const seatCode = await freshCode(seatEnv, "seat@example.com", NOW);
+const seatMissing = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW
+);
+assert.equal(seatMissing[1], 200);
+assert.equal(seatMissing[0].sku, "seat");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+const seatCode2 = await freshCode(seatEnv, "seat@example.com", NOW + 120000);
+const seatOther = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode2, device: "otherphone" },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW + 120000
+);
+assert.equal(seatOther[1], 200);
+assert.equal(seatOther[0].jws, "seat-jws");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["otherphone"]);
+const seatCode3 = await freshCode(seatEnv, "seat@example.com", NOW + 240000);
+const seatSame = await verifyEmailRestore(
+  { email: "seat@example.com", code: seatCode3, device: "buyerphone" },
+  seatEnv,
+  async () => ({ productId: SEAT }),
+  NOW + 240000
+);
+assert.equal(seatSame[1], 200);
+assert.equal(seatSame[0].sku, "seat");
+assert.deepEqual(await storedDevices(seatEnv, "seat@example.com", "seat-1"), ["buyerphone"]);
+
+/* Shop Pack keeps 5 ids. A 6th verified restore replaces the oldest instead of refusing. */
+const packEnv = { LICENSES: kv(), RESEND_API_KEY: "test-resend-key" };
+await storeEmailPurchase(packEnv, {
+  email: "pack@example.com", jws: "pack-jws", productId: PACK, transactionId: "pack-1",
+  purchaseDate: bought, expiresAt: expires, sku: "pack", seats: 5, device: "packphone1",
+});
+for (let n = 2; n <= 5; n++) {
+  const packCode = await freshCode(packEnv, "pack@example.com", NOW + n * 120000);
+  const ok = await verifyEmailRestore(
+    { email: "pack@example.com", code: packCode, device: "packphone" + n },
+    packEnv,
+    async () => ({ productId: PACK }),
+    NOW + n * 120000
+  );
+  assert.equal(ok[1], 200, "phone " + n);
+  assert.equal(ok[0].seats, 5);
+}
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone1", "packphone2", "packphone3", "packphone4", "packphone5",
+]);
+const fullCode = await freshCode(packEnv, "pack@example.com", NOW + 800000);
+const packed = await verifyEmailRestore(
+  { email: "pack@example.com", code: fullCode, device: "packphone6" },
+  packEnv,
+  async () => ({ productId: PACK }),
+  NOW + 800000
+);
+assert.equal(packed[1], 200);
+assert.equal(packed[0].ok, true);
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone2", "packphone3", "packphone4", "packphone5", "packphone6",
+]);
+const againCode = await freshCode(packEnv, "pack@example.com", NOW + 1000000);
+const packAgain = await verifyEmailRestore(
+  { email: "pack@example.com", code: againCode, device: "packphone1" },
+  packEnv,
+  async () => ({ productId: PACK }),
+  NOW + 1000000
+);
+assert.equal(packAgain[1], 200);
+assert.deepEqual(await storedDevices(packEnv, "pack@example.com", "pack-1"), [
+  "packphone3", "packphone4", "packphone5", "packphone6", "packphone1",
+]);
+
+const replaced = claimRestoreDevice(
+  { transactions: [{ transactionId: "s", sku: "seat", seats: 1, devices: ["buyerphone"] }] },
+  "s",
+  "otherphone",
+  1
+);
+assert.equal(replaced.ok, true);
+assert.deepEqual(replaced.devices, ["otherphone"]);
+const rotated = claimRestoreDevice(
+  { transactions: [{ transactionId: "p", sku: "pack", seats: 5, devices: ["phoneaaa", "phonebbb", "phoneccc", "phoneddd", "phoneeee"] }] },
+  "p",
+  "phonefff",
+  5
+);
+assert.equal(rotated.ok, true);
+assert.deepEqual(rotated.devices, ["phonebbb", "phoneccc", "phoneddd", "phoneeee", "phonefff"]);
+const kept = claimRestoreDevice(
+  { transactions: [{ transactionId: "s", sku: "seat", seats: 1, devices: ["buyerphone"] }] },
+  "s",
+  "",
+  1
+);
+assert.equal(kept.ok, true);
+assert.deepEqual(kept.devices, ["buyerphone"]);
+
+/* 7-Day Pass uses the same email restore flow as a Seat: one device, newest kept.
+   After 7 days the purchase is expired and restore must not grant access. */
+const passEnv = { LICENSES: kv(), RESEND_API_KEY: "test-resend-key" };
+await storeEmailPurchase(passEnv, {
+  email: "pass@example.com", jws: "pass-jws", productId: PASS, transactionId: "pass-1",
+  purchaseDate: passBought, expiresAt: passExp, sku: "pass", seats: 1, device: "passphone1",
+});
+assert.deepEqual(await storedDevices(passEnv, "pass@example.com", "pass-1"), ["passphone1"]);
+const passCode = await freshCode(passEnv, "pass@example.com", NOW);
+const passOk = await verifyEmailRestore(
+  { email: "pass@example.com", code: passCode, device: "passphone1" },
+  passEnv,
+  async () => ({ productId: PASS }),
+  NOW
+);
+assert.equal(passOk[1], 200);
+assert.equal(passOk[0].ok, true);
+assert.equal(passOk[0].sku, "pass");
+assert.equal(passOk[0].seats, 1);
+assert.equal(passOk[0].productId, PASS);
+assert.equal(passOk[0].expiresAt, passExp);
+assert.deepEqual(await storedDevices(passEnv, "pass@example.com", "pass-1"), ["passphone1"]);
+
+const passCode2 = await freshCode(passEnv, "pass@example.com", NOW + 120000);
+const passOther = await verifyEmailRestore(
+  { email: "pass@example.com", code: passCode2, device: "passphone2" },
+  passEnv,
+  async () => ({ productId: PASS }),
+  NOW + 120000
+);
+assert.equal(passOther[1], 200);
+assert.deepEqual(await storedDevices(passEnv, "pass@example.com", "pass-1"), ["passphone2"]);
+
+const passCode3 = await freshCode(passEnv, "pass@example.com", passExp - 60000);
+const passExpired = await verifyEmailRestore(
+  { email: "pass@example.com", code: passCode3, device: "passphone3" },
+  passEnv,
+  async () => ({ productId: PASS }),
+  passExp + 1
+);
+assert.equal(passExpired[1], 410);
+assert.equal(passExpired[0].ok, false);
+assert.match(passExpired[0].error, /no longer active/);
+assert.equal(passExpired[0].sku, undefined);
+assert.deepEqual(await storedDevices(passEnv, "pass@example.com", "pass-1"), ["passphone2"]);
+
+const replacedPass = claimRestoreDevice(
+  { transactions: [{ transactionId: "p7", sku: "pass", seats: 1, devices: ["passphone1"] }] },
+  "p7",
+  "passphone2",
+  1
+);
+assert.equal(replacedPass.ok, true);
+assert.deepEqual(replacedPass.devices, ["passphone2"]);
 
 /* Resend failure: 502, and the pending code is removed so a retry can send. */
 const failStore = kv();

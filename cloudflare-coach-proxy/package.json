@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node license-restore.test.js && node email-restore-route.test.mjs && node apple-route.test.mjs && node photo-route.test.mjs && node doctor-route.test.mjs"
+    "test": "node license-restore.test.js && node email-restore-route.test.mjs && node apple-route.test.mjs && node photo-route.test.mjs && node doctor.test.mjs && node doctor-apple.test.mjs"
   }
 }
