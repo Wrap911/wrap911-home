@@ -10,7 +10,8 @@ ALLOWED_ORIGIN = "https://wrap911.com"
 LLM_BASE_URL = "https://api.x.ai/v1"
 LLM_MODEL = "grok-4-fast-non-reasoning"
 
-# Seat codes, leads, Photo Fix rate limits, and email restore records.
+# Seat codes, leads, Photo Fix rate limits, email restore records,
+# and Problem Doctor daily counts (doctorrl:*). No new binding.
 [[kv_namespaces]]
 binding = "LICENSES"
 id = "76dac493b0ef4cabb574cff90acb6fae"  # wrap911-LICENSES (live)

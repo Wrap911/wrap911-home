@@ -160,6 +160,15 @@
     };
   }
 
+  /* Problem Doctor daily cap. Active Seat and Shop Pack last 365 days from
+     purchase. The 7-Day Pass lasts 7 days. Revoked, expired, or unknown
+     purchases get the free cap. No prices live here. */
+  var DOCTOR_FREE_PER_DAY = 1;
+  var DOCTOR_PAID_PER_DAY = 15;
+  function doctorDailyLimit(tx, now) {
+    return rowFrom(tx, now) ? DOCTOR_PAID_PER_DAY : DOCTOR_FREE_PER_DAY;
+  }
+
   function shouldWrite(existing, next, now, force) {
     if (!next || !next.expiresAt) return false;
     if (!stillPaid(existing, now)) return true;
@@ -183,6 +192,9 @@
     missingProductsMessage: missingProductsMessage,
     purchaseStallMessage: purchaseStallMessage,
     restoreMessage: restoreMessage,
-    licenseFromRestore: licenseFromRestore
+    licenseFromRestore: licenseFromRestore,
+    DOCTOR_FREE_PER_DAY: DOCTOR_FREE_PER_DAY,
+    DOCTOR_PAID_PER_DAY: DOCTOR_PAID_PER_DAY,
+    doctorDailyLimit: doctorDailyLimit
   };
 });

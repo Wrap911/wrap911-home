@@ -165,6 +165,10 @@ var APPLE_ROOT_G3_SHA256 = "63343abfb89a6a03ebb57e9b3f5fa7be7c4f5c756f3017b3a8c4
 var APPLE_BUNDLE_ID = "com.wrap911.trainer";
 var APPLE_PACK_SKU = "com.wrap911.trainer.pack.12mo";
 var APPLE_SEAT_SKU = "com.wrap911.trainer.seat.12mo";
+var APPLE_PASS_SKU = "com.wrap911.trainer.pass.7d";
+var DOCTOR_FREE_PER_DAY = 1;
+var DOCTOR_PAID_PER_DAY = 15;
+var WEEK_MS = 7 * 86400000;
 var APPLE_LEAF_OID = [0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x06, 0x0b, 0x01];
 var APPLE_INTER_OID = [0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x06, 0x02, 0x01];
 function appleFail(message, status) {
@@ -648,6 +652,204 @@ async function handlePhoto(request, env, corsOrigin, originOk) {
   return json(parsed, 200, corsOrigin);
 }
 
+/* Problem Doctor. The website still posts consent, images, and a note, with
+   no license, and keeps its own on-phone quota. A W911 code, when one is
+   sent, is checked the same way Photo Fix checks it. An Apple signed
+   transaction is the only new gate: 15 reads a day while Seat or Shop Pack
+   is inside 365 days, or the 7-Day Pass is inside 7 days. Revoked or expired
+   receipts fall back to 1 read a day for that device. Counts live in the
+   existing LICENSES binding. Images are not stored. */
+function doctorTierFromClaims(tx, now) {
+  if (!tx || tx.revocationDate) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var product = String(tx.productId || "");
+  var duration = product === APPLE_PACK_SKU || product === APPLE_SEAT_SKU ? YEAR_MS : (product === APPLE_PASS_SKU ? WEEK_MS : 0);
+  if (!duration) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var purchase = applePurchaseMs(tx);
+  if (!purchase || purchase + duration <= now) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var id = String(tx.originalTransactionId || tx.transactionId || "");
+  return { limit: DOCTOR_PAID_PER_DAY, id: id };
+}
+function scrubDoctorText(s) {
+  s = scrubPhotoText(s);
+  s = s.replace(/\bArlon\b/gi, "the film maker");
+  s = s.replace(/\b-?\d+(?:\.\d+)?\s*(?:°|degrees?)\s*[fFcC]?\b/g, "the range on the film TDS");
+  s = s.replace(/\b(?:to|at|about|around)\s+\d{2,3}\s*(?:°\s*)?(?:f|c|fahrenheit|celsius)\b/gi, "within the film TDS");
+  s = s.replace(/\b\d{2,3}\s*(?:°\s*)?(?:f|c|fahrenheit|celsius)\b/gi, "the film TDS");
+  return s.replace(/\s+/g, " ").trim();
+}
+function scrubDoctorList(list) {
+  var out = [], i, t;
+  if (!Array.isArray(list)) list = list ? [list] : [];
+  for (i = 0; i < list.length; i++) {
+    t = scrubDoctorText(list[i]);
+    if (t) out.push(t);
+  }
+  return out;
+}
+function parseDoctorJson(text) {
+  var raw = String(text || "").trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+  var start = raw.indexOf("{");
+  var end = raw.lastIndexOf("}");
+  if (start >= 0 && end > start) raw = raw.slice(start, end + 1);
+  var data = JSON.parse(raw);
+  var confidence = String(data.confidence || "low").toLowerCase();
+  if (confidence !== "low" && confidence !== "medium" && confidence !== "high") confidence = "low";
+  return {
+    ok: true,
+    disclaimer: "AI suggestion. Check the film TDS before you heat anything.",
+    observations: scrubDoctorText(data.observations || data.shows || data.what || ""),
+    likely_causes: scrubDoctorList(data.likely_causes || data.causes),
+    fix_steps: scrubDoctorList(data.fix_steps || data.fix || data.steps),
+    prevention: scrubDoctorList(data.prevention),
+    lesson_keywords: scrubDoctorList(data.lesson_keywords || data.keywords),
+    confidence: confidence,
+  };
+}
+async function doctorCountOk(env, bucket, limit) {
+  var day = new Date().toISOString().slice(0, 10);
+  var key = "doctorrl:" + bucket;
+  var prev = null;
+  try { prev = JSON.parse((await env.LICENSES.get(key)) || "null"); } catch (e) { prev = null; }
+  if (!prev || prev.day !== day) prev = { day: day, n: 0 };
+  if (prev.n >= limit) return false;
+  prev.n += 1;
+  await env.LICENSES.put(key, JSON.stringify(prev));
+  return true;
+}
+async function doctorCodeBucket(env, body) {
+  var code = String((body && body.code) || "").trim().toUpperCase();
+  var device = cleanDevice(body && body.device);
+  if (!/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) return { error: "Pack or Seat required.", status: 403 };
+  if (!env.LICENSES) return { error: "License store is not configured.", status: 500 };
+  var raw = await env.LICENSES.get("code:" + code);
+  if (!raw) return { error: "Pack or Seat required.", status: 403, detail: "missing" };
+  var rec = JSON.parse(raw);
+  var status = await recordStatus(env, rec);
+  if (status !== "ok") {
+    await env.LICENSES.put("code:" + code, JSON.stringify(rec));
+    return { error: status === "revoked" ? "This code was turned off." : "This code has expired.", status: 410, detail: status };
+  }
+  var known = Array.isArray(rec.devices) && device && rec.devices.indexOf(device) !== -1;
+  if (!known) return { error: "This phone is not on that code.", status: 403, detail: "unknown-device" };
+  return { bucket: "code:" + code, limit: DOCTOR_PAID_PER_DAY };
+}
+var DOCTOR_PROMPT = `You diagnose one commercial vinyl wrap problem for a WRAP 911 installer from one photo or a few frames of one short clip.
+
+Brands ONLY: 3M, Avery Dennison, and BriteLine. Never name any other film brand. If the film is unknown, say "the film on the TDS".
+Gerardo (Gerry) is an installer. He does not own or run a shop. Never say that he does.
+NEVER invent application temperatures, post-heat numbers, stretch percentages, dwell times, or chemical recipes. Point those to the current TDS for that exact SKU.
+
+Reply with JSON only, no markdown, using these keys:
+- observations: what the photo likely shows
+- likely_causes: array of likely causes
+- fix_steps: array of fix steps
+- prevention: array of how to avoid it next time
+- lesson_keywords: array of short lesson words such as rivet, tenting, recess, seam
+- confidence: low, medium, or high
+
+Keep it short enough to read on a phone.`;
+async function handleDoctor(request, env, corsOrigin, originOk) {
+  var url = new URL(request.url);
+  if (url.pathname !== "/coach/doctor") return null;
+  if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, corsOrigin);
+  if (!originOk) return json({ error: "Origin not allowed" }, 403, corsOrigin);
+  var body;
+  try { body = await request.json(); } catch (e) { return json({ error: "Invalid JSON" }, 400, corsOrigin); }
+  if (!body || body.consent !== true) return json({ error: "Confirm the photo can be sent. Nothing is stored." }, 400, corsOrigin);
+  var images = Array.isArray(body.images) && body.images.length ? body.images.slice() : (body.image ? [body.image] : []);
+  if (!images.length) return json({ error: "Add a photo or a few still frames." }, 400, corsOrigin);
+  if (images.length > 6) return json({ error: "Send up to 6 frames." }, 400, corsOrigin);
+  var totalLen = 0;
+  for (var ii = 0; ii < images.length; ii++) {
+    images[ii] = String(images[ii] || "");
+    totalLen += images[ii].length;
+    if (!/^data:image\/(?:jpeg|png);base64,[A-Za-z0-9+/=\s]+$/.test(images[ii]) || images[ii].length > 1800000) {
+      return json({ error: "Send a JPEG or PNG." }, 400, corsOrigin);
+    }
+  }
+  if (totalLen > 4000000) return json({ error: "Frames are too large. Send smaller frames." }, 400, corsOrigin);
+  var bucket = "";
+  var limit = 0;
+  if (body.jws) {
+    if (!env.LICENSES) return json({ error: "License store is not configured." }, 500, corsOrigin);
+    var tx;
+    try { tx = await verifyAppleJws(body.jws); } catch (e1) { return json({ error: "Invalid Apple receipt." }, 400, corsOrigin); }
+    if (tx.bundleId !== APPLE_BUNDLE_ID) return json({ error: "Wrong app." }, 400, corsOrigin);
+    var environment = String(tx.environment || "");
+    if (environment !== "Sandbox" && environment !== "Production") return json({ error: "Unsupported Apple environment." }, 400, corsOrigin);
+    var access = doctorTierFromClaims(tx, Date.now());
+    var device = cleanDevice(body.device);
+    if (access.limit === DOCTOR_PAID_PER_DAY) {
+      if (!access.id) return json({ error: "Missing transaction." }, 400, corsOrigin);
+      bucket = "apple:" + access.id;
+      limit = DOCTOR_PAID_PER_DAY;
+    } else {
+      if (!device) return json({ error: "Missing device." }, 400, corsOrigin);
+      bucket = "dev:" + device;
+      limit = DOCTOR_FREE_PER_DAY;
+    }
+  } else if (body.code) {
+    var coded = await doctorCodeBucket(env, body);
+    if (coded.error) return json({ error: coded.error, status: coded.detail }, coded.status, corsOrigin);
+    bucket = coded.bucket;
+    limit = coded.limit;
+  } else if (cleanDevice(body.device)) {
+    if (!env.LICENSES) return json({ error: "License store is not configured." }, 500, corsOrigin);
+    bucket = "dev:" + cleanDevice(body.device);
+    limit = DOCTOR_FREE_PER_DAY;
+  }
+  if (limit && !(await doctorCountOk(env, bucket, limit))) {
+    return json({ error: "Too many reads. Wait and try again." }, 429, corsOrigin);
+  }
+  var apiKey = env.LLM_API_KEY;
+  if (!apiKey) return json({ error: "Worker misconfigured: LLM_API_KEY secret not set" }, 500, corsOrigin);
+  var note = String(body.note || "").slice(0, 500);
+  var model = String(env.LLM_VISION_MODEL || PHOTO_MODEL);
+  var base = String(env.LLM_BASE_URL || DEFAULT_BASE).replace(/\/$/, "");
+  var upstreamRes;
+  try {
+    upstreamRes = await fetch(base + "/chat/completions", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: model,
+        messages: [
+          { role: "system", content: DOCTOR_PROMPT },
+          { role: "user", content: images.map(function (im) {
+            return { type: "image_url", image_url: { url: im.replace(/\s/g, ""), detail: "high" } };
+          }).concat([{ type: "text", text: "Installer note (optional):\n" + note + "\n\nDiagnose this vinyl wrap problem. Reply with JSON only." }]) },
+        ],
+        max_tokens: 900,
+        stream: false,
+      }),
+    });
+  } catch (err) {
+    return json({ error: "Upstream fetch failed" }, 502, corsOrigin);
+  }
+  var text = await upstreamRes.text();
+  var data;
+  try { data = JSON.parse(text); } catch (e2) { return json({ error: "Upstream non-JSON", status: upstreamRes.status }, 502, corsOrigin); }
+  if (!upstreamRes.ok) return json({ error: "Upstream error", status: upstreamRes.status }, 502, corsOrigin);
+  var outputText = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content)
+    ? String(data.choices[0].message.content).trim() : "";
+  if (!outputText) return json({ error: "Upstream response contained no output text" }, 502, corsOrigin);
+  var parsed;
+  try { parsed = parseDoctorJson(outputText); }
+  catch (e3) {
+    parsed = {
+      ok: true,
+      disclaimer: "AI suggestion. Check the film TDS before you heat anything.",
+      observations: scrubDoctorText(outputText).slice(0, 2000),
+      likely_causes: [],
+      fix_steps: [],
+      prevention: [],
+      lesson_keywords: [],
+      confidence: "low",
+    };
+  }
+  return json(parsed, 200, corsOrigin);
+}
+
 export default {
   async fetch(request, env) {
     const allowed = (env.ALLOWED_ORIGIN || DEFAULT_ORIGIN).replace(/\/$/, "");
@@ -663,6 +865,8 @@ export default {
     if (licenseResponse) return licenseResponse;
     try { var photoResponse = await handlePhoto(request, env, corsOrigin, originOk); if (photoResponse) return photoResponse; }
     catch (err) { return json({ error: "Photo Fix is unavailable." }, 500, corsOrigin); }
+    try { var doctorResponse = await handleDoctor(request, env, corsOrigin, originOk); if (doctorResponse) return doctorResponse; }
+    catch (err) { return json({ error: "Problem Doctor is unavailable." }, 500, corsOrigin); }
     if (request.method === "GET") {
       return json({ ok: true, service: "wrap911-coach-proxy", hint: "POST coach messages. GET /license/claim. POST /license/redeem." }, 200, corsOrigin);
     }
@@ -714,4 +918,7 @@ export default {
   },
 };
 export { verifyAppleJws, issueAppleSeatCodes, handleAppleLicense };
+
+
+export { doctorTierFromClaims };
 

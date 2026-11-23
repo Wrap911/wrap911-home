@@ -715,6 +715,18 @@
     loadProducts().then(render);
     readOnDevice().then(render);
   }
+  /* Latest StoreKit signed transaction for Problem Doctor. Same on-device
+     read as Restore. It does not ask for an Apple Account. */
+  window.WRAP911_APPLE_RECEIPT = function () {
+    function pack(jws) { return { jws: jws || "", device: deviceId() }; }
+    if (!NP || !NP.getPurchases) return Promise.resolve(pack(lastJws));
+    return readStore().then(function (found) {
+      var row = Logic.pickEntitlement(found.list || [], Date.now());
+      var jws = row && row.tx && (row.tx.jwsRepresentation || row.tx.jws);
+      if (jws) lastJws = String(jws);
+      return pack(lastJws);
+    }).catch(function () { return pack(lastJws); });
+  };
   window.WRAP911_IAP = { readOnDevice: readOnDevice, render: render, productIds: IDS, hook: hookCore };
   if (NP && NP.addListener) {
     try {
