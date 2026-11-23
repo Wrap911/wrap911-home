@@ -21,6 +21,7 @@ import jwt
 import requests
 
 APP_ID = "6816763473"
+REQUEST_ID = "4bde6004-2ab8-4afe-9918-fb524237bed8"
 BASE = "https://api.appstoreconnect.apple.com"
 LAUNCH = date(2026, 11, 21)
 APP_APPLE_IDS = {APP_ID}
@@ -229,9 +230,10 @@ def summarize_table(text: str, report_name: str) -> None:
     reader = csv.DictReader(io.StringIO(text), delimiter="\t")
     fields = reader.fieldnames or []
     print(f"    columns: {', '.join(fields[:18])}")
-    date_key = next((name for name in fields if name.lower() == "date"), None)
-    count_key = next((name for name in fields if name.lower() in {"counts", "units"}), None)
-    event_key = next((name for name in fields if name.lower() in {"event", "download type", "engagement type"}), None)
+    lower = {name.lower(): name for name in fields}
+    date_key = lower.get("date")
+    count_key = lower.get("counts") or lower.get("units")
+    label_key = lower.get("download type") or lower.get("event") or lower.get("engagement type")
     if not date_key or not count_key:
         print("    no Date/Counts columns; skipped the rollup")
         return
@@ -240,7 +242,7 @@ def summarize_table(text: str, report_name: str) -> None:
         day = (row.get(date_key) or "")[:10]
         if not day or day < LAUNCH.isoformat():
             continue
-        label = (row.get(event_key) or "total").strip() if event_key else "total"
+        label = (row.get(label_key) or "total").strip() if label_key else "total"
         try:
             count = int(float(row.get(count_key) or 0))
         except ValueError:
@@ -249,7 +251,7 @@ def summarize_table(text: str, report_name: str) -> None:
     if not rolled:
         print(f"    {report_name}: no rows on or after {LAUNCH.isoformat()}")
         return
-    print(f"    {report_name} since {LAUNCH.isoformat()}")
+    print(f"    {report_name} since {LAUNCH.isoformat()} (report dates)")
     for key in sorted(rolled):
         print(f"      {key[0]} {key[1]} {rolled[key]}")
 
@@ -280,34 +282,64 @@ def analytics() -> None:
         print("One has to be created first. That needs Gerardo's OK.")
         print("Apple typically takes 1–2 days to produce the first data after a request is created.")
         return
-    wanted = ("discovery and engagement", "app units", "app downloads")
-    for request in useful:
-        status, reports = pages(f"/v1/analyticsReportRequests/{request['id']}/reports?limit=50")
+    wanted = ("discovery and engagement", "app downloads", "app units", "installation and deletion")
+    chosen = [row for row in useful if row.get("id") == REQUEST_ID] or useful[:1]
+    if not any(row.get("id") == REQUEST_ID for row in useful):
+        print(f"ANALYTICS: request {REQUEST_ID} was not in the list. No new request was created.")
+    instance_total = 0
+    for request in chosen:
+        print(f"ANALYTICS: reading request {request.get('id')}")
+        status, reports = pages(f"/v1/analyticsReportRequests/{request['id']}/reports?limit=200")
         if status >= 400:
             print(f"  reports HTTP {status}")
             continue
+        matched = []
+        skipped = 0
         for report in reports:
             attrs = report.get("attributes") or {}
             name = str(attrs.get("name") or "")
-            category = str(attrs.get("category") or "")
             folded = name.casefold()
-            if not any(part in folded for part in wanted):
-                print(f"  skip {category} / {name}")
-                continue
+            if any(part in folded for part in wanted):
+                matched.append(report)
+            else:
+                skipped += 1
+        print(f"  reports listed {len(reports)}; focused {len(matched)}; other {skipped}")
+        focused = []
+        for report in matched:
+            name = str((report.get("attributes") or {}).get("name") or "")
+            if name.casefold().endswith("detailed"):
+                standard = name[: -len("Detailed")].strip() + " Standard"
+                if any(str((other.get("attributes") or {}).get("name") or "") == standard for other in matched):
+                    print(f"  skip detailed duplicate {name}")
+                    continue
+            focused.append(report)
+        any_instance = False
+        for report in focused:
+            attrs = report.get("attributes") or {}
+            name = str(attrs.get("name") or "")
+            category = str(attrs.get("category") or "")
             print(f"  report {category} / {name}")
             status, instances = pages(f"/v1/analyticsReports/{report['id']}/instances?limit=50")
             if status >= 400:
                 print(f"    instances HTTP {status}")
                 continue
+            instance_total += len(instances)
             daily = []
             for instance in instances:
                 iattrs = instance.get("attributes") or {}
                 if str(iattrs.get("granularity") or "") not in {"DAILY", ""}:
                     continue
+                stamp = instance_date(iattrs)[:10]
+                if stamp and stamp < LAUNCH.isoformat():
+                    continue
                 daily.append(instance)
-            if not daily:
-                print("    no daily instances")
+            if not instances:
+                print("    no instances")
                 continue
+            if not daily:
+                print(f"    instances {len(instances)}; none are daily on or after {LAUNCH.isoformat()}")
+                continue
+            any_instance = True
             daily.sort(key=lambda item: instance_date(item.get("attributes") or {}))
             for instance in daily:
                 iattrs = instance.get("attributes") or {}
@@ -316,13 +348,22 @@ def analytics() -> None:
                 if status >= 400:
                     print(f"    segments HTTP {status}")
                     continue
+                if not segments:
+                    print("    no segments")
+                    continue
                 for segment in segments:
                     url = str((segment.get("attributes") or {}).get("url") or "")
-                    if not url:
+                    if not url.startswith("https://"):
                         continue
                     text = download_segment(url)
                     if text:
                         summarize_table(text, name)
+        if not any_instance:
+            print("  no daily instances yet for the focused reports")
+    if instance_total == 0:
+        print("ANALYTICS: no report instances exist yet.")
+        print("Apple usually produces the first ongoing data 1–2 days after the request is created.")
+        print("The request was created the night of Nov 21, 2026 ET, so the first Pacific day may appear later on Nov 23 or on Nov 24.")
 
 
 def main() -> None:
