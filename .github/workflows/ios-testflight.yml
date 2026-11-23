@@ -13,11 +13,12 @@ name: iOS build and upload to App Store Connect
 # Upload build 22: Restore with email for non-renewing Seat and Shop Pack. Same-phone check stays on-device. No Apple Account password sheet.
 # Upload build 24 on version 1.2: 7-Day Pass (com.wrap911.trainer.pass.7d), non-renewing, 7 days from purchase. Restore with email. No Apple Account password sheet.
 # Upload build 25 on version 1.2: pricing heading above the card, Seat and 7-Day Pass outlined, no stray privacy link.
-# Version 1.3 build 26 adds Problem Doctor. Do not push this file to ios-capacitor while 1.2 is in review.
+# Version 1.3 build 26 adds Problem Doctor. A push of this file on cursor/ios-web-parity-1.3 uploads that branch only.
+# Do not push this file to ios-capacitor while 1.2 is in review.
 on:
   workflow_dispatch:
   push:
-    branches: [ios-capacitor]
+    branches: [ios-capacitor, cursor/ios-web-parity-1.3]
     paths: [".github/workflows/ios-testflight.yml"]
 jobs:
   build:
