@@ -23,7 +23,7 @@ import requests
 APP_ID = "6816763473"
 REQUEST_ID = "4bde6004-2ab8-4afe-9918-fb524237bed8"
 BASE = "https://api.appstoreconnect.apple.com"
-LAUNCH = date(2026, 11, 21)
+LAUNCH = date(2026, 11, 13)
 APP_APPLE_IDS = {APP_ID}
 IAP_IDS = {
     "com.wrap911.trainer.seat.12mo": "6820187854",
@@ -80,7 +80,7 @@ def redact(text: str) -> str:
     return re.sub(r"\b\d{6,12}\b", hide, cleaned)
 
 
-def get(url: str, params: dict | None = None, accept: str | None = None, raw: bool = False):
+def get(url: str, params: dict | None = None, accept: str | None = None, raw: bool = False, quiet: bool = False):
     if not url.startswith("https://"):
         raise SystemExit("refusing non-https GET")
     headers = {"Authorization": "Bearer " + token()}
@@ -88,6 +88,8 @@ def get(url: str, params: dict | None = None, accept: str | None = None, raw: bo
         headers["Accept"] = accept
     response = requests.get(url, headers=headers, params=params, timeout=120)
     if raw:
+        if response.status_code >= 400 and not quiet:
+            print(f"HTTP {response.status_code} GET {url.split('?')[0]} {redact(response.text[:300])}")
         return response.status_code, response.content, response.headers.get("Content-Type", "")
     if response.status_code == 204 or not response.content:
         return response.status_code, {}
@@ -95,7 +97,7 @@ def get(url: str, params: dict | None = None, accept: str | None = None, raw: bo
         payload = response.json()
     except ValueError:
         payload = {"raw": response.text[:300]}
-    if response.status_code >= 400:
+    if response.status_code >= 400 and not quiet:
         print(f"HTTP {response.status_code} GET {url.split('?')[0]} {redact(json.dumps(payload)[:500])}")
     return response.status_code, payload
 
@@ -125,22 +127,26 @@ def money(value: str) -> float:
         return 0.0
 
 
-def sales_rows(vendor: str, day: date) -> tuple[str, list[dict]]:
-    status, blob, _ctype = get(
-        BASE + "/v1/salesReports",
-        params={
-            "filter[frequency]": "DAILY",
-            "filter[reportType]": "SALES",
-            "filter[reportSubType]": "SUMMARY",
-            "filter[version]": "1_1",
-            "filter[vendorNumber]": vendor,
-            "filter[reportDate]": day.isoformat(),
-        },
-        accept="application/a-gzip",
-        raw=True,
-    )
-    if status == 404 or status == 410:
-        return "not-ready", []
+def sales_rows(vendor: str, day: str, frequency: str) -> tuple[str, list[dict]]:
+    try:
+        status, blob, _ctype = get(
+            BASE + "/v1/salesReports",
+            params={
+                "filter[frequency]": frequency,
+                "filter[reportType]": "SALES",
+                "filter[reportSubType]": "SUMMARY",
+                "filter[version]": "1_1",
+                "filter[vendorNumber]": vendor,
+                "filter[reportDate]": day,
+            },
+            accept="application/a-gzip",
+            raw=True,
+            quiet=True,
+        )
+    except requests.RequestException:
+        return "error", []
+    if status in (404, 410):
+        return "empty", []
     if status >= 400:
         return f"http-{status}", []
     text = gunzip(blob).lstrip("\ufeff")
@@ -150,23 +156,73 @@ def sales_rows(vendor: str, day: date) -> tuple[str, list[dict]]:
     return "ok", list(reader)
 
 
+def app_motion(row: dict) -> str:
+    kind = (row.get("Product Type Identifier") or "").strip().upper()
+    order = (row.get("Order Type") or "").strip().lower()
+    reason = (row.get("Proceeds Reason") or "").strip().lower()
+    if "redownload" in order or "redownload" in reason:
+        return "redownload"
+    if kind in UPDATE_TYPES or kind.startswith("7"):
+        return "update"
+    return "download"
+
+
 def classify(row: dict) -> tuple[str, str]:
     sku = (row.get("SKU") or row.get("Title") or "").strip()
     apple = (row.get("Apple Identifier") or "").strip()
     kind = (row.get("Product Type Identifier") or "").strip()
-    label = PRODUCT_LABELS.get(kind, kind or "unknown")
     for product_id, apple_id in IAP_IDS.items():
         if sku == product_id or apple == apple_id or product_id in sku:
             return "iap", product_id
-    if apple in APP_APPLE_IDS or sku.lower() in {"wrap911-ios", "wrap911"}:
-        if kind in UPDATE_TYPES or "update" in label:
-            return "update", "app"
-        return "download", "app"
+    app_ids = APP_APPLE_IDS | {"com.wrap911.trainer"}
+    if apple in APP_APPLE_IDS or sku.lower() in app_ids or sku.lower() in {"wrap911-ios", "wrap911"}:
+        return app_motion(row), "app"
     if kind.upper().startswith("IA"):
         return "iap", sku or apple or kind
-    if kind in UPDATE_TYPES:
+    if kind.upper() in UPDATE_TYPES or kind.upper().startswith("7"):
         return "update", sku or "app"
+    if kind[:1] in {"1", "F", "3"}:
+        return app_motion(row), sku or "app"
     return "other", sku or kind or "unknown"
+
+
+def add_rows(totals: dict, label: str, rows: list[dict], columns_seen: set[str]) -> None:
+    if rows:
+        columns_seen.update(rows[0].keys())
+    for row in rows:
+        bucket, sku = classify(row)
+        try:
+            units = int(float(row.get("Units") or 0))
+        except ValueError:
+            units = 0
+        currency = (row.get("Currency of Proceeds") or row.get("Customer Currency") or "").strip() or "unknown"
+        country = (row.get("Country Code") or "").strip() or "unknown"
+        proceeds = money(row.get("Developer Proceeds")) * units
+        kind = (row.get("Product Type Identifier") or "").strip()
+        key = (label, bucket, sku, kind, country, currency)
+        totals[key]["units"] += units
+        totals[key]["proceeds"] += proceeds
+
+
+def print_breakout(totals: dict) -> None:
+    print("SALES BREAKOUT (units and developer proceeds by country)")
+    for key in sorted(totals):
+        label, bucket, sku, kind, country, currency = key
+        units = totals[key]["units"]
+        proceeds = totals[key]["proceeds"]
+        name = PRODUCT_LABELS.get(kind, kind)
+        print(f"  {label} {bucket} {sku} type={kind} ({name}) country={country} units={units} proceeds={proceeds:.2f} {currency}")
+
+
+def week_starts(end: date) -> list[date]:
+    sunday = end - timedelta(days=(end.weekday() + 1) % 7)
+    starts = []
+    cursor = date(2026, 11, 8)
+    while cursor <= sunday:
+        if cursor + timedelta(days=6) >= LAUNCH:
+            starts.append(cursor)
+        cursor += timedelta(days=7)
+    return starts
 
 
 def sales_report(vendor: str) -> None:
@@ -177,35 +233,40 @@ def sales_report(vendor: str) -> None:
         return
     end = pacific_today()
     print(f"SALES: daily SUMMARY 1_1 from {LAUNCH.isoformat()} through {end.isoformat()} (Pacific dates)")
+    print("A 404 is an empty or unpublished day. The vendor number is not printed.")
     day = LAUNCH
-    totals: dict[tuple, dict] = defaultdict(lambda: {"units": 0, "proceeds": defaultdict(float)})
-    any_ok = False
+    totals: dict[tuple, dict] = defaultdict(lambda: {"units": 0, "proceeds": 0.0})
+    columns_seen: set[str] = set()
+    empty_days = []
+    ready_days = []
     while day <= end:
-        state, rows = sales_rows(vendor, day)
+        state, rows = sales_rows(vendor, day.isoformat(), "DAILY")
         print(f"  {day.isoformat()} {state} rows={len(rows)}", flush=True)
         if state == "ok":
-            any_ok = True
-        for row in rows:
-            bucket, sku = classify(row)
-            units = int(float(row.get("Units") or 0))
-            currency = (row.get("Currency of Proceeds") or row.get("Customer Currency") or "").strip() or "unknown"
-            proceeds = money(row.get("Developer Proceeds")) * units
-            kind = (row.get("Product Type Identifier") or "").strip()
-            key = (day.isoformat(), bucket, sku, kind, currency)
-            totals[key]["units"] += units
-            totals[key]["proceeds"][currency] += proceeds
+            ready_days.append(day.isoformat())
+            add_rows(totals, day.isoformat(), rows, columns_seen)
+        else:
+            empty_days.append(day.isoformat())
         day += timedelta(days=1)
-    if not any_ok:
-        print("SALES: no daily report was available yet. A 404 means Apple has not published that Pacific day.")
-        print("Daily reports usually appear the next morning, Pacific time.")
-        return
-    print("SALES BREAKOUT (units, extended developer proceeds)")
-    for key in sorted(totals):
-        day_s, bucket, sku, kind, currency = key
-        units = totals[key]["units"]
-        proceeds = totals[key]["proceeds"][currency]
-        label = PRODUCT_LABELS.get(kind, kind)
-        print(f"  {day_s} {bucket} {sku} type={kind} ({label}) units={units} proceeds={proceeds:.2f} {currency}")
+    print("SALES EMPTY OR UNPUBLISHED DAYS: " + (", ".join(empty_days) if empty_days else "none"))
+    print("SALES DAYS WITH A REPORT: " + (", ".join(ready_days) if ready_days else "none"))
+    if columns_seen:
+        print("SALES COLUMNS: " + ", ".join(sorted(columns_seen)))
+        if "Order Type" not in columns_seen and "Proceeds Reason" not in columns_seen:
+            print("SALES: this summary file has no redownload column. App rows are download units versus updates.")
+    if ready_days:
+        print_breakout(totals)
+    else:
+        print("SALES: no daily report was available yet.")
+    print("SALES WEEKLY: SUMMARY 1_1, report date is the Sunday that starts the Pacific week")
+    for start in week_starts(end):
+        state, rows = sales_rows(vendor, start.isoformat(), "WEEKLY")
+        print(f"  week {start.isoformat()} {state} rows={len(rows)}", flush=True)
+        if state != "ok":
+            continue
+        week_totals: dict[tuple, dict] = defaultdict(lambda: {"units": 0, "proceeds": 0.0})
+        add_rows(week_totals, "week-" + start.isoformat(), rows, columns_seen)
+        print_breakout(week_totals)
 
 
 def pages(path: str) -> tuple[int, list[dict]]:
