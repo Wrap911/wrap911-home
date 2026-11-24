@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.7.6";
+var CACHE = "wrap911-trainer-1.3-bg1";
 var IMG_CACHE = "wrap911-img-v1"; /* photos the user already opened; videos are never cached */
 /* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
@@ -39,6 +39,17 @@ var ASSETS = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
+  "./css/field-bg.css",
+  "./js/field-bg.js",
+  "./media/bg/home.webp",
+  "./media/bg/box-truck.webp",
+  "./media/bg/van.webp",
+  "./media/bg/trailer.webp",
+  "./media/bg/storefront.webp",
+  "./media/bg/fleet.webp",
+  "./media/bg/rv-bus.webp",
+  "./media/bg/doctor.webp",
+  "./media/bg/practice.webp",
   /* 2.6.2: shell fonts + header logo so the first screen renders offline (small files; no photos/mp4s here) */
   "../fonts/bebas-neue.woff2",
   "../fonts/outfit-400.woff2",
@@ -103,6 +114,25 @@ self.addEventListener("activate", function (event) {
 
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
+  /* Field backgrounds are precached in CACHE so the PWA can paint offline. */
+  try {
+    var bgUrl = new URL(event.request.url);
+    if (bgUrl.origin === self.location.origin && bgUrl.pathname.indexOf("/media/bg/") !== -1) {
+      event.respondWith(
+        caches.match(event.request, { ignoreSearch: true }).then(function (hit) {
+          if (hit) return hit;
+          return fetch(event.request).then(function (res) {
+            if (res && res.ok) {
+              var copy = res.clone();
+              caches.open(CACHE).then(function (cache) { cache.put(event.request, copy); });
+            }
+            return res;
+          });
+        }).catch(function () { return new Response("", { status: 503, statusText: "Background offline" }); })
+      );
+      return;
+    }
+  } catch (eBg) {}
   if (/\.(jpe?g|png|webp)$/i.test(new URL(event.request.url).pathname) && new URL(event.request.url).origin === self.location.origin) {
     event.respondWith(
       caches.open(IMG_CACHE).then(function (cache) {

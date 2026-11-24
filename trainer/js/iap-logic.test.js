@@ -218,14 +218,15 @@ assert.ok(storekit.indexOf("com.wrap911.trainer.pass.7d") !== -1);
 assert.ok(storekit.indexOf("12.99") !== -1);
 var project = fs.readFileSync(path.join(__dirname, "../../ios/App/App.xcodeproj/project.pbxproj"), "utf8");
 assert.ok(project.indexOf("MARKETING_VERSION = 1.3;") !== -1);
-assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 26;") !== -1);
+assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 27;") !== -1);
+assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 26;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.2;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 25;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 24;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 22;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.1;"), -1);
 var flight = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ios-testflight.yml"), "utf8");
-assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=26") !== -1);
+assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=26") !== -1 || flight.indexOf("CURRENT_PROJECT_VERSION=27") !== -1);
 assert.ok(flight.indexOf("MARKETING_VERSION=1.3") !== -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=25"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=24"), -1);
@@ -262,3 +263,41 @@ assert.ok(appstore.indexOf("if (isNative) return;") !== -1, "iOS does not add a 
 assert.ok(appstore.indexOf("color:#ffb000") !== -1, "privacy links use the app gold");
 
 console.log("iap-logic tests ok");
+
+/* Build 27: field-photo backgrounds. Ten real shop photos, Storefront card label, no payment or code UI added. */
+var crypto = require("crypto");
+var BG_SHA = {
+  "box-truck": "ca3b68a61e6f49b0a018e63680797a8ecdb40ba03bdd6ff7e8222f87d061b703",
+  "doctor": "077277adce5912cc6aad149d69a9735bff5157a341a001c35b076988cd9e46a4",
+  "fleet": "5630a1d6eddf521430206f9ebaf18ef5eccb8f52049268def93ce232e707dd6b",
+  "home": "ff30f1d97455d1f134df3d1b1cc61d0d5c5a83917c3b3823f3718acec3ab436b",
+  "practice": "f458eca105485e54ce61da9c9e1f8f90c40f16ebd9bb60629b7347bab945af37",
+  "rv-bus": "f996ecf87b54e36bebdf110dc1cb6ace2f94bb761c57ff5ac1ac4bd8ad0be7fb",
+  "storefront": "1960e02c9104cbcd6f00ed1def0b54519bc5e6b7108030a2d1dba56524e92ff1",
+  "trailer": "885d6f72770d67b96de9cd485960cce36ff6507513ff72b50ecfd23d26cf17f5",
+  "van": "275f03eb4960c896e453ff84441136d59afdecfbac353dcc1afff7c51672273d"
+};
+Object.keys(BG_SHA).forEach(function (name) {
+  var bytes = fs.readFileSync(path.join(__dirname, "../media/bg/" + name + ".webp"));
+  assert.strictEqual(crypto.createHash("sha256").update(bytes).digest("hex"), BG_SHA[name], "bg " + name);
+});
+assert.strictEqual(fs.readdirSync(path.join(__dirname, "../media/bg")).length, 9, "nine backgrounds; the lime-green pricing photo is not shipped");
+assert.ok(!fs.existsSync(path.join(__dirname, "../media/bg/pricing.webp")));
+assert.ok(fieldJsSrc().indexOf("pricing.webp") === -1);
+function fieldJsSrc() { return fs.readFileSync(path.join(__dirname, "field-bg.js"), "utf8"); }
+var fieldJs = fs.readFileSync(path.join(__dirname, "field-bg.js"), "utf8");
+var fieldCss = fs.readFileSync(path.join(__dirname, "../css/field-bg.css"), "utf8");
+var indexHtml = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
+var swJs = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
+assert.ok(indexHtml.indexOf('id="field-bg"') !== -1 && indexHtml.indexOf("css/field-bg.css") !== -1 && indexHtml.indexOf("js/field-bg.js") !== -1);
+assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.3-bg1"') !== -1);
+assert.strictEqual(swJs.indexOf("bg-mock"), -1);
+Object.keys(BG_SHA).forEach(function (name) { assert.ok(swJs.indexOf("./media/bg/" + name + ".webp") !== -1, "sw precache " + name); });
+[fieldJs, fieldCss].forEach(function (src) {
+  assert.ok(!/stripe|arlon|dunkin|buy\.|https?:\/\//i.test(src), "background files carry no links, Stripe, Arlon, or Dunkin");
+});
+var labels = fs.readFileSync(path.join(__dirname, "labels-fix.js"), "utf8");
+assert.ok(labels.indexOf('storefront: { title: "Storefront"') !== -1, "Storefront card reads Storefront");
+assert.strictEqual(labels.indexOf('storefront: { title: "Interior"'), -1);
+var trim = fs.readFileSync(path.join(__dirname, "jobs-trim.js"), "utf8");
+assert.ok(trim.indexOf('v.title = "Storefront";') !== -1 && trim.indexOf('v.title = "Interior";') === -1, "jobs-trim keeps the Storefront title");
