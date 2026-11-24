@@ -206,23 +206,24 @@ function derRead(bytes, offset) {
   if (end > bytes.length) throw new Error("der");
   return { tag: tag, start: p, end: end, next: end, header: offset };
 }
-function derInt(bytes, start, end) {
+function derInt(bytes, start, end, size) {
   var v = bytes.slice(start, end);
-  if (v.length && v[0] === 0) v = v.slice(1);
-  if (v.length > 32) throw new Error("der");
-  var out = new Uint8Array(32);
-  out.set(v, 32 - v.length);
+  while (v.length > 1 && v[0] === 0) v = v.slice(1);
+  if (v.length > size) throw new Error("der");
+  var out = new Uint8Array(size);
+  out.set(v, size - v.length);
   return out;
 }
-function ecdsaDerToRaw(sig) {
+/* size is the curve size in bytes: 32 for P-256, 48 for P-384. */
+function ecdsaDerToRaw(sig, size) {
   var seq = derRead(sig, 0);
   if (seq.tag !== 0x30) throw new Error("der");
   var r = derRead(sig, seq.start);
   var s = derRead(sig, r.next);
   if (r.tag !== 0x02 || s.tag !== 0x02) throw new Error("der");
-  var raw = new Uint8Array(64);
-  raw.set(derInt(sig, r.start, r.end), 0);
-  raw.set(derInt(sig, s.start, s.end), 32);
+  var raw = new Uint8Array(size * 2);
+  raw.set(derInt(sig, r.start, r.end, size), 0);
+  raw.set(derInt(sig, s.start, s.end, size), size);
   return raw;
 }
 function certParts(cert) {
@@ -244,9 +245,35 @@ function certParts(cert) {
   return {
     tbs: cert.slice(tbs.header, tbs.next),
     spki: cert.slice(spki.header, spki.next),
-    sig: ecdsaDerToRaw(cert.slice(bit.start + 1, bit.end)),
+    sigDer: cert.slice(bit.start + 1, bit.end),
+    sigHash: certSigHash(cert, alg),
+    curve: certCurve(cert, spki),
     validity: validity,
   };
+}
+/* Apple's Root CA G3 and the WWDR intermediate are P-384 and sign with SHA-384. The StoreKit leaf is P-256. */
+var OID_ECDSA_SHA256 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x02];
+var OID_ECDSA_SHA384 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x03];
+var OID_P256 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07];
+var OID_P384 = [0x2b, 0x81, 0x04, 0x00, 0x22];
+function oidEquals(bytes, el, oid) {
+  if (el.tag !== 0x06 || el.end - el.start !== oid.length) return false;
+  for (var i = 0; i < oid.length; i++) if (bytes[el.start + i] !== oid[i]) return false;
+  return true;
+}
+function certSigHash(cert, alg) {
+  var oid = derRead(cert, alg.start);
+  if (oidEquals(cert, oid, OID_ECDSA_SHA256)) return "SHA-256";
+  if (oidEquals(cert, oid, OID_ECDSA_SHA384)) return "SHA-384";
+  throw new Error("unsupported certificate signature");
+}
+function certCurve(cert, spki) {
+  var algSeq = derRead(cert, spki.start);
+  var idOid = derRead(cert, algSeq.start);
+  var curveOid = derRead(cert, idOid.next);
+  if (oidEquals(cert, curveOid, OID_P256)) return { name: "P-256", size: 32 };
+  if (oidEquals(cert, curveOid, OID_P384)) return { name: "P-384", size: 48 };
+  throw new Error("unsupported certificate key");
 }
 function certTime(bytes, el) {
   var text = "";
@@ -289,7 +316,12 @@ async function sha256hexBytes(bytes) {
   return hexFromBuf(await crypto.subtle.digest("SHA-256", bytes));
 }
 async function certKey(parts) {
-  return crypto.subtle.importKey("spki", parts.spki, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
+  return crypto.subtle.importKey("spki", parts.spki, { name: "ECDSA", namedCurve: parts.curve.name }, false, ["verify"]);
+}
+/* True when issuer's key signed child's certificate body. */
+async function certSignedBy(child, issuer) {
+  var key = await certKey(issuer);
+  return crypto.subtle.verify({ name: "ECDSA", hash: child.sigHash }, key, ecdsaDerToRaw(child.sigDer, issuer.curve.size), child.tbs);
 }
 async function verifyAppleJws(jws, rootSha) {
   var parts = String(jws || "").split(".");
@@ -302,11 +334,10 @@ async function verifyAppleJws(jws, rootSha) {
   var i;
   for (i = 0; i < parsed.length; i++) certDatesOk(ders[i], parsed[i]);
   if (!bytesInclude(ders[0], APPLE_LEAF_OID) || !bytesInclude(ders[1], APPLE_INTER_OID)) throw new Error("not a StoreKit certificate");
-  var rootKey = await certKey(parsed[2]);
-  var interKey = await certKey(parsed[1]);
+  if (parsed[0].curve.name !== "P-256") throw new Error("bad leaf key");
   var leafKey = await certKey(parsed[0]);
-  if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, rootKey, parsed[1].sig, parsed[1].tbs))) throw new Error("bad certificate");
-  if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, interKey, parsed[0].sig, parsed[0].tbs))) throw new Error("bad certificate");
+  if (!(await certSignedBy(parsed[1], parsed[2]))) throw new Error("bad certificate");
+  if (!(await certSignedBy(parsed[0], parsed[1]))) throw new Error("bad certificate");
   var signed = new TextEncoder().encode(parts[0] + "." + parts[1]);
   if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, leafKey, b64urlToBytes(parts[2]), signed))) throw new Error("bad signature");
   return JSON.parse(new TextDecoder().decode(b64urlToBytes(parts[1])));
@@ -688,31 +719,35 @@ async function doctorCountOk(env, bucket, limit) {
   return true;
 }
 async function doctorAppleGate(env, body, corsOrigin, verifyFn) {
-  var hasJws = !!(body && body.jws);
+  var jws = body && body.jws ? String(body.jws) : "";
   var device = cleanDevice(body && body.device);
-  if (!hasJws && !device) return null;
+  if (!jws && !device) return null;
   if (!env.LICENSES) return json({ error: "License store is not configured." }, 500, corsOrigin);
-  var bucket = "";
-  var limit = 0;
-  if (hasJws) {
-    var tx;
-    try { tx = await (verifyFn || verifyAppleJws)(String(body.jws)); } catch (e1) { return json({ error: "Invalid Apple receipt." }, 400, corsOrigin); }
-    if (!tx || tx.bundleId !== APPLE_BUNDLE_ID) return json({ error: "Wrong app." }, 400, corsOrigin);
-    var environment = String(tx.environment || "");
-    if (environment !== "Sandbox" && environment !== "Production") return json({ error: "Unsupported Apple environment." }, 400, corsOrigin);
-    var access = doctorTierFromClaims(tx, Date.now());
-    if (access.limit === DOCTOR_PAID_PER_DAY) {
-      if (!access.id) return json({ error: "Missing transaction." }, 400, corsOrigin);
-      bucket = "apple:" + access.id;
-      limit = DOCTOR_PAID_PER_DAY;
-    } else {
-      if (!device) return json({ error: "Missing device." }, 400, corsOrigin);
-      bucket = "dev:" + device;
-      limit = DOCTOR_FREE_PER_DAY;
+  /* A missing, invalid, wrong-app, unsupported-environment, expired, or revoked receipt is never an
+     error. It falls back to the free read for this device. Only a verified Seat, Shop Pack, or 7-Day
+     Pass inside its window gets 15 a day. Sandbox (TestFlight) transactions count; they still have to
+     verify against the Apple root chain and carry this app's bundle id. */
+  var access = { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  if (jws) {
+    try {
+      var tx = await (verifyFn || verifyAppleJws)(jws);
+      var environment = tx ? String(tx.environment || "") : "";
+      if (tx && tx.bundleId === APPLE_BUNDLE_ID && (environment === "Production" || environment === "Sandbox")) {
+        access = doctorTierFromClaims(tx, Date.now());
+      }
+    } catch (e1) {
+      access = { limit: DOCTOR_FREE_PER_DAY, id: "" };
     }
-  } else {
+  }
+  var bucket = "";
+  var limit = DOCTOR_FREE_PER_DAY;
+  if (access.limit === DOCTOR_PAID_PER_DAY && access.id) {
+    bucket = "apple:" + access.id;
+    limit = DOCTOR_PAID_PER_DAY;
+  } else if (device) {
     bucket = "dev:" + device;
-    limit = DOCTOR_FREE_PER_DAY;
+  } else {
+    return null;
   }
   if (!(await doctorCountOk(env, bucket, limit))) return json({ error: "Too many reads. Wait and try again." }, 429, corsOrigin);
   return null;
@@ -794,5 +829,6 @@ export default {
   },
 };
 export { verifyAppleJws, issueAppleSeatCodes, handleAppleLicense };
-export { __resetDoctorLimitsForTests, doctorTierFromClaims, doctorAppleGate };
+async function __appleCertLinkOk(childDer, issuerDer) { return certSignedBy(certParts(childDer), certParts(issuerDer)); }
+export { __resetDoctorLimitsForTests, doctorTierFromClaims, doctorAppleGate, __appleCertLinkOk };
 

@@ -53,22 +53,43 @@ test("gate: paid transaction gets 15/day keyed doctorrl:apple:<id>", async () =>
   assert.ok(!e.LICENSES.m.has("doctorrl:dev:device-abcdef12"));
 });
 
-test("gate: expired or revoked purchase falls to 1/day per device; needs a device", async () => {
+test("gate: expired or revoked purchase falls to 1/day per device", async () => {
   const e = env();
   const expired = async () => tx(PASS, 9);
   assert.equal(await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, expired), null);
   assert.equal((await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, expired)).status, 429);
-  const noDev = await doctorAppleGate(env(), { jws: "x" }, O, expired);
-  assert.equal(noDev.status, 400);
+  const revoked = async () => tx(PACK, 1, { revocationDate: Date.now() });
+  assert.equal(await doctorAppleGate(e, { jws: "x", device: "device-revoked01" }, O, revoked), null);
 });
 
-test("gate: wrong bundle, bad environment, bad receipt", async () => {
+test("gate: never 400. Wrong bundle, bad environment, bad receipt, missing jws all get the free read", async () => {
+  const cases = [
+    async () => tx(PACK, 1, { bundleId: "com.evil" }),
+    async () => tx(PACK, 1, { environment: "Xcode" }),
+    async () => { throw new Error("bad"); },
+    async () => null,
+  ];
+  for (let i = 0; i < cases.length; i++) {
+    const e = env();
+    const b = { jws: "x", device: "device-case-000" + i };
+    assert.equal(await doctorAppleGate(e, b, O, cases[i]), null, "free read " + i);
+    const second = await doctorAppleGate(e, b, O, cases[i]);
+    assert.equal(second.status, 429, "limit " + i);
+    assert.equal((await second.json()).error, "Too many reads. Wait and try again.");
+    assert.ok(e.LICENSES.m.has("doctorrl:dev:device-case-000" + i));
+  }
   const e = env();
-  assert.equal((await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, async () => tx(PACK, 1, { bundleId: "com.evil" }))).status, 400);
-  assert.equal((await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, async () => tx(PACK, 1, { environment: "Xcode" }))).status, 400);
-  const bad = await doctorAppleGate(e, { jws: "x" }, O, async () => { throw new Error("bad"); });
-  assert.equal(bad.status, 400);
-  assert.equal((await bad.json()).error, "Invalid Apple receipt.");
+  assert.equal(await doctorAppleGate(e, { jws: "", device: "device-empty-001" }, O), null);
+  assert.equal(await doctorAppleGate(e, { jws: "not-a-jws", device: "device-empty-002" }, O), null);
+  assert.equal(await doctorAppleGate(e, { jws: "not-a-jws" }, O), null);
+});
+
+test("gate: Sandbox (TestFlight) transaction counts as paid", async () => {
+  const e = env();
+  const v = async () => tx(PASS, 1, { environment: "Sandbox", originalTransactionId: "2000000555" });
+  for (let i = 0; i < 15; i++) assert.equal(await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, v), null);
+  assert.equal((await doctorAppleGate(e, { jws: "x", device: "device-abcdef12" }, O, v)).status, 429);
+  assert.ok(e.LICENSES.m.has("doctorrl:apple:2000000555"));
 });
 
 async function post(body, e, ip) {
@@ -79,7 +100,7 @@ async function post(body, e, ip) {
   }), e);
 }
 
-test("route: consent and image errors come first and do not count; bogus jws denied; no crash", async () => {
+test("route: consent and image errors come first and do not count; bogus jws gets the free read", async () => {
   __resetDoctorLimitsForTests();
   const e = env();
   const orig = globalThis.fetch;
@@ -91,15 +112,15 @@ test("route: consent and image errors come first and do not count; bogus jws den
     r = await post({ consent: true, device: "device-abcdef12" }, e);
     assert.equal(r.status, 400); assert.match((await r.json()).error, /Add a photo or a few still frames/);
     assert.equal(e.LICENSES.m.size, 0);
+    // bogus jws plus a device: free read (200), then the normal limit message, never a 400
     r = await post({ consent: true, images: [SAMPLE_URL], jws: "a.b.c", device: "device-abcdef12" }, e);
-    assert.equal(r.status, 400); assert.equal((await r.json()).error, "Invalid Apple receipt.");
-    assert.equal(upstream, 0);
-    // device only: first read ok, second 429 and never reaches upstream
-    r = await post({ consent: true, images: [SAMPLE_URL], device: "device-abcdef12" }, e);
     assert.equal(r.status, 200);
-    r = await post({ consent: true, images: [SAMPLE_URL], device: "device-abcdef12" }, e);
-    assert.equal(r.status, 429);
-    assert.equal(upstream, 1);
+    r = await post({ consent: true, images: [SAMPLE_URL], jws: "a.b.c", device: "device-abcdef12" }, e);
+    assert.equal(r.status, 429); assert.equal((await r.json()).error, "Too many reads. Wait and try again.");
+    // empty jws plus another device behaves the same
+    r = await post({ consent: true, images: [SAMPLE_URL], jws: "", device: "device-second-01" }, e);
+    assert.equal(r.status, 200);
+    assert.equal(upstream, 2);
     // website request: unchanged, no KV counting
     const before = e.LICENSES.m.size;
     r = await post({ consent: true, images: [SAMPLE_URL], note: "x" }, e);
