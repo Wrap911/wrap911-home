@@ -529,6 +529,87 @@ input, select, textarea {
   font-size: 0.95rem;
   line-height: 1.35;
 }
+
+/* Material calculator + shared job-form fields: label stacked on its own input.
+   The previous slim CSS left labels inline, so on a 390px phone the next
+   field's name wrapped beside the wrong box (Width [192] Height / [96] Panels). */
+.job-form > label {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  margin: 0 0 0.9rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--text-muted);
+  min-width: 0;
+}
+.job-form > label input,
+.job-form > label select,
+.job-form > label textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.job-form .check-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  margin: 1rem 0;
+}
+.job-form .check-inline input { width: auto; accent-color: var(--accent); }
+
+#calc-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 0.75rem;
+  margin: 0.4rem 0 0.2rem;
+}
+#calc-form > label { margin: 0; }
+#calc-form > #btn-calc {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+#calc-results,
+.calc-results {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 1.1rem;
+  scroll-margin-top: calc(var(--header-h, 76px) + 3.25rem);
+  scroll-margin-bottom: calc(72px + var(--safe-bottom) + 16px);
+  color: var(--text);
+}
+.calc-results.muted:empty { display: none; }
+.calc-results h3 { margin-bottom: 0.55rem; color: var(--text); }
+.calc-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.calc-results li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.calc-results li:last-child { border-bottom: 0; }
+.calc-results .disclaimer {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
 .quiz-box, .modal-card, .flash-card, .narration {
   border: 1px solid #5a304c;
   border-radius: 16px;

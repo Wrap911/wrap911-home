@@ -57,7 +57,8 @@ section.screen.active {
 #screen-pricing.active,
 #screen-problem-doctor.active,
 #screen-about.active,
-#screen-contact.active {
+#screen-contact.active,
+#screen-calc.active {
   background: linear-gradient(
     180deg,
     rgba(9, 7, 13, 0.30) 0,
@@ -110,13 +111,27 @@ section.screen > .module-tag,
 #screen-problem-doctor .lead,
 #screen-problem-doctor .muted,
 #screen-problem-doctor .doctor-note,
-#screen-problem-doctor label {
+#screen-problem-doctor label,
+#screen-calc label {
   color: #fff6ee;
   text-shadow:
     0 1px 1px rgba(0, 0, 0, 0.95),
     0 0 8px rgba(0, 0, 0, 0.9),
     0 0 18px rgba(9, 7, 13, 0.85);
 }
+#screen-calc .calc-results,
+#screen-calc .calc-results li,
+#screen-calc .calc-results h3,
+#screen-calc .calc-results .disclaimer {
+  text-shadow: none;
+  background: rgba(22, 16, 24, 0.96);
+}
+#screen-calc .calc-results li,
+#screen-calc .calc-results h3 {
+  background: transparent;
+  color: #fff6ee;
+}
+#screen-calc .calc-results .disclaimer { background: transparent; }
 
 /* Beat the inline .passion-note rule in index.html (8% gold tint). */
 html body .passion-note,
