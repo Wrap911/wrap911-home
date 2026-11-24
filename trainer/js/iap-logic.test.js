@@ -218,7 +218,8 @@ assert.ok(storekit.indexOf("com.wrap911.trainer.pass.7d") !== -1);
 assert.ok(storekit.indexOf("12.99") !== -1);
 var project = fs.readFileSync(path.join(__dirname, "../../ios/App/App.xcodeproj/project.pbxproj"), "utf8");
 assert.ok(project.indexOf("MARKETING_VERSION = 1.3;") !== -1);
-assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 27;") !== -1);
+assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 28;") !== -1);
+assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 27;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 26;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.2;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 25;"), -1);
@@ -226,7 +227,7 @@ assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 24;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 22;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.1;"), -1);
 var flight = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ios-testflight.yml"), "utf8");
-assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=26") !== -1 || flight.indexOf("CURRENT_PROJECT_VERSION=27") !== -1);
+assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=27") !== -1 || flight.indexOf("CURRENT_PROJECT_VERSION=28") !== -1);
 assert.ok(flight.indexOf("MARKETING_VERSION=1.3") !== -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=25"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=24"), -1);
@@ -301,3 +302,10 @@ assert.ok(labels.indexOf('storefront: { title: "Storefront"') !== -1, "Storefron
 assert.strictEqual(labels.indexOf('storefront: { title: "Interior"'), -1);
 var trim = fs.readFileSync(path.join(__dirname, "jobs-trim.js"), "utf8");
 assert.ok(trim.indexOf('v.title = "Storefront";') !== -1 && trim.indexOf('v.title = "Interior";') === -1, "jobs-trim keeps the Storefront title");
+
+/* Build 28: Material calculator fix. Labels above boxes, Height box, 54 in roll, waste 10-20. */
+var idx28 = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
+assert.ok(idx28.indexOf('<option value="54">54</option>') !== -1);
+assert.ok(idx28.indexOf('<option value="60" selected>60</option>') !== -1);
+assert.ok(/id="calc-waste"[^>]*min="10"[^>]*max="20"/.test(idx28));
+assert.ok(/<label for="calc-h">Height \(in\)\s*<input[^>]*id="calc-h"/.test(idx28));

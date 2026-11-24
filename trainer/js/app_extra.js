@@ -881,6 +881,17 @@
   /* ---------- Calculator (shop estimate only) ---------- */
   function renderCalc() { /* form lives in index.html */ }
 
+  function dismissCalcKeyboard() {
+    var ae = document.activeElement;
+    if (ae && typeof ae.blur === "function") ae.blur();
+  }
+
+  function calcFields() {
+    var form = $("calc-form");
+    if (!form) return [];
+    return Array.prototype.slice.call(form.querySelectorAll("input, select"));
+  }
+
   function runCalc() {
     var num = function (id, d) { var v = parseFloat(val(id)); return isNaN(v) ? d : v; };
     var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 60);
@@ -897,6 +908,7 @@
     var laborCost = laborHours * laborRate;
     var out = $("calc-results");
     if (!out) return;
+    dismissCalcKeyboard();
     out.className = "calc-results";
     out.innerHTML =
       "<h3>Estimate</h3><ul class=\"checklist\">" +
@@ -909,6 +921,36 @@
       "<li>Material + labor: <strong>$" + (matCost + laborCost).toFixed(2) + "</strong></li>" +
       "</ul>" +
       '<p class="disclaimer">Shop estimate only. Not a quote. Your markup is your call. Check film yield and the TDS for the exact 3M, Avery Dennison, or BriteLine product.</p>';
+    try {
+      if (out.scrollIntoView) out.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    } catch (eScroll) {}
+  }
+
+  function bindCalcForm() {
+    var form = $("calc-form");
+    if (!form || form.getAttribute("data-calc-bound")) return;
+    form.setAttribute("data-calc-bound", "1");
+    form.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      var t = e.target;
+      if (!t || (t.tagName !== "INPUT" && t.tagName !== "SELECT")) return;
+      e.preventDefault();
+      var fields = calcFields();
+      var i = fields.indexOf(t);
+      if (i >= 0 && i < fields.length - 1) {
+        fields[i + 1].focus();
+        if (typeof fields[i + 1].select === "function") fields[i + 1].select();
+      } else {
+        dismissCalcKeyboard();
+        runCalc();
+      }
+    });
+    if ($("btn-calc")) {
+      $("btn-calc").addEventListener("click", function () {
+        dismissCalcKeyboard();
+        runCalc();
+      });
+    }
   }
 
   /* ---------- ?lesson= deep link (Field app + Coach) ---------- */
@@ -1034,7 +1076,7 @@
     });
     if ($("prac-finish") && typeof finishPractice === "function") $("prac-finish").addEventListener("click", finishPractice);
 
-    if ($("btn-calc") && typeof runCalc === "function") $("btn-calc").addEventListener("click", runCalc);
+    if (typeof bindCalcForm === "function") bindCalcForm();
   };
 
 })();

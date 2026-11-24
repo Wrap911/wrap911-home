@@ -25,9 +25,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=271">
+  <link rel="stylesheet" href="css/style.css?v=271calc">
   <link rel="stylesheet" href="css/theme-dark.css?v=271">
-  <link rel="stylesheet" href="css/field-bg.css?v=bg8">
+  <link rel="stylesheet" href="css/field-bg.css?v=bg8calc">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
   <link rel="preload" href="js/app-core.js?v=271" as="script">
   <style>
@@ -188,7 +188,47 @@
   <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>BriteLine</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
   <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
-  <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
+  <section id="screen-calc" class="screen">
+    <button type="button" class="back-link" id="btn-back-calc">← Back to home</button>
+    <h1>Material calculator</h1>
+    <form id="calc-form" class="job-form" onsubmit="return false;">
+      <label for="calc-w">Width (in)
+        <input type="number" id="calc-w" name="calc-w" value="192" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-h">Height (in)
+        <input type="number" id="calc-h" name="calc-h" value="96" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-n">Panels
+        <input type="number" id="calc-n" name="calc-n" value="2" min="1" step="1" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-roll">Roll width (in)
+        <select id="calc-roll" name="calc-roll" enterkeyhint="next">
+          <option value="54">54</option>
+          <option value="60" selected>60</option>
+        </select>
+      </label>
+      <label for="calc-rivet">Rivet multiplier
+        <input type="number" id="calc-rivet" name="calc-rivet" value="1.15" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-recess">Recess multiplier
+        <input type="number" id="calc-recess" name="calc-recess" value="1.1" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-waste">Waste (%)
+        <input type="number" id="calc-waste" name="calc-waste" value="15" min="10" max="20" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-mat">Material ($/sq ft)
+        <input type="number" id="calc-mat" name="calc-mat" value="4.50" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-labor">Labor ($/hr)
+        <input type="number" id="calc-labor" name="calc-labor" value="75" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-hours">Hours
+        <input type="number" id="calc-hours" name="calc-hours" value="6" min="0" step="any" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+      </label>
+      <button type="button" id="btn-calc">Calculate</button>
+    </form>
+    <div id="calc-results" class="calc-results muted"></div>
+  </section>
   <section id="screen-module" class="screen"><button type="button" class="back-link" id="btn-back-module">← Back to home</button><h1 id="module-title">Module</h1><div class="lesson-body" id="module-lesson"></div><div class="mode-tabs" id="module-mode-tabs"><button type="button" class="mode-tab active" data-mode="quiz">Quiz</button><button type="button" class="mode-tab" data-mode="practice">Practice mode</button></div><div class="quiz-box" id="module-quiz"></div><div id="module-practice" class="practice-wrap hidden"></div></section>
   <section id="screen-drills" class="screen"><h1>Drills hub</h1><div id="drills-hub-list"></div></section>
   <section id="screen-drill-spot" class="screen"><button type="button" class="back-link" id="btn-back-spot">← Back</button><h1 id="spot-title">What's wrong?</h1><div id="spot-progress"></div><img class="photo-hero" id="spot-image" src="" alt="" decoding="async"><p class="lead" id="spot-question"></p><div id="spot-choices"></div><div class="quiz-feedback" id="spot-fb"></div><button type="button" class="secondary" id="spot-next" disabled>Next</button></section>
@@ -270,7 +310,7 @@
   <script src="js/data_extra.js?v=276"></script>
   <script src="js/problems-db.js?v=271"></script>
   <script src="js/labels-fix.js?v=271-b27"></script>
-  <script src="js/app_extra.js?v=272"></script>
+  <script src="js/app_extra.js?v=272calc"></script>
   <script src="js/problem-upload.js?v=271"></script>
   <script src="js/appstore.js?v=272"></script>
   <script src="js/coach.js?v=271"></script>
