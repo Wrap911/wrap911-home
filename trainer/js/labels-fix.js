@@ -157,7 +157,7 @@
   var OPEN_VEHICLES = ["box-truck", "van", "trailer", "rv-bus", "fleet", "storefront"];
   var VEH_LABEL = {
     "box-truck": { title: "Box Truck", summary: "Rivet fields, oversized panels, roll-up and swing doors." },
-    storefront: { title: "Interior", summary: "Walls, cabinets, glass, fixtures." }
+    storefront: { title: "Storefront", summary: "Walls, cabinets, glass, fixtures." }
   };
   window.WRAP911_OPEN_VEHICLES = OPEN_VEHICLES.slice();
 

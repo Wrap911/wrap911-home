@@ -30,8 +30,8 @@
     for (var i = 0; i < d.vehicles.length; i++) {
       var v = d.vehicles[i];
       if (v.id === "storefront") {
-        v.title = "Interior";
-        v.name = "Interior";
+        v.title = "Storefront";
+        v.name = "Storefront";
         v.summary = "Walls, cabinets, glass, fixtures.";
       }
     }
