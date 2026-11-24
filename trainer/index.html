@@ -27,6 +27,7 @@
   <title>WRAP 911 Trainer</title>
   <link rel="stylesheet" href="css/style.min.css?v=285min">
   <link rel="stylesheet" href="css/theme-dark.min.css?v=285min">
+  <link rel="stylesheet" href="css/field-bg.css?v=bg1web">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
   <link rel="preload" href="js/app-core.min.js?v=285min" as="script">
   <style>
@@ -76,6 +77,7 @@
   </style>
 </head>
 <body>
+  <div id="field-bg" aria-hidden="true"></div>
   <header class="app-header">
     <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911" width="1400" height="312" onerror="this.onerror=null;this.src='icons/icon-192.png'"></a></div>
     <div class="header-meta">
@@ -301,5 +303,6 @@
   <script src="js/photo-fix.min.js?v=285min"></script>
   <script src="js/problem-doctor-match.min.js?v=288min"></script>
   <script src="js/problem-doctor.min.js?v=286min"></script>
+  <script src="js/field-bg.js?v=bg1web"></script>
 </body>
 </html>
