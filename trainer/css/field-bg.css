@@ -1,0 +1,164 @@
+/* Field imagery backgrounds. Photos should clearly read. A light wash
+   sits on the photo; a short gradient covers only the title/lead band.
+   Cards stay opaque. Do not use these rules to change payment UI. */
+#field-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: #09070d;
+  background-position: center 30%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+/* Overall wash ~25%. No extra side vignette. */
+#field-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 7, 13, 0.25);
+}
+.app-header,
+.bottom-nav,
+section.screen {
+  position: relative;
+  z-index: 1;
+}
+.app-header { z-index: 20; }
+.bottom-nav { z-index: 30; }
+
+/* Solid chrome so header/back stay readable over the photo */
+.app-header {
+  background: rgba(9, 7, 13, 0.94);
+}
+.back-link {
+  background: rgba(9, 7, 13, 0.92);
+}
+
+/* Cards and job-type tiles keep an opaque base so type does not sit on the photo */
+.job-type-card {
+  background: linear-gradient(180deg, #2a1424 0%, #161018 42%);
+}
+.card {
+  background: var(--bg-card);
+}
+
+/* Slight gradient only where opening type sits (title + lead).
+   Fades out so the photo stays visible around cards and lower on the screen. */
+section.screen.active {
+  background: linear-gradient(
+    180deg,
+    rgba(9, 7, 13, 0.30) 0,
+    rgba(9, 7, 13, 0.18) 7.5rem,
+    rgba(9, 7, 13, 0.00) 16rem
+  );
+}
+/* Pricing and Doctor have more free-standing body copy, so the scrim runs longer. */
+#screen-pricing.active,
+#screen-problem-doctor.active,
+#screen-about.active,
+#screen-contact.active {
+  background: linear-gradient(
+    180deg,
+    rgba(9, 7, 13, 0.30) 0,
+    rgba(9, 7, 13, 0.22) 24%,
+    rgba(9, 7, 13, 0.16) 100%
+  );
+}
+
+/* Pricing body copy sits on the photo, not in cards. Local scrim only. */
+#screen-pricing > .lead,
+#pricing-plans {
+  background: rgba(9, 7, 13, 0.45);
+  padding: 0.55rem 0.7rem;
+  border-radius: 12px;
+}
+#pricing-plans { margin: 0.4rem 0 0.7rem; }
+
+/* Doctor intro lines that sit on glossy film. */
+#screen-problem-doctor p.lead,
+#screen-problem-doctor p.muted,
+#screen-problem-doctor .doctor-note {
+  background: rgba(9, 7, 13, 0.45);
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+}
+
+html body .example-banner {
+  border-radius: 12px;
+  padding: 0.55rem 0.7rem;
+}
+
+/* h1 uses background-clip:text, so drop-shadow (not text-shadow) is what reads.
+   Keep the heading full-width so the gold-to-pink gradient does not compress. */
+section.screen > h1,
+#vehicle-title,
+#lesson-title,
+#prac-title {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(0, 0, 0, 0.95));
+}
+/* Body type that sits on the photo: near-white + a dark halo for >= 4.5:1. */
+section.screen > .lead,
+section.screen > .muted,
+section.screen > .module-tag,
+#home-progress-label,
+#home-progress-detail,
+#vehicle-summary,
+#vehicle-tag,
+#screen-pricing .lead,
+#screen-pricing p,
+#screen-problem-doctor .lead,
+#screen-problem-doctor .muted,
+#screen-problem-doctor .doctor-note,
+#screen-problem-doctor label {
+  color: #fff6ee;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.95),
+    0 0 8px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(9, 7, 13, 0.85);
+}
+
+/* Beat the inline .passion-note rule in index.html (8% gold tint). */
+html body .passion-note,
+html body .passion-note.seat-carry,
+html body .example-banner,
+html body .plan-status-card {
+  background: rgba(22, 16, 24, 0.92);
+  color: #fff6ee;
+}
+html body .passion-note p,
+html body .example-banner,
+html body .plan-status-detail {
+  color: #fff6ee;
+}
+
+/* Helper copy that sits on the photo (e.g. "Tap a lesson…") gets a local scrim. */
+#vehicle-lessons > .muted,
+#screen-vehicle .muted,
+section.screen > .muted {
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(9, 7, 13, 0.70);
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  color: #fff6ee;
+}
+
+#screen-home > .lead,
+#vehicle-summary,
+#vehicle-tag,
+#home-progress-label,
+#home-progress-detail {
+  background: rgba(9, 7, 13, 0.60);
+  padding: 0.15rem 0.45rem 0.2rem;
+  border-radius: 8px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  #field-bg::after {
+    background: rgba(9, 7, 13, 0.55);
+  }
+}
