@@ -752,5 +752,208 @@ export const DOCTOR_KB = [
    "Vehicle windows: 50/50 perf with optically clear laminate where the maker requires it.",
    "Read that film's TDS for application temp, conform range and post-heat target."
   ]
+ },
+ {
+  "id": "ppf-method",
+  "title": "PPF (clear or color change paint protection film): install method",
+  "strong": [
+   "ppf",
+   "paint protection",
+   "clear bra",
+   "clearbra",
+   "protection film"
+  ],
+  "match": [
+   "ppf",
+   "paint protection",
+   "clear bra",
+   "tpu",
+   "self-heal",
+   "self heal",
+   "slip",
+   "tack",
+   "anchor",
+   "bulk",
+   "precut",
+   "pre-cut",
+   "pattern"
+  ],
+  "digest": "PPF is not vinyl. First check the film's install guide: most clear PPF and some color PPF (3M Scotchgard Pro Series, Avery Dennison Spectrix) are wet-apply only, while some color PPF is dry-apply (Avery Dennison PrismaPro; 3M Protection Wrap Film goes dry or wet). Wet method: fresh slip, spray paint, fingers and adhesive, float the film, squeegee center out with long overlapping strokes, anchor with tack and stretch away from the anchor, flush slip out of edges with tack, score-trim with light pressure. Mix ratios, heat and wash wait come from the film's install guide.",
+  "situation": "Installing paint protection film, clear or colored, gloss or matte. You slide it on wet, lock it with tack, and trim by scoring only the top of the film.",
+  "tools": [
+   "PPF squeegees (firm and flexible)",
+   "3 spray bottles: slip, tack, plain DI water",
+   "microfiber towels",
+   "new sharp snap blades",
+   "steamer or heat gun only as the film's guide allows",
+   "wrap glove for dry-apply films"
+  ],
+  "film": [
+   "Wet: 3M Scotchgard Paint Protection Film Pro Series 200, Avery Dennison Supreme Defense, Avery Dennison Spectrix color PPF.",
+   "Dry: Avery Dennison PrismaPro color PPF, 3M Protection Wrap Film (dry or wet).",
+   "BriteLine does not make PPF."
+  ],
+  "mistakes": [
+   "Using the vinyl dry method on a wet-apply PPF.",
+   "Alcohol in the slip.",
+   "Squeegeeing as hard as on vinyl, or short choppy strokes. Leaves bubbles.",
+   "Cutting through to the paint. Score only the top of the film.",
+   "Heat-gunning a film whose guide says steam (Avery Dennison Spectrix)."
+  ],
+  "ppf": true,
+  "options": [
+   {
+    "name": "Wet install (wet-apply PPF)",
+    "when": "Any PPF whose install guide says wet: most clear PPF, 3M Scotchgard Pro Series, Avery Dennison Spectrix color PPF.",
+    "steps": [
+     "Prep: strip any ceramic coating, adhesive-clean the paint, clay it, final wipe. Wash your hands.",
+     "Mix slip fresh that day per the film's install guide (DI water and baby shampoo). No alcohol in slip.",
+     "Cut film oversize. Spray the panel and your fingertips, peel the liner while spraying the adhesive.",
+     "Float the film into place, spray the top, squeegee center out, light pressure first then firmer, overlapping each stroke.",
+     "Pick an anchor (top center or an adjacent panel), dry the slip there and lock it with tack. Stretch away from the anchor and squeegee behind it.",
+     "Push slip away from tacked areas, never toward them. Leave a slip channel so water can escape.",
+     "Edges: spray tack under the edge to flush the soap, squeegee firm, dry with a microfiber, repeat if soap creeps back.",
+     "Let edges set per the install guide, then score-trim with a new sharp blade and light pressure, scoring only the top of the film. Re-squeegee edges and recesses."
+    ]
+   },
+   {
+    "name": "Dry install (dry-apply color PPF)",
+    "when": "Films whose guide says dry: Avery Dennison PrismaPro, 3M Protection Wrap Film dry method.",
+    "steps": [
+     "Same prep. 3M allows Primer 94 on stretched edges for Protection Wrap Film.",
+     "Lay the film taut and flat, rough-trim, cold stretch it smooth. Stay inside the stretch limit in the film's guide.",
+     "Glove the high points first, palm-stretch into recesses, then squeegee the flats with a sleeved squeegee.",
+     "Trim with a blade or 3M Knifeless Tape Precision Line (dry method only, per 3M).",
+     "Pull the cap sheet before any heat. Post-heat corners and wrapped edges only if the film's guide calls for it (3M Protection Wrap Film does; Avery Dennison says PrismaPro does not)."
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ppf-bumper",
+  "title": "PPF on a rear bumper with deep pockets and wraparound corners",
+  "strong": [
+   "ppf",
+   "paint protection",
+   "clear bra"
+  ],
+  "match": [
+   "bumper",
+   "fascia",
+   "corvette",
+   "taillight",
+   "tail light",
+   "pocket",
+   "corner",
+   "wraparound",
+   "plate",
+   "recess",
+   "rear end"
+  ],
+  "digest": "PPF rear bumper: bulk one oversize sheet from an anchor along the top center, stretch out toward the corners, bring the lower corners down last without forcing. Small relief cuts only where nobody looks (low corners, inside pockets the light covers). Pockets too deep to cover without whitening get a traced inlay butt-joined to the main piece. On the car: mask, pull the taillights, plate and tips if you can, or trim around them on the car. Off the car: wrap the edges around the back.",
+  "situation": "A rear bumper on the car with deep round taillight pockets, a plate recess, and corners that wrap toward the wheel arches. PPF stretches, but forced into a deep pocket it turns white and lifts, and dark colors show it more.",
+  "tools": [
+   "PPF squeegees",
+   "slip, tack and DI water bottles",
+   "masking tape and a fine pen for inlay templates",
+   "new sharp blades",
+   "microfiber towels",
+   "steamer or heat only as the film's guide allows"
+  ],
+  "film": [
+   "Wet color PPF: Avery Dennison Spectrix. Dry color PPF: Avery Dennison PrismaPro, 3M Protection Wrap Film. Clear: 3M Scotchgard Pro Series 200, Avery Dennison Supreme Defense.",
+   "Use one roll lot for the whole car."
+  ],
+  "mistakes": [
+   "Forcing film into a deep pocket. It turns white and lifts, worse on dark colors.",
+   "Tacking before the film is relaxed and flat.",
+   "Relief cuts on the visible face instead of low or inside a pocket.",
+   "Overlapping color PPF without prepping the top coat.",
+   "Trimming before edges have set."
+  ],
+  "ppf": true,
+  "options": [
+   {
+    "name": "Bulk the face, traced inlays in the deep pockets",
+    "when": "Pockets deeper than the film will go without white lines. Best for color PPF where coverage has to look like paint.",
+    "steps": [
+     "On the car: mask the gaps and the paint around the bumper, pull the taillights, plate and exhaust tips if you can so film wraps into the pockets and the parts hide the edge. If they stay on, trim around them on the car with light pressure.",
+     "Prep, then spray slip heavy. Lay one oversize sheet across the whole face.",
+     "Anchor along the top center under the trunk line with tack. Stretch out toward each corner and squeegee behind you.",
+     "Bring the lower corners down last. If film bunches near the wheel arch, make a small relief cut low where it will not show.",
+     "Feed film into each pocket and stop before it whitens. Let it set, then score-trim on the pocket lip or a body line.",
+     "Trace the bare pocket with masking tape and a pen, transfer it to new film, cut the inlay, float it in and butt it to the main piece.",
+     "Flush edges with tack, squeegee firm, dry, then re-squeegee pocket edges and corners."
+    ]
+   },
+   {
+    "name": "One piece with hidden relief cuts",
+    "when": "Shallower pockets, clear or light film, and the cuts can hide inside the pockets.",
+    "steps": [
+     "Anchor top center and stretch to the corners as above.",
+     "At each pocket, make a small relief cut in the center where the light will cover it, then feed film in from the outside.",
+     "Relief-cut the lower corners where they turn under, not on the visible face.",
+     "Tack and squeegee the pocket walls last. If it silvers, lift, re-wet with slip, re-lay with less tension.",
+     "Wrap edges around the bumper lip at least about 1/4 in. instead of cutting right on the edge."
+    ]
+   },
+   {
+    "name": "Split on a body line",
+    "when": "Bumper wider than your roll, or the corners will not come down without bunching.",
+    "steps": [
+     "Plan the join on a body line or the lower crease so it is short and straight.",
+     "Install the first piece and trim a clean straight edge on the line.",
+     "Float the second piece in, slide it to the edge and butt it tight. Avery Dennison prefers butt joins for color PPF.",
+     "If you overlap, prep the top coat where it overlaps per the film's bulletin or it will lift. Overlap edge faces down."
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ppf-defects",
+  "title": "PPF problems: silvering, fingers, bubbles, white lines, lifting edges",
+  "strong": [
+   "silvering",
+   "white line",
+   "stretch mark"
+  ],
+  "match": [
+   "ppf",
+   "silvering",
+   "silver",
+   "finger",
+   "fingers",
+   "bubble",
+   "lift",
+   "lifting",
+   "white",
+   "haze",
+   "edge"
+  ],
+  "digest": "PPF silvering is slip trapped in a tacked area or film tacked while still stretched: lift, re-wet with slip, re-lay with less tension, keep slip moving away from tacked areas. Fingers: anchor with tack and stretch away from it. Bubbles: long overlapping strokes, moderate pressure, slip on top of the film. White lines mean overstretched film: cut it out and inlay. Lifting edges: flush soap with tack, squeegee firm, dry, let it set; heat-set only per the film's guide.",
+  "situation": "Defects during or after a PPF install.",
+  "tools": [
+   "slip and tack bottles",
+   "PPF squeegee",
+   "microfiber towels",
+   "steamer or heat only as the film's guide allows"
+  ],
+  "film": [
+   "Same on 3M and Avery Dennison PPF; check that film's guide for heat and wash wait."
+  ],
+  "mistakes": [
+   "Squeegeeing slip toward a tacked area.",
+   "Fingertip stretching. Use your palm.",
+   "Pressure washing at the film edge."
+  ],
+  "ppf": true,
+  "steps": [
+   "Silvering: lift the film back past the silver, re-wet with slip, lay it with less tension, squeegee slip away from any tacked area.",
+   "Fingers: tack a nearby corner, then stretch the film away from it until the finger lays down.",
+   "Bubbles: keep slip on top of the film and use long, overlapping, moderate strokes. Do not push like vinyl.",
+   "White lines or whitening in a pocket: the film is overstretched. Cut it out on a body line and inlay a relaxed piece.",
+   "Lifting edge: spray tack under it to flush soap, squeegee firm, dry with a microfiber, let it set. Heat-set only if the film's guide says to.",
+   "Customer care: no wash until the wait in the film's guide, hand or touchless wash, keep pressure washers back from edges."
+  ]
  }
 ];

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import worker, { __resetDoctorLimitsForTests } from "./worker.js";
-import { selectKbEntries, buildKbText, doctorSystemFor } from "./doctor.js";
+import { selectKbEntries, buildKbText, doctorSystemFor, isPpfNote, DOCTOR_SYSTEM } from "./doctor.js";
 import { DOCTOR_KB } from "./doctor-kb.js";
 
 const SAMPLE = readFileSync(fileURLToPath(new URL("./magenta-rivet-field-tented-heads.jpg", import.meta.url)));
@@ -94,4 +94,60 @@ test("doctor: low-confidence closer-photo read empties options, tools and film",
   assert.deepEqual(body.options, []);
   assert.deepEqual(body.tools, []);
   assert.deepEqual(body.film, []);
+});
+
+test("ppf: PPF notes pick PPF entries and the PPF directive; vinyl notes do not", () => {
+  const note = "How do you wrap these rear bumpers? Doing color change PPF";
+  assert.ok(isPpfNote(note));
+  assert.ok(isPpfNote("clear bra on the hood"));
+  assert.ok(isPpfNote("paint protection film silvering"));
+  assert.ok(!isPpfNote("Options on how to wrap this rear corvette bumper efficiently"));
+  const picked = selectKbEntries(note).map((e) => e.id);
+  assert.equal(picked[0], "ppf-method");
+  assert.ok(picked.includes("ppf-bumper"));
+  const ppfText = buildKbText(note);
+  assert.match(ppfText, /PPF JOB/);
+  assert.match(ppfText, /PPF on a rear bumper/);
+  assert.ok(ppfText.length <= 14000);
+  const vinyl = selectKbEntries("rear corvette bumper with deep taillight pockets").map((e) => e.id);
+  assert.ok(!vinyl.some((id) => id.startsWith("ppf-")), vinyl.join());
+  assert.doesNotMatch(buildKbText("rear corvette bumper"), /PPF JOB/);
+  const full = doctorSystemFor(note);
+  assert.match(full, /PPF vs vinyl/);
+  assert.match(full, /BriteLine makes no PPF/);
+  assert.doesNotMatch(full, /\d+\s*(°|degrees|F\b|C\b)/);
+  assert.doesNotMatch(full, /\b(xpel|stek|suntek|llumar)\b/i);
+});
+
+test("prompt: only say on or off the car when visible, and cover the on-car case", () => {
+  assert.match(DOCTOR_SYSTEM, /Say a part is on the car only when you can see it mounted/);
+  assert.match(DOCTOR_SYSTEM, /If you cannot tell, say neither/);
+  assert.match(DOCTOR_SYSTEM, /pull the taillights, plate and exhaust tips if you can, or work it on the car/);
+});
+
+test("doctor: other options are a header line plus short separate steps; keywords lead with the surface", async () => {
+  __resetDoctorLimitsForTests();
+  const long = "Float the second piece in and slide it to the edge. Butt it tight to the first piece. Then go back and re-squeegee every edge twice. Then dry it off.";
+  const { body } = await doctor("How do you wrap these rear bumpers? Doing color change PPF", {
+    observations: "C6 Corvette rear bumper on the car, gray paint, round taillight pockets.",
+    likely_causes: ["Forcing film into the pockets turns it white."],
+    options: [
+      { name: "Bulk with inlays", when: "Deep pockets.", steps: ["Mask and pull the taillights.", "Anchor top center with tack."] },
+      { name: "Split on the body line", when: "Roll too narrow.", steps: ["Plan the join on the lower crease.", long] },
+      { name: "Relief cuts", when: "Shallow pockets.", steps: ["Relief cut inside each pocket."] },
+    ],
+    tools: ["PPF squeegee"], film: ["Avery Dennison Spectrix."], prevention: ["Do not force the pockets."],
+    lesson_keywords: ["post-heat", "seam", "knifeless", "PPF", "inlay", "bumper", "pocket", "corvette"],
+    confidence: "high",
+  }, "203.0.113.204");
+  const fs = body.fix_steps;
+  const h2 = fs.findIndex((s) => /^Option 2: Split on the body line\. Pick it when: Roll too narrow\.$/.test(s));
+  assert.ok(h2 > 0, fs.join(" | "));
+  assert.equal(fs[h2 + 1], "Plan the join on the lower crease.");
+  assert.equal(fs[h2 + 2], "Float the second piece in and slide it to the edge. Butt it tight to the first piece.");
+  assert.match(fs[h2 + 3], /^Option 3: Relief cuts/);
+  for (const s of fs) assert.ok(s.length <= 240, s);
+  assert.deepEqual(body.lesson_keywords, ["bumper", "pocket", "recess", "inlay", "corvette"]);
+  assert.match(body.disclaimer, /3M or Avery Dennison PPF/);
+  assert.doesNotMatch(body.disclaimer, /BriteLine/);
 });
