@@ -517,7 +517,21 @@
     }).then(function (out) {
       done();
       var data = out.data || {};
-      if (out.status === 429) { say("bad", data.error || "Too many reads. Wait and try again."); syncSubmit(); return; }
+      if (out.status === 429) {
+        var cap = quota().limit;
+        var used = cap;
+        if (data && data.remaining != null && isFinite(Number(data.remaining))) {
+          used = Math.max(0, cap - Number(data.remaining));
+        } else if (data && data.used != null && isFinite(Number(data.used))) {
+          used = Math.max(0, Number(data.used));
+        }
+        try { localStorage.setItem(QUOTA_KEY, JSON.stringify({ day: dayKey(), used: used })); } catch (eQ) {}
+        say("bad", data.error || "Too many reads. Wait and try again.");
+        var line429 = $("problem-doctor-quota");
+        if (line429) line429.textContent = quotaLine();
+        syncSubmit();
+        return;
+      }
       if (!data.ok) { say("bad", data.error || "Problem Doctor could not read that photo."); syncSubmit(); return; }
       bumpQuota();
       var line = $("problem-doctor-quota");

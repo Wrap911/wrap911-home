@@ -118,6 +118,7 @@
     ["Overstretch", "Film pulled past its limit. It thins, changes color or gloss, and tends to lift."],
     ["Film memory", "Film wants to return to its flat shape. Post-heat per the TDS sets it in the new shape."],
     ["Edge lift", "Film edge coming up off the surface. Usually dirt, overstretch, or no post-heat at the edge."],
+    ["PPF", "Paint protection film — the clear film. If an edge will not stick, clean, reseat, and heat only as that film's TDS says."],
     ["Tuck", "Wrapping film around a panel edge into a gap so the cut edge is hidden."],
     ["Overlaminate", "Clear film over printed vinyl to protect the print. Use the laminate the film maker pairs with that film."],
     ["Dwell time", "Time the adhesive needs to build bond before washing or stress. It is on the TDS."],
@@ -162,6 +163,7 @@
     var d = D(), list = [], i;
     (d.vehicles || []).forEach(function (v) {
       add(list, { type: "job", icon: v.icon || "", title: v.title, sub: v.summary || "", body: v.summary,
+        vehicleId: v.id || "",
         open: function () { if (APP().openVehicle) APP().openVehicle(v.id); } });
     });
     (d.trainingLessons || []).forEach(function (l) {
@@ -170,15 +172,18 @@
         keys: vt + " " + (l.keyTechniques || []).join(" ") + " " + (l.tools || []).join(" "),
         body: [l.goal || ""].concat(l.commonMistakes || [], l.steps || []).join(" "),
         fields: [l.goal || ""].concat(l.keyTechniques || [], l.commonMistakes || [], l.tools || [], l.steps || []),
+        vehicleId: l.vehicleId || "",
         lockedFn: function () { return !paid() && !lessonFree(l.id); },
         open: function () { if (APP().openLesson) APP().openLesson(l.id); } });
       (l.commonMistakes || []).forEach(function (m) {
         add(list, { type: "mistake", icon: "\u26A0\uFE0F", title: m, sub: l.title + (vt ? " \u00B7 " + vt : ""), keys: l.title + " " + vt,
+          vehicleId: l.vehicleId || "",
           lockedFn: function () { return !paid() && !lessonFree(l.id); },
           open: function () { if (APP().openLesson) APP().openLesson(l.id); } });
       });
       (l.keyTechniques || []).forEach(function (t) {
         add(list, { type: "technique", icon: "\uD83D\uDEE0\uFE0F", title: t, sub: l.title + (vt ? " \u00B7 " + vt : ""), keys: l.title + " " + vt,
+          vehicleId: l.vehicleId || "",
           lockedFn: function () { return !paid() && !lessonFree(l.id); },
           open: function () { if (APP().openLesson) APP().openLesson(l.id); } });
       });
@@ -293,7 +298,10 @@
   }
 
   /* ---------- matching ---------- */
+  function Logic() { return window.WRAP911_SEARCH_LOGIC || null; }
   function tokens(q) {
+    var L = Logic();
+    if (L && L.tokens) return L.tokens(q);
     var raw = String(q || "").toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/);
     var out = [];
     for (var i = 0; i < raw.length; i++) { var w = raw[i].replace(/^-+|-+$/g, ""); if (w.length >= 2 && out.indexOf(w) < 0) out.push(w); }
@@ -332,6 +340,12 @@
   ];
   function search(q) {
     var idx = INDEX || buildIndex();
+    var L = Logic();
+    if (L && L.search) {
+      var packed = L.search(idx, q);
+      var toks = (packed.ctx && packed.ctx.toks) || L.tokens(q);
+      return { toks: toks, hits: packed.hits || [] };
+    }
     var toks = tokens(q);
     if (!toks.length) return { toks: toks, hits: [] };
     var ql = String(q).toLowerCase().trim();
@@ -381,7 +395,7 @@
     a.unshift(q.slice(0, 60));
     lsSet(RECENT_KEY, JSON.stringify(a.slice(0, 6)));
   }
-  var SUGGEST = ["Rivets", "Seams", "Deep recess", "Post-heat", "Edge lift", "Knifeless tape", "Storefront window", "Silvering"];
+  var SUGGEST = ["Bubbles won\u2019t go away", "Film tore at the corner", "Sticky stuff left on the wall", "It keeps wrinkling", "It won\u2019t stick by the edge", "Rivets lifting on a trailer", "Silvering"];
 
   /* ---------- search widget ---------- */
   var widgets = [];
@@ -446,7 +460,7 @@
       out.innerHTML = '<div class="w9-empty"><div class="w9-empty-icon" aria-hidden="true">\uD83D\uDD0D</div><h3>No match for \u201C' + esc(q) + '\u201D</h3>' +
         '<p>Try a shorter word or a part of the job.</p><div class="w9-chips">' +
         SUGGEST.slice(0, 5).map(function (r) { return '<button type="button" class="chip" data-w9-q="' + esc(r) + '">' + esc(r) + "</button>"; }).join("") +
-        '</div><button type="button" class="secondary" data-w9-act="coach">Ask Coach about \u201C' + esc(q.slice(0, 40)) + '\u201D</button></div>';
+        '</div><button type="button" class="secondary" data-w9-act="coach">Ask Coach about \u201C' + esc(q) + '\u201D</button></div>';
       return;
     }
     var byType = {};
@@ -470,7 +484,7 @@
       });
     }
     if (opts.compact && res.hits.length > shown) html2 += '<button type="button" class="w9-more" data-w9-act="all">See all ' + res.hits.length + " results \u2192</button>";
-    if (!opts.compact) html2 += '<button type="button" class="w9-more" data-w9-act="coach">Not it? Ask Coach about \u201C' + esc(q.slice(0, 40)) + "\u201D</button>";
+    if (!opts.compact) html2 += '<button type="button" class="w9-more" data-w9-act="coach">Not it? Ask Coach about \u201C' + esc(q) + "\u201D</button>";
     out.innerHTML = html2;
     var ex = out.querySelectorAll("[data-w9-expand]");
     for (var i = 0; i < ex.length; i++) ex[i].addEventListener("click", function (e) { w.expanded = e.currentTarget.getAttribute("data-w9-expand"); render(w); });
@@ -519,7 +533,7 @@
   function openSearch(q) {
     rememberFrom();
     var s = section("search", "Search", "<h1>Search</h1>");
-    if (!searchW) searchW = makeSearch(s, { placeholder: "Lessons, fixes, videos, terms", label: "Search WRAP 911" });
+    if (!searchW) searchW = makeSearch(s, { placeholder: "Try: film tore at the corner, dirt won\u2019t come off\u2026", label: "Search WRAP 911" });
     show("search");
     searchW.input.value = q || "";
     searchW.input.parentNode.querySelector(".w9-clear").hidden = !searchW.input.value;
@@ -836,7 +850,7 @@
     var lead = home.querySelector(".lead");
     var host = document.createElement("div");
     if (lead && lead.nextSibling) home.insertBefore(host, lead.nextSibling); else home.insertBefore(host, home.firstChild);
-    makeSearch(host, { compact: true, placeholder: "Search rivets, seams, recesses\u2026", label: "Search lessons, fixes, and videos" });
+    makeSearch(host, { compact: true, placeholder: "Try: bubbles won\u2019t go away\u2026", label: "Search lessons, fixes, and videos" });
   }
   function addBack(id) {
     var s = $("screen-" + id);

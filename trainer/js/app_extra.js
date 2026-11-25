@@ -315,16 +315,53 @@
   }
 
   /* ---------- Lesson detail + 3Q quiz ---------- */
+  function lessonUnlockCopy() {
+    return "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49.";
+  }
+  function setLessonTeaser(on, lesson) {
+    var screen = $("screen-lesson");
+    var banner = $("lesson-teaser");
+    var full = $("lesson-full");
+    var goal = $("lesson-goal");
+    if (goal) {
+      var g = lesson && lesson.goal ? String(lesson.goal) : "";
+      goal.textContent = g;
+      goal.hidden = !g;
+    }
+    if (screen) {
+      if (on) screen.classList.add("is-teaser");
+      else screen.classList.remove("is-teaser");
+    }
+    if (full) {
+      if (on) full.classList.add("hidden");
+      else full.classList.remove("hidden");
+    }
+    if (banner) {
+      if (on) banner.classList.remove("hidden");
+      else banner.classList.add("hidden");
+    }
+    var stepsEl = $("lesson-teaser-steps");
+    if (stepsEl) {
+      var steps = (lesson && lesson.steps) || [];
+      stepsEl.innerHTML = steps.slice(0, 2).map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("");
+    }
+    var unlock = $("lesson-teaser-unlock");
+    if (unlock && !unlock.getAttribute("data-wired")) {
+      unlock.setAttribute("data-wired", "1");
+      unlock.addEventListener("click", function () {
+        var lfb = $("unlock-feedback");
+        if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = lessonUnlockCopy(); }
+        var c2 = core();
+        if (c2 && c2.showScreen) c2.showScreen("pricing");
+      });
+    }
+    if (unlock) unlock.textContent = "Unlock this lesson";
+  }
   function openLesson(id) {
     var c = core();
     var lesson = findLesson(id);
     if (!lesson || !c) return;
-    if (lessonLocked(id)) {
-      var lfb = $("unlock-feedback");
-      if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49."; }
-      c.showScreen("pricing");
-      return;
-    }
+    var locked = lessonLocked(id);
     c.state.lessonId = id;
     if (lesson.vehicleId) c.state.vehicleId = lesson.vehicleId;
     c.state.lessonQuizIndex = 0;
@@ -349,23 +386,36 @@
       }
     }
     var youtubePlayId = youtubeIdFrom(youtubeSrc);
+    if (locked) {
+      if (media && lesson.media) {
+        media.innerHTML = '<img class="photo-hero" src="' + escapeHtml(lesson.media) + '" alt="' + escapeHtml(lesson.title) + '">' +
+          '<p class="muted">Shop photo. Heat: follow the TDS for the exact film. No invented numbers.</p>';
+      } else if (media) {
+        media.innerHTML = "";
+      }
+      setLessonTeaser(true, lesson);
+      return;
+    }
     if (media && youtubePlayId) {
       media.innerHTML = "";
       mountYoutubePlayer(media, youtubePlayId);
     } else if (media && lesson.media) {
       media.innerHTML = '<img class="photo-hero" src="' + escapeHtml(lesson.media) + '" alt="' + escapeHtml(lesson.title) + '">' +
         '<p class="muted">Shop photo. Heat: follow the TDS for the exact film. No invented numbers.</p>';
-    } else {
+    } else if (media) {
       media.innerHTML = "";
     }
+    setLessonTeaser(false, lesson);
     $("lesson-techniques").innerHTML = (lesson.keyTechniques || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-tools").innerHTML = (lesson.tools || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-mistakes").innerHTML = (lesson.commonMistakes || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-steps").innerHTML = (lesson.steps || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     renderLessonMeta(lesson);
     var badgeMsg = $("lesson-badge-msg");
-    badgeMsg.className = "quiz-feedback hidden";
-    badgeMsg.textContent = "";
+    if (badgeMsg) {
+      badgeMsg.className = "quiz-feedback hidden";
+      badgeMsg.textContent = "";
+    }
     renderLessonQuiz(lesson);
   }
 
@@ -894,7 +944,7 @@
 
   function runCalc() {
     var num = function (id, d) { var v = parseFloat(val(id)); return isNaN(v) ? d : v; };
-    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 60);
+    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 54);
     var rivet = num("calc-rivet", 1), recess = num("calc-recess", 1), waste = num("calc-waste", 15);
     if (waste < 10) waste = 10;
     if (waste > 20) waste = 20;

@@ -138,7 +138,27 @@
       haveId[ex.id] = 1;
       haveImg[frame(base(ex.image))] = 1;
     }
-    d.photoLessons = dedupe(d.photoLessons);
+
+    function isMustang(p) {
+      var blob = [p && p.id, p && p.image, p && p.title, p && p.visual].join(" ").toLowerCase();
+      return /mustang|dark horse/.test(blob);
+    }
+    function capMustang(list) {
+      var kept = null;
+      var i, p;
+      for (i = 0; i < list.length; i++) {
+        if (isMustang(list[i])) { kept = list[i]; break; }
+      }
+      var out = [];
+      var used = false;
+      for (i = 0; i < list.length; i++) {
+        p = list[i];
+        if (!isMustang(p)) { out.push(p); continue; }
+        if (!used && kept && (p === kept || p.id === kept.id)) { out.push(p); used = true; }
+      }
+      return out;
+    }
+    d.photoLessons = capMustang(dedupe(d.photoLessons));
   }
 
   /* Hotfix 2.6.4: the timers raced photos-pack.js / photos-boost.js (paid count 47, 55 or 70 by load timing).
