@@ -1,6 +1,7 @@
 /* WRAP 911 Trainer — shop config (LIVE)
    Offer lock (pack-first): W911-PACK $149 one-time (5 seats, 12 months, default sell)
-   · W911-SEAT $49 one-time (1 tech, 12 months) · W911-FIELD $29/mo (trainer only). No per-seat monthly price.
+   · W911-SEAT $49 one-time (1 tech, 12 months). Field monthly plan is retired and hidden (fieldSkuLive false).
+   Lead CTA (2026-11-25): the App Store page (appStoreUrl). Stripe stays as the web checkout.
    Free look: rules, Coach, 14 shop photos, 8 sample videos, 3 sample lessons.
    Live: stripeTestMode false, live Payment Links. Pack/Seat links return to /trainer/?session_id={CHECKOUT_SESSION_ID};
    ios-license-bridge.js claims a W911 code from the license Worker, and falls back to an honor unlock for cs_live_
@@ -8,10 +9,11 @@
    (fieldSkuLive false, 2026-09-27). Do not print owner codes. */
 window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
+  appStoreUrl: "https://apps.apple.com/us/app/wrap911/id6816763473",
   contactName: "Gerry",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "BriteLine"],
-  version: "2.9.3",
+  version: "2.9.4",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
@@ -19,7 +21,7 @@ window.WRAP911_CONFIG = {
   seatPriceLabel: "W911-SEAT $49 one-time",
   fieldPriceUsd: 29,
   fieldPriceLabel: "W911-FIELD $29/mo",
-  /* Offer lock 2026-09-26: Field $29/mo sold in the trainer. Set false to hide Field everywhere in the app. */
+  /* Field plan is retired (off since 2026-09-27). Keep false; it hides Field everywhere in the app. */
   fieldSkuLive: false,
   proPeriodDays: 365,
   audience: "other-shops-first",
