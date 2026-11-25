@@ -127,7 +127,7 @@
     var found = match(result.lesson_keywords || [], window.WRAP911_DATA || {}, 3);
     var lessons = found.lessons || [];
     var videos = found.videos || [];
-    if (!lessons.length && !videos.length) return '<h3>Watch this</h3><p class="muted">No lesson matched these words.</p>';
+    if (!lessons.length && !videos.length) return "";
     var html = '<h3>Watch this</h3><div class="doctor-watch">';
     var i;
     for (i = 0; i < lessons.length; i++) html += '<button type="button" class="secondary" data-doctor-lesson="' + esc(lessons[i].id) + '">' + esc(lessons[i].title) + "</button>";
@@ -621,15 +621,47 @@
     function scoreText(title, body, keys) {
       return hits(title, keys.phrases, 12) + hits(body, keys.phrases, 4) + hits(title, keys.words, 8) + hits(body, keys.words, 3) + hits(title, keys.extras, 5) + hits(body, keys.extras, 2);
     }
+    /* Surface words (bumper, recess, rivet...) decide what fits. A clip that only shares a process word
+       (post-heat, seam, panel) with the answer is a weak match and is dropped. */
+    var SURFACE = /bumper|fascia|recess|pocket|taillight|liftgate|plate|rivet|channel|corrugat|roll ?up|door|hinge|mirror|handle|glass|window|storefront|wall|cabinet|cubby|trailer|box truck|van|hood|roof|fender|pillar|marker|emblem|tailgate/;
+    var MIN_SCORE = 20;
+    function surfaceKeys(keys) {
+      var out = [];
+      var all = keys.phrases.concat(keys.words);
+      for (var i = 0; i < all.length; i++) if (SURFACE.test(all[i]) && out.indexOf(all[i]) === -1) out.push(all[i]);
+      return out;
+    }
+    /* Architectural clips (walls, cubbies, glass) never fill in for a vehicle answer, and the other way round. */
+    var ARCH = /wall|cabinet|cubby|glass|window|storefront/;
+    function domainOf(key) { return !key ? "" : ARCH.test(key) ? "arch" : "vehicle"; }
+    function itemDomain(item) {
+      var tag = norm([item.category, item.id].join(" "));
+      if (/storefront|architectural|^sf /.test(tag)) return "arch";
+      if (/^prep|^qc/.test(norm(item.category || ""))) return "";
+      return "vehicle";
+    }
+    function fits(item, domain) {
+      var d = itemDomain(item);
+      return !domain || !d || d === domain;
+    }
+    function hasAny(text, list) {
+      var hay = " " + norm(text) + " ";
+      for (var i = 0; i < list.length; i++) if (hay.indexOf(list[i]) !== -1) return true;
+      return false;
+    }
     function top(rows, n) {
       rows.sort(function (a, b) { return b.score - a.score || String(a.title).localeCompare(String(b.title)); });
       var out = [];
-      for (var i = 0; i < rows.length && out.length < n; i++) if (rows[i].score >= 4) out.push(rows[i]);
+      var best = rows.length ? rows[0].score : 0;
+      for (var i = 0; i < rows.length && out.length < n; i++) if (rows[i].score >= MIN_SCORE && rows[i].score >= best / 2) out.push(rows[i]);
       return out;
     }
     window.WRAP911_DOCTOR_MATCH = {
       matchCatalog: function (keywords, data, count) {
         var keys = packKeys(keywords);
+        var surf = surfaceKeys(keys);
+        var max = count || 3;
+        var domain = domainOf(surf[0]);
         var lessons = (data && data.trainingLessons) || [];
         var videos = (data && data.VIDEO_CATALOG) || [];
         var lessonRows = [];
@@ -640,9 +672,11 @@
           if (!item || !item.id) continue;
           var body = [item.goal, item.id, (item.keyTechniques || []).join(" "), (item.commonMistakes || []).join(" "), (item.steps || []).join(" ")].join(" ");
           score = scoreText(item.title, body, keys);
+          if (surf.length && !hasAny(item.title + " " + body, surf)) score = 0;
+          if (!fits(item, domain)) score = 0;
           if (score) lessonRows.push({ id: item.id, title: item.title || item.id, score: score });
         }
-        var picked = top(lessonRows, count || 3);
+        var picked = top(lessonRows, max);
         var seen = {};
         for (i = 0; i < picked.length; i++) seen[picked[i].id] = 1;
         for (i = 0; i < videos.length; i++) {
@@ -650,10 +684,20 @@
           if (!item || !item.id) continue;
           var vbody = [item.category, item.subcategory, item.note, item.id, item.recommendedModule, item.src].join(" ");
           score = scoreText(item.title, vbody, keys);
-          if (item.recommendedModule && seen[item.recommendedModule]) score += 6;
+          if (surf.length && !hasAny(item.title + " " + vbody, surf)) score = 0;
+          if (!fits(item, domain)) score = 0;
+          if (score && item.recommendedModule && seen[item.recommendedModule]) score += 6;
           if (score) videoRows.push({ id: item.id, title: item.title || item.id, score: score, src: item.src || "", access: item.access || "" });
         }
-        return { lessons: picked, videos: top(videoRows, count || 3) };
+        /* At most `max` chips in total, best first across lessons and videos. Zero is fine. */
+        var pool = picked.map(function (r) { r.kind = "lesson"; return r; }).concat(top(videoRows, max).map(function (r) { r.kind = "video"; return r; }));
+        pool.sort(function (a, b) { return b.score - a.score; });
+        var poolBest = pool.length ? pool[0].score : 0;
+        pool = pool.filter(function (r) { return r.score >= poolBest / 2; }).slice(0, max);
+        return {
+          lessons: pool.filter(function (r) { return r.kind === "lesson"; }),
+          videos: pool.filter(function (r) { return r.kind === "video"; })
+        };
       }
     };
   }

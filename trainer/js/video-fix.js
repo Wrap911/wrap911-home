@@ -208,6 +208,8 @@
     "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4": 1,
     "media/videos/trailer/magenta-rivet-field-tented-heads.mp4": 1,
   };
+  /* 2.9.2: Search (polish.js) lists only clips that can play. */
+  window.WRAP911_VIDEO_REAL = REAL;
   var FIRST = [
     "media/videos/trailer/trailer-rivets-and-marker-lights.mp4",
     "media/videos/van/rear-vehicle-gate-wrap.mp4"
