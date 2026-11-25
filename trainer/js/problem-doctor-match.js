@@ -125,12 +125,42 @@
     return !!VEHICLE_CATS[norm(v.category)] || rivetText(v.title) || rivetText(v.subcategory);
   }
 
+  /* Surface words (bumper, recess, rivet...) decide what fits. A clip that only shares a process word
+     (post-heat, seam, panel) with the answer is a weak match and is dropped. */
+  var SURFACE = /bumper|fascia|recess|pocket|taillight|liftgate|plate|rivet|channel|corrugat|roll ?up|door|hinge|mirror|handle|glass|window|storefront|wall|cabinet|cubby|trailer|box truck|van|hood|roof|fender|pillar|marker|emblem|tailgate/;
+  var MIN_SCORE = 20;
+  function surfaceKeys(pack) {
+    var out = [];
+    var all = pack.phrases.concat(pack.words);
+    for (var i = 0; i < all.length; i++) if (SURFACE.test(all[i]) && out.indexOf(all[i]) === -1) out.push(all[i]);
+    return out;
+  }
+  /* Architectural clips (walls, cubbies, glass) never fill in for a vehicle answer, and the other way round. */
+  var ARCH = /wall|cabinet|cubby|glass|window|storefront/;
+  function domainOf(key) { return !key ? "" : ARCH.test(key) ? "arch" : "vehicle"; }
+  function itemDomain(item) {
+    var tag = norm([item.category, item.vehicleId, item.id].join(" "));
+    if (/storefront|architectural|^sf /.test(tag)) return "arch";
+    if (/^prep|^qc/.test(norm(item.category || ""))) return "";
+    return "vehicle";
+  }
+  function fits(item, domain) {
+    var d = itemDomain(item);
+    return !domain || !d || d === domain;
+  }
+  function hasAny(text, list) {
+    var hay = " " + norm(text) + " ";
+    for (var i = 0; i < list.length; i++) if (hay.indexOf(list[i]) !== -1) return true;
+    return false;
+  }
+
   function top(items, limit) {
     items.sort(function (a, b) { return b.score - a.score || String(a.title).localeCompare(String(b.title)); });
     var out = [];
+    var best = items.length ? items[0].score : 0;
     var i;
     for (i = 0; i < items.length && out.length < limit; i++) {
-      if (items[i].score >= 4) out.push(items[i]);
+      if (items[i].score >= MIN_SCORE && items[i].score >= best / 2) out.push(items[i]);
     }
     return out;
   }
@@ -138,6 +168,8 @@
   function matchCatalog(keywords, data, limit) {
     var pack = packKeys(keywords);
     var rivet = isRivetRead(pack);
+    var surf = surfaceKeys(pack);
+    var domain = domainOf(surf[0]);
     var cap = limit || 3;
     var lessons = [];
     var videos = [];
@@ -148,6 +180,8 @@
       item = list[i];
       if (!item || !item.id) continue;
       s = scoreParts(item.title, lessonBody(item), pack);
+      if (s && surf.length && !hasAny(item.title + " " + lessonBody(item), surf)) s = 0;
+      if (s && !fits(item, domain)) s = 0;
       if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.goal].join(" "));
       if (s && rivet && !vehicleLesson(item)) s = 0;
       if (s) lessons.push({ id: item.id, title: item.title || item.id, score: s, kind: "lesson" });
@@ -159,7 +193,9 @@
       item = vids[i];
       if (!item || !item.id) continue;
       s = scoreParts(item.title, videoBody(item), pack);
-      if (item.recommendedModule && lessonIds[item.recommendedModule]) s += 6;
+      if (s && surf.length && !hasAny(item.title + " " + videoBody(item), surf)) s = 0;
+      if (s && !fits(item, domain)) s = 0;
+      if (s && item.recommendedModule && lessonIds[item.recommendedModule]) s += 6;
       if (s && rivet) s = rivetAdjust(s, item.title, [item.id, item.subcategory, item.note].join(" "));
       if (s && rivet && !vehicleVideo(item)) s = 0;
       if (s) videos.push({
@@ -171,7 +207,15 @@
         access: item.access || ""
       });
     }
-    return { lessons: rankedLessons, videos: top(videos, cap) };
+    /* At most `cap` chips in total, best first across lessons and videos. Zero is fine. */
+    var pool = rankedLessons.concat(top(videos, cap));
+    pool.sort(function (a, b) { return b.score - a.score; });
+    var poolBest = pool.length ? pool[0].score : 0;
+    pool = pool.filter(function (r) { return r.score >= poolBest / 2; }).slice(0, cap);
+    return {
+      lessons: pool.filter(function (r) { return r.kind === "lesson"; }),
+      videos: pool.filter(function (r) { return r.kind === "video"; })
+    };
   }
 
   root.WRAP911_DOCTOR_MATCH = { matchCatalog: matchCatalog, packKeys: packKeys, isRivetRead: isRivetRead };

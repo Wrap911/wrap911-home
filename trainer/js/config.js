@@ -11,7 +11,7 @@ window.WRAP911_CONFIG = {
   contactName: "Gerry",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "BriteLine"],
-  version: "2.8.8",
+  version: "2.9.3",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",
@@ -52,7 +52,9 @@ window.WRAP911_CONFIG = {
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
     "games", "game",
     "photo-fix",
-    "problem-doctor"
+    "problem-doctor",
+    /* 2.9.2 polish.js: Search, Settings, Help are open to everyone. */
+    "search", "settings", "help"
   ],
   plans: [
     {
