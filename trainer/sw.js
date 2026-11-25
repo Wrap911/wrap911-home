@@ -1,5 +1,5 @@
 /* WRAP 911 Trainer — offline shell cache; media/videos stay network (no cache) */
-var CACHE = "wrap911-trainer-2.9.2-calc";
+var CACHE = "wrap911-trainer-2.9.3-polish";
 var IMG_CACHE = "wrap911-img-v2"; /* photos the user already opened; videos are never cached */
 /* Precached without ?v=. Fetch fallbacks use ignoreSearch so ?v= script URLs still match offline. */
 var ASSETS = [
@@ -41,6 +41,9 @@ var ASSETS = [
   "./icons/apple-touch-icon.png",
   "./css/field-bg.css",
   "./js/field-bg.js",
+  /* 2.9.3: search, settings, help, offline banner */
+  "./css/polish.css",
+  "./js/polish.js",
   "./media/bg/home.webp",
   "./media/bg/box-truck.webp",
   "./media/bg/van.webp",

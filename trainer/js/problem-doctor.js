@@ -318,9 +318,7 @@
     var hit = match(result.lesson_keywords || [], window.WRAP911_DATA || {}, 3);
     var lessons = hit.lessons || [];
     var videos = hit.videos || [];
-    if (!lessons.length && !videos.length) {
-      return "<h3>Watch this</h3><p class=\"muted\">No lesson matched these words.</p>";
-    }
+    if (!lessons.length && !videos.length) return "";
     var html = "<h3>Watch this</h3><div class=\"doctor-watch\">";
     var i;
     for (i = 0; i < lessons.length; i++) {

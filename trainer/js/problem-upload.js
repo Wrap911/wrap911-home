@@ -179,7 +179,7 @@
         } else if (res && res.queued) {
           q.unshift(item);
           saveQueue(q);
-          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Queued locally. Connect a Worker endpoint in config to send it to the server."; }
+          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Saved on this phone. To send it to WRAP 911 now, open Settings, tap Send feedback, and attach the photo."; }
         } else {
           if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Submitted. Thanks for showing the real mistake."; }
         }

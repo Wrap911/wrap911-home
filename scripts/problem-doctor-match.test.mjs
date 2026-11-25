@@ -96,3 +96,11 @@ test("rivet reads show only vehicle, trailer, and rivet items", () => {
   const wall = sandbox.WRAP911_DOCTOR_MATCH.matchCatalog(["post-heat", "wall", "wood grain"], data, 3);
   assert.ok(wall.videos.some((v) => v.id === "v-test-wall"), JSON.stringify(wall.videos));
 });
+
+test("watch chips: at most three in total, none from the wrong domain, and a bumper read never gets a wall clip", () => {
+  const sandbox = load();
+  const hit = sandbox.WRAP911_DOCTOR_MATCH.matchCatalog(["bumper", "pocket", "plate recess", "recess", "inlay"], sandbox.WRAP911_DATA, 3);
+  assert.ok(hit.lessons.length + hit.videos.length <= 3);
+  assert.ok(hit.lessons.length + hit.videos.length >= 1);
+  assert.ok(!hit.videos.some((item) => /wall|storefront|architectural/i.test(item.title)), JSON.stringify(hit.videos));
+});
