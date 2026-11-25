@@ -55,6 +55,7 @@ window.WRAP911_CONFIG = {
     "games", "game",
     "photo-fix",
     "problem-doctor",
+    "stuck",
     /* 2.9.2 polish.js: Search, Settings, Help are open to everyone. */
     "search", "settings", "help"
   ],

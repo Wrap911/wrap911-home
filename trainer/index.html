@@ -28,9 +28,9 @@
   <link rel="stylesheet" href="css/style.min.css?v=292calc">
   <link rel="stylesheet" href="css/theme-dark.min.css?v=285min">
   <link rel="stylesheet" href="css/field-bg.css?v=bg1calc">
-  <link rel="stylesheet" href="css/polish.css?v=293polish">
+  <link rel="stylesheet" href="css/polish.css?v=295beginner">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
-  <link rel="preload" href="js/app-core.min.js?v=285min" as="script">
+  <link rel="preload" href="js/app-core.min.js?v=295beginner" as="script">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -128,6 +128,12 @@
       <div class="home-progress-track"><div class="home-progress-fill" id="home-progress-fill"></div></div>
       <div class="home-progress-detail" id="home-progress-detail"></div>
     </div>
+    <div class="card tap stuck-entry" id="goto-stuck" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">I'm stuck / first install</div>
+        <div class="card-sub">Start here if this is your first wrap, or something will not sit down.</div>
+      </div>
+    </div>
     <div class="home-primary" id="home-primary-actions">
       <div class="card tap primary-action" id="goto-learn-job" role="button" tabindex="0">
         <div class="card-body"><div class="card-title">Learn a job</div><div class="card-sub">Vehicles · Interior</div></div>
@@ -171,6 +177,48 @@
       <div class="card tap" id="goto-pricing" role="button" tabindex="0"><div class="card-body"><div class="card-title">Pricing & unlock</div></div></div>
     </details>
   </section>
+  <section id="screen-stuck" class="screen" aria-label="I am stuck or this is my first install">
+    <button type="button" class="back-link" id="btn-back-stuck">← Back to home</button>
+    <h1>I'm stuck / first install</h1>
+    <p class="lead">A calm path when you are alone on a job. Follow the film TDS. Do not guess temperatures or chemicals.</p>
+    <div class="card tap" id="stuck-goto-doctor" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Problem Doctor</div>
+        <div class="card-sub">Send a photo of the problem. Get a likely cause and a fix.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-prep" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Start with Surface Prep</div>
+        <div class="card-sub">Clean the panel first. Dirt is why film will not stick.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-coach" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Ask Coach: Where do I start?</div>
+        <div class="card-sub">A short, ordered first-install walkthrough.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-rivets" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Rivet Mastery</div>
+        <div class="card-sub">How to seat rivets without tents.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-recess" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Deep Recess</div>
+        <div class="card-sub">When film wrinkles in a pocket or liftgate tuck.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-storefront" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Storefront recess</div>
+        <div class="card-sub">A first architectural install, one pocket at a time.</div>
+      </div>
+    </div>
+    <p class="muted">You can also search everyday wording: “bubbles won't go away”, “film tore at the corner”, “it won't stick by the edge”.</p>
+  </section>
   <section id="screen-vehicle" class="screen">
     <button type="button" class="back-link" id="btn-back-vehicle">← Back to home</button>
     <p class="module-tag" id="vehicle-tag">Vehicle</p>
@@ -188,6 +236,14 @@
     <p class="module-tag" id="lesson-vehicle-tag"></p>
     <h1 id="lesson-title">Lesson</h1>
     <div id="lesson-media" class="lesson-media"></div>
+    <p class="lead" id="lesson-goal"></p>
+    <div id="lesson-teaser" class="lesson-teaser hidden">
+      <p class="muted" id="lesson-teaser-note">This is a look at the lesson. Unlock to see every step, the tools, the mistakes, and the quiz.</p>
+      <h3>First steps</h3>
+      <ol class="steps-list" id="lesson-teaser-steps"></ol>
+      <button type="button" class="primary" id="lesson-teaser-unlock">Unlock this lesson</button>
+    </div>
+    <div id="lesson-full" class="lesson-full">
     <h3>Key techniques</h3><ul class="checklist" id="lesson-techniques"></ul>
     <h3>Tools needed</h3><ul class="checklist" id="lesson-tools"></ul>
     <h3>Common mistakes</h3><ul class="checklist mistakes" id="lesson-mistakes"></ul>
@@ -195,6 +251,7 @@
     <div class="quiz-box" id="lesson-quiz"></div>
     <div id="lesson-badge-msg" class="quiz-feedback hidden"></div>
     <div class="quiz-nav"><button type="button" class="secondary" id="lesson-to-practice">Open linked practice</button></div>
+    </div>
   </section>
   <section id="screen-library" class="screen"><button type="button" class="back-link" id="btn-back-library">← Back to home</button><h1>Training library</h1><div id="cert-levels" class="cert-row"></div><div id="library-list"></div></section>
   <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
@@ -218,8 +275,8 @@
       </label>
       <label for="calc-roll">Roll width (in)
         <select id="calc-roll" name="calc-roll" enterkeyhint="next">
-          <option value="54">54</option>
-          <option value="60" selected>60</option>
+          <option value="54" selected>54</option>
+          <option value="60">60</option>
         </select>
       </label>
       <label for="calc-rivet">Rivet multiplier
@@ -326,31 +383,32 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.min.js?v=294appstore"></script>
+  <script src="js/config.min.js?v=295beginner"></script>
   <script src="js/plan-fix.min.js?v=285min"></script>
   <script src="js/ios-license-bridge.min.js?v=285min"></script>
   <script src="js/data.min.js?v=285min"></script>
   <script src="js/data_extra.min.js?v=285min"></script>
   <script src="js/problems-db.min.js?v=285min"></script>
   <script src="js/labels-fix.min.js?v=291sf"></script>
-  <script src="js/app_extra.min.js?v=292calc"></script>
+  <script src="js/app_extra.min.js?v=295beginner"></script>
   <script src="js/problem-upload.min.js?v=293polish"></script>
   <script src="js/coach.min.js?v=285min"></script>
-  <script src="js/app.min.js?v=285min"></script>
+  <script src="js/app.min.js?v=295beginner"></script>
   <script src="js/video-fix.min.js?v=293polish"></script>
   <script src="js/license-gate.min.js?v=285min"></script>
   <script src="js/captions-fix.min.js?v=285min"></script>
   <script src="js/jobs-trim.min.js?v=291sf"></script>
-  <script src="js/photos-unique.min.js?v=285min"></script>
+  <script src="js/photos-unique.min.js?v=295beginner"></script>
   <script src="js/practice-fix.min.js?v=285min"></script>
   <script src="js/about.min.js?v=285min"></script>
   <script src="js/games.min.js?v=285min"></script>
   <script src="../assets/share.min.js?v=2"></script>
   <script src="js/photo-fix.min.js?v=285min"></script>
   <script src="js/problem-doctor-match.min.js?v=293watch"></script>
-  <script src="js/problem-doctor.min.js?v=293watch"></script>
+  <script src="js/problem-doctor.min.js?v=295beginner"></script>
   <script src="js/field-bg.js?v=bg1web"></script>
-  <script src="js/polish.js?v=293polish"></script>
+  <script src="js/search-logic.min.js?v=295beginner"></script>
+  <script src="js/polish.js?v=295beginner"></script>
   <script src="js/appstore-cta.min.js?v=294b"></script>
 </body>
 </html>
