@@ -33,15 +33,13 @@
   function why() {
     return '' +
       '<h2>Built by an installer</h2>' +
-      '<p>WRAP 911 is built by ' + esc(CFG.contactName || "Gerry") + ', a commercial vinyl installer with 8 years on the tools in Worcester, MA. Not a marketing team. Not a film maker.</p>' +
-      '<p>I have wrapped name-brand retail stores, stadiums and event venues, trailers (including office trailer interiors), RVs, buses, dozens of transit vans, and a lot of ad and branding pieces.</p>' +
-      '<p>I did not get here by getting it right the first time. I have had plenty of failures: lifted edges, wrinkles, panels that would not line up. Every one taught me something. WRAP 911 is built from those lessons, so you learn from my mistakes instead of paying for your own.</p>' +
+      '<p>Right after I finished training, my trainer took another job, and suddenly I was on my own with installs I wasn\'t ready for. I ruined vinyl, wasted money, and had nobody to call when things went wrong. Every lesson came the hard way, through my own mistakes. I built WRAP 911 so you don\'t have to learn it alone.</p>' +
       '<h2>Trains the jobs that walk in</h2>' +
       '<ul><li>Box trucks and trailers: rivets, seams, rollup doors.</li>' +
       '<li>Vans and fleet: deep recesses, handles, lights.</li>' +
       '<li>Walls, storefront glass, cabinets.</li></ul>' +
       '<h2>Real bay footage</h2>' +
-      '<p>Photos and clips from real jobs. The mistake stays in, and you watch it get fixed.</p>' +
+      '<p>Photos and clips from real jobs.</p>' +
       '<h2>Shop rules baked in</h2>' +
       '<ul><li>Brands: ' + esc(brands()) + '.</li><li>Follow the TDS. The trainer never gives you a heat number.</li></ul>' +
       '<h2>On the phone</h2>' +

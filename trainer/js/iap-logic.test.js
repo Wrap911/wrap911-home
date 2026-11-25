@@ -260,9 +260,9 @@ var BG_SHA = {
   "box-truck": "ca3b68a61e6f49b0a018e63680797a8ecdb40ba03bdd6ff7e8222f87d061b703",
   "doctor": "077277adce5912cc6aad149d69a9735bff5157a341a001c35b076988cd9e46a4",
   "fleet": "5630a1d6eddf521430206f9ebaf18ef5eccb8f52049268def93ce232e707dd6b",
-  "home": "ff30f1d97455d1f134df3d1b1cc61d0d5c5a83917c3b3823f3718acec3ab436b",
+  "home": "1960e02c9104cbcd6f00ed1def0b54519bc5e6b7108030a2d1dba56524e92ff1",
   "practice": "f458eca105485e54ce61da9c9e1f8f90c40f16ebd9bb60629b7347bab945af37",
-  "rv-bus": "f996ecf87b54e36bebdf110dc1cb6ace2f94bb761c57ff5ac1ac4bd8ad0be7fb",
+  "rv-bus": "77867297d1bcc271ac29db683eecaec60b52244d6a1db034103b1b066cb51a26",
   "storefront": "1960e02c9104cbcd6f00ed1def0b54519bc5e6b7108030a2d1dba56524e92ff1",
   "trailer": "885d6f72770d67b96de9cd485960cce36ff6507513ff72b50ecfd23d26cf17f5",
   "van": "275f03eb4960c896e453ff84441136d59afdecfbac353dcc1afff7c51672273d"
@@ -280,7 +280,7 @@ var fieldCss = fs.readFileSync(path.join(__dirname, "../css/field-bg.css"), "utf
 var indexHtml = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 var swJs = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
 assert.ok(indexHtml.indexOf('id="field-bg"') !== -1 && indexHtml.indexOf("css/field-bg.css") !== -1 && indexHtml.indexOf("js/field-bg.js") !== -1);
-assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.3-b32"') !== -1);
+assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.3-b32-story"') !== -1);
 assert.strictEqual(swJs.indexOf("bg-mock"), -1);
 Object.keys(BG_SHA).forEach(function (name) { assert.ok(swJs.indexOf("./media/bg/" + name + ".webp") !== -1, "sw precache " + name); });
 [fieldJs, fieldCss].forEach(function (src) {

@@ -91,7 +91,7 @@
       "media/photos/gallery/trailer-spot-graphics.jpg",
       "../assets/sales/trailer-rivets.jpg",
       "../assets/sales/edge-detail.jpg",
-      "../assets/sales/fleet-rv.jpg",
+      "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
       "media/videos/van/rear-vehicle-gate-wrap.jpg"
     ],
     Interior: [

@@ -177,15 +177,6 @@
      "photoId": "prob-bridge-intake"
     },
     {
-     "q": "What's wrong on this panel?",
-     "choices": [
-      "Only the top is stuck. The rest of the field is wrinkled and loose.",
-      "Rivets are tented along a seam."
-     ],
-     "answer": 0,
-     "photoId": "prob-rv-pink"
-    },
-    {
      "q": "Your IPA wipe beads up near a door seal. What's that telling you?",
      "choices": [
       "Normal. The film will cover it.",

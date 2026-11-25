@@ -182,7 +182,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/photos/gallery/magenta-box-corner-tuck-top-lip.jpg",
     "local": true,
     "live": true
    },
@@ -350,7 +350,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
     "local": true,
     "live": true
    },
@@ -574,7 +574,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -1079,19 +1079,6 @@
    "source": "data.js/data_extra.js"
   },
   {
-   "id": "pl10",
-   "title": "Crew-cab pickup \u2014 sage bottle print, liner hanging",
-   "category": "Vehicles",
-   "module": "commercial-sides",
-   "access": "paid",
-   "media": {
-    "path": "../assets/sales/pickup-panels.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "data.js/data_extra.js"
-  },
-  {
    "id": "pl11",
    "title": "White SUV rear hatch \u2014 hands on the chrome bar",
    "category": "Vehicles",
@@ -1378,19 +1365,6 @@
    "source": "photos-pack.js"
   },
   {
-   "id": "pk-pickup",
-   "title": "Pickup side panels in the bay",
-   "category": "Fleet",
-   "module": "squeegee",
-   "access": "paid",
-   "media": {
-    "path": "../assets/sales/pickup-panels.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "photos-pack.js"
-  },
-  {
    "id": "pk-edge",
    "title": "Edge and channel detail",
    "category": "Trailer",
@@ -1410,7 +1384,7 @@
    "module": "squeegee",
    "access": "paid",
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "local": true,
     "live": true
    },
@@ -1840,19 +1814,6 @@
    "access": "paid",
    "media": {
     "path": "media/photos/gallery/printed-bacon-rivet-rail.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "photos-boost.js"
-  },
-  {
-   "id": "pb-276-rv-rear-ladder",
-   "title": "RV rear, bottle on the ladder and scraps underfoot",
-   "category": "Vehicles",
-   "module": "safety",
-   "access": "paid",
-   "media": {
-    "path": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
     "local": true,
     "live": true
    },
@@ -2517,7 +2478,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -2540,7 +2501,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -2758,9 +2719,9 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/pickup-panels.jpg",
-    "local": true,
-    "live": true
+    "path": "",
+    "local": false,
+    "live": false
    },
    "related": {
     "lesson": "tr-panel-seg"
@@ -2779,7 +2740,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "local": true,
     "live": true
    },
@@ -3644,7 +3605,7 @@
   "workflows": 6,
   "workflowSteps": 25,
   "practice": 4,
-  "photoLessons": 70,
+  "photoLessons": 67,
   "photoLessonsFree": 14,
   "problemLessons": 8,
   "badges": 24,
