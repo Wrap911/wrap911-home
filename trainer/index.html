@@ -302,9 +302,14 @@
       if (standalone && note) { note.hidden = true; }
       else if (copy) {
         var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-        copy.textContent = ios
-          ? "iPhone: unlock Pack in this Safari tab first. Then Share, Add to Home Screen from THIS trainer page, not the homepage. Delete old icons first."
-          : "Android: tap Install, or the Chrome menu, then Add to Home screen. Not in the Play Store.";
+        var nativeApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+        if (ios && !nativeApp) {
+          copy.innerHTML = 'iPhone: <a href="https://apps.apple.com/us/app/wrap911/id6816763473" rel="noopener"><strong>get WRAP 911 free on the App Store</strong></a>. Or use it here in Safari: Share, Add to Home Screen from THIS trainer page.';
+        } else {
+          copy.textContent = ios
+            ? "iPhone: unlock Pack in this Safari tab first. Then Share, Add to Home Screen from THIS trainer page, not the homepage. Delete old icons first."
+            : "Android: tap Install, or the Chrome menu, then Add to Home screen. Not in the Play Store.";
+        }
       }
       var deferred = null;
       window.addEventListener("beforeinstallprompt", function (e) {
@@ -346,6 +351,6 @@
   <script src="js/problem-doctor.min.js?v=293watch"></script>
   <script src="js/field-bg.js?v=bg1web"></script>
   <script src="js/polish.js?v=293polish"></script>
-  <script src="js/appstore-cta.min.js?v=294appstore"></script>
+  <script src="js/appstore-cta.min.js?v=294b"></script>
 </body>
 </html>
