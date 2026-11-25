@@ -182,7 +182,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/photos/gallery/magenta-box-corner-tuck-top-lip.jpg",
     "local": true,
     "live": true
    },
@@ -350,7 +350,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
     "local": true,
     "live": true
    },
@@ -574,7 +574,7 @@
    "steps": 5,
    "quiz": 3,
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -1423,7 +1423,7 @@
    "module": "squeegee",
    "access": "paid",
    "media": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "local": true,
     "live": true
    },
@@ -1879,19 +1879,6 @@
    "access": "paid",
    "media": {
     "path": "media/photos/gallery/printed-bacon-rivet-rail.jpg",
-    "local": true,
-    "live": true
-   },
-   "source": "photos-boost.js"
-  },
-  {
-   "id": "pb-276-rv-rear-ladder",
-   "title": "RV rear, bottle on the ladder and scraps underfoot",
-   "category": "Vehicles",
-   "module": "safety",
-   "access": "paid",
-   "media": {
-    "path": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
     "local": true,
     "live": true
    },
@@ -2556,7 +2543,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -2579,7 +2566,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "local": true,
     "live": true
    },
@@ -2818,7 +2805,7 @@
     "live": false
    },
    "still": {
-    "path": "../assets/sales/fleet-rv.jpg",
+    "path": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "local": true,
     "live": true
    },
@@ -3683,7 +3670,7 @@
   "workflows": 6,
   "workflowSteps": 25,
   "practice": 4,
-  "photoLessons": 73,
+  "photoLessons": 72,
   "photoLessonsFree": 14,
   "problemLessons": 8,
   "badges": 24,

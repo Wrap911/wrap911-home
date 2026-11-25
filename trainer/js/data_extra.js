@@ -137,7 +137,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Hang one tall panel level with two people. Nobody stretches off a ladder.",
     "timeBox": "45 min, two techs (starting target — set your own)",
     "badgeId": "badge-bt-panels",
-    "media": "../assets/sales/fleet-rv.jpg",
+    "media": "media/photos/gallery/magenta-box-corner-tuck-top-lip.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -205,7 +205,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Walk a finished RV and log every lift, gap, and stripe break before it leaves.",
     "timeBox": "20 min walkaround (starting target — set your own)",
     "badgeId": "badge-bt-rollup",
-    "media": "../assets/sales/fleet-rv.jpg",
+    "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "mediaType": "photo",
     "practiceId": "prac-seam",
     "keyTechniques": [
@@ -542,7 +542,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Tall work done from a locked platform, clear floor, two people. No top-cap standing.",
     "timeBox": "10 min setup check before every high hang (starting target — set your own)",
     "badgeId": "badge-van-roof",
-    "media": "../assets/sales/fleet-rv.jpg",
+    "media": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1012,7 +1012,7 @@ window.WRAP911_DATA.trainingLessons = [
     "goal": "Top edge runs straight the full length. Seams shed water.",
     "timeBox": "20 min layout before the hang (starting target — set your own)",
     "badgeId": "badge-tr-roof",
-    "media": "media/photos/gallery/rv-pink-side.jpg",
+    "media": "media/photos/gallery/trailer-spot-graphics.jpg",
     "mediaType": "photo",
     "practiceId": "prac-panel-align",
     "keyTechniques": [
@@ -1544,7 +1544,7 @@ window.WRAP911_DATA.workflowSteps = {
       "id": "vw-roof",
       "title": "Roof Wrap Safety",
       "type": "Prep",
-      "media": "../assets/sales/fleet-rv.jpg",
+      "media": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
       "instructions": "Set locked platform. Clear liner. Stage film from ground. Install with soft tools in channels.",
       "tools": [
         "Ladder/scaffold",
@@ -1803,7 +1803,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-ladder",
       "title": "Height & ladder safety",
-      "media": "../assets/sales/fleet-rv.jpg",
+      "media": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
       "steps": [
         "Level locked ladder; three points of contact",
         "Stage or hinge large panels from the ground when possible",
@@ -1814,7 +1814,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-side",
       "title": "Tall side hang",
-      "media": "media/photos/gallery/rv-pink-side.jpg",
+      "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
       "steps": [
         "Glass the large print field before recesses",
         "Manage vertical seam overlaps for water shed",
@@ -1825,7 +1825,7 @@ window.WRAP911_DATA.workflowSteps = {
     {
       "id": "rw-rear",
       "title": "Rear panel & recesses",
-      "media": "media/photos/gallery/rv-rear-pink-panel-ladder.jpg",
+      "media": "media/photos/gallery/rv-rear-orange-yellow-corner-inlays.jpg",
       "steps": [
         "Glass the main rear field first",
         "Feed plate pocket and side channels",
