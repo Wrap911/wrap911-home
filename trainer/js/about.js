@@ -95,13 +95,15 @@
     var q = [
       ["What do I get?", "About " + L + " lessons, " + W + " job workflows, " + P + " practice runs, " + PH + " photo lessons, " + V + " video clips, drills, Coach and a material calculator. Everything opens after unlock."],
       ["How does unlock work?", iosApp()
-        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore with email sends a code to the email you saved. It does not ask for an Apple Account."
+        ? "Buy with Apple on the Pricing screen. No account. This phone unlocks for 12 months from the StoreKit purchase. Restore purchases (in Settings, or on the Pricing screen) reads your Apple purchases on this phone. It does not ask for an Apple Account."
         : "Buy with Stripe on the phone you train on. Stripe sends you back and that phone unlocks. A Shop Pack also gives a crew code for 4 more phones."],
       ["How long does it last?", "Seat and Pack: 12 months from unlock, one payment, no auto-renew."],
       ["Refunds?", iosApp()
         ? ("Ask first: " + contactLine() + ". Apple bills the purchase.")
         : ("Ask first: " + contactLine() + ". Send your Stripe receipt.")],
-      ["I cleared my browser and lost access.", "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
+      ["I cleared my browser and lost access.", iosApp()
+        ? "Open Settings, then Restore purchases. It reads your Apple purchases on this phone."
+        : "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
       ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or BriteLine certification, and it does not replace one."],
       ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or BriteLine."],
       ["Does it give heat or temperature numbers?", "No. Heat, post-heat and cleaning come from the film's TDS. Read the sheet for the film on the job."],

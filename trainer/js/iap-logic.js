@@ -131,33 +131,13 @@
     return "The App Store purchase sheet did not open, so you were not charged. Try again.";
   }
 
-  /* Same-phone restore reads Transaction.all and currentEntitlements.
-     A new phone uses the email the buyer saved. Neither asks for an Apple Account. */
+  /* Restore reads Transaction.all and currentEntitlements from StoreKit on this phone.
+     It never asks for an Apple Account, an email, or a code. */
   function restoreMessage(found, errorText) {
     if (found) return "Purchase restored on this phone.";
     var reason = String(errorText || "").replace(/\s+/g, " ").trim();
     if (reason) return reason.slice(0, 280);
-    return "Nothing active is stored on this phone. Enter the email you saved with the purchase.";
-  }
-
-  /* Email restore returns the original expiry. Do not start a new term. */
-  function licenseFromRestore(data, now) {
-    var sku = data && data.sku;
-    var exp = Number(data && data.expiresAt);
-    var start = Number(data && data.purchaseDate) || 0;
-    if ((sku !== "pack" && sku !== "seat" && sku !== "pass") || !exp || exp <= now) return null;
-    return {
-      code: "APPLE",
-      plan: "pro",
-      sku: sku,
-      seats: sku === "pack" ? 5 : 1,
-      source: "apple",
-      productId: String(data.productId || ""),
-      transactionId: String(data.transactionId || ""),
-      unlockedAt: start || now,
-      expiresAt: exp,
-      checkedAt: now
-    };
+    return "No active purchase was found for this Apple ID on this phone.";
   }
 
   /* Problem Doctor daily cap. Active Seat and Shop Pack last 365 days from
@@ -192,7 +172,6 @@
     missingProductsMessage: missingProductsMessage,
     purchaseStallMessage: purchaseStallMessage,
     restoreMessage: restoreMessage,
-    licenseFromRestore: licenseFromRestore,
     DOCTOR_FREE_PER_DAY: DOCTOR_FREE_PER_DAY,
     DOCTOR_PAID_PER_DAY: DOCTOR_PAID_PER_DAY,
     doctorDailyLimit: doctorDailyLimit

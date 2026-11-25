@@ -110,35 +110,10 @@ var restoredSeat = L.pickEntitlement([tx(SEAT, seatBuy)], seatDay + 1000);
 assert.strictEqual(restoredSeat.sku, "seat");
 assert.strictEqual(restoredSeat.expiresAt, seatDay + YEAR);
 assert.strictEqual(L.restoreMessage(true, "read failed"), "Purchase restored on this phone.");
-assert.strictEqual(L.restoreMessage(false, ""), "Nothing active is stored on this phone. Enter the email you saved with the purchase.");
+assert.strictEqual(L.restoreMessage(false, ""), "No active purchase was found for this Apple ID on this phone.");
+assert.ok(!/email|code|web|stripe/i.test(L.restoreMessage(false, "")), "the nothing-found message mentions no email, code, or web");
 assert.strictEqual(L.restoreMessage(false, "  Request failed.  "), "Request failed.");
-var boughtAt = Date.parse("2026-02-01T00:00:00.000Z");
-var originalEnd = boughtAt + YEAR;
-var restored = L.licenseFromRestore({
-  sku: "seat",
-  productId: SEAT,
-  transactionId: "orig-1",
-  purchaseDate: boughtAt,
-  expiresAt: originalEnd
-}, NOW);
-assert.strictEqual(restored.sku, "seat");
-assert.strictEqual(restored.expiresAt, originalEnd);
-assert.notStrictEqual(restored.expiresAt, NOW + YEAR);
-assert.strictEqual(L.licenseFromRestore({ sku: "seat", purchaseDate: boughtAt, expiresAt: NOW - 1 }, NOW), null);
-assert.strictEqual(L.licenseFromRestore({ sku: "pack", purchaseDate: boughtAt, expiresAt: originalEnd }, NOW).seats, 5);
-var passEnd = NOW + 3 * 86400000;
-var restoredPass = L.licenseFromRestore({
-  sku: "pass",
-  productId: PASS,
-  transactionId: "pass-1",
-  purchaseDate: NOW - 2 * 86400000,
-  expiresAt: passEnd
-}, NOW);
-assert.strictEqual(restoredPass.sku, "pass");
-assert.strictEqual(restoredPass.seats, 1);
-assert.strictEqual(restoredPass.expiresAt, passEnd);
-assert.notStrictEqual(restoredPass.expiresAt, NOW + WEEK);
-assert.strictEqual(L.licenseFromRestore({ sku: "pass", purchaseDate: boughtAt, expiresAt: NOW - 1 }, NOW), null);
+assert.strictEqual(L.licenseFromRestore, undefined, "the email-restore license builder is gone");
 
 assert.ok(missing.indexOf("not charged") !== -1);
 assert.ok(stall.indexOf("did not open") !== -1);
@@ -152,7 +127,7 @@ assert.ok(iap.indexOf("PURCHASE_WAIT_MS") !== -1, "purchase must time out instea
 assert.ok(iap.indexOf("iap-7") !== -1, "the bundle marker stays in source");
 assert.strictEqual(iap.indexOf('id="iap-diag"'), -1, "the build diagnostic line must not render");
 assert.strictEqual(iap.indexOf('id="iap-steps"'), -1, "the tap diagnostic line must not render");
-assert.ok(iap.indexOf("Your extra seat codes will appear here") !== -1);
+assert.strictEqual(iap.indexOf("Your extra seat codes will appear here"), -1, "the iOS pricing card shows no crew code text");
 assert.strictEqual(iap.indexOf("btn.onclick"), -1, "buy taps must stay on the document so a re-render cannot drop them");
 assert.strictEqual(iap.indexOf("var note ="), -1, "a local var note would hide the diagnostic function and throw on tap");
 assert.ok(iap.indexOf('addEventListener("error"') !== -1, "a script error must reach the diagnostic line");
@@ -187,11 +162,22 @@ webFiles.forEach(function (name) {
 
 var logicSrc = fs.readFileSync(path.join(__dirname, "iap-logic.js"), "utf8");
 assert.ok(logicSrc.indexOf('getPlatform() === "ios"') !== -1, "iOS is Capacitor.getPlatform() === ios");
-assert.ok(iap.indexOf("Restore with email") !== -1, "Pricing says Restore with email");
+assert.ok(iap.indexOf(">Restore purchases<") !== -1, "Pricing says Restore purchases");
+assert.strictEqual(iap.indexOf("Restore with email"), -1, "no Restore with email");
 assert.strictEqual(iap.indexOf("Restore Purchases"), -1, "the old Apple restore label is gone");
-assert.ok(iap.indexOf("/license/apple/bind") !== -1, "a purchase can be saved against an email");
-assert.ok(iap.indexOf("/license/restore/start") !== -1, "restore emails a code");
-assert.ok(iap.indexOf("/license/restore/verify") !== -1, "the code returns the original purchase");
+["/license/apple/bind", "/license/restore/start", "/license/restore/verify", "\"iap-email\"", "\"iap-code\"", "iap-send-code", "iap-verify-code", "iap-save-email", "one-time-code", "6-digit", "openEmailRestore", "sendCode", "verifyCode", "saveEmail", "wrap911_restore_email"].forEach(function (bad) {
+  assert.strictEqual(iap.indexOf(bad), -1, "iOS iap.js has no email-code restore: " + bad);
+});
+assert.ok(!/type="email"|type=\\"email|inputmode="email"/.test(iap), "iOS iap.js renders no email field");
+var iosFiles = { "iap.js": iap, "iap-logic.js": logicSrc, "polish.js": fs.readFileSync(path.join(__dirname, "polish.js"), "utf8") };
+Object.keys(iosFiles).forEach(function (name) {
+  assert.ok(!/Restore with email|email you saved|Enter the email|restore\/start|restore\/verify/i.test(iosFiles[name]), name + " has no email restore copy");
+});
+var planFix = fs.readFileSync(path.join(__dirname, "plan-fix.js"), "utf8");
+assert.ok(planFix.indexOf("Restore with email") === -1, "plan-fix has no Restore with email");
+assert.ok(planFix.indexOf('lic.sku === "pack" && iosApp()') !== -1, "iOS pack card shows no crew code text");
+var aboutSrc = fs.readFileSync(path.join(__dirname, "about.js"), "utf8");
+assert.ok(!/Restore with email|email you saved/i.test(aboutSrc), "about.js has no email restore copy");
 assert.ok(iap.indexOf("stripPricingChrome") !== -1, "iOS pricing keeps only the Apple card");
 assert.ok(iap.indexOf('n.id === "iap-card"') !== -1, "the Apple card stays on the pricing screen");
 assert.ok(iap.indexOf("com.wrap911.trainer.seat.12mo") !== -1);
@@ -218,7 +204,8 @@ assert.ok(storekit.indexOf("com.wrap911.trainer.pass.7d") !== -1);
 assert.ok(storekit.indexOf("12.99") !== -1);
 var project = fs.readFileSync(path.join(__dirname, "../../ios/App/App.xcodeproj/project.pbxproj"), "utf8");
 assert.ok(project.indexOf("MARKETING_VERSION = 1.3;") !== -1);
-assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 29;") !== -1);
+assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 30;") !== -1);
+assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 29;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 28;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 27;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 26;"), -1);
@@ -228,7 +215,7 @@ assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 24;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 22;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.1;"), -1);
 var flight = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ios-testflight.yml"), "utf8");
-assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=28") !== -1 || flight.indexOf("CURRENT_PROJECT_VERSION=29") !== -1);
+assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=29") !== -1 || flight.indexOf("CURRENT_PROJECT_VERSION=30") !== -1);
 assert.ok(flight.indexOf("MARKETING_VERSION=1.3") !== -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=25"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=24"), -1);

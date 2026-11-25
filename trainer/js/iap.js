@@ -28,11 +28,6 @@
   var diag = null;
   var steps = [];
   var buyingId = "";
-  var EMAIL_KEY = "wrap911_restore_email";
-  var restorePanel = "";
-  var restoreEmail = "";
-  var restoreCode = "";
-  var saveDraft = "";
   var lastJws = "";
 
   function readLic() {
@@ -165,7 +160,7 @@
   function buttonFromEvent(ev) {
     var node = ev.target;
     if (!node || !node.closest) return null;
-    return node.closest("[data-iap], #iap-restore, #iap-send-code, #iap-verify-code, #iap-save-email");
+    return node.closest("[data-iap], #iap-restore");
   }
   function finishBuying(btn) {
     buyingId = "";
@@ -266,115 +261,14 @@
     });
   }
   function finishRestore(row, errorText) {
-    if (row) {
-      restorePanel = "";
-      grantRow(row, true);
-    }
+    if (row) grantRow(row, true);
     render();
     setMsg(Logic.restoreMessage(!!row, errorText));
   }
-  function savedEmail() {
-    try { return localStorage.getItem(EMAIL_KEY) || ""; } catch (e) { return ""; }
-  }
-  function rememberSaved(email) {
-    try { localStorage.setItem(EMAIL_KEY, email); } catch (e) {}
-  }
-  function validEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
-  }
-  function postLicense(path, body) {
-    return fetch(API + path, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    }).then(function (r) {
-      return r.json().then(function (d) {
-        return { status: r.status, data: d || {} };
-      }, function () {
-        return { status: r.status, data: {} };
-      });
-    });
-  }
-  function openEmailRestore() {
-    restorePanel = restorePanel === "code" ? "code" : "email";
-    if (!restoreEmail) restoreEmail = savedEmail();
-  }
-  function sendCode() {
-    var email = String(restoreEmail || "").trim();
-    if (!validEmail(email)) {
-      setMsg("Enter the email you saved with the purchase.");
-      return;
-    }
-    setMsg("Sending a code…");
-    postLicense("/license/restore/start", { email: email }).then(function (res) {
-      var data = res.data || {};
-      if (data.ok !== true) {
-        setMsg(data.error || "Could not send the code.");
-        return;
-      }
-      restorePanel = "code";
-      restoreEmail = email;
-      render();
-      setMsg("If that email has an active Shop Pack, Seat, or 7-Day Pass, we sent a 6-digit code. It expires in 15 minutes.");
-    }).catch(function () {
-      setMsg("Could not reach the restore server.");
-    });
-  }
-  function verifyCode() {
-    var email = String(restoreEmail || "").trim();
-    var code = String(restoreCode || "").replace(/\D/g, "");
-    if (!validEmail(email) || code.length !== 6) {
-      setMsg("Enter the email and the 6-digit code.");
-      return;
-    }
-    setMsg("Checking the code…");
-    postLicense("/license/restore/verify", { email: email, code: code, device: deviceId() }).then(function (res) {
-      var data = res.data || {};
-      var lic = data.ok ? Logic.licenseFromRestore(data, Date.now()) : null;
-      if (!lic) {
-        setMsg(data.error || "That code is not valid. Request a new one.");
-        return;
-      }
-      if (data.jws) lastJws = String(data.jws);
-      writeLicense(lic, true);
-      rememberSaved(email);
-      if (lic.sku === "pack" && data.jws) claimPack({ jwsRepresentation: data.jws }, true);
-      restorePanel = "";
-      restoreCode = "";
-      render();
-      setMsg("Purchase restored on this phone. It expires " + new Date(Number(lic.expiresAt)).toLocaleDateString() + ".");
-    }).catch(function () {
-      setMsg("Could not reach the restore server.");
-    });
-  }
-  function saveEmail() {
-    var email = String(saveDraft || "").trim();
-    if (!validEmail(email)) {
-      setMsg("Enter a valid email.");
-      return;
-    }
-    if (!lastJws) {
-      setMsg("This phone does not have the signed purchase yet. Open Pricing again, then save the email.");
-      return;
-    }
-    setMsg("Saving…");
-    postLicense("/license/apple/bind", { jws: lastJws, email: email, device: deviceId() }).then(function (res) {
-      var data = res.data || {};
-      if (!data.ok) {
-        setMsg(data.error || "Could not save that email.");
-        return;
-      }
-      rememberSaved(email);
-      render();
-      setMsg("Saved. On another phone, tap Restore with email and use this address.");
-    }).catch(function () {
-      setMsg("Could not reach the restore server. This phone stays unlocked.");
-    });
-  }
-  /* Seat and Shop Pack are non-renewing. This button reads the transactions
-     already on the phone, then asks for the email saved with the purchase.
-     It never asks for an Apple Account. A found Shop Pack still claims its
-     crew code from the license server. */
+  /* Seat, Shop Pack and 7-Day Pass are non-renewing. This button reads the Apple
+     transactions already on the phone (StoreKit) and nothing else. It never asks for
+     an Apple Account, an email, or a code. A found Shop Pack still claims its seats
+     from the license server in the background. */
   function restore() {
     setMsg("Checking this phone…");
     note("tap restore");
@@ -392,13 +286,11 @@
       return new Promise(function (resolve) { setTimeout(resolve, 700); }).then(readStore).then(function (second) {
         var again = from(second);
         if (again.row) note("restored " + again.row.sku);
-        else openEmailRestore();
         finishRestore(again.row, again.row ? "" : (again.error || got.error || ""));
       });
     }).catch(function (e) {
       var raw = String((e && (e.message || e)) || "Restore failed.");
       note(raw.slice(0, 140));
-      openEmailRestore();
       finishRestore(null, raw);
     });
   }
@@ -423,21 +315,11 @@
         reportJs(e && (e.message || e));
       }
     }, true);
-    document.addEventListener("input", function (ev) {
-      var t = ev.target;
-      if (!t || !t.id) return;
-      if (t.id === "iap-email") restoreEmail = t.value;
-      if (t.id === "iap-code") restoreCode = t.value;
-      if (t.id === "iap-save-email-input") saveDraft = t.value;
-    }, true);
     document.addEventListener("click", function (ev) {
       var btn = buttonFromEvent(ev);
       if (!btn) return;
       try {
         if (btn.id === "iap-restore") restore();
-        else if (btn.id === "iap-send-code") sendCode();
-        else if (btn.id === "iap-verify-code") verifyCode();
-        else if (btn.id === "iap-save-email") saveEmail();
         else purchase(btn);
       } catch (e) {
         reportJs(e && (e.message || e));
@@ -564,22 +446,11 @@
     var h1 = screen.querySelector("h1");
     if (h1 && card.parentNode === screen) screen.insertBefore(card, h1.nextSibling);
     var lic = activeLicense();
-    var code = crewCode();
-    var mail = contactMail();
-    var mailHtml = mail ? '<a href="mailto:' + escapeText(mail) + '?subject=WRAP%20911%20Apple%20crew%20code">' + escapeText(mail) + "</a>" : "us";
     var status = "";
     if (lic) {
       var when = new Date(Number(lic.expiresAt)).toLocaleDateString();
       var name = planName(lic.sku);
       status = '<p class="msg"><b>' + name + " is active</b> until " + escapeText(when) + ".</p>";
-      if (lic.sku === "pack") {
-        if (/^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) || /^W911-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(lic.code || ""))) {
-          var shown = /^W911-/.test(code) ? code : lic.code;
-          status += '<p class="msg">Crew code <b class="code">' + escapeText(shown) + "</b><br>Type it in Unlock on up to 4 other phones.</p>";
-        } else {
-          status += '<p class="msg">Your extra seat codes will appear here. This phone is already unlocked. Until then, email ' + mailHtml + " and we will send the codes for the other four phones.</p>";
-        }
-      }
     }
     var buttons = "";
     if (!NP) {
@@ -596,32 +467,7 @@
         '<button type="button" class="buy" data-iap="' + PACK + '">' + escapeText(buyLabel(PACK, "Shop Pack")) + "</button>" +
         '<button type="button" class="buy seat" data-iap="' + SEAT + '">' + escapeText(buyLabel(SEAT, "Seat")) + "</button>";
     }
-    var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore with email</button>' : "";
-    var emailBox = "";
-    if (restorePanel === "email" || restorePanel === "code") {
-      emailBox =
-        '<label class="fine" for="iap-email">Email you saved with the purchase</label>' +
-        '<input id="iap-email" type="email" autocomplete="email" inputmode="email" value="' + escapeText(restoreEmail) + '">' +
-        (restorePanel === "code"
-          ? '<label class="fine" for="iap-code">6-digit code</label>' +
-            '<input id="iap-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="' + escapeText(restoreCode) + '">' +
-            '<button type="button" class="buy seat" id="iap-verify-code">Restore on this phone</button>'
-          : '<button type="button" class="buy seat" id="iap-send-code">Send code</button>') +
-        '<p class="fine">We email a code. This does not ask for an Apple Account.</p>';
-    }
-    var focusedId = "";
-    var focused = document.activeElement;
-    if (focused && focused.id && /^(iap-email|iap-code|iap-save-email-input)$/.test(focused.id)) focusedId = focused.id;
-    var saveBox = "";
-    if (lic && lastJws) {
-      var known = savedEmail();
-      if (focusedId !== "iap-save-email-input" && !saveDraft && known) saveDraft = known;
-      saveBox =
-        (known ? '<p class="msg">Saved for another phone: <b>' + escapeText(known) + "</b></p>" : "") +
-        '<label class="fine" for="iap-save-email-input">Email for restore on another phone</label>' +
-        '<input id="iap-save-email-input" type="email" autocomplete="email" inputmode="email" value="' + escapeText(saveDraft) + '">' +
-        '<button type="button" class="restore" id="iap-save-email">Save email</button>';
-    }
+    var restore = NP ? '<button type="button" class="restore" id="iap-restore">Restore purchases</button>' : "";
     var packP = priceText(PACK);
     var seatP = priceText(SEAT);
     var passP = priceText(PASS);
@@ -633,9 +479,7 @@
       '<p class="iap-lead">Full trainer on this phone. A 7-Day Pass lasts 7 days. Shop Pack and Seat last 12 months. Shop Pack is this phone plus four more.</p>' +
       buttons +
       status +
-      saveBox +
       restore +
-      emailBox +
       '<p class="msg" id="iap-msg"></p>' +
       '<p class="fine">' + escapeText(priceLine) +
       "One-time purchase. It does not auto-renew. A 7-Day Pass lasts 7 days from the purchase date. Shop Pack and Seat last 12 months from the purchase date. " +
@@ -646,12 +490,6 @@
     if (buyingId) {
       var pendingBtn = card.querySelector('[data-iap="' + buyingId + '"]');
       if (pendingBtn) pendingBtn.disabled = true;
-    }
-    if (focusedId) {
-      var again = document.getElementById(focusedId);
-      if (again) {
-        try { again.focus(); } catch (eFocus) {}
-      }
     }
   }
   function loadProducts() {
