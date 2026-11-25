@@ -46,17 +46,7 @@
       checklist: ["Set the ladder at the door before you climb", "Seat the film before the cut", "Cut into the gap, not across the face", "Leave a tuck margin, then cycle the door"],
       quiz: { q: "What is the dark outline in the orange film?", correct: "The gap around a side door, with the film running across it.", wrong: "A seam where two orange panels overlap." }
     },
-    {
-      id: "prob-rv-pink",
-      title: "RV side, pink film still loose",
-      image: "media/photos/gallery/rv-pink-side.jpg",
-      module: "squeegee",
-      jobType: "Problems",
-      visual: "Tall RV or box side. Pink and red film is on the panel but wrinkled and not glassed. A ladder stands in front. The next bay section is still bare.",
-      narration: "Problem: the sheet is stuck at the top and the field is still loose. A ladder in front is not a squeegee.\n\nSolution: hinge from the glassed top. Overlap strokes down the panel. Do not heat the loose field to hide wrinkles.",
-      checklist: ["Work from the glassed top down", "Overlap every stroke", "No heat on a loose field", "Move the ladder when it blocks the panel"],
-      quiz: { q: "The pink field is still wrinkled. Move?", correct: "Lift the loose film, then squeegee out from the glassed area. Do not heat it first.", wrong: "Heat the whole sheet so the wrinkles fall out." }
-    },
+
     {
       id: "int-magenta-run",
       title: "Interior panels, clips still on",

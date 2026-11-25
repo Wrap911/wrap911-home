@@ -686,7 +686,7 @@
       "<li>Stuck on a job? Send a photo to <strong>Problem Doctor</strong>, or search the problem.</li>" +
       "<li>Lock it in with <strong>Practice</strong> and drills.</li></ol></div>" +
       '<div class="w9-list w9-faq"><h2>Questions</h2>' +
-      faq("What is WRAP 911?", ["A shop trainer for commercial vinyl installs: box trucks, vans, trailers, storefronts, fleet, and RVs. It is built by a commercial installer with 8 years on the tools, from real jobs, including the mistakes."]) +
+      faq("What is WRAP 911?", ["A shop trainer for commercial vinyl installs: box trucks, vans, trailers, storefronts, fleet, and RVs. Right after I finished training, my trainer took another job, and suddenly I was on my own with installs I wasn't ready for. I ruined vinyl, wasted money, and had nobody to call when things went wrong. Every lesson came the hard way, through my own mistakes. I built WRAP 911 so you don't have to learn it alone."]) +
       faq("What do I get for free?", ["Shop rules, Coach, " + fp + " shop photos, " + fv + " sample videos, " + fl + " sample lessons, and " + df + " Problem Doctor read a day."]) +
       faq("What does the full trainer unlock?", ["Every lesson, photo, and video, plus drills, the job manager, the material calculator, and up to " + dp + " Problem Doctor reads a day."]) +
       (ios

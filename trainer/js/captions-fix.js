@@ -49,7 +49,7 @@
       check: ["Name the satin Jeep hood and the seven-slot grille", "Relief both mesh vents", "Stop the film at the chrome grille", "Check satin in raking light for fingers"],
       q: "Where does the film have to stop on this hood?",
       correct: "At the mesh hood vents and at the chrome seven-slot grille.",
-      wrong: "On a tall RV side with ladders and a pink graphic."
+      wrong: "A trailer rivet row with a roller in a channel."
     },
 
     "graphic-installation-1.jpg": {
@@ -262,16 +262,6 @@
       q: "What does the liner say, and what tool is in the hand?",
       correct: "3M Controltac. A white squeegee is on gold film.",
       wrong: "Film being tucked around a trailer marker lamp."
-    },
-    "fleet-rv.jpg": {
-      title: "RV side with a pink panel",
-      jobType: "Vehicles",
-      visual: "A long white RV inside a high-bay shop. A large pink and red graphic is tacked on the rear side, wrinkled, with a vertical seam. A silver multi-position ladder stands at the panel. An orange ladder is farther down the aisle. A forklift sits in the background.",
-      narration: "This is the RV, inside the shop. The pink graphic is tacked and still wrinkled. Two ladders are in the aisle, and the silver one is at the work face.\n\nSet the ladder on the concrete and move it instead of overreaching. Hinge the panel, then glass it. Do not climb with the full sheet in your hands.",
-      check: ["Name the white RV and the pink graphic", "See the wrinkles and the vertical seam", "See the silver ladder at the panel and the orange ladder down the aisle", "Move the ladder; do not overreach"],
-      q: "Where is this RV, and what is tacked on the side?",
-      correct: "Inside the shop. A wrinkled pink graphic with a vertical seam.",
-      wrong: "A Jeep grille in a tight close-up."
     },
     "architectural.jpg": {
       title: "Finished office hall",

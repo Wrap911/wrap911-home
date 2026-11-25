@@ -9,14 +9,14 @@
     "media/videos/trailer/magenta-trailer-rivet-row-channel-detail.jpg": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
     "media/videos/trailer/magenta-rivet-field-tented-heads.jpg": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
     "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg": "media/videos/fleet/pink-caddy-wrap4.jpg",
-    "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg": "../assets/sales/fleet-rv.jpg",
+    "media/videos/rv-bus/rv-side-panel-hang-roofline-view.jpg": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "media/videos/architectural/hand-seat-corner-knife-trim.jpg": "media/videos/architectural/architectural-wall-vinyl-panel-using-heat-to-remove-fingers.jpg",
     "media/videos/architectural/architectural-brick-film-stainless-panel-hang.jpg": "media/videos/architectural/architectural-wall-wrap.jpg",
     "media/videos/architectural/kiosk-brick-film-corner-knife-trim.jpg": "media/photos/gallery/kiosk-box.jpg",
     "media/videos/trailer/magenta-neon-corner-riveted-trim-finish.jpg": "media/photos/gallery/trailer-spot-graphics.jpg",
     "media/videos/van/d-pillar-taillight-mid-install.jpg": "media/videos/van/rear-vehicle-gate-wrap.jpg",
     "media/videos/trailer/showing-rivets.jpg": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
-    "media/videos/trailer/orange-99-month-ladder-tall-side-hang.jpg": "../assets/sales/fleet-rv.jpg",
+    "media/videos/trailer/orange-99-month-ladder-tall-side-hang.jpg": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "media/videos/trailer/orange-99-month-ladder-roofline-seat.jpg": "../assets/sales/edge-detail.jpg",
     "media/videos/van/carbon-fiber-pattern-bumper-recess-seat.jpg": "media/photos/gallery/front-bumper-wrap-caddy.jpg",
     "media/videos/van/white-liftgate-recess-tuck.jpg": "media/videos/van/rear-vehicle-gate-wrap.jpg",
@@ -27,8 +27,8 @@
     "media/videos/architectural/architectural-post-heating-vinyl-2.jpg": "media/videos/architectural/architectural-wall-wrap-squeegee-sequence.jpg",
     "media/videos/architectural/architectural-vinyl-panel-pre-install-prep.jpg": "media/videos/architectural/architectural-wall-wrap.jpg",
     "media/videos/architectural/architectural-wall-panel-install-dust-tack.jpg": "media/videos/architectural/vinyl-cabinet-installed.jpg",
-    "media/videos/rv-bus/blue-rv-wrap.jpg": "../assets/sales/fleet-rv.jpg",
-    "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg": "../assets/sales/fleet-rv.jpg"
+    "media/videos/rv-bus/blue-rv-wrap.jpg": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
+    "media/videos/rv-bus/rv-side-hang-3m-controltac.jpg": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg"
   };
 
   var KEYS = ["still", "image", "poster", "thumb", "thumbnail", "photo", "hero", "media", "posterUrl", "imageUrl"];
@@ -72,7 +72,7 @@
       narration:"Feed the channel. Do not stretch across it. Finish-trim off the show face.",
       checklist:["Feed the channel","No bridge","Trim off the show face","Post-heat the edge"],
       quiz:{q:"Channel in the panel. Move?",correct:"Feed film in. Do not bridge.",wrong:"Pull tight so the channel disappears."} },
-    { id:"pk-tall", title:"Tall side \u2014 height and long panel", image:"../assets/sales/fleet-rv.jpg", module:"squeegee", jobType:"Tall side",
+    { id:"pk-tall", title:"Tall side \u2014 height and long panel", image:"media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg", module:"squeegee", jobType:"Tall side",
       visual:"Tall commercial side in the yard.",
       narration:"Height is a layout problem. Stage the panel. Two people on a long hang. TDS heat only.",
       checklist:["Stage the panel","Two people on a long hang","Keep the graphic level","Heat only to TDS"],

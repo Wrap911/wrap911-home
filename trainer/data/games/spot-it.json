@@ -7,13 +7,6 @@
   "free": true
  },
  {
-  "photoId": "prob-rv-pink",
-  "q": "What's wrong on this panel?",
-  "right": "Only the top is stuck. The rest of the field is wrinkled and loose.",
-  "wrong": "Rivets are tented along a seam.",
-  "free": true
- },
- {
   "photoId": "bay-trailer-door",
   "q": "What is standing against the orange panel at the door?",
   "right": "A folding ladder, set right at the door.",
