@@ -192,8 +192,9 @@
       else home.appendChild(card);
     }
     if (lic.sku === "pack" && iosApp()) {
-      /* Build 30: the iOS app shows no crew code, no email-for-a-code line, and no code entry. */
-      card.innerHTML = "<strong>Shop pack</strong><p>This phone is unlocked for 12 months.</p>";
+      /* Build 32: no code list and no code entry. Crew codes go out by email. */
+      if (window.WRAP911_CREW_EMAIL && window.WRAP911_CREW_EMAIL.paint) window.WRAP911_CREW_EMAIL.paint(card);
+      else card.innerHTML = "<strong>Shop Pack</strong><p>This phone is unlocked for 12 months. For the other four phones, email info@wrap911.com and we will send the codes. Do not type a code in this app.</p>";
     } else if (lic.sku === "pack") {
       /* 2.7.0: the old ?license=CREW- link stopped unlocking on 2026-09-27; it showed "CREW-undefined" and did nothing.
          Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one. */

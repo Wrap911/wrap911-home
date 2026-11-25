@@ -28,9 +28,9 @@
   <link rel="stylesheet" href="css/style.css?v=31stuck">
   <link rel="stylesheet" href="css/theme-dark.css?v=271">
   <link rel="stylesheet" href="css/field-bg.css?v=bg8calc">
-  <link rel="stylesheet" href="css/polish.css?v=31beginner">
+  <link rel="stylesheet" href="css/polish.css?v=32feat">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
-  <link rel="preload" href="js/app-core.js?v=31stuck" as="script">
+  <link rel="preload" href="js/app-core.js?v=32feat" as="script">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -123,6 +123,12 @@
         <div class="card-sub">Start here if this is your first wrap, or something will not sit down.</div>
       </div>
     </div>
+    <div class="card tap" id="goto-quick-fix" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Quick Fix</div>
+        <div class="card-sub">Offline answers. Type “bubbles won't go away” or pick a problem.</div>
+      </div>
+    </div>
     <div class="home-primary" id="home-primary-actions">
       <div class="card tap primary-action" id="goto-learn-job" role="button" tabindex="0">
         <div class="card-body"><div class="card-title">Learn a job</div><div class="card-sub">Vehicles · Interior</div></div>
@@ -203,7 +209,25 @@
         <div class="card-sub">A first architectural install, one pocket at a time.</div>
       </div>
     </div>
+    <div class="card tap" id="stuck-goto-quick-fix" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Quick Fix (works offline)</div>
+        <div class="card-sub">Everyday wording to a short list of steps, including when to stop and redo.</div>
+      </div>
+    </div>
     <p class="muted">You can also search everyday wording: “bubbles won't go away”, “film tore at the corner”, “it won't stick by the edge”.</p>
+  </section>
+  <section id="screen-quick-fix" class="screen" aria-label="Quick Fix">
+    <button type="button" class="back-link" id="btn-back-quick-fix">← Back to home</button>
+    <h1>Quick Fix</h1>
+    <p class="lead">Short answers you can use on the job with no signal. Follow the film's TDS. Do not guess a temperature. Brands in this trainer: 3M, Avery Dennison, and BriteLine.</p>
+    <form id="qf-form" class="qf-form">
+      <label for="qf-input">What is going wrong?</label>
+      <input type="search" id="qf-input" name="qf-query" placeholder="bubbles won't go away" autocomplete="off" enterkeyhint="search">
+      <button type="submit" class="secondary">Find a fix</button>
+    </form>
+    <div id="qf-chips" class="qf-chips"></div>
+    <div id="qf-results"></div>
   </section>
   <section id="screen-vehicle" class="screen">
     <button type="button" class="back-link" id="btn-back-vehicle">← Back to home</button>
@@ -370,11 +394,11 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=31stuck"></script>
+  <script src="js/config.js?v=32feat"></script>
   <script src="js/iap-logic.js?v=278"></script>
-  <script src="js/plan-fix.js?v=278"></script>
+  <script src="js/plan-fix.js?v=32crew"></script>
   <script src="js/ios-license-bridge.js?v=271"></script>
-  <script src="js/iap.js?v=iap10"></script>
+  <script src="js/iap.js?v=32crew"></script>
   <script src="js/data.js?v=276"></script>
   <script src="js/data_extra.js?v=276"></script>
   <script src="js/problems-db.js?v=271"></script>
@@ -395,6 +419,10 @@
   <script src="js/problem-doctor.js?v=31quota"></script>
   <script src="js/field-bg.js?v=bg1"></script>
   <script src="js/search-logic.js?v=31search"></script>
+  <script src="js/weekly-challenge.js?v=32feat"></script>
+  <script src="js/quick-fix-logic.js?v=32feat"></script>
+  <script src="js/quick-fix.js?v=32feat"></script>
+  <script src="js/crew-email.js?v=32feat"></script>
   <script src="js/polish.js?v=31search"></script>
 </body>
 </html>

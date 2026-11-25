@@ -8,6 +8,7 @@
  * Email restore never refuses a verified purchase. A Seat or 7-Day Pass keeps the newest device id. A Shop Pack keeps up to 5, replacing the oldest when full.
  */
 import { normalizeEmail, startEmailRestore, storeEmailPurchase, verifyEmailRestore } from "./license-restore.js";
+import { CREW_EMAIL_PATH, handleCrewEmail } from "./crew-email.js";
 import { handleProblemDoctor, __resetDoctorLimitsForTests } from "./doctor.js";
 
 const DEFAULT_BASE = "https://api.x.ai/v1";
@@ -472,6 +473,13 @@ async function handleLicense(request, env, corsOrigin) {
   var url = new URL(request.url);
   var restoreResponse = await handleEmailRestore(request, env, corsOrigin);
   if (restoreResponse) return restoreResponse;
+  if (url.pathname === CREW_EMAIL_PATH) {
+    var crew = await handleCrewEmail(request, env, corsOrigin, {
+      verifyAppleJws: verifyAppleJws,
+      issueAppleSeatCodes: issueAppleSeatCodes
+    });
+    return json(crew.body, crew.status, corsOrigin);
+  }
   if (url.pathname === "/license/apple") return handleAppleLicense(request, env, corsOrigin);
   var isLicense = url.pathname === "/license/claim" || url.pathname === "/license/redeem" || url.pathname === "/license/check" || url.pathname === "/stripe/webhook";
   if (!isLicense) return null;

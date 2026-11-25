@@ -350,6 +350,11 @@
     if (!row) return null;
     var jws = row.tx && row.tx.jwsRepresentation;
     if (jws) lastJws = String(jws);
+    if (jws && window.WRAP911_CREW_EMAIL && window.WRAP911_CREW_EMAIL.rememberAppleReceipt) {
+      var txn = "";
+      try { txn = window.WRAP911_CREW_EMAIL.txnFromJws(jws) || String((row.tx && (row.tx.originalTransactionId || row.tx.transactionId)) || ""); } catch (eTxn) {}
+      window.WRAP911_CREW_EMAIL.rememberAppleReceipt(jws, txn);
+    }
     var lic = writeLicense(Logic.licenseFrom(row, Date.now()), force);
     if (row.sku === "pack") claimPack(row.tx, !!force);
     return lic;

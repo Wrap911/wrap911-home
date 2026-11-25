@@ -1575,6 +1575,12 @@
     wire("stuck-goto-storefront", function () {
       if (window.WRAP911_APP && window.WRAP911_APP.openLesson) window.WRAP911_APP.openLesson("sf-wet-install");
     });
+    function openQuickFix() {
+      if (window.WRAP911_QUICK_FIX && window.WRAP911_QUICK_FIX.open) window.WRAP911_QUICK_FIX.open("");
+      else showScreen("quick-fix");
+    }
+    wire("goto-quick-fix", openQuickFix);
+    wire("stuck-goto-quick-fix", openQuickFix);
     var hideJt = $("btn-hide-job-types");
     if (hideJt) {
       hideJt.addEventListener("click", function () {
