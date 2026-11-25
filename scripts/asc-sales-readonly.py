@@ -427,12 +427,47 @@ def analytics() -> None:
         print("The request was created the night of Nov 21, 2026 ET, so the first Pacific day may appear later on Nov 23 or on Nov 24.")
 
 
+def iap_prices() -> None:
+    """GET current USA price and proceeds for each IAP, plus app version states."""
+    print("IAP PRICES (USA, GET only)")
+    for product_id, iap_id in IAP_IDS.items():
+        status, sched = get(
+            BASE + f"/v1/inAppPurchasePriceSchedules/{iap_id}/manualPrices",
+            params={"include": "inAppPurchasePricePoint,territory", "limit": 50},
+            quiet=True,
+        )
+        if status >= 400:
+            print(f"  {product_id} price HTTP {status}")
+            continue
+        points = {r["id"]: r for r in (sched.get("included") or []) if r.get("type") == "inAppPurchasePricePoints"}
+        shown = False
+        for price in sched.get("data") or []:
+            rel = price.get("relationships") or {}
+            terr = ((rel.get("territory") or {}).get("data") or {}).get("id")
+            pid = ((rel.get("inAppPurchasePricePoint") or {}).get("data") or {}).get("id")
+            attrs = (points.get(pid) or {}).get("attributes") or {}
+            if terr == "USA":
+                print(f"  {product_id} customerPrice={attrs.get('customerPrice')} proceeds={attrs.get('proceeds')}")
+                shown = True
+        if not shown:
+            print(f"  {product_id} no USA manual price found")
+        status, iap = get(BASE + f"/v2/inAppPurchases/{iap_id}", quiet=True)
+        a = (iap.get("data") or {}).get("attributes") or {}
+        print(f"  {product_id} state={a.get('state')} type={a.get('inAppPurchaseType')}")
+    status, vers = get(BASE + f"/v1/apps/{APP_ID}/appStoreVersions", params={"limit": 10}, quiet=True)
+    for v in vers.get("data") or []:
+        a = v.get("attributes") or {}
+        print(f"  version {a.get('versionString')} state={a.get('appStoreState')} / {a.get('appVersionState')}")
+
+
 def main() -> None:
     for name in ("RAW", "ASC_KEY_ID", "ASC_ISSUER_ID"):
         if not os.environ.get(name):
             raise SystemExit(name + " is required")
     print("READ ONLY. No App Store Connect resource was created or changed.")
     sales_report(vendor_number())
+    print("---")
+    iap_prices()
     print("---")
     analytics()
     print("DONE. Nothing was changed in App Store Connect.")
