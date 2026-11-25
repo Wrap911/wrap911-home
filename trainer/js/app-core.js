@@ -1545,6 +1545,36 @@
       }
       try { panel && panel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
     });
+    function openStuck() { showScreen("stuck"); }
+    wire("goto-stuck", openStuck);
+    wire("btn-back-stuck", function () { renderHome(); showScreen("home"); });
+    wire("stuck-goto-doctor", function () {
+      var btn = $("goto-problem-doctor");
+      if (btn) btn.click();
+      else showScreen("problem-doctor");
+    });
+    wire("stuck-goto-prep", function () {
+      openModule("prep");
+    });
+    wire("stuck-goto-coach", function () {
+      if (window.WRAP911_COACH && window.WRAP911_COACH.renderCoach) window.WRAP911_COACH.renderCoach();
+      showScreen("coach");
+      setTimeout(function () {
+        var inp = $("coach-input");
+        if (inp) { inp.value = "Where do I start?"; try { inp.focus(); } catch (e3) {} }
+        var chip = document.querySelector('#screen-coach [data-coach-prompt="Where do I start?"]');
+        if (chip) { try { chip.click(); } catch (e4) {} }
+      }, 80);
+    });
+    wire("stuck-goto-rivets", function () {
+      if (window.WRAP911_APP && window.WRAP911_APP.openLesson) window.WRAP911_APP.openLesson("bt-rivet-mastery");
+    });
+    wire("stuck-goto-recess", function () {
+      if (window.WRAP911_APP && window.WRAP911_APP.openLesson) window.WRAP911_APP.openLesson("van-deep-recess");
+    });
+    wire("stuck-goto-storefront", function () {
+      if (window.WRAP911_APP && window.WRAP911_APP.openLesson) window.WRAP911_APP.openLesson("sf-wet-install");
+    });
     var hideJt = $("btn-hide-job-types");
     if (hideJt) {
       hideJt.addEventListener("click", function () {

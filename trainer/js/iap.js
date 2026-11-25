@@ -356,8 +356,9 @@
   }
   function readOnDevice() {
     if (!NP || !NP.getPurchases) return Promise.resolve(false);
-    return NP.getPurchases().then(function (r) {
-      var row = Logic.pickEntitlement((r && r.purchases) || [], Date.now());
+    /* Same two StoreKit queries as Restore: Transaction.all + currentEntitlements. */
+    return readStore().then(function (res) {
+      var row = Logic.pickEntitlement((res && res.list) || [], Date.now());
       if (row) {
         grantRow(row, false);
         return true;

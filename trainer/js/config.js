@@ -47,6 +47,7 @@ window.WRAP911_CONFIG = {
     "drills", "drill-spot", "drill-checklist", "drill-checklist-pick",
     "games", "game",
     "problem-doctor",
+    "stuck",
     /* 2.9.3 polish.js: Search, Settings, Help are open to everyone. */
     "search", "settings", "help"
   ],

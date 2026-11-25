@@ -279,7 +279,7 @@ var fieldCss = fs.readFileSync(path.join(__dirname, "../css/field-bg.css"), "utf
 var indexHtml = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 var swJs = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
 assert.ok(indexHtml.indexOf('id="field-bg"') !== -1 && indexHtml.indexOf("css/field-bg.css") !== -1 && indexHtml.indexOf("js/field-bg.js") !== -1);
-assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.3-bg1"') !== -1);
+assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.3-b31"') !== -1);
 assert.strictEqual(swJs.indexOf("bg-mock"), -1);
 Object.keys(BG_SHA).forEach(function (name) { assert.ok(swJs.indexOf("./media/bg/" + name + ".webp") !== -1, "sw precache " + name); });
 [fieldJs, fieldCss].forEach(function (src) {
@@ -291,10 +291,11 @@ assert.strictEqual(labels.indexOf('storefront: { title: "Interior"'), -1);
 var trim = fs.readFileSync(path.join(__dirname, "jobs-trim.js"), "utf8");
 assert.ok(trim.indexOf('v.title = "Storefront";') !== -1 && trim.indexOf('v.title = "Interior";') === -1, "jobs-trim keeps the Storefront title");
 
-/* Build 28: Material calculator fix. Labels above boxes, Height box, 54 in roll, waste 10-20. */
+/* Build 28 / 31: Material calculator. Labels above boxes, Height box, default 54 in roll, waste 10-20. */
 var idx28 = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
-assert.ok(idx28.indexOf('<option value="54">54</option>') !== -1);
-assert.ok(idx28.indexOf('<option value="60" selected>60</option>') !== -1);
+assert.ok(idx28.indexOf('<option value="54" selected>54</option>') !== -1);
+assert.ok(idx28.indexOf('<option value="60">60</option>') !== -1);
+assert.ok(idx28.indexOf('<option value="60" selected>60</option>') === -1);
 assert.ok(/id="calc-waste"[^>]*min="10"[^>]*max="20"/.test(idx28));
 assert.ok(/<label for="calc-h">Height \(in\)\s*<input[^>]*id="calc-h"/.test(idx28));
 
@@ -309,3 +310,34 @@ var idx29 = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(idx29.indexOf("js/polish.js") !== -1 && idx29.indexOf("css/polish.css") !== -1);
 var doc29 = fs.readFileSync(path.join(__dirname, "problem-doctor.js"), "utf8");
 assert.ok(doc29.indexOf("MIN_SCORE") !== -1, "Problem Doctor watch ranking present");
+
+/* Build 31: beginner search, teaser, stuck door, one Mustang still, Doctor quota, readOnDevice. */
+require("./search-logic.test.js");
+var idx31 = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
+assert.ok(idx31.indexOf('id="goto-stuck"') !== -1, "Home has I'm stuck / first install");
+assert.ok(idx31.indexOf('id="screen-stuck"') !== -1, "stuck screen present");
+assert.ok(idx31.indexOf('id="lesson-teaser"') !== -1, "lesson teaser markup present");
+assert.ok(idx31.indexOf("js/search-logic.js") !== -1, "search-logic is loaded");
+assert.ok(/inIosApp/.test(idx31) && /Capacitor/.test(idx31), "Shop Rules hide Safari copy in the iOS app");
+var cfg31 = fs.readFileSync(path.join(__dirname, "config.js"), "utf8");
+assert.ok(cfg31.indexOf('"stuck"') !== -1, "freeScreens has stuck");
+var extra31 = fs.readFileSync(path.join(__dirname, "app_extra.js"), "utf8");
+assert.ok(extra31.indexOf("setLessonTeaser") !== -1, "locked lessons show a teaser");
+assert.ok(/num\("calc-roll",\s*54\)/.test(extra31), "calculator fallback roll is 54");
+var iap31 = fs.readFileSync(path.join(__dirname, "iap.js"), "utf8");
+assert.ok(/function readOnDevice[\s\S]*readStore\(\)/.test(iap31), "readOnDevice uses readStore");
+var doc31 = fs.readFileSync(path.join(__dirname, "problem-doctor.js"), "utf8");
+assert.ok(doc31.indexOf("applyServerQuota") !== -1, "429 updates the Doctor counter");
+var photos31 = fs.readFileSync(path.join(__dirname, "photos-unique.js"), "utf8");
+assert.ok(photos31.indexOf("bay-mustang-hood-tac") !== -1);
+assert.ok(photos31.indexOf("bay-mustang-quarter-tape") === -1);
+assert.ok(photos31.indexOf("prob-mustang-fuel-door") === -1);
+assert.ok(photos31.indexOf("bay-mustang-overview") === -1);
+assert.ok(photos31.indexOf("bay-mustang-fender-badge") === -1);
+assert.ok(!/\bGTR\b/.test(photos31), "GTR typo is gone");
+var extraBlock = photos31.slice(photos31.indexOf("var EXTRA"), photos31.indexOf("];", photos31.indexOf("var EXTRA")));
+assert.ok((extraBlock.match(/id: "bay-mustang-hood-tac"/g) || []).length === 1, "exactly one Mustang still in EXTRA");
+assert.ok((extraBlock.match(/mustang-/g) || []).length === 2, "EXTRA has only the kept hood still (id + image)");
+var sw31 = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
+assert.ok(sw31.indexOf("wrap911-trainer-1.3-b31") !== -1, "SW cache bumped");
+

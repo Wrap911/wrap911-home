@@ -364,8 +364,23 @@
       clearTimeout(killer);
       if (btn) btn.removeAttribute("data-busy");
     }
+    function applyServerQuota(data) {
+      var cap = quota().limit;
+      var used = cap;
+      if (data && data.remaining != null && isFinite(Number(data.remaining))) {
+        used = Math.max(0, cap - Number(data.remaining));
+      } else if (data && data.used != null && isFinite(Number(data.used))) {
+        used = Math.max(0, Number(data.used));
+      }
+      try { localStorage.setItem(QUOTA_KEY, JSON.stringify({ day: today(), used: used })); } catch (eQ) {}
+    }
+    function paintQuota() {
+      var label = $("problem-doctor-quota");
+      if (label) label.textContent = quotaText();
+    }
     credentials().then(function (cred) {
       var body = { consent: true, images: images, note: note };
+      var sentJws = !!(cred && cred.jws);
       if (cred) {
         if (cred.device) body.device = cred.device;
         if (cred.jws) body.jws = cred.jws;
@@ -375,19 +390,28 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         signal: abort ? abort.signal : undefined
-      });
-    }).then(function (res) {
-      return res.json().catch(function () { return null; }).then(function (data) {
-        return { status: res.status, data: data };
+      }).then(function (res) {
+        return res.json().catch(function () { return null; }).then(function (data) {
+          return { status: res.status, data: data, sentJws: sentJws };
+        });
       });
     }).then(function (res) {
       finishBusy();
       var data = res.data || {};
-      if (res.status === 429) { setFb("bad", data.error || "Too many reads. Wait and try again."); syncSubmit(); return; }
+      if (res.status === 429) {
+        applyServerQuota(data);
+        var msg = data.error || "Too many reads. Wait and try again.";
+        if (nativeApp() && paid() && !res.sentJws) {
+          msg = "The shop could not confirm a purchase on this phone, so this read used the free cap. Open Pricing, tap Restore purchases, then try again.";
+        }
+        setFb("bad", msg);
+        paintQuota();
+        syncSubmit();
+        return;
+      }
       if (!data.ok) { setFb("bad", data.error || "Problem Doctor could not read that photo."); syncSubmit(); return; }
       bumpQuota();
-      var label = $("problem-doctor-quota");
-      if (label) label.textContent = quotaText();
+      paintQuota();
       saved = { frames: images, meta: shot, result: data };
       paintResult(data);
       setFb("ok", "AI suggestion. The photo was not saved.");
