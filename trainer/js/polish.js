@@ -573,6 +573,7 @@
       "</div>" +
       '<div class="w9-list"><h2>Help</h2>' +
       '<button type="button" class="w9-row" data-w9-set="help"><span>Help and FAQ</span><span class="w9-chev" aria-hidden="true">\u203A</span></button>' +
+      '<button type="button" class="w9-row" data-w9-set="start-here"><span>Replay Start here</span><span class="w9-chev" aria-hidden="true">\u203A</span></button>' +
       '<button type="button" class="w9-row" data-w9-set="feedback"><span>Send feedback<span class="w9-row-sub">' + esc(email) + '</span></span><span class="w9-chev" aria-hidden="true">\u203A</span></button>' +
       '<button type="button" class="w9-row" data-w9-set="contact"><span>Contact</span><span class="w9-chev" aria-hidden="true">\u203A</span></button>' +
       '<button type="button" class="w9-row" data-w9-set="rules"><span>Shop rules</span><span class="w9-chev" aria-hidden="true">\u203A</span></button>' +
@@ -631,6 +632,7 @@
     if (k === "plans") click("goto-pricing");
     else if (k === "restore") restorePurchases();
     else if (k === "help") openHelp();
+    else if (k === "start-here" && window.WRAP911_START_HERE) window.WRAP911_START_HERE.replay();
     else if (k === "feedback") sendFeedback();
     else if (k === "contact") { var c = core(); if (c) { c.renderContact(); c.showScreen("contact"); } }
     else if (k === "rules") show("rules");
