@@ -458,6 +458,18 @@ def iap_prices() -> None:
     for v in vers.get("data") or []:
         a = v.get("attributes") or {}
         print(f"  version {a.get('versionString')} state={a.get('appStoreState')} / {a.get('appVersionState')}")
+        if a.get("versionString") == "1.2":
+            st, locs = get(BASE + f"/v1/appStoreVersions/{v['id']}/appStoreVersionLocalizations", quiet=True)
+            for loc in locs.get("data") or []:
+                la = loc.get("attributes") or {}
+                print(f"    {la.get('locale')} keywords={la.get('keywords')!r}")
+                print(f"    {la.get('locale')} promotionalText={la.get('promotionalText')!r}")
+    st, infos = get(BASE + f"/v1/apps/{APP_ID}/appInfos", quiet=True)
+    for info in (infos.get("data") or [])[:2]:
+        st, locs = get(BASE + f"/v1/appInfos/{info['id']}/appInfoLocalizations", quiet=True)
+        for loc in locs.get("data") or []:
+            la = loc.get("attributes") or {}
+            print(f"  appInfo {la.get('locale')} name={la.get('name')!r} subtitle={la.get('subtitle')!r}")
 
 
 def main() -> None:
