@@ -539,7 +539,7 @@ input, select, textarea {
 /* Material calculator + shared job-form fields: label stacked on its own input.
    The previous slim CSS left labels inline, so on a 390px phone the next
    field's name wrapped beside the wrong box (Width [192] Height / [96] Panels). */
-.job-form > label {
+.job-form label {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -551,9 +551,9 @@ input, select, textarea {
   color: var(--text-muted);
   min-width: 0;
 }
-.job-form > label input,
-.job-form > label select,
-.job-form > label textarea {
+.job-form label input,
+.job-form label select,
+.job-form label textarea {
   display: block;
   width: 100%;
   min-width: 0;
@@ -563,6 +563,7 @@ input, select, textarea {
 }
 .job-form .check-inline {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   color: var(--text);
@@ -616,3 +617,16 @@ input, select, textarea {
   padding-top: 0.75rem;
   border-top: 1px solid var(--border);
 }
+.job-block { margin: 1.15rem 0 0.4rem; }
+.job-block h2 { font-size: 1.15rem; margin: 0 0 0.35rem; }
+.job-block h3 { font-size: 1rem; margin: 0.8rem 0 0.3rem; }
+.job-photos { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 0.6rem; }
+.job-photos figure { width: 104px; margin: 0; }
+.job-photos img { width: 104px; height: 104px; object-fit: cover; border-radius: 8px; background: #1a1520; display: block; }
+.job-photos button { margin-top: 0.3rem; }
+.job-step { margin: 0.35rem 0 0.75rem; }
+.job-step-timer { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin: 0.25rem 0 0 0.2rem; }
+.job-step-timer button { width: auto; }
+.job-step-timer p { flex: 1 1 100%; margin: 0; }
+.job-form label.job-check-choice { flex-direction: row; align-items: center; gap: 0.45rem; }
+.job-check-choice img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; }

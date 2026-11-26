@@ -10,6 +10,7 @@
 import { normalizeEmail, startEmailRestore, storeEmailPurchase, verifyEmailRestore } from "./license-restore.js";
 import { CREW_EMAIL_PATH, handleCrewEmail } from "./crew-email.js";
 import { handleProblemDoctor, __resetDoctorLimitsForTests } from "./doctor.js";
+import { handleJobPhoto, appleSeatOrPack } from "../cloudflare-job-photo/check.js";
 
 const DEFAULT_BASE = "https://api.x.ai/v1";
 const DEFAULT_MODEL = "grok-4.7";
@@ -776,6 +777,17 @@ export default {
     if (licenseResponse) return licenseResponse;
     try { var photoResponse = await handlePhoto(request, env, corsOrigin, originOk); if (photoResponse) return photoResponse; }
     catch (err) { return json({ error: "Photo Fix is unavailable." }, 500, corsOrigin); }
+    if (new URL(request.url).pathname === "/job/photo-check") {
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, corsOrigin);
+      if (!originOk) return json({ error: "Origin not allowed" }, 403, corsOrigin);
+      try {
+        return await handleJobPhoto(request, env, {
+          headers: corsHeaders(corsOrigin),
+          allow: function (body) { return jobPhotoAllow(env, body); },
+        });
+      }
+      catch (err) { return json({ error: "Photo check is unavailable." }, 500, corsOrigin); }
+    }
     if (new URL(request.url).pathname === "/coach/doctor") {
       if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, corsOrigin);
       if (!originOk) return json({ error: "Origin not allowed" }, 403, corsOrigin);
@@ -836,7 +848,27 @@ export default {
     });
   },
 };
+async function jobPhotoAllow(env, body) {
+  var jws = body && body.jws ? String(body.jws) : "";
+  if (jws) {
+    try {
+      var tx = await verifyAppleJws(jws);
+      var purchase = applePurchaseMs(tx);
+      return appleSeatOrPack(Object.assign({}, tx, { purchaseDate: purchase }), Date.now());
+    } catch (e) { return false; }
+  }
+  var code = String((body && body.code) || "").trim();
+  if (!code || !env.LICENSES) return false;
+  var rec = null;
+  try { rec = JSON.parse((await env.LICENSES.get("code:" + code)) || "null"); } catch (e2) { return false; }
+  if (!rec || rec.revoked) return false;
+  if (rec.sku !== "seat" && rec.sku !== "pack") return false;
+  if (rec.expiresAt && Date.now() > Number(rec.expiresAt)) return false;
+  return true;
+}
 export { verifyAppleJws, issueAppleSeatCodes, handleAppleLicense };
+
+
 async function __appleCertLinkOk(childDer, issuerDer) { return certSignedBy(certParts(childDer), certParts(issuerDer)); }
-export { __resetDoctorLimitsForTests, doctorTierFromClaims, doctorAppleGate, __appleCertLinkOk };
+export { __resetDoctorLimitsForTests, doctorTierFromClaims, doctorAppleGate, __appleCertLinkOk, jobPhotoAllow };
 

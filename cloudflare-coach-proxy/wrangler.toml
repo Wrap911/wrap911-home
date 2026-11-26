@@ -21,3 +21,5 @@ id = "76dac493b0ef4cabb574cff90acb6fae"  # wrap911-LICENSES (live)
 # Live today: LLM_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET.
 # Email restore adds: RESEND_API_KEY (Resend, sender info@wrap911.com).
 # Without RESEND_API_KEY, POST /license/restore/start returns 503 EMAIL_NOT_CONFIGURED.
+# Job photo check adds: JOB_PHOTO_API_KEY (vision model key).
+# Without JOB_PHOTO_API_KEY, POST /job/photo-check returns 503 and does not call the model.

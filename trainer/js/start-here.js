@@ -228,7 +228,10 @@
       jobs.setAttribute("role", "button");
       jobs.tabIndex = 0;
       jobs.innerHTML = '<div class="card-body"><div class="card-title">My Jobs</div><div class="card-sub">Notes for this phone</div></div>';
-      jobs.addEventListener("click", function () { show("jobs"); });
+      jobs.addEventListener("click", function () {
+        if (window.WRAP911_APP && window.WRAP911_APP.renderJobs) window.WRAP911_APP.renderJobs();
+        show("jobs");
+      });
       learn.parentNode.appendChild(jobs);
       var more = document.createElement("button");
       more.type = "button";

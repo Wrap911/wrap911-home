@@ -777,10 +777,14 @@
         card.className = "card tap";
         card.setAttribute("role", "button");
         card.setAttribute("tabindex", "0");
+        var bits = [];
+        if (job.materialBrand) bits.push(job.materialBrand);
+        if (job.filmLine) bits.push(job.filmLine);
+        bits.push(job.completed ? "Done" : "In progress");
         card.innerHTML =
           '<div class="card-icon">' + escapeHtml(v ? v.icon : "📋") + "</div>" +
-          '<div class="card-body"><div class="card-title">' + escapeHtml((v ? v.title : job.jobType) + " — " + (job.coverage || "Job")) + "</div>" +
-          '<div class="card-sub">' + escapeHtml(job.materialBrand || "") + (job.completed ? " · Done" : " · In progress") + "</div>" +
+          '<div class="card-body"><div class="card-title">' + escapeHtml((v ? v.title : job.jobType) + ": " + (job.coverage || "Job")) + "</div>" +
+          '<div class="card-sub">' + escapeHtml(bits.join(" · ")) + "</div>" +
           '<span class="badge">Edit</span></div>';
         card.addEventListener("click", function () { openJobEdit(job.id); });
         list.appendChild(card);
@@ -821,6 +825,7 @@
     if ($("job-fb")) { $("job-fb").className = "quiz-feedback"; $("job-fb").textContent = ""; }
     renderJobWorkflowChecks(job.jobType, job.workflowDone || {});
     c.showScreen("job-edit");
+    if (window.WRAP911_JOBS && window.WRAP911_JOBS.onOpen) window.WRAP911_JOBS.onOpen(job, isNew);
   }
 
   function renderJobWorkflowChecks(jobType, doneMap) {
@@ -832,14 +837,30 @@
       wrap.innerHTML = '<p class="muted">No workflow steps for this job type.</p>';
       return;
     }
+    var timesFor = window.WRAP911_JOBS && window.WRAP911_JOBS.timesFor;
+    var clock = window.WRAP911_JOB_LOGIC && window.WRAP911_JOB_LOGIC.formatClock;
     for (var i = 0; i < steps.length; i++) {
       var st = steps[i];
+      var row = document.createElement("div");
+      row.className = "job-step";
       var label = document.createElement("label");
       label.className = "cl-step" + (doneMap[st.id] ? " done" : "");
       label.style.display = "flex";
       label.innerHTML = '<input type="checkbox" data-jwf="' + escapeHtml(st.id) + '"' + (doneMap[st.id] ? " checked" : "") + "> <span>" +
         escapeHtml(st.title) + (st.type ? ' <em class="muted">(' + escapeHtml(st.type) + ")</em>" : "") + "</span>"; /* 2.6.5: rv-bus steps have no type */
-      wrap.appendChild(label);
+      row.appendChild(label);
+      var past = timesFor ? timesFor(st.id) : [];
+      var pastText = "";
+      if (past && past.length && clock) {
+        pastText = "Past times: " + past.slice(-5).map(clock).join(", ");
+      }
+      var timer = document.createElement("div");
+      timer.className = "job-step-timer";
+      timer.innerHTML = '<button type="button" class="secondary" data-timer="' + escapeHtml(st.id) + '">Start timer</button>' +
+        '<span data-timer-readout="' + escapeHtml(st.id) + '"></span>' +
+        '<p class="muted" data-timer-past="' + escapeHtml(st.id) + '">' + escapeHtml(pastText) + "</p>";
+      row.appendChild(timer);
+      wrap.appendChild(row);
     }
   }
 
@@ -880,12 +901,22 @@
       }
     }
     if (!found) { job.createdAt = Date.now(); jobs.push(job); }
+    if (window.WRAP911_JOBS && window.WRAP911_JOBS.collectExtras) {
+      var extra = window.WRAP911_JOBS.collectExtras();
+      if (extra) {
+        var extraKeys = Object.keys(extra);
+        for (var k = 0; k < extraKeys.length; k++) job[extraKeys[k]] = extra[extraKeys[k]];
+      }
+    }
     saveJobs(jobs);
     if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Job saved on this phone."; }
   }
 
   function deleteJob() {
     var c = core();
+    if (window.WRAP911_JOBS && window.WRAP911_JOBS.onDelete) {
+      try { window.WRAP911_JOBS.onDelete(c.state.jobId); } catch (eDel) {}
+    }
     var jobs = loadJobs().filter(function (j) { return j.id !== c.state.jobId; });
     saveJobs(jobs);
     renderJobs();
@@ -950,18 +981,21 @@
 
   function runCalc() {
     var num = function (id, d) { var v = parseFloat(val(id)); return isNaN(v) ? d : v; };
-    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 54);
-    var rivet = num("calc-rivet", 1), recess = num("calc-recess", 1), waste = num("calc-waste", 15);
-    if (waste < 10) waste = 10;
-    if (waste > 20) waste = 20;
-    var mat = num("calc-mat", 0), laborRate = num("calc-labor", 0), hours = num("calc-hours", 0);
-    var sqftPanel = (w * h) / 144;
-    var totalSqft = sqftPanel * n;
-    var adjusted = totalSqft * rivet * recess * (1 + waste / 100);
-    var linearFt = roll > 0 ? (adjusted / (roll / 12)) : 0;
-    var matCost = adjusted * mat;
-    var laborHours = hours * rivet * recess;
-    var laborCost = laborHours * laborRate;
+    var input = {
+      w: num("calc-w", 0), h: num("calc-h", 0), n: num("calc-n", 1), roll: num("calc-roll", 54),
+      rivet: num("calc-rivet", 1), recess: num("calc-recess", 1), waste: num("calc-waste", 15),
+      mat: num("calc-mat", 0), labor: num("calc-labor", 0), hours: num("calc-hours", 0)
+    };
+    var logic = window.WRAP911_JOB_LOGIC;
+    var outEarly = $("calc-results");
+    if (!logic) {
+      if (outEarly) outEarly.textContent = "Calculator did not load. Reload the trainer.";
+      return;
+    }
+    var figured = logic.calcMaterial(input);
+    var roll = figured.roll, waste = figured.waste;
+    var sqftPanel = figured.sqftPanel, totalSqft = figured.totalSqft, adjusted = figured.adjusted, linearFt = figured.linearFt;
+    var matCost = figured.matCost, laborHours = figured.laborHours, laborCost = figured.laborCost;
     var out = $("calc-results");
     if (!out) return;
     dismissCalcKeyboard();
@@ -1033,6 +1067,7 @@
   }
 
   APP.renderLibrary = renderLibrary;
+  APP.renderJobWorkflowChecks = renderJobWorkflowChecks;
   APP.renderJobs = renderJobs;
   APP.openJobEdit = openJobEdit;
   APP.renderBadges = renderBadges;
@@ -1124,6 +1159,7 @@
     if ($("job-type")) {
       $("job-type").addEventListener("change", function () {
         renderJobWorkflowChecks($("job-type").value, {});
+        if (window.WRAP911_JOBS && window.WRAP911_JOBS.onTypeChange) window.WRAP911_JOBS.onTypeChange();
       });
     }
 

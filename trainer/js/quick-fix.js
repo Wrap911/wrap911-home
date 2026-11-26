@@ -45,7 +45,9 @@
     }).join("");
   }
 
-  function openWith(query) {
+  var backTarget = "home";
+  function openWith(query, from) {
+    backTarget = from || "home";
     show("quick-fix");
     var inp = $("qf-input");
     if (inp && query) inp.value = query;
@@ -57,7 +59,15 @@
     var cfg = window.WRAP911_CONFIG;
     if (cfg && cfg.freeScreens && cfg.freeScreens.indexOf("quick-fix") === -1) cfg.freeScreens.push("quick-fix");
     var back = $("btn-back-quick-fix");
-    if (back) back.onclick = function () { show("home"); };
+    if (back) back.onclick = function () {
+      if (backTarget === "job") {
+        var c = window.WRAP911_APP && window.WRAP911_APP.core;
+        var id = c && c.state && c.state.jobId;
+        backTarget = "home";
+        if (id && window.WRAP911_APP.openJobEdit) { window.WRAP911_APP.openJobEdit(id); return; }
+      }
+      show("home");
+    };
     var form = $("qf-form");
     if (form) form.addEventListener("submit", function (e) {
       e.preventDefault();

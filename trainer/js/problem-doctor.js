@@ -528,6 +528,10 @@
       c.showScreen("problem-upload");
       return;
     }
+    if (from === "job" && c.state && c.state.jobId && APP.openJobEdit) {
+      APP.openJobEdit(c.state.jobId);
+      return;
+    }
     c.showScreen("home");
   }
   function injectReportButton() {

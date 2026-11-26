@@ -5,7 +5,7 @@
    code field. Brands: 3M, Avery Dennison, BriteLine. Heat always "per the film's TDS". */
 (function () {
   "use strict";
-  var VERSION = "2.9.3";
+  var VERSION = "1.4";
   var RECENT_KEY = "wrap911_recent_searches";
   var TEXT_KEY = "wrap911_text_size";
   var PHOTOS_KEY = "wrap911_bg_photos";
