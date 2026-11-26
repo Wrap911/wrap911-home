@@ -1,0 +1,24 @@
+name: TestFlight build 33 internal access
+# Runs only on the Start here branch. Does not create an App Store version, a beta review, or edit 1.2.
+on:
+  push:
+    branches: [cursor/ios-1.3-start-here]
+    paths:
+      - .github/workflows/asc-testflight-build33.yml
+      - scripts/asc-testflight-build33.py
+jobs:
+  access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Wait for build 33 and open internal testing
+        run: python3 scripts/asc-testflight-build33.py

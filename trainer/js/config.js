@@ -51,7 +51,8 @@ window.WRAP911_CONFIG = {
     "challenge",
     "quick-fix",
     /* 2.9.3 polish.js: Search, Settings, Help are open to everyone. */
-    "search", "settings", "help"
+    "search", "settings", "help",
+    "start-pick", "start-lesson", "start-doctor", "learn", "more"
   ],
   plans: [
     {

@@ -64,6 +64,7 @@
   function homeCopy() {
     var sub = document.querySelector("#goto-learn-job .card-sub");
     var d = window.WRAP911_DATA;
+    if (sub && sub.getAttribute("data-start-sub")) return;
     if (sub && d && d.vehicles && d.vehicles.length) {
       sub.textContent = d.vehicles.map(function (v) { return v.title; }).join(" · ");
     }
