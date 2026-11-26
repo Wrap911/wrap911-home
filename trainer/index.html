@@ -52,8 +52,18 @@
     .about-panel summary { cursor:pointer; font-weight:600; }
     .lesson-meta-box { margin:.6rem 0; }
     img, video { max-width:100%; }
-    /* Hotfix 2.6.1: Coach screen was 434px wide on a 390px phone (file input + catalog select). */
-    #screen-coach { max-width:100%; overflow-x:hidden; }
+    /* Hotfix 2.6.1: Coach screen was 434px wide on a 390px phone (file input + catalog select).
+       overflow-x:hidden forces overflow-y to auto, which made this screen its own scroll box.
+       The sticky back link then sat on top of the Problem Doctor row. clip keeps the width
+       limit without that scroll box. The back link stays in normal flow above the title. */
+    #screen-coach { max-width:100%; overflow-x:clip; overflow-y:visible; }
+    #screen-coach .back-link { position:static; top:auto; z-index:auto; margin:0 0 .55rem; }
+    #screen-coach .doctor-entry {
+      display:flex; flex-direction:column; align-items:stretch; gap:.45rem;
+      margin:.35rem 0 .9rem; clear:both;
+    }
+    #screen-coach .doctor-entry button { width:100%; margin:0; }
+    #screen-coach .coach-chat { margin-top:.15rem; clear:both; }
     #screen-coach .coach-media-panel, #screen-coach .coach-compose { max-width:100%; min-width:0; box-sizing:border-box; }
     #screen-coach .coach-media-panel input, #screen-coach .coach-media-panel select,
     #screen-coach .coach-compose textarea, #coach-file-input, #coach-catalog-pick {
