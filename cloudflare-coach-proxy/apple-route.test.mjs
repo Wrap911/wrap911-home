@@ -109,6 +109,24 @@ for (const code of first.codes) {
 const seat = await issueAppleSeatCodes(env, { ...tx, productId: "com.wrap911.trainer.seat.12mo", originalTransactionId: "2000000999999999" });
 assert(seat.codes.length === 0 && seat.sku === "seat", "seat mints nothing");
 
+const WEEK_MS = 7 * 86400000;
+const pass = await issueAppleSeatCodes(env, { ...tx, productId: "com.wrap911.trainer.pass.7d", originalTransactionId: "2000000888888888" });
+assert(pass.codes.length === 0 && pass.sku === "pass", "pass mints nothing");
+assert(pass.productId === "com.wrap911.trainer.pass.7d", "pass product id");
+assert(pass.expiresAt === purchase + WEEK_MS, "pass 7-day expiry");
+let passThrew = false;
+try {
+  await issueAppleSeatCodes(env, {
+    ...tx,
+    productId: "com.wrap911.trainer.pass.7d",
+    originalTransactionId: "2000000777777777",
+    purchaseDate: Date.now() - 8 * 86400000,
+  });
+} catch (e) {
+  passThrew = e.apple === true && e.status === 410 && e.message === "Purchase expired.";
+}
+assert(passThrew, "expired pass is refused");
+
 const req = (body) => new Request("https://wrap911-coach-proxy.wrap911.workers.dev/license/apple", {
   method: "POST",
   headers: { "Content-Type": "application/json" },

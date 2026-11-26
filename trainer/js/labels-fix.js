@@ -91,7 +91,7 @@
       "media/photos/gallery/trailer-spot-graphics.jpg",
       "../assets/sales/trailer-rivets.jpg",
       "../assets/sales/edge-detail.jpg",
-      "../assets/sales/fleet-rv.jpg",
+      "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
       "media/videos/van/rear-vehicle-gate-wrap.jpg"
     ],
     Interior: [
@@ -151,7 +151,7 @@
   var OPEN_VEHICLES = ["box-truck", "van", "trailer", "rv-bus", "fleet", "storefront"];
   var VEH_LABEL = {
     "box-truck": { title: "Box Truck", summary: "Rivet fields, oversized panels, roll-up and swing doors." },
-    storefront: { title: "Interior", summary: "Walls, cabinets, glass, fixtures." }
+    storefront: { title: "Storefront", summary: "Walls, cabinets, glass, fixtures." }
   };
   window.WRAP911_OPEN_VEHICLES = OPEN_VEHICLES.slice();
 
@@ -252,7 +252,7 @@
     var i, v, src;
     /* Hotfix 2.6.5: the vehicle list used to collapse to one "Vehicles" card (box-truck) + "Interior" (storefront),
        so the van, trailer, RV and fleet workflows were unreachable. Every vehicle in OPEN_VEHICLES was checked
-       (workflow steps present, every step image in the repo) and keeps its own card. Storefront stays "Interior". */
+       (workflow steps present, every step image in the repo) and keeps its own card. Storefront card reads "Storefront" (1.3 build 27). */
     if (d.vehicles) {
       var byId = {};
       for (i = 0; i < d.vehicles.length; i++) byId[d.vehicles[i].id] = d.vehicles[i];

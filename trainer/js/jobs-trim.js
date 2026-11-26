@@ -23,15 +23,15 @@
 
   /* Hotfix 2.6.5: labels-fix.js now keeps one card per vehicle with a complete workflow
      (window.WRAP911_OPEN_VEHICLES). This file used to cut the list back to "Vehicles" + "Interior"
-     and delete every other job-type card; it now only keeps the storefront card titled "Interior". */
+     and delete every other job-type card; it now only keeps the storefront card titled "Storefront" (1.3 build 27; the Photos and Videos filter chips still say Interior). */
   function trimVehicles() {
     var d = window.WRAP911_DATA;
     if (!d || !d.vehicles) return;
     for (var i = 0; i < d.vehicles.length; i++) {
       var v = d.vehicles[i];
       if (v.id === "storefront") {
-        v.title = "Interior";
-        v.name = "Interior";
+        v.title = "Storefront";
+        v.name = "Storefront";
         v.summary = "Walls, cabinets, glass, fixtures.";
       }
     }

@@ -3,7 +3,26 @@ import { readFileSync } from "node:fs";
 const dir = new URL(".", import.meta.url);
 const live = readFileSync(new URL("./rollback/worker.live-2026-11-12.js", dir), "utf8");
 const now = readFileSync(new URL("./worker.js", dir), "utf8");
-const liveLines = live.split("\n");
+/* 2026-11-23: the Apple certificate-chain check was fixed for Apple's real P-384 / SHA-384 chain
+   (see apple-p384-chain.test.mjs). These are the only Nov-12 lines allowed to change. */
+const REPLACED_FOR_P384 = new Set([
+  "function derInt(bytes, start, end) {",
+  "  if (v.length && v[0] === 0) v = v.slice(1);",
+  "  if (v.length > 32) throw new Error(\"der\");",
+  "  var out = new Uint8Array(32);",
+  "  out.set(v, 32 - v.length);",
+  "function ecdsaDerToRaw(sig) {",
+  "  var raw = new Uint8Array(64);",
+  "  raw.set(derInt(sig, r.start, r.end), 0);",
+  "  raw.set(derInt(sig, s.start, s.end), 32);",
+  "    sig: ecdsaDerToRaw(cert.slice(bit.start + 1, bit.end)),",
+  "  return crypto.subtle.importKey(\"spki\", parts.spki, { name: \"ECDSA\", namedCurve: \"P-256\" }, false, [\"verify\"]);",
+  "  var rootKey = await certKey(parsed[2]);",
+  "  var interKey = await certKey(parsed[1]);",
+  "  if (!(await crypto.subtle.verify({ name: \"ECDSA\", hash: \"SHA-256\" }, rootKey, parsed[1].sig, parsed[1].tbs))) throw new Error(\"bad certificate\");",
+  "  if (!(await crypto.subtle.verify({ name: \"ECDSA\", hash: \"SHA-256\" }, interKey, parsed[0].sig, parsed[0].tbs))) throw new Error(\"bad certificate\");",
+]);
+const liveLines = live.split("\n").filter((l) => !REPLACED_FOR_P384.has(l));
 const nowLines = now.split("\n");
 let kept = 0;
 for (const line of nowLines) {

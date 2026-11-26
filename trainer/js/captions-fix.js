@@ -49,7 +49,7 @@
       check: ["Name the satin Jeep hood and the seven-slot grille", "Relief both mesh vents", "Stop the film at the chrome grille", "Check satin in raking light for fingers"],
       q: "Where does the film have to stop on this hood?",
       correct: "At the mesh hood vents and at the chrome seven-slot grille.",
-      wrong: "On a tall RV side with ladders and a pink graphic."
+      wrong: "A trailer rivet row with a roller in a channel."
     },
     "architectural-wall-wrap-squeegee-sequence.jpg": {
       title: "Squeegee on grey wood-grain",
@@ -80,16 +80,6 @@
       q: "What does this wide still show?",
       correct: "A long wall of vertical grey wood-grain panels, with scraps on the concrete.",
       wrong: "A conference room with a red wall and a swatch rack."
-    },
-    "pickup-panels.jpg": {
-      title: "Pickup with sage bottle print",
-      jobType: "Vehicles",
-      visual: "Crew-cab pickup in the bay. Sage-green film with repeating bottle silhouettes is on the doors and the bed side. Grey liner still hangs off the front door, the cab-bed gap, and the rear door. Black door handle, black step bar, blue propane torch on the concrete, white van behind.",
-      narration: "This is the pickup. Sage film carries a bottle silhouette across the doors and the bedside. Grey liner is still hanging, so the panel is hinged, not finished. The torch is standing on the floor.\n\nLine the bottle rows up across the door, the gap, and the bed before you pull the rest of the liner. Leave the torch down until the pattern is true.",
-      check: ["Name the crew-cab pickup and the bottle print", "Keep the bottle rows level across the gap", "Treat the hanging liner as a hinge", "Leave the torch on the floor until registration is true"],
-      q: "Which vehicle is this, and what is still hanging?",
-      correct: "A crew-cab pickup in sage bottle-print film, with grey liner still hanging.",
-      wrong: "A black enclosed trailer with a tire-tread graphic."
     },
     "rear-vehicle-gate-wrap.jpg": {
       title: "White SUV rear hatch",
@@ -241,16 +231,6 @@
       q: "What does the liner say, and what tool is in the hand?",
       correct: "3M Controltac. A white squeegee is on gold film.",
       wrong: "Film being tucked around a trailer marker lamp."
-    },
-    "fleet-rv.jpg": {
-      title: "RV side with a pink panel",
-      jobType: "Vehicles",
-      visual: "A long white RV inside a high-bay shop. A large pink and red graphic is tacked on the rear side, wrinkled, with a vertical seam. A silver multi-position ladder stands at the panel. An orange ladder is farther down the aisle. A forklift sits in the background.",
-      narration: "This is the RV, inside the shop. The pink graphic is tacked and still wrinkled. Two ladders are in the aisle, and the silver one is at the work face.\n\nSet the ladder on the concrete and move it instead of overreaching. Hinge the panel, then glass it. Do not climb with the full sheet in your hands.",
-      check: ["Name the white RV and the pink graphic", "See the wrinkles and the vertical seam", "See the silver ladder at the panel and the orange ladder down the aisle", "Move the ladder; do not overreach"],
-      q: "Where is this RV, and what is tacked on the side?",
-      correct: "Inside the shop. A wrinkled pink graphic with a vertical seam.",
-      wrong: "A Jeep grille in a tight close-up."
     },
     "architectural.jpg": {
       title: "Finished office hall",

@@ -191,7 +191,11 @@
       if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(card, anchor);
       else home.appendChild(card);
     }
-    if (lic.sku === "pack") {
+    if (lic.sku === "pack" && iosApp()) {
+      /* Build 32: no code list and no code entry. Crew codes go out by email. */
+      if (window.WRAP911_CREW_EMAIL && window.WRAP911_CREW_EMAIL.paint) window.WRAP911_CREW_EMAIL.paint(card);
+      else card.innerHTML = "<strong>Shop Pack</strong><p>This phone is unlocked for 12 months. For the other four phones, email info@wrap911.com and we will send the codes. Do not type a code in this app.</p>";
+    } else if (lic.sku === "pack") {
       /* 2.7.0: the old ?license=CREW- link stopped unlocking on 2026-09-27; it showed "CREW-undefined" and did nothing.
          Server codes (W911-XXXX-XXXX) carry the other four seats. Until a code exists, say how to get one. */
       var mail = (window.WRAP911_CONFIG && window.WRAP911_CONFIG.contactEmail) || "";
@@ -236,7 +240,7 @@
     if (lic && !lic.expired && (lic.sku === "seat" || lic.sku === "pack" || lic.sku === "pass" || lic.sku === "field")) return;
     if (lic && !lic.expired && lic.plan === "free" && !lic.expiresAt) { if (card.parentNode) card.parentNode.removeChild(card); return; }
     if (iosApp()) {
-      card.innerHTML = "<strong>7-Day Pass, Shop Pack, or Seat</strong><p>7-Day Pass is this phone for 7 days. Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore with email uses the email you saved with the purchase.</p>";
+      card.innerHTML = "<strong>7-Day Pass, Shop Pack, or Seat</strong><p>7-Day Pass is this phone for 7 days. Shop Pack is five phones for 12 months. Seat is this phone for 12 months. Buy with Apple on the Pricing screen. No account. Restore purchases is on the same screen.</p>";
       return;
     }
     if (window.WRAP911_SANDBOX_NO_CHECKOUT) {

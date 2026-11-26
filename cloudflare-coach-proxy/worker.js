@@ -4,9 +4,12 @@
  * Seat codes: GET /license/claim?session_id=cs_...  POST /license/redeem {code}
  * Requires secrets STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and KV binding LICENSES.
  * Email restore (Apple non-renewing Shop Pack / Seat) also needs secret RESEND_API_KEY:
- *   POST /license/apple/bind {jws,email}  POST /license/restore/start {email}  POST /license/restore/verify {email,code}
+ *   POST /license/apple/bind {jws,email,device}  POST /license/restore/start {email}  POST /license/restore/verify {email,code,device}
+ * Email restore never refuses a verified purchase. A Seat or 7-Day Pass keeps the newest device id. A Shop Pack keeps up to 5, replacing the oldest when full.
  */
 import { normalizeEmail, startEmailRestore, storeEmailPurchase, verifyEmailRestore } from "./license-restore.js";
+import { CREW_EMAIL_PATH, handleCrewEmail } from "./crew-email.js";
+import { handleProblemDoctor, __resetDoctorLimitsForTests } from "./doctor.js";
 
 const DEFAULT_BASE = "https://api.x.ai/v1";
 const DEFAULT_MODEL = "grok-4.7";
@@ -165,6 +168,10 @@ var APPLE_ROOT_G3_SHA256 = "63343abfb89a6a03ebb57e9b3f5fa7be7c4f5c756f3017b3a8c4
 var APPLE_BUNDLE_ID = "com.wrap911.trainer";
 var APPLE_PACK_SKU = "com.wrap911.trainer.pack.12mo";
 var APPLE_SEAT_SKU = "com.wrap911.trainer.seat.12mo";
+var APPLE_PASS_SKU = "com.wrap911.trainer.pass.7d";
+var WEEK_MS = 7 * 86400000;
+var DOCTOR_FREE_PER_DAY = 1;
+var DOCTOR_PAID_PER_DAY = 15;
 var APPLE_LEAF_OID = [0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x06, 0x0b, 0x01];
 var APPLE_INTER_OID = [0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x06, 0x02, 0x01];
 function appleFail(message, status) {
@@ -200,23 +207,24 @@ function derRead(bytes, offset) {
   if (end > bytes.length) throw new Error("der");
   return { tag: tag, start: p, end: end, next: end, header: offset };
 }
-function derInt(bytes, start, end) {
+function derInt(bytes, start, end, size) {
   var v = bytes.slice(start, end);
-  if (v.length && v[0] === 0) v = v.slice(1);
-  if (v.length > 32) throw new Error("der");
-  var out = new Uint8Array(32);
-  out.set(v, 32 - v.length);
+  while (v.length > 1 && v[0] === 0) v = v.slice(1);
+  if (v.length > size) throw new Error("der");
+  var out = new Uint8Array(size);
+  out.set(v, size - v.length);
   return out;
 }
-function ecdsaDerToRaw(sig) {
+/* size is the curve size in bytes: 32 for P-256, 48 for P-384. */
+function ecdsaDerToRaw(sig, size) {
   var seq = derRead(sig, 0);
   if (seq.tag !== 0x30) throw new Error("der");
   var r = derRead(sig, seq.start);
   var s = derRead(sig, r.next);
   if (r.tag !== 0x02 || s.tag !== 0x02) throw new Error("der");
-  var raw = new Uint8Array(64);
-  raw.set(derInt(sig, r.start, r.end), 0);
-  raw.set(derInt(sig, s.start, s.end), 32);
+  var raw = new Uint8Array(size * 2);
+  raw.set(derInt(sig, r.start, r.end, size), 0);
+  raw.set(derInt(sig, s.start, s.end, size), size);
   return raw;
 }
 function certParts(cert) {
@@ -238,9 +246,35 @@ function certParts(cert) {
   return {
     tbs: cert.slice(tbs.header, tbs.next),
     spki: cert.slice(spki.header, spki.next),
-    sig: ecdsaDerToRaw(cert.slice(bit.start + 1, bit.end)),
+    sigDer: cert.slice(bit.start + 1, bit.end),
+    sigHash: certSigHash(cert, alg),
+    curve: certCurve(cert, spki),
     validity: validity,
   };
+}
+/* Apple's Root CA G3 and the WWDR intermediate are P-384 and sign with SHA-384. The StoreKit leaf is P-256. */
+var OID_ECDSA_SHA256 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x02];
+var OID_ECDSA_SHA384 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x03];
+var OID_P256 = [0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07];
+var OID_P384 = [0x2b, 0x81, 0x04, 0x00, 0x22];
+function oidEquals(bytes, el, oid) {
+  if (el.tag !== 0x06 || el.end - el.start !== oid.length) return false;
+  for (var i = 0; i < oid.length; i++) if (bytes[el.start + i] !== oid[i]) return false;
+  return true;
+}
+function certSigHash(cert, alg) {
+  var oid = derRead(cert, alg.start);
+  if (oidEquals(cert, oid, OID_ECDSA_SHA256)) return "SHA-256";
+  if (oidEquals(cert, oid, OID_ECDSA_SHA384)) return "SHA-384";
+  throw new Error("unsupported certificate signature");
+}
+function certCurve(cert, spki) {
+  var algSeq = derRead(cert, spki.start);
+  var idOid = derRead(cert, algSeq.start);
+  var curveOid = derRead(cert, idOid.next);
+  if (oidEquals(cert, curveOid, OID_P256)) return { name: "P-256", size: 32 };
+  if (oidEquals(cert, curveOid, OID_P384)) return { name: "P-384", size: 48 };
+  throw new Error("unsupported certificate key");
 }
 function certTime(bytes, el) {
   var text = "";
@@ -283,7 +317,12 @@ async function sha256hexBytes(bytes) {
   return hexFromBuf(await crypto.subtle.digest("SHA-256", bytes));
 }
 async function certKey(parts) {
-  return crypto.subtle.importKey("spki", parts.spki, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
+  return crypto.subtle.importKey("spki", parts.spki, { name: "ECDSA", namedCurve: parts.curve.name }, false, ["verify"]);
+}
+/* True when issuer's key signed child's certificate body. */
+async function certSignedBy(child, issuer) {
+  var key = await certKey(issuer);
+  return crypto.subtle.verify({ name: "ECDSA", hash: child.sigHash }, key, ecdsaDerToRaw(child.sigDer, issuer.curve.size), child.tbs);
 }
 async function verifyAppleJws(jws, rootSha) {
   var parts = String(jws || "").split(".");
@@ -296,11 +335,10 @@ async function verifyAppleJws(jws, rootSha) {
   var i;
   for (i = 0; i < parsed.length; i++) certDatesOk(ders[i], parsed[i]);
   if (!bytesInclude(ders[0], APPLE_LEAF_OID) || !bytesInclude(ders[1], APPLE_INTER_OID)) throw new Error("not a StoreKit certificate");
-  var rootKey = await certKey(parsed[2]);
-  var interKey = await certKey(parsed[1]);
+  if (parsed[0].curve.name !== "P-256") throw new Error("bad leaf key");
   var leafKey = await certKey(parsed[0]);
-  if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, rootKey, parsed[1].sig, parsed[1].tbs))) throw new Error("bad certificate");
-  if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, interKey, parsed[0].sig, parsed[0].tbs))) throw new Error("bad certificate");
+  if (!(await certSignedBy(parsed[1], parsed[2]))) throw new Error("bad certificate");
+  if (!(await certSignedBy(parsed[0], parsed[1]))) throw new Error("bad certificate");
   var signed = new TextEncoder().encode(parts[0] + "." + parts[1]);
   if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, leafKey, b64urlToBytes(parts[2]), signed))) throw new Error("bad signature");
   return JSON.parse(new TextDecoder().decode(b64urlToBytes(parts[1])));
@@ -316,6 +354,8 @@ function applePurchaseMs(tx) {
 }
 async function issueAppleSeatCodes(env, tx) {
   var product = String(tx.productId || "");
+  if (product === APPLE_PASS_SKU) {
+  } else
   if (product !== APPLE_PACK_SKU && product !== APPLE_SEAT_SKU) appleFail("Unknown product.", 400);
   var id = String(tx.originalTransactionId || "");
   if (!/^[0-9]{4,40}$/.test(id)) appleFail("Missing transaction.", 400);
@@ -338,7 +378,9 @@ async function issueAppleSeatCodes(env, tx) {
   if (existing) return existing;
   var purchase = applePurchaseMs(tx);
   if (!purchase) appleFail("Missing purchase date.", 400);
+  var pass = product === APPLE_PASS_SKU;
   var expiresAt = purchase + YEAR_MS;
+  if (pass) expiresAt = purchase + WEEK_MS;
   if (expiresAt < Date.now()) appleFail("Purchase expired.", 410);
   var codes = [];
   if (product === APPLE_PACK_SKU) {
@@ -360,6 +402,7 @@ async function issueAppleSeatCodes(env, tx) {
     expiresAt: expiresAt,
     environment: String(tx.environment || ""),
   };
+  if (pass) saved.sku = "pass";
   await env.LICENSES.put(key, JSON.stringify(saved));
   return saved;
 }
@@ -382,7 +425,7 @@ async function handleAppleLicense(request, env, corsOrigin) {
   }
 }
 
-/* Email restore for the non-renewing Apple Shop Pack and Seat (iOS 1.1 build 22). */
+/* Email restore for the non-renewing Apple Shop Pack, Seat, and 7-Day Pass. */
 var EMAIL_RESTORE_PATHS = { "/license/apple/bind": 1, "/license/restore/start": 1, "/license/restore/verify": 1 };
 async function handleEmailRestore(request, env, corsOrigin) {
   var url = new URL(request.url);
@@ -405,13 +448,14 @@ async function bindAppleEmail(body, env) {
   try { tx = await verifyAppleJws(body.jws); } catch (e) { return [{ ok: false, error: "Invalid Apple receipt." }, 400]; }
   if (tx.bundleId !== APPLE_BUNDLE_ID) return [{ ok: false, error: "Wrong app." }, 400];
   var product = String(tx.productId || "");
-  if (product !== APPLE_PACK_SKU && product !== APPLE_SEAT_SKU) return [{ ok: false, error: "Unknown product." }, 400];
+  if (product !== APPLE_PACK_SKU && product !== APPLE_SEAT_SKU && product !== APPLE_PASS_SKU) return [{ ok: false, error: "Unknown product." }, 400];
   if (tx.revocationDate) return [{ ok: false, error: "Purchase was refunded." }, 410];
   var purchase = applePurchaseMs(tx);
   if (!purchase) return [{ ok: false, error: "Missing purchase date." }, 400];
-  var expiresAt = purchase + YEAR_MS;
-  if (expiresAt < Date.now()) return [{ ok: false, error: "Purchase expired." }, 410];
   var pack = product === APPLE_PACK_SKU;
+  var pass = product === APPLE_PASS_SKU;
+  var expiresAt = purchase + (pass ? WEEK_MS : YEAR_MS);
+  if (expiresAt < Date.now()) return [{ ok: false, error: "Purchase expired." }, 410];
   await storeEmailPurchase(env, {
     email: email,
     jws: String(body.jws || ""),
@@ -419,15 +463,23 @@ async function bindAppleEmail(body, env) {
     transactionId: String(tx.originalTransactionId || tx.transactionId || ""),
     purchaseDate: purchase,
     expiresAt: expiresAt,
-    sku: pack ? "pack" : "seat",
+    sku: pack ? "pack" : (pass ? "pass" : "seat"),
     seats: pack ? 5 : 1,
+    device: body.device,
   });
-  return [{ ok: true, sku: pack ? "pack" : "seat", expiresAt: expiresAt }, 200];
+  return [{ ok: true, sku: pack ? "pack" : (pass ? "pass" : "seat"), expiresAt: expiresAt }, 200];
 }
 async function handleLicense(request, env, corsOrigin) {
   var url = new URL(request.url);
   var restoreResponse = await handleEmailRestore(request, env, corsOrigin);
   if (restoreResponse) return restoreResponse;
+  if (url.pathname === CREW_EMAIL_PATH) {
+    var crew = await handleCrewEmail(request, env, corsOrigin, {
+      verifyAppleJws: verifyAppleJws,
+      issueAppleSeatCodes: issueAppleSeatCodes
+    });
+    return json(crew.body, crew.status, corsOrigin);
+  }
   if (url.pathname === "/license/apple") return handleAppleLicense(request, env, corsOrigin);
   var isLicense = url.pathname === "/license/claim" || url.pathname === "/license/redeem" || url.pathname === "/license/check" || url.pathname === "/stripe/webhook";
   if (!isLicense) return null;
@@ -648,6 +700,67 @@ async function handlePhoto(request, env, corsOrigin, originOk) {
   return json(parsed, 200, corsOrigin);
 }
 
+/* Problem Doctor Apple gate (iOS 1.3). The website sends no jws and no device, so it skips this
+   and keeps its existing limiter. A signed StoreKit transaction for Seat or Shop Pack inside 365 days,
+   or the 7-Day Pass inside 7 days, gets 15 reads a day. A revoked or expired transaction, or only a
+   device id, gets 1 read a day for that device. Counts live in the LICENSES KV (doctorrl:apple:*, doctorrl:dev:*).
+   Nothing about the images is stored. verifyFn is only swapped in by tests. */
+function doctorTierFromClaims(tx, now) {
+  if (!tx || tx.revocationDate) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var product = String(tx.productId || "");
+  var duration = product === APPLE_PACK_SKU || product === APPLE_SEAT_SKU ? YEAR_MS : (product === APPLE_PASS_SKU ? WEEK_MS : 0);
+  if (!duration) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var purchase = applePurchaseMs(tx);
+  if (!purchase || purchase + duration <= now) return { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  var id = String(tx.originalTransactionId || tx.transactionId || "");
+  return { limit: DOCTOR_PAID_PER_DAY, id: id };
+}
+async function doctorCountOk(env, bucket, limit) {
+  var day = new Date().toISOString().slice(0, 10);
+  var key = "doctorrl:" + bucket;
+  var prev = null;
+  try { prev = JSON.parse((await env.LICENSES.get(key)) || "null"); } catch (e) { prev = null; }
+  if (!prev || prev.day !== day) prev = { day: day, n: 0 };
+  if (prev.n >= limit) return false;
+  prev.n += 1;
+  await env.LICENSES.put(key, JSON.stringify(prev));
+  return true;
+}
+async function doctorAppleGate(env, body, corsOrigin, verifyFn) {
+  var jws = body && body.jws ? String(body.jws) : "";
+  var device = cleanDevice(body && body.device);
+  if (!jws && !device) return null;
+  if (!env.LICENSES) return json({ error: "License store is not configured." }, 500, corsOrigin);
+  /* A missing, invalid, wrong-app, unsupported-environment, expired, or revoked receipt is never an
+     error. It falls back to the free read for this device. Only a verified Seat, Shop Pack, or 7-Day
+     Pass inside its window gets 15 a day. Sandbox (TestFlight) transactions count; they still have to
+     verify against the Apple root chain and carry this app's bundle id. */
+  var access = { limit: DOCTOR_FREE_PER_DAY, id: "" };
+  if (jws) {
+    try {
+      var tx = await (verifyFn || verifyAppleJws)(jws);
+      var environment = tx ? String(tx.environment || "") : "";
+      if (tx && tx.bundleId === APPLE_BUNDLE_ID && (environment === "Production" || environment === "Sandbox")) {
+        access = doctorTierFromClaims(tx, Date.now());
+      }
+    } catch (e1) {
+      access = { limit: DOCTOR_FREE_PER_DAY, id: "" };
+    }
+  }
+  var bucket = "";
+  var limit = DOCTOR_FREE_PER_DAY;
+  if (access.limit === DOCTOR_PAID_PER_DAY && access.id) {
+    bucket = "apple:" + access.id;
+    limit = DOCTOR_PAID_PER_DAY;
+  } else if (device) {
+    bucket = "dev:" + device;
+  } else {
+    return null;
+  }
+  if (!(await doctorCountOk(env, bucket, limit))) return json({ error: "Too many reads. Wait and try again." }, 429, corsOrigin);
+  return null;
+}
+
 export default {
   async fetch(request, env) {
     const allowed = (env.ALLOWED_ORIGIN || DEFAULT_ORIGIN).replace(/\/$/, "");
@@ -663,6 +776,16 @@ export default {
     if (licenseResponse) return licenseResponse;
     try { var photoResponse = await handlePhoto(request, env, corsOrigin, originOk); if (photoResponse) return photoResponse; }
     catch (err) { return json({ error: "Photo Fix is unavailable." }, 500, corsOrigin); }
+    if (new URL(request.url).pathname === "/coach/doctor") {
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, corsOrigin);
+      if (!originOk) return json({ error: "Origin not allowed" }, 403, corsOrigin);
+      try {
+        return await handleProblemDoctor(request, env, corsOrigin, function (body) {
+          return doctorAppleGate(env, body, corsOrigin);
+        });
+      }
+      catch (err) { return json({ error: "Problem Doctor is unavailable." }, 500, corsOrigin); }
+    }
     if (request.method === "GET") {
       return json({ ok: true, service: "wrap911-coach-proxy", hint: "POST coach messages. GET /license/claim. POST /license/redeem." }, 200, corsOrigin);
     }
@@ -714,4 +837,6 @@ export default {
   },
 };
 export { verifyAppleJws, issueAppleSeatCodes, handleAppleLicense };
+async function __appleCertLinkOk(childDer, issuerDer) { return certSignedBy(certParts(childDer), certParts(issuerDer)); }
+export { __resetDoctorLimitsForTests, doctorTierFromClaims, doctorAppleGate, __appleCertLinkOk };
 

@@ -8,27 +8,29 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="WRAP 911">
-  <meta name="description" content="Offline shop trainer for commercial, fleet, and architectural vinyl wrap installation lessons." />
+  <meta name="description" content="My trainer left, and I was alone on jobs I wasn't ready for. WRAP 911 is the help I never had." />
   <link rel="canonical" href="https://wrap911.github.io/wrap911-home/trainer/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://wrap911.github.io/wrap911-home/trainer/">
   <meta property="og:title" content="WRAP 911 Trainer">
-  <meta property="og:description" content="Offline shop trainer for commercial, fleet, and architectural vinyl wrap installation lessons.">
+  <meta property="og:description" content="My trainer left, and I was alone on jobs I wasn't ready for. WRAP 911 is the help I never had.">
   <meta property="og:image" content="https://wrap911.github.io/wrap911-home/assets/wrap911-logo.jpg">
   <meta property="og:image:alt" content="Wrap 911 logo">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="WRAP 911 Trainer">
-  <meta name="twitter:description" content="Offline shop trainer for commercial, fleet, and architectural vinyl wrap installation lessons.">
+  <meta name="twitter:description" content="My trainer left, and I was alone on jobs I wasn't ready for. WRAP 911 is the help I never had.">
   <meta name="twitter:image" content="https://wrap911.github.io/wrap911-home/assets/wrap911-logo.jpg">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <title>WRAP 911 Trainer</title>
-  <link rel="stylesheet" href="css/style.css?v=271">
+  <link rel="stylesheet" href="css/style.css?v=31stuck">
   <link rel="stylesheet" href="css/theme-dark.css?v=271">
+  <link rel="stylesheet" href="css/field-bg.css?v=bg8calc">
+  <link rel="stylesheet" href="css/polish.css?v=32feat">
   <!-- 2.6.2 perf: app-core.js is injected later by app.js; preload so it downloads in parallel -->
-  <link rel="preload" href="js/app-core.js?v=271" as="script">
+  <link rel="preload" href="js/app-core.js?v=32feat" as="script">
   <style>
     .passion-note { margin: 0 0 0.9rem; padding: 0.75rem 0.85rem; border-radius: 12px; background: rgba(255,176,0,.08); box-shadow: inset 3px 0 0 #ffb000; }
     .passion-note strong { display: block; letter-spacing: .08em; text-transform: uppercase; color: #ffb000; font-size: 0.78rem; margin-bottom: 0.35rem; }
@@ -66,6 +68,7 @@
   </style>
 </head>
 <body>
+  <div id="field-bg" aria-hidden="true"></div>
   <header class="app-header">
     <div class="brand brand-name"><a href="../index.html" aria-label="WRAP 911"><img class="brand-logo" src="../assets/wrap911-logo.jpg" alt="WRAP 911" width="1400" height="312" onerror="this.onerror=null;this.src='icons/icon-192.png'"></a></div>
     <div class="header-meta">
@@ -85,7 +88,7 @@
       <p style="margin-top:0.45rem"><button type="button" id="install-btn" hidden>Install</button></p>
     </div>
     <ul class="rules-list">
-      <li><strong>Who may wrap:</strong> Only trained crew, under the shop lead's direction.</li>
+      <li id="rule-who-may-wrap"><strong>Who may wrap:</strong> Only trained crew, under the shop lead's direction.</li>
       <li><strong>Brands only:</strong> 3M, Avery Dennison, BriteLine, as spec'd for the job.</li>
       <li><strong>Follow the TDS:</strong> Do not invent temperatures or chemical recipes.</li>
       <li><strong>Safety:</strong> Ladders, heat, knives. Soften the film. Do not melt it.</li>
@@ -101,8 +104,7 @@
     <p class="lead">Shop training for real jobs.</p>
     <div class="passion-note">
       <strong>This is the passion</strong>
-      <p>The world wants a perfect wrap. We still miss. This is the wrinkle that never made the photo, and the panel that would not line up, so you are not alone on a bad wrap day.</p>
-      <p style="margin-top:0.45rem">Install videos keep the live mistake when it happens, and you watch it get fixed. No hidden footage.</p>
+      <p>Right after I finished training, my trainer took another job, and suddenly I was on my own with installs I wasn't ready for. I ruined vinyl, wasted money, and had nobody to call when things went wrong. Every lesson came the hard way, through my own mistakes. I built WRAP 911 so you don't have to learn it alone.</p>
     </div>
     <div class="gamify-bar" id="home-gamify">
       <div class="gamify-stat"><span class="gamify-val" id="home-xp">0</span><span class="gamify-lbl">XP</span></div>
@@ -113,6 +115,18 @@
       <div class="home-progress-label" id="home-progress-label">0% overall</div>
       <div class="home-progress-track"><div class="home-progress-fill" id="home-progress-fill"></div></div>
       <div class="home-progress-detail" id="home-progress-detail"></div>
+    </div>
+    <div class="card tap stuck-entry" id="goto-stuck" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">I'm stuck / first install</div>
+        <div class="card-sub">Start here if this is your first wrap, or something will not sit down.</div>
+      </div>
+    </div>
+    <div class="card tap" id="goto-quick-fix" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Quick Fix</div>
+        <div class="card-sub">Offline answers. Type “bubbles won't go away” or pick a problem.</div>
+      </div>
     </div>
     <div class="home-primary" id="home-primary-actions">
       <div class="card tap primary-action" id="goto-learn-job" role="button" tabindex="0">
@@ -134,6 +148,9 @@
       <button type="button" class="secondary" id="btn-hide-job-types">Hide job types</button>
     </div>
     <div id="home-nav-cards" class="home-nav-grid hidden"></div>
+    <div class="card tap" id="goto-problem-doctor" role="button" tabindex="0">
+      <div class="card-body"><div class="card-title">Problem Doctor</div><div class="card-sub">Photo or short video of a vinyl problem. A likely cause and a fix.</div></div>
+    </div>
     <div class="card tap" id="goto-about" role="button" tabindex="0">
       <div class="card-body"><div class="card-title">About WRAP 911 · Pricing · FAQ</div><div class="card-sub">Why it exists, who it's for, free samples</div></div>
     </div>
@@ -150,6 +167,66 @@
       <div class="plan-status-card" id="home-plan-status"><span class="plan-badge" id="home-plan-badge">Free</span><p class="plan-status-detail" id="home-plan-detail">Pack $149</p></div>
       <div class="card tap" id="goto-pricing" role="button" tabindex="0"><div class="card-body"><div class="card-title">Pricing & unlock</div></div></div>
     </details>
+  </section>
+  <section id="screen-stuck" class="screen" aria-label="I am stuck or this is my first install">
+    <button type="button" class="back-link" id="btn-back-stuck">← Back to home</button>
+    <h1>I'm stuck / first install</h1>
+    <p class="lead">A calm path when you are alone on a job. Follow the film TDS. Do not guess temperatures or chemicals.</p>
+    <div class="card tap" id="stuck-goto-doctor" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Problem Doctor</div>
+        <div class="card-sub">Send a photo of the problem. Get a likely cause and a fix.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-prep" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Start with Surface Prep</div>
+        <div class="card-sub">Clean the panel first. Dirt is why film will not stick.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-coach" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Ask Coach: Where do I start?</div>
+        <div class="card-sub">A short, ordered first-install walkthrough.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-rivets" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Rivet Mastery</div>
+        <div class="card-sub">How to seat rivets without tents.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-recess" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Deep Recess</div>
+        <div class="card-sub">When film wrinkles in a pocket or liftgate tuck.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-storefront" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Free lesson: Storefront recess</div>
+        <div class="card-sub">A first architectural install, one pocket at a time.</div>
+      </div>
+    </div>
+    <div class="card tap" id="stuck-goto-quick-fix" role="button" tabindex="0">
+      <div class="card-body">
+        <div class="card-title">Quick Fix (works offline)</div>
+        <div class="card-sub">Everyday wording to a short list of steps, including when to stop and redo.</div>
+      </div>
+    </div>
+    <p class="muted">You can also search everyday wording: “bubbles won't go away”, “film tore at the corner”, “it won't stick by the edge”.</p>
+  </section>
+  <section id="screen-quick-fix" class="screen" aria-label="Quick Fix">
+    <button type="button" class="back-link" id="btn-back-quick-fix">← Back to home</button>
+    <h1>Quick Fix</h1>
+    <p class="lead">Short answers you can use on the job with no signal. Follow the film's TDS. Do not guess a temperature. Brands in this trainer: 3M, Avery Dennison, and BriteLine.</p>
+    <form id="qf-form" class="qf-form">
+      <label for="qf-input">What is going wrong?</label>
+      <input type="search" id="qf-input" name="qf-query" placeholder="bubbles won't go away" autocomplete="off" enterkeyhint="search">
+      <button type="submit" class="secondary">Find a fix</button>
+    </form>
+    <div id="qf-chips" class="qf-chips"></div>
+    <div id="qf-results"></div>
   </section>
   <section id="screen-vehicle" class="screen">
     <button type="button" class="back-link" id="btn-back-vehicle">← Back to home</button>
@@ -168,6 +245,14 @@
     <p class="module-tag" id="lesson-vehicle-tag"></p>
     <h1 id="lesson-title">Lesson</h1>
     <div id="lesson-media" class="lesson-media"></div>
+    <p class="lead" id="lesson-goal"></p>
+    <div id="lesson-teaser" class="lesson-teaser hidden">
+      <p class="muted" id="lesson-teaser-note">This is a look at the lesson. Unlock to see every step, the tools, the mistakes, and the quiz.</p>
+      <h3>First steps</h3>
+      <ol class="steps-list" id="lesson-teaser-steps"></ol>
+      <button type="button" class="primary" id="lesson-teaser-unlock">Unlock this lesson</button>
+    </div>
+    <div id="lesson-full" class="lesson-full">
     <h3>Key techniques</h3><ul class="checklist" id="lesson-techniques"></ul>
     <h3>Tools needed</h3><ul class="checklist" id="lesson-tools"></ul>
     <h3>Common mistakes</h3><ul class="checklist mistakes" id="lesson-mistakes"></ul>
@@ -175,6 +260,7 @@
     <div class="quiz-box" id="lesson-quiz"></div>
     <div id="lesson-badge-msg" class="quiz-feedback hidden"></div>
     <div class="quiz-nav"><button type="button" class="secondary" id="lesson-to-practice">Open linked practice</button></div>
+    </div>
   </section>
   <section id="screen-library" class="screen"><button type="button" class="back-link" id="btn-back-library">← Back to home</button><h1>Training library</h1><div id="cert-levels" class="cert-row"></div><div id="library-list"></div></section>
   <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
@@ -183,7 +269,47 @@
   <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>BriteLine</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
   <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
-  <section id="screen-calc" class="screen"><button type="button" class="back-link" id="btn-back-calc">← Back to home</button><h1>Material calculator</h1><form id="calc-form" class="job-form" onsubmit="return false;"><label>Width<input type="number" id="calc-w" value="192"></label><label>Height<input type="number" id="calc-h" value="96"></label><label>Panels<input type="number" id="calc-n" value="2"></label><label>Roll<select id="calc-roll"><option value="60" selected>60</option></select></label><label>Rivet<input type="number" id="calc-rivet" value="1.15"></label><label>Recess<input type="number" id="calc-recess" value="1.1"></label><label>Waste<input type="number" id="calc-waste" value="15"></label><label>Material<input type="number" id="calc-mat" value="4.50"></label><label>Labor<input type="number" id="calc-labor" value="75"></label><label>Hours<input type="number" id="calc-hours" value="6"></label><button type="button" id="btn-calc">Calculate</button></form><div id="calc-results" class="calc-results muted"></div></section>
+  <section id="screen-calc" class="screen">
+    <button type="button" class="back-link" id="btn-back-calc">← Back to home</button>
+    <h1>Material calculator</h1>
+    <form id="calc-form" class="job-form" onsubmit="return false;">
+      <label for="calc-w">Width (in)
+        <input type="number" id="calc-w" name="calc-w" value="192" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-h">Height (in)
+        <input type="number" id="calc-h" name="calc-h" value="96" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-n">Panels
+        <input type="number" id="calc-n" name="calc-n" value="2" min="1" step="1" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-roll">Roll width (in)
+        <select id="calc-roll" name="calc-roll" enterkeyhint="next">
+          <option value="54" selected>54</option>
+          <option value="60">60</option>
+        </select>
+      </label>
+      <label for="calc-rivet">Rivet multiplier
+        <input type="number" id="calc-rivet" name="calc-rivet" value="1.15" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-recess">Recess multiplier
+        <input type="number" id="calc-recess" name="calc-recess" value="1.1" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-waste">Waste (%)
+        <input type="number" id="calc-waste" name="calc-waste" value="15" min="10" max="20" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-mat">Material ($/sq ft)
+        <input type="number" id="calc-mat" name="calc-mat" value="4.50" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-labor">Labor ($/hr)
+        <input type="number" id="calc-labor" name="calc-labor" value="75" min="0" step="any" inputmode="decimal" enterkeyhint="next" autocomplete="off">
+      </label>
+      <label for="calc-hours">Hours
+        <input type="number" id="calc-hours" name="calc-hours" value="6" min="0" step="any" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+      </label>
+      <button type="button" id="btn-calc">Calculate</button>
+    </form>
+    <div id="calc-results" class="calc-results muted"></div>
+  </section>
   <section id="screen-module" class="screen"><button type="button" class="back-link" id="btn-back-module">← Back to home</button><h1 id="module-title">Module</h1><div class="lesson-body" id="module-lesson"></div><div class="mode-tabs" id="module-mode-tabs"><button type="button" class="mode-tab active" data-mode="quiz">Quiz</button><button type="button" class="mode-tab" data-mode="practice">Practice mode</button></div><div class="quiz-box" id="module-quiz"></div><div id="module-practice" class="practice-wrap hidden"></div></section>
   <section id="screen-drills" class="screen"><h1>Drills hub</h1><div id="drills-hub-list"></div></section>
   <section id="screen-drill-spot" class="screen"><button type="button" class="back-link" id="btn-back-spot">← Back</button><h1 id="spot-title">What's wrong?</h1><div id="spot-progress"></div><img class="photo-hero" id="spot-image" src="" alt="" decoding="async"><p class="lead" id="spot-question"></p><div id="spot-choices"></div><div class="quiz-feedback" id="spot-fb"></div><button type="button" class="secondary" id="spot-next" disabled>Next</button></section>
@@ -194,6 +320,11 @@
   <section id="screen-drill-flash" class="screen"><button type="button" class="back-link" id="btn-back-flash">← Back</button><h1>Flashcards</h1><div id="flash-progress"></div><div class="flash-card" id="flash-card" role="button" tabindex="0"><div class="flash-face flash-front" id="flash-front"></div><div class="flash-face flash-back" id="flash-back"></div></div><p class="muted" id="flash-hint"></p><button type="button" class="secondary" id="flash-prev">Prev</button><button type="button" id="flash-next">Next</button></section>
   <section id="screen-photos" class="screen"><h1 id="photos-heading">Browse photos</h1><div class="filter-chips" id="photo-filter-chips"></div><div class="thumb-grid" id="photo-list"></div><div class="photos-empty hidden" id="photos-empty"></div></section>
   <section id="screen-photo" class="screen"><button type="button" class="back-link" id="btn-back-photo">← Back</button><p class="module-tag" id="photo-module-tag"></p><h1 id="photo-title">Photo lesson</h1><img class="photo-hero" id="photo-image" src="" alt="" decoding="async"><p id="photo-visual"></p><div class="narration" id="photo-narration"></div><ul class="checklist" id="photo-checklist"></ul><div class="quiz-box" id="photo-quiz"></div></section>
+  <section id="screen-problem-doctor" class="screen" aria-label="Problem Doctor">
+    <button type="button" class="back-link" id="btn-back-problem-doctor">← Back to home</button>
+    <h1>Problem Doctor</h1>
+    <div id="problem-doctor-wrap"></div>
+  </section>
   <section id="screen-problem-upload" class="screen">
     <button type="button" class="back-link" id="btn-back-problem-upload">← Back to home</button>
     <h1>Report a problem</h1>
@@ -201,7 +332,7 @@
     <div id="problem-upload-wrap"></div>
   </section>
   <section id="screen-pricing" class="screen"><h1>Pricing</h1><p class="lead">Shop Pack $149 one-time (5 seats, 12 months) · Seat $49 one-time (1 tech, 12 months).</p><p class="example-banner" id="pricing-mode-banner"></p><div id="pricing-plans" class="pricing-plans"></div><div id="stripe-link-wrap" class="hidden"><button type="button" id="btn-stripe-pay">Buy shop pack · $149</button> <a href="?buy=seat" id="btn-stripe-seat"><button type="button" class="secondary">Buy 1 seat · $49</button></a></div><div class="unlock-box"><input type="text" id="unlock-code" placeholder="Unlock code" autocomplete="off"><button type="button" id="btn-unlock">Unlock</button></div><div class="quiz-feedback" id="unlock-feedback"></div><div class="card license-card" id="license-status-card"><p id="license-status-text"></p><button type="button" class="secondary hidden" id="btn-clear-license">Clear license</button></div></section>
-  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2" placeholder="Ask about a wrap step or vehicle part…"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Where do I start?">Where do I start?</button><button type="button" class="chip" data-coach-prompt="Prep">Prep</button><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button><button type="button" class="chip" data-coach-prompt="Recesses">Recesses</button><button type="button" class="chip" data-coach-prompt="Seams">Seams</button><button type="button" class="chip" data-coach-prompt="Doors">Doors</button><button type="button" class="chip" data-coach-prompt="Post-heat">Post-heat</button><button type="button" class="chip" data-coach-prompt="QC">QC</button></div><div class="card coach-media-panel hidden" hidden><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
+  <section id="screen-coach" class="screen"><button type="button" class="back-link" id="btn-back-coach">← Back to home</button><h1>WRAP 911 Coach</h1><p class="doctor-entry"><button type="button" class="secondary" id="goto-problem-doctor-coach">Problem Doctor</button> Photo or short video of a vinyl problem.</p><div class="coach-chat" id="coach-chat-log"></div><div class="coach-compose"><textarea id="coach-input" rows="2" placeholder="Ask about a wrap step or vehicle part…"></textarea><button type="button" id="coach-send">Send</button></div><div class="coach-prompts"><button type="button" class="chip" data-coach-prompt="Where do I start?">Where do I start?</button><button type="button" class="chip" data-coach-prompt="Prep">Prep</button><button type="button" class="chip" data-coach-prompt="Rivets">Rivets</button><button type="button" class="chip" data-coach-prompt="Recesses">Recesses</button><button type="button" class="chip" data-coach-prompt="Seams">Seams</button><button type="button" class="chip" data-coach-prompt="Doors">Doors</button><button type="button" class="chip" data-coach-prompt="Post-heat">Post-heat</button><button type="button" class="chip" data-coach-prompt="QC">QC</button></div><div class="card coach-media-panel hidden" hidden><input type="file" id="coach-file-input" accept="image/*,video/*"><select id="coach-catalog-pick"></select><button type="button" id="coach-auto-cat">Auto-categorize</button></div><div id="coach-result-card" class="card coach-result hidden"></div></section>
   <section id="screen-about" class="screen" aria-label="About WRAP 911">
     <button type="button" class="back-link" id="btn-back-about">← Back to home</button>
     <h1>About WRAP 911</h1>
@@ -228,8 +359,19 @@
       var note = document.getElementById("install-note");
       var btn = document.getElementById("install-btn");
       var copy = document.getElementById("install-copy");
+      var who = document.getElementById("rule-who-may-wrap");
+      var inIosApp = false;
+      try {
+        var cap = window.Capacitor;
+        var plat = cap && (typeof cap.getPlatform === "function" ? cap.getPlatform() : cap.platform);
+        inIosApp = String(plat || "").toLowerCase() === "ios";
+      } catch (eCap) { inIosApp = false; }
       var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone;
-      if (standalone && note) { note.hidden = true; }
+      if (inIosApp) {
+        if (note) note.hidden = true;
+        if (btn) btn.hidden = true;
+        if (who) who.innerHTML = "<strong>Who may wrap:</strong> You, once you have read these rules. Work alone only if the job is safe for one person. Follow the film TDS.";
+      } else if (standalone && note) { note.hidden = true; }
       else if (copy) {
         var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
         copy.textContent = ios
@@ -251,27 +393,35 @@
       /* Service worker is registered once, in js/app-core.js. */
     })();
   </script>
-  <script src="js/config.js?v=276"></script>
-  <script src="js/iap-logic.js?v=277"></script>
-  <script src="js/plan-fix.js?v=277"></script>
+  <script src="js/config.js?v=32feat"></script>
+  <script src="js/iap-logic.js?v=278"></script>
+  <script src="js/plan-fix.js?v=32crew"></script>
   <script src="js/ios-license-bridge.js?v=271"></script>
-  <script src="js/iap.js?v=iap8"></script>
+  <script src="js/iap.js?v=32crew"></script>
   <script src="js/data.js?v=276"></script>
-  <script src="js/data_extra.js?v=276"></script>
+  <script src="js/data_extra.js?v=32story"></script>
   <script src="js/problems-db.js?v=271"></script>
-  <script src="js/labels-fix.js?v=271"></script>
-  <script src="js/app_extra.js?v=272"></script>
-  <script src="js/problem-upload.js?v=271"></script>
+  <script src="js/labels-fix.js?v=32story"></script>
+  <script src="js/app_extra.js?v=31teaser"></script>
+  <script src="js/problem-upload.js?v=293polish"></script>
   <script src="js/appstore.js?v=272"></script>
   <script src="js/coach.js?v=271"></script>
-  <script src="js/app.js?v=272"></script>
-  <script src="js/video-fix.js?v=272"></script>
-  <script src="js/license-gate.js?v=276"></script>
-  <script src="js/captions-fix.js?v=271"></script>
-  <script src="js/jobs-trim.js?v=271"></script>
-  <script src="js/photos-unique.js?v=271"></script>
+  <script src="js/app.js?v=31stuck"></script>
+  <script src="js/video-fix.js?v=293polish"></script>
+  <script src="js/license-gate.js?v=32story"></script>
+  <script src="js/captions-fix.js?v=32story"></script>
+  <script src="js/jobs-trim.js?v=271-b27"></script>
+  <script src="js/photos-unique.js?v=32story"></script>
   <script src="js/practice-fix.js?v=271"></script>
-  <script src="js/about.js?v=277"></script>
+  <script src="js/about.js?v=32story"></script>
   <script src="js/games.js?v=276"></script>
+  <script src="js/problem-doctor.js?v=31quota"></script>
+  <script src="js/field-bg.js?v=bg1"></script>
+  <script src="js/search-logic.js?v=31search"></script>
+  <script src="js/weekly-challenge.js?v=32feat"></script>
+  <script src="js/quick-fix-logic.js?v=32feat"></script>
+  <script src="js/quick-fix.js?v=32feat"></script>
+  <script src="js/crew-email.js?v=32feat"></script>
+  <script src="js/polish.js?v=32story"></script>
 </body>
 </html>

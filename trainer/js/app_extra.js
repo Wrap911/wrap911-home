@@ -315,16 +315,58 @@
   }
 
   /* ---------- Lesson detail + 3Q quiz ---------- */
+  function iosNative() {
+    return !!(window.WRAP911_NATIVE && window.WRAP911_NATIVE());
+  }
+  function lessonUnlockCopy() {
+    return iosNative()
+      ? "That lesson is in the pack. Free look has 3 sample lessons. Open Pricing to buy a Shop Pack or Seat."
+      : "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49.";
+  }
+  function setLessonTeaser(on, lesson) {
+    var screen = $("screen-lesson");
+    var banner = $("lesson-teaser");
+    var full = $("lesson-full");
+    var goal = $("lesson-goal");
+    if (goal) {
+      var g = lesson && lesson.goal ? String(lesson.goal) : "";
+      goal.textContent = g;
+      goal.hidden = !g;
+    }
+    if (screen) {
+      if (on) screen.classList.add("is-teaser");
+      else screen.classList.remove("is-teaser");
+    }
+    if (full) {
+      if (on) full.classList.add("hidden");
+      else full.classList.remove("hidden");
+    }
+    if (banner) {
+      if (on) banner.classList.remove("hidden");
+      else banner.classList.add("hidden");
+    }
+    var stepsEl = $("lesson-teaser-steps");
+    if (stepsEl) {
+      var steps = (lesson && lesson.steps) || [];
+      stepsEl.innerHTML = steps.slice(0, 2).map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("");
+    }
+    var unlock = $("lesson-teaser-unlock");
+    if (unlock && !unlock.getAttribute("data-wired")) {
+      unlock.setAttribute("data-wired", "1");
+      unlock.addEventListener("click", function () {
+        var lfb = $("unlock-feedback");
+        if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = lessonUnlockCopy(); }
+        var c2 = core();
+        if (c2 && c2.showScreen) c2.showScreen("pricing");
+      });
+    }
+    if (unlock) unlock.textContent = iosNative() ? "Unlock with a Shop Pack or Seat" : "Unlock this lesson";
+  }
   function openLesson(id) {
     var c = core();
     var lesson = findLesson(id);
     if (!lesson || !c) return;
-    if (lessonLocked(id)) {
-      var lfb = $("unlock-feedback");
-      if (lfb) { lfb.className = "quiz-feedback bad"; lfb.textContent = (window.WRAP911_NATIVE && window.WRAP911_NATIVE()) ? "That lesson is in the pack. Free look has 3 sample lessons. Open Pricing to buy a Shop Pack or Seat." : "That lesson is in the pack. Free look has 3 sample lessons. Pack $149 (5 seats) or seat $49."; }
-      c.showScreen("pricing");
-      return;
-    }
+    var locked = lessonLocked(id);
     c.state.lessonId = id;
     if (lesson.vehicleId) c.state.vehicleId = lesson.vehicleId;
     c.state.lessonQuizIndex = 0;
@@ -349,23 +391,37 @@
       }
     }
     var youtubePlayId = youtubeIdFrom(youtubeSrc);
+    if (locked) {
+      /* Teaser first: title, photo, goal, first steps. Pricing is one tap away. */
+      if (media && lesson.media) {
+        media.innerHTML = '<img class="photo-hero" src="' + escapeHtml(lesson.media) + '" alt="' + escapeHtml(lesson.title) + '">' +
+          '<p class="muted">Shop photo. Heat: follow the TDS for the exact film. No invented numbers.</p>';
+      } else if (media) {
+        media.innerHTML = "";
+      }
+      setLessonTeaser(true, lesson);
+      return;
+    }
     if (media && youtubePlayId) {
       media.innerHTML = "";
       mountYoutubePlayer(media, youtubePlayId);
     } else if (media && lesson.media) {
       media.innerHTML = '<img class="photo-hero" src="' + escapeHtml(lesson.media) + '" alt="' + escapeHtml(lesson.title) + '">' +
         '<p class="muted">Shop photo. Heat: follow the TDS for the exact film. No invented numbers.</p>';
-    } else {
+    } else if (media) {
       media.innerHTML = "";
     }
+    setLessonTeaser(false, lesson);
     $("lesson-techniques").innerHTML = (lesson.keyTechniques || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-tools").innerHTML = (lesson.tools || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-mistakes").innerHTML = (lesson.commonMistakes || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     $("lesson-steps").innerHTML = (lesson.steps || []).map(function (t) { return "<li>" + escapeHtml(t) + "</li>"; }).join("");
     renderLessonMeta(lesson);
     var badgeMsg = $("lesson-badge-msg");
-    badgeMsg.className = "quiz-feedback hidden";
-    badgeMsg.textContent = "";
+    if (badgeMsg) {
+      badgeMsg.className = "quiz-feedback hidden";
+      badgeMsg.textContent = "";
+    }
     renderLessonQuiz(lesson);
   }
 
@@ -881,9 +937,20 @@
   /* ---------- Calculator (shop estimate only) ---------- */
   function renderCalc() { /* form lives in index.html */ }
 
+  function dismissCalcKeyboard() {
+    var ae = document.activeElement;
+    if (ae && typeof ae.blur === "function") ae.blur();
+  }
+
+  function calcFields() {
+    var form = $("calc-form");
+    if (!form) return [];
+    return Array.prototype.slice.call(form.querySelectorAll("input, select"));
+  }
+
   function runCalc() {
     var num = function (id, d) { var v = parseFloat(val(id)); return isNaN(v) ? d : v; };
-    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 60);
+    var w = num("calc-w", 0), h = num("calc-h", 0), n = num("calc-n", 1), roll = num("calc-roll", 54);
     var rivet = num("calc-rivet", 1), recess = num("calc-recess", 1), waste = num("calc-waste", 15);
     if (waste < 10) waste = 10;
     if (waste > 20) waste = 20;
@@ -897,6 +964,7 @@
     var laborCost = laborHours * laborRate;
     var out = $("calc-results");
     if (!out) return;
+    dismissCalcKeyboard();
     out.className = "calc-results";
     out.innerHTML =
       "<h3>Estimate</h3><ul class=\"checklist\">" +
@@ -909,6 +977,36 @@
       "<li>Material + labor: <strong>$" + (matCost + laborCost).toFixed(2) + "</strong></li>" +
       "</ul>" +
       '<p class="disclaimer">Shop estimate only. Not a quote. Your markup is your call. Check film yield and the TDS for the exact 3M, Avery Dennison, or BriteLine product.</p>';
+    try {
+      if (out.scrollIntoView) out.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    } catch (eScroll) {}
+  }
+
+  function bindCalcForm() {
+    var form = $("calc-form");
+    if (!form || form.getAttribute("data-calc-bound")) return;
+    form.setAttribute("data-calc-bound", "1");
+    form.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      var t = e.target;
+      if (!t || (t.tagName !== "INPUT" && t.tagName !== "SELECT")) return;
+      e.preventDefault();
+      var fields = calcFields();
+      var i = fields.indexOf(t);
+      if (i >= 0 && i < fields.length - 1) {
+        fields[i + 1].focus();
+        if (typeof fields[i + 1].select === "function") fields[i + 1].select();
+      } else {
+        dismissCalcKeyboard();
+        runCalc();
+      }
+    });
+    if ($("btn-calc")) {
+      $("btn-calc").addEventListener("click", function () {
+        dismissCalcKeyboard();
+        runCalc();
+      });
+    }
   }
 
   /* ---------- ?lesson= deep link (Field app + Coach) ---------- */
@@ -1034,7 +1132,7 @@
     });
     if ($("prac-finish") && typeof finishPractice === "function") $("prac-finish").addEventListener("click", finishPractice);
 
-    if ($("btn-calc") && typeof runCalc === "function") $("btn-calc").addEventListener("click", runCalc);
+    if (typeof bindCalcForm === "function") bindCalcForm();
   };
 
 })();

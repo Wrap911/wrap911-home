@@ -1,0 +1,28 @@
+name: TestFlight beta review status
+# GET only. Does not submit review, edit groups, or change version 1.2.
+# Recheck only. No App Store Connect writes.
+on:
+  workflow_dispatch:
+  push:
+    branches: [cursor/ios-web-parity-1.3]
+    paths:
+      - .github/workflows/asc-beta-status-build32.yml
+      - scripts/asc-beta-status-build32.py
+permissions:
+  contents: read
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Read build 32 beta review status
+        run: python3 scripts/asc-beta-status-build32.py

@@ -13,50 +13,6 @@
       quiz: { q: "A Rapid Tac bottle is sitting on the hood film. First move?", correct: "Lift the bottle off the show face, then glass the field.", wrong: "Leave it. The weight helps the film stick." }
     },
     {
-      id: "bay-mustang-quarter-tape",
-      title: "Quarter tape line on gloss black",
-      image: "media/photos/gallery/mustang-quarter-tape.jpg",
-      module: "cutting",
-      jobType: "Vehicles",
-      visual: "Rear quarter of a gloss black Mustang. Tan tape runs the C-pillar and quarter. Bronze wheel in frame. Shop boxes reflect in the film.",
-      narration: "Tape on a finished gloss panel is a layout mark for a stripe or a second color. Do not cut to the tape like it is a panel gap.\n\nPull the tape low and slow after the graphic is glassed. Check the wheel-arch edge and the fuel-door pocket before you walk.",
-      checklist: ["Confirm what the tape is marking before you cut", "Glass the graphic, then pull tape low and slow", "Check the wheel-arch edge", "Do not treat tape as a body seam"],
-      quiz: { q: "Tan tape is on a gloss quarter. What is it?", correct: "A layout mark. Do not cut it like a panel gap.", wrong: "The factory body seam. Cut hard to it." }
-    },
-    {
-      id: "prob-mustang-fuel-door",
-      title: "Fuel door still under film",
-      image: "media/photos/gallery/mustang-fuel-door.jpg",
-      module: "cutting",
-      jobType: "Problems",
-      visual: "Gloss black rear quarter. The round fuel door is still covered. A tan tape stripe runs above it toward the spoiler.",
-      narration: "Problem: the fuel door is wrapped shut. That door has to open.\n\nSolution: seat the field, cut the door gap with a sharp blade into the gap, leave a tuck, cycle the door. Do not slice across the painted face.",
-      checklist: ["Seat the field first", "Cut into the fuel-door gap, not across the face", "Leave a tuck margin", "Cycle the door before you call it done"],
-      quiz: { q: "The round fuel door is still covered. Move?", correct: "Cut into the gap, tuck, then cycle the door.", wrong: "Heat the circle until the door outline shows through." }
-    },
-    {
-      id: "bay-mustang-overview",
-      title: "Dark Horse in the bay, job not done",
-      image: "media/photos/gallery/mustang-bay-overview.jpg",
-      module: "post-heat",
-      jobType: "Vehicles",
-      visual: "Overhead of a black Mustang Dark Horse in an open shop. Bronze wheels. Boxes and a ladder in the bay. Tape still on the quarter and spoiler line.",
-      narration: "The car looks wet and finished from ten feet. Tape is still on the quarter and the spoiler line. That is not a walk-around.\n\nWalk the edges: hood vents, fuel door, wheel arches, spoiler ends, door handles. Pull leftover tape. Post-heat only where the film TDS says.",
-      checklist: ["Walk every edge before you call it done", "Pull leftover layout tape", "Cycle doors and the fuel door", "Post-heat only per the film TDS"],
-      quiz: { q: "The car looks finished from the mezzanine. Next?", correct: "Walk the edges and pull leftover tape.", wrong: "Ship it. Shine means done." }
-    },
-    {
-      id: "bay-mustang-fender-badge",
-      title: "Fender badge and hood vents",
-      image: "media/photos/gallery/mustang-fender-gtr.jpg",
-      module: "cutting",
-      jobType: "Vehicles",
-      visual: "Driver fender of a black Mustang Dark Horse. GTR badge on the fender. Hood vents in frame. Bronze wheel and splitter visible.",
-      narration: "Badges and hood vents are cutouts, not stickers you wrap over and leave. Seat the field, then cut the badge and the vent openings. Leave a small tuck. Do not stretch film into the vent slats until the field is glassed.",
-      checklist: ["Glass the fender field first", "Cut the badge, do not bury it", "Seat vent pockets after the field", "Do not stretch into slats from a loose sheet"],
-      quiz: { q: "How do you treat the fender badge?", correct: "Seat the field, then cut the badge and leave a tuck.", wrong: "Stretch film over the badge and leave it covered." }
-    },
-    {
       id: "prob-airstream-nose",
       title: "Airstream nose, film not seated",
       image: "media/photos/gallery/airstream-nose.jpg",
@@ -90,17 +46,7 @@
       checklist: ["Set the ladder at the door before you climb", "Seat the film before the cut", "Cut into the gap, not across the face", "Leave a tuck margin, then cycle the door"],
       quiz: { q: "What is the dark outline in the orange film?", correct: "The gap around a side door, with the film running across it.", wrong: "A seam where two orange panels overlap." }
     },
-    {
-      id: "prob-rv-pink",
-      title: "RV side, pink film still loose",
-      image: "media/photos/gallery/rv-pink-side.jpg",
-      module: "squeegee",
-      jobType: "Problems",
-      visual: "Tall RV or box side. Pink and red film is on the panel but wrinkled and not glassed. A ladder stands in front. The next bay section is still bare.",
-      narration: "Problem: the sheet is stuck at the top and the field is still loose. A ladder in front is not a squeegee.\n\nSolution: hinge from the glassed top. Overlap strokes down the panel. Do not heat the loose field to hide wrinkles.",
-      checklist: ["Work from the glassed top down", "Overlap every stroke", "No heat on a loose field", "Move the ladder when it blocks the panel"],
-      quiz: { q: "The pink field is still wrinkled. Move?", correct: "Lift the loose film, then squeegee out from the glassed area. Do not heat it first.", wrong: "Heat the whole sheet so the wrinkles fall out." }
-    },
+
     {
       id: "int-magenta-run",
       title: "Interior panels, clips still on",
@@ -182,7 +128,35 @@
       haveId[ex.id] = 1;
       haveImg[frame(base(ex.image))] = 1;
     }
-    d.photoLessons = dedupe(d.photoLessons);
+
+    function isMustang(p) {
+      var blob = [p && p.id, p && p.image, p && p.title, p && p.visual].join(" ").toLowerCase();
+      return /mustang|dark horse/.test(blob);
+    }
+    function capMustang(list) {
+      var prefer = "bay-mustang-hood-tac";
+      var kept = null;
+      var i, p;
+      for (i = 0; i < list.length; i++) {
+        p = list[i];
+        if (p && p.id === prefer && isMustang(p)) { kept = p; break; }
+      }
+      if (!kept) {
+        for (i = 0; i < list.length; i++) {
+          if (isMustang(list[i])) { kept = list[i]; break; }
+        }
+      }
+      var out = [];
+      var used = false;
+      for (i = 0; i < list.length; i++) {
+        p = list[i];
+        if (!isMustang(p)) { out.push(p); continue; }
+        if (!used && kept && p === kept) { out.push(p); used = true; }
+        else if (!used && kept && p.id === kept.id) { out.push(p); used = true; }
+      }
+      return out;
+    }
+    d.photoLessons = capMustang(dedupe(d.photoLessons));
   }
 
   /* Hotfix 2.6.4: the timers raced photos-pack.js / photos-boost.js (paid count 47, 55 or 70 by load timing).
