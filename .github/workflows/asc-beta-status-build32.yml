@@ -1,5 +1,6 @@
 name: TestFlight beta review status
 # GET only. Does not submit review, edit groups, or change version 1.2.
+# Recheck only. No App Store Connect writes.
 on:
   workflow_dispatch:
   push:
