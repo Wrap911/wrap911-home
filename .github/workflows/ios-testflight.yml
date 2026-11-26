@@ -21,11 +21,13 @@ name: iOS build and upload to App Store Connect
 # Version 1.3 build 31 adds beginner search, a lesson teaser before the paywall, I'm stuck / first install on Home, iOS Shop Rules (no Safari or Add to Home Screen), one Mustang RTR still, calculator default 54 in, and Doctor/readOnDevice fixes. Same branch-only upload.
 # Version 1.3 build 32 adds the Weekly Challenge and ranks, an offline Quick Fix lookup, and Shop Pack crew codes by email (no code entry in the app). Same branch-only upload.
 # Version 1.3 build 33 adds Start here and a four-button home. Upload only from cursor/ios-1.3-start-here.
-# Version 1.4 build 34 adds the job manager tools. Do not run this workflow for 1.4.
-# Automatic upload is off so a merge cannot send a build to App Store Connect.
-# Do not push this file to ios-capacitor while 1.2 is in review.
+# Version 1.4 build 34 adds the job manager tools. Upload only from cursor/ios-1.4-job-manager-5bbf.
+# Do not push this file to ios-capacitor or main.
 on:
   workflow_dispatch:
+  push:
+    branches: [cursor/ios-1.4-job-manager-5bbf]
+    paths: [".github/workflows/ios-testflight.yml"]
 jobs:
   build:
     runs-on: macos-15
