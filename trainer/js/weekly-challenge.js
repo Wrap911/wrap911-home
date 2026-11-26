@@ -49,6 +49,7 @@
       card.className = "wc-card"; card.id = "wc-home-card"; card.setAttribute("role", "button"); card.tabIndex = 0;
       card.onclick = openChallenge;
       card.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openChallenge(); } };
+      card.hidden = true;
       home.insertBefore(card, anchor);
     }
     var sec = document.createElement("section");
@@ -62,6 +63,8 @@
 
   function renderHome() {
     var card = $("wc-home-card"); if (!card) return;
+    if (!data || !data.weeks || !data.weeks.length) { card.hidden = true; return; }
+    card.hidden = false;
     var w = currentWeek(), s = load(), r = rankFor(totalXp());
     var rankHtml = '<span class="wc-rank">' + esc(r.title) + "</span> " + (r.next ? '<span class="muted">' + (r.next.min - r.xp) + " XP to " + esc(r.next.title) + "</span>" : '<span class="muted">Top rank</span>');
     if (!w) { card.innerHTML = rankHtml; return; }
@@ -126,8 +129,13 @@
     var cfg = window.WRAP911_CONFIG;
     if (cfg && cfg.freeScreens && cfg.freeScreens.indexOf("challenge") === -1) cfg.freeScreens.push("challenge");
     injectUi();
-    fetchJson(LOCAL_URL).then(function (d) { data = d; renderHome(); }).catch(function () { renderHome(); });
-    fetchJson(LIVE_URL).then(function (d) { if (d && d.weeks) { data = d; renderHome(); } }).catch(function () {});
+    fetchJson(LOCAL_URL).then(function (d) {
+      if (d && d.weeks && d.weeks.length) data = d;
+      renderHome();
+      return fetchJson(LIVE_URL).then(function (live) {
+        if (live && live.weeks && live.weeks.length) { data = live; renderHome(); }
+      }).catch(function () { renderHome(); });
+    }).catch(function () { renderHome(); });
     document.addEventListener("click", function () { setTimeout(function () { renderHome(); if ($("screen-badges") && $("screen-badges").classList.contains("active")) renderRankOnProgress(); }, 50); }, true);
     renderRankOnProgress();
   }

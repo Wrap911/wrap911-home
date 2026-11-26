@@ -136,7 +136,7 @@
     var draftN = (window.WRAP911_COACH && window.WRAP911_COACH.draftCount) ? window.WRAP911_COACH.draftCount() : 0;
     cards.push({
       kind: "coach", id: "coach", icon: "🤖",
-      title: "AI Coach — ask + auto-sort media",
+      title: "AI Coach, ask + auto-sort media",
       sub: "Install Q&A offline · categorize clips into library categories",
       badge: draftN ? (draftN + " draft" + (draftN === 1 ? "" : "s")) : "Open Coach"
     });
@@ -442,7 +442,7 @@
       var bm = $("lesson-badge-msg");
       bm.className = "quiz-feedback show ok";
       bm.textContent = (b ? ("Badge: " + b.icon + " " + b.title + (earned ? " earned!" : " already earned.")) : "Lesson complete.") +
-        " Internal shop training only — not a brand certification.";
+        " Internal shop training only, not a brand certification.";
       return;
     }
     var item = lesson.quiz[qi];
@@ -618,8 +618,8 @@
     if (fb) {
       fb.className = "quiz-feedback " + (pct >= 70 ? "good" : "bad");
       fb.textContent = pct >= 70
-        ? ("Saved. " + pct + "% — pass. Back to the bay checklist, not a lecture.")
-        : ("Saved. " + pct + "% — redo. Tick the real steps, leave the bad moves unchecked, answer the quiz.");
+        ? ("Saved. " + pct + "%. Pass. Back to the bay checklist, not a lecture.")
+        : ("Saved. " + pct + "%. Redo. Tick the real steps, leave the bad moves unchecked, and answer the quiz.");
     }
     if (c && c.loadProgress && c.saveProgress) {
       var prog = c.loadProgress();

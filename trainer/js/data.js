@@ -7,10 +7,10 @@ window.WRAP911_DATA = {
       icon: "🦺",
       summary: "Ladders, heat tools, knives, and shop awareness before any film goes down.",
       lesson: [
-        "WRAP 911 starts every job with safety—not film. Tall RV sides, box vans, and architectural walls put you on ladders and around open flame. Set ladders on level ground, lock spreaders, and keep three points of contact. Never stand on the top cap of an A-frame.",
+        "WRAP 911 starts every job with safety, not film. Tall RV sides, box vans, and architectural walls put you on ladders and around open flame. Set ladders on level ground, lock spreaders, and keep three points of contact. Never stand on the top cap of an A-frame.",
         "Stage or hinge large panels from the ground when you can. Do not climb while wrestling a full sheet of vinyl. Clear liner scraps and tape from under ladder feet so nobody slides mid-pull.",
-        "Heat tools (propane torch or heat gun) need a stable base when idle. Keep combustible scraps away from open flame. Knives stay sharp and controlled—cut into voids and gaps, never toward your body or across finished paint without a plan.",
-        "Forklifts, open bay doors, and other crews mean situational awareness. Know what is moving behind you. Platform first, then technique. Brands we use—3M, Avery Dennison, and BriteLine—do not replace jobsite common sense."
+        "Heat tools (propane torch or heat gun) need a stable base when idle. Keep combustible scraps away from open flame. Knives stay sharp and controlled. Cut into voids and gaps, never toward your body or across finished paint without a plan.",
+        "Forklifts, open bay doors, and other crews mean situational awareness. Know what is moving behind you. Platform first, then technique. Brands we use are 3M, Avery Dennison, and BriteLine. They do not replace jobsite common sense."
       ],
       quiz: [
         {
@@ -39,9 +39,9 @@ window.WRAP911_DATA = {
       icon: "🧽",
       summary: "Degrease, chase dirt traps, and finish with IPA before any adhesive sees paint.",
       lesson: [
-        "Adhesive fails on residue. Commercial sides under awnings collect soap, rain runoff, and migrating silicone. Vertical streaks and oily slick spots are bond killers—lay 3M, Avery Dennison, or BriteLine wrap over that and you are scheduling a peel.",
+        "Adhesive fails on residue. Commercial sides under awnings collect soap, rain runoff, and migrating silicone. Vertical streaks and oily slick spots are bond killers. Lay 3M, Avery Dennison, or BriteLine wrap over that and you are scheduling a peel.",
         "Work top to bottom. Degrease the face, then detail-clean dirt traps: brackets, mounts, rivet bases, wheel-well lips, and light pockets. Gravity feeds contamination down tall panels.",
-        "Finish with a proper two-cloth IPA wipe (mix per the film maker's cleaning guide)—wet cloth, then dry cloth—until microfiber comes away clean. If IPA beads or feels oily near awning rails or silicone seals, stop and address silicone with an appropriate remover before layout.",
+        "Finish with a proper two-cloth IPA wipe (mix per the film maker's cleaning guide), wet cloth, then dry cloth, until microfiber comes away clean. If IPA beads or feels oily near awning rails or silicone seals, stop and address silicone with an appropriate remover before layout.",
         "Do not apply film until the surface is dry and residue-free. Prep is not glamorous, but every glossy reflection will show trapped residue as silvering or lift once the film is down. Follow each film maker’s TDS for approved cleaners on that product."
       ],
       quiz: [
@@ -69,11 +69,11 @@ window.WRAP911_DATA = {
       id: "film-types",
       title: "Film Types",
       icon: "🎨",
-      summary: "Cast vs calendared, print vs solid, vehicle vs wall—choose 3M, Avery Dennison, or BriteLine correctly.",
+      summary: "Cast vs calendared, print vs solid, vehicle vs wall. Choose 3M, Avery Dennison, or BriteLine correctly.",
       lesson: [
         "WRAP 911 installs only within the 3M, Avery Dennison, and BriteLine families specified for the job. Wrong construction is a failure you cannot squeegee away.",
         "Match film to the substrate and lifespan: cast wrap for deep compound curves and long-term vehicle graphics; calendared options where the geometry and duty cycle allow; architectural products when the substrate is painted drywall, laminate, or fixtures.",
-        "On site, compare swatches under real lighting—conference rooms and showrooms shift how reds and greys read compared with the shop. Note seams, outlets, corners, and height before you cut a panel.",
+        "On site, compare swatches under real lighting, conference rooms and showrooms shift how reds and greys read compared with the shop. Note seams, outlets, corners, and height before you cut a panel.",
         "Confirm print vs solid color, permanent vs removable, and whether the product is rated for the surface. Read the manufacturer’s TDS for that exact SKU. We do not invent temperature or dwell numbers, and we do not claim official brand certification."
       ],
       quiz: [
@@ -101,12 +101,12 @@ window.WRAP911_DATA = {
       id: "squeegee",
       title: "Squeegee & Soft Tools",
       icon: "🛠️",
-      summary: "Glass flats, walk fingers out, and use foam rollers in deep channels—not hard blades.",
+      summary: "Glass flats, walk fingers out, and use foam rollers in deep channels, not hard blades.",
       lesson: [
-        "Glass the film across high points before you commit recesses. Long air tunnels over corrugated channels are staged for feeding—not a finished lay.",
+        "Glass the film across high points before you commit recesses. Long air tunnels over corrugated channels are staged for feeding, not a finished lay.",
         "Do not smash a hard plastic squeegee straight down the center of a channel. You will crease the film and trap air you cannot walk out. Soft tools win: foam rollers and padded applicators press into the curve with even pressure while air escapes toward an open edge.",
-        "Work one channel or recess at a time. Keep the film bridged—not overstretched—then roll or pad material into the recess so you are feeding, not yanking. Bridge-and-stretch across a deep corrugation causes pop-back when the film tries to recover.",
-        "Walk long fingers out to an open edge—never squeegee them flat into a crease. Overlap strokes so air always has an escape path. Felt or soft edges protect printed faces from 3M, Avery Dennison, or BriteLine film scratches."
+        "Work one channel or recess at a time. Keep the film bridged, not overstretched, then roll or pad material into the recess so you are feeding, not yanking. Bridge-and-stretch across a deep corrugation causes pop-back when the film tries to recover.",
+        "Walk long fingers out to an open edge. Never squeegee them flat into a crease. Overlap strokes so air always has an escape path. Felt or soft edges protect printed faces from 3M, Avery Dennison, or BriteLine film scratches."
       ],
       quiz: [
         {
@@ -122,7 +122,7 @@ window.WRAP911_DATA = {
           q: "How should you handle long fingers (wrinkles) on a glassed flat?",
           choices: [
             "Crush them immediately with maximum squeegee pressure.",
-            "Lift and redistribute tension, then squeegee—walk air to an open edge.",
+            "Lift and redistribute tension, then squeegee. Walk air to an open edge.",
             "Ignore them; they disappear after post-heat."
           ],
           answer: 1
@@ -133,10 +133,10 @@ window.WRAP911_DATA = {
       id: "heat",
       title: "Heat Control",
       icon: "🔥",
-      summary: "Soften to conform—follow each product’s TDS. Heat is a tool, not a weapon.",
+      summary: "Soften to conform, follow each product’s TDS. Heat is a tool, not a weapon.",
       lesson: [
         "Controlled heat lets you finish door recesses, handle pockets, cab–bed gaps, and compound areas without distorting print. Uncontrolled heat gives thin spots, gloss change, and callbacks.",
-        "Soften the film enough to conform, following the TDS for the exact 3M, Avery Dennison, or BriteLine product you are running. Do not chase a memorized temperature invented in a chat. Warm ahead of the area you are working, keep the heat source moving, and stop when the film is pliable—not shiny-melted.",
+        "Soften the film enough to conform, following the TDS for the exact 3M, Avery Dennison, or BriteLine product you are running. Do not chase a memorized temperature invented in a chat. Warm ahead of the area you are working, keep the heat source moving, and stop when the film is pliable, not shiny-melted.",
         "Before locking heat into multi-panel graphics, confirm horizontal bands and pattern rows read continuous across doors and beds. Bridge-tack across gaps, then heat and tuck.",
         "Stage the torch or heat gun with a stable base and a clear floor. Peel liner in sections so adhesive stays clean while you heat-work. Recheck pattern after each heated stretch for distortion."
       ],
@@ -154,7 +154,7 @@ window.WRAP911_DATA = {
           q: "What temperature should you use when the TDS is not memorized?",
           choices: [
             "Use one heat setting for every brand.",
-            "Consult the film maker’s TDS for that exact product—never invent a number.",
+            "Consult the film maker’s TDS for that exact product. Never invent a number.",
             "Hold the torch until the film looks wet and glossy."
           ],
           answer: 1
@@ -165,10 +165,10 @@ window.WRAP911_DATA = {
       id: "cutting",
       title: "Cutting & Edge Finish",
       icon: "✂️",
-      summary: "Fresh blades, relief cuts, tucks behind trim—cut into voids, not across paint.",
+      summary: "Fresh blades, relief cuts, tucks behind trim. Cut into voids, not across paint.",
       lesson: [
         "Blade discipline separates rushed wraps from pro wraps. Seat film into pockets and gaps with a tucking tool or soft squeegee edge before any cut. Cut into the void, using trim as a guide, blade angled so you do not score paint.",
-        "Leave a small tuckable margin—about one to two millimeters—behind headlight housings and similar trim so you can hide the edge. Cut flush and short, and the next cold morning shows OEM color as the film retracts slightly.",
+        "Leave a small tuckable margin, about one to two millimeters, behind headlight housings and similar trim so you can hide the edge. Cut flush and short, and the next cold morning shows OEM color as the film retracts slightly.",
         "On circular architectural cutouts, snap a fresh blade. Star-cut from the center, then heat and roll tabs into the opening so the edge does not sit raw on porous wood where it will lift. Flush face-only trims look neat until humidity peels them.",
         "Relief-cut taillight and bumper pockets early enough to release bunching. Keep face-to-side seams straight on fixtures. Felt-edge tools on printed faces. Final heat-set edges only within product TDS guidance for your 3M, Avery Dennison, or BriteLine film."
       ],
@@ -197,11 +197,11 @@ window.WRAP911_DATA = {
       id: "seams-rivets",
       title: "Seams & Rivets",
       icon: "🔩",
-      summary: "Articulate film around welds and rivet heads—bridging tents and lifts.",
+      summary: "Articulate film around welds and rivet heads, bridging tents and lifts.",
       lesson: [
         "Commercial roofs and trailer sides fight geometry: ribs, hard steps, weld lines, and rivet fields. If you leave film bridged over a weld or rivet row, every high spot becomes a tent. Dirt and moisture find those tents, and the edge lifts.",
         "Soften film with controlled heat per the product TDS, then work from the flat into the seam. Set each rivet: warm, press, evacuate air around the head, and move on. Do not force the whole seam in one heroic stretch.",
-        "On horizontal steps and deep recesses, bridge across, then tuck into the corner without yanking the material thin. Corner fingers mean excess and tension—relax and redistribute before you commit hard strokes.",
+        "On horizontal steps and deep recesses, bridge across, then tuck into the corner without yanking the material thin. Corner fingers mean excess and tension, relax and redistribute before you commit hard strokes.",
         "Plan water-shed overlaps on vertical panel seams. Identify rivet and weld lines before final commitment. Soft tools help you press around texture without creasing 3M, Avery Dennison, or BriteLine cast film."
       ],
       quiz: [
@@ -234,7 +234,7 @@ window.WRAP911_DATA = {
         "Squeegeeing film over a rivet field is not the finish line. After printed graphics from 3M, Avery Dennison, or BriteLine are down, you still lock them: controlled post-heat helps the film conform and stay seated around rivets and edges.",
         "Hinge and dry-fit complex graphics before full liner removal. Confirm registration to existing panels, peel liner in sections, squeegee thoroughly, remove transfer tape, then post-heat edges and rivets.",
         "Warm per the product TDS and set rivets individually after the field is down. Skip post-heat on rivets and you get tents that collect dirt and lift at the first heat cycle in the sun.",
-        "Keep the torch stable and off the film until alignment is done. Clear liner piles so post-heat passes are not trip hazards. Post-heat is for memory and adhesion—not for changing print color or melting vinyl into soup."
+        "Keep the torch stable and off the film until alignment is done. Clear liner piles so post-heat passes are not trip hazards. Post-heat is for memory and adhesion, not for changing print color or melting vinyl into soup."
       ],
       quiz: [
         {
@@ -249,7 +249,7 @@ window.WRAP911_DATA = {
         {
           q: "When should you hinge/dry-fit a complex graphic?",
           choices: [
-            "Never—always remove the full liner first.",
+            "Never, always remove the full liner first.",
             "Before full liner removal, to confirm registration and placement.",
             "Only after post-heat has already locked the film."
           ],
@@ -262,7 +262,7 @@ window.WRAP911_DATA = {
   photoLessons: [
         {
       id: "pl01",
-      title: "Escalade front fender — heat gun on the floor",
+      title: "Escalade front fender. Heat gun on the floor",
       image: "media/videos/fleet/pink-wrap-caddy-1.jpg",
       module: "heat",
       jobType: "Vehicles",
@@ -274,7 +274,7 @@ window.WRAP911_DATA = {
         "Leave the heat gun on the floor until the arch needs it",
         "Feed film into the arch; do not bridge it",
         "Keep paper and tape on the open cowl from sticking to fresh film",
-        "Use heat only per the film TDS — no invented temperature",
+        "Use heat only per the film TDS, no invented temperature",
       ],
       quiz: {
         q: "What is actually in this still, and where is the heat gun?",
@@ -284,7 +284,7 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl02",
-      title: "Escalade door and fender — smooth gloss, no rivets",
+      title: "Escalade door and fender, smooth gloss, no rivets",
       image: "media/videos/fleet/pink-caddy-wrap3.jpg",
       module: "commercial-sides",
       jobType: "Vehicles",
@@ -306,7 +306,7 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl03",
-      title: "Escalade rear door — handle pocket and key",
+      title: "Escalade rear door, handle pocket and key",
       image: "media/videos/fleet/pink-caddy-wrap4.jpg",
       module: "cutting",
       jobType: "Vehicles",
@@ -328,7 +328,7 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl04",
-      title: "Escalade side — white hex graphic, hood open",
+      title: "Escalade side, white hex graphic, hood open",
       image: "media/videos/fleet/pink-caddy-wrap5.jpg",
       module: "commercial-sides",
       jobType: "Vehicles",
@@ -350,7 +350,7 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl05",
-      title: "Satin Jeep — hood vents and chrome grille",
+      title: "Satin Jeep, hood vents and chrome grille",
       image: "media/videos/fleet/satin-wrap-cherokee.jpg",
       module: "commercial-sides",
       jobType: "Vehicles",
@@ -439,7 +439,7 @@ window.WRAP911_DATA = {
     {
       /* 2.6.5: new still (was ../assets/sales/pickup-panels.jpg, sage-green bottle-print film; no green wraps on Photos). */
       id: "pl10",
-      title: "Box truck cab door — blue film going on",
+      title: "Box truck cab door, blue film going on",
       image: "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
       module: "squeegee",
       jobType: "Vehicles",
@@ -461,7 +461,7 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl11",
-      title: "White SUV rear hatch — hands on the chrome bar",
+      title: "White SUV rear hatch, hands on the chrome bar",
       image: "media/videos/van/rear-vehicle-gate-wrap.jpg",
       module: "squeegee",
       jobType: "Vehicles",
@@ -506,12 +506,12 @@ window.WRAP911_DATA = {
     ,
     {
       id: "pl13",
-      title: "Office wallpaper wrap — conference wall finish",
+      title: "Office wallpaper wrap, conference wall finish",
       image: "media/photos/gallery/office-wallpaper-wrap.jpg",
       module: "architectural",
       jobType: "Storefront/Architectural",
       visual: "Shop conference room with charcoal, white, and patterned red architectural wall film. Orange A-frame ladder against the white wall; color-swatch grid on the red wall; dark conference table and blue chairs under industrial insulated ceiling. Window looks into the wrap bay.",
-      narration: "Architectural wrap is not just kiosks and storefronts — this is the WRAP 911 conference room finished in wall film. Patterned red on one face, solid charcoal and white on the others, evaluated under real site lighting with the swatch board still on the wall.\n\nWhen you install architectural film from 3M, Avery Dennison, or BriteLine in a meeting space, treat seams, outlets, and ladder access like a jobsite: level panels, clean substrate, and leave furniture pathways clear. The ladder against the white wall is still part of the install story — move it only when the panel is locked.\n\nUse this still to talk layout and film choice before anyone peels liner on the next interior wall.",
+      narration: "Architectural wrap is not just kiosks and storefronts, this is the WRAP 911 conference room finished in wall film. Patterned red on one face, solid charcoal and white on the others, evaluated under real site lighting with the swatch board still on the wall.\n\nWhen you install architectural film from 3M, Avery Dennison, or BriteLine in a meeting space, treat seams, outlets, and ladder access like a jobsite: level panels, clean substrate, and leave furniture pathways clear. The ladder against the white wall is still part of the install story, move it only when the panel is locked.\n\nUse this still to talk layout and film choice before anyone peels liner on the next interior wall.",
       checklist: [
         "Evaluate wall film under final room lighting, not only shop lights",
         "Keep 3M / Avery Dennison / BriteLine product choice matched to substrate and removability",
@@ -532,12 +532,12 @@ window.WRAP911_DATA = {
       module: "architectural",
       jobType: "Storefront/Architectural",
       visual: "Close-up of a yellow DeWalt tape hooked on the top edge of dark wood-grain patterned film. A white grease pencil marks exactly at the 2-inch line on the tape over a white layout table.",
-      narration: "Bleed is planned overlap — not a guess. Here the tape is hooked on the patterned edge and the mark lands at two inches on the wood-grain face. That margin is what lets you wrap an edge, cover a cut, or nest panels without flashing substrate.\n\nArchitectural and print jobs fail when bleed is short: knife lines show, corners go bare, and wood-grain pattern from 3M, Avery Dennison, or BriteLine cannot hide a skinny wrap. Measure from a true edge, mark once with a grease pencil, and cut to the mark — not to memory.\n\nKeep the layout table clean so the adhesive face never picks shop dust while you mark.",
+      narration: "Bleed is planned overlap, not a guess. Here the tape is hooked on the patterned edge and the mark lands at two inches on the wood-grain face. That margin is what lets you wrap an edge, cover a cut, or nest panels without flashing substrate.\n\nArchitectural and print jobs fail when bleed is short: knife lines show, corners go bare, and wood-grain pattern from 3M, Avery Dennison, or BriteLine cannot hide a skinny wrap. Measure from a true edge, mark once with a grease pencil, and cut to the mark, not to memory.\n\nKeep the layout table clean so the adhesive face never picks shop dust while you mark.",
       checklist: [
         "Hook the tape on a true finished edge before marking bleed",
         "Mark bleed with a grease pencil; do not rely on mental offsets",
         "Confirm the bleed distance matches the wrap/trim plan for that edge",
-        "Keep the face clean while measuring — no grit under the film",
+        "Keep the face clean while measuring, no grit under the film",
         "Transfer the same bleed standard to matching panels on the job"
       ],
       quiz: {
@@ -553,11 +553,11 @@ window.WRAP911_DATA = {
       module: "cutting",
       jobType: "Storefront/Architectural",
       visual: "Installer hand lifts matte white film off dark wood-grain substrate. A semi-circular half-moon relief is cut at the lifted edge; small tension tents sit near the cut as the grey adhesive face shows.",
-      narration: "A half-moon is a controlled relief — a curved cut that releases bunching so you can seat film into a recess or around hardware without tearing a straight slash across the face.\n\nHere white film is being lifted off wood-grain so you can see the half-moon and the tension tents beside it. Make the relief only as deep as you need, keep the blade sharp, and reseat with a soft tool. Cast architectural films from 3M, Avery Dennison, or BriteLine still need heat only as the product TDS allows — never invent a temperature to force the moon shut.\n\nIf the half-moon is too aggressive you’ll see it forever; if it’s too shy the wrinkle returns when you glass the face.",
+      narration: "A half-moon is a controlled relief, a curved cut that releases bunching so you can seat film into a recess or around hardware without tearing a straight slash across the face.\n\nHere white film is being lifted off wood-grain so you can see the half-moon and the tension tents beside it. Make the relief only as deep as you need, keep the blade sharp, and reseat with a soft tool. Cast architectural films from 3M, Avery Dennison, or BriteLine still need heat only as the product TDS allows. Never invent a temperature to force the moon shut.\n\nIf the half-moon is too aggressive you’ll see it forever; if it’s too shy the wrinkle returns when you glass the face.",
       checklist: [
         "Identify where film is bunching before cutting a half-moon",
         "Use a fresh blade; cut a controlled curve, not a long slash",
-        "Lift, relieve, then reseat — don’t smash the wrinkle flat",
+        "Lift, relieve, then reseat, don’t smash the wrinkle flat",
         "Limit heat to product TDS guidance; no invented temps",
         "Inspect the finished face so the relief does not telegraph"
       ],
@@ -569,15 +569,15 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl16",
-      title: "Cabinet interior sides — pink corner glass",
+      title: "Cabinet interior sides, pink corner glass",
       image: "media/photos/gallery/cabinet-pic-sides.jpg",
       module: "architectural",
       jobType: "Storefront/Architectural",
       visual: "Looking down into a cabinet/box corner: glossy hot-pink cast film on both vertical interior walls meeting a matte white floor. Yellow squeegee tip visible at the bottom edge; corner joint sharp and bubble-free.",
-      narration: "Interior cabinet wraps put every corner under fluorescent shop light. This still shows pink cast film glassed on both vertical faces into a clean 90° with a white base — the yellow squeegee tip reminds you soft, overlapping strokes win inside boxes.\n\nWork one wall at a time, bridge the corner, then feed — don’t stretch thin across the inside radius or the film from 3M, Avery Dennison, or BriteLine will whiten and lift. Keep the floor panel sequence planned so overlaps shed dust the right way.\n\nWipe the melamine or paint before you commit; interior corners hide prep mistakes until the client opens the door.",
+      narration: "Interior cabinet wraps put every corner under fluorescent shop light. This still shows pink cast film glassed on both vertical faces into a clean 90° with a white base, the yellow squeegee tip reminds you soft, overlapping strokes win inside boxes.\n\nWork one wall at a time, bridge the corner, then feed, don’t stretch thin across the inside radius or the film from 3M, Avery Dennison, or BriteLine will whiten and lift. Keep the floor panel sequence planned so overlaps shed dust the right way.\n\nWipe the melamine or paint before you commit; interior corners hide prep mistakes until the client opens the door.",
       checklist: [
         "Prep interior faces and corners before any liner peel",
-        "Glass each wall, then feed the inside corner — no bridge-and-stretch",
+        "Glass each wall, then feed the inside corner, no bridge-and-stretch",
         "Use soft overlapping strokes; hard blades crease inside boxes",
         "Plan floor-to-wall overlaps so dust and wipe-downs shed cleanly",
         "Inspect the corner under bright light before calling the box done"
@@ -590,15 +590,15 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl17",
-      title: "Cabinet measure — box height before cut",
+      title: "Cabinet measure, box height before cut",
       image: "media/photos/gallery/cabinet-measure.jpg",
       module: "prep",
       jobType: "Storefront/Architectural",
       visual: "Yellow DeWalt tape hooked in the bottom interior corner of a white cabinet box with a glossy purple floor wrap. Thumb holds the tape at the top edge of the white side; purple film sheets and a promoter/cleaner bottle sit on the table behind.",
-      narration: "Measure twice, cut once still applies when the floor is already wrapped. The tape is hooked in the purple floor corner reading the white side height — that number drives the next panel cut for 3M, Avery Dennison, or BriteLine film.\n\nArchitectural boxes and kiosk carcasses are rarely perfect rectangles. Measure each opening, note plywood edge thickness, and leave planned bleed for wraps into the corner. The bottle on the table is your reminder: promoter or final wipe only on clean, dry substrate per product guidance — never invent a dwell time.\n\nWrite the measurement on the cut list before you walk to the plotter.",
+      narration: "Measure twice, cut once still applies when the floor is already wrapped. The tape is hooked in the purple floor corner reading the white side height, that number drives the next panel cut for 3M, Avery Dennison, or BriteLine film.\n\nArchitectural boxes and kiosk carcasses are rarely perfect rectangles. Measure each opening, note plywood edge thickness, and leave planned bleed for wraps into the corner. The bottle on the table is your reminder: promoter or final wipe only on clean, dry substrate per product guidance. Never invent a dwell time.\n\nWrite the measurement on the cut list before you walk to the plotter.",
       checklist: [
         "Hook the tape on a true interior corner before reading height",
-        "Measure each opening — don’t assume matching sides are equal",
+        "Measure each opening, don’t assume matching sides are equal",
         "Add planned bleed for corner wraps into the cut dimension",
         "Confirm substrate is clean/dry before promoter or final wipe",
         "Record the number on the cut list before leaving the bench"
@@ -633,12 +633,12 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl19",
-      title: "Pink caddy bumper — grille and sensor detail",
+      title: "Pink caddy bumper, grille and sensor detail",
       image: "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
       module: "commercial-sides",
       jobType: "Fleet",
       visual: "Passenger-side lower front bumper in satin dusty-rose wrap. Horizontal grille slats face-wrapped pink; chrome accent at the outer grille; color-matched circular parking sensor; shop floor with blue hose in the foreground.",
-      narration: "Lower bumper graphics expose every grille slat and sensor. Here the dusty-rose face and pink-wrapped grille bars meet chrome trim and a color-matched parking sensor — detail work that separates a rushed bumper from a shop-standard finish.\n\nWrap grille faces with short sections, soft-roll into recesses, and cut sensors carefully so the bezel seats flush. Cast films from 3M, Avery Dennison, or BriteLine will telegraph dirt in these tight channels, so IPA the pockets before you commit.\n\nKeep hoses and scrap clear of the fascia while you work the outer corner — bumper film picks floor grit fast.",
+      narration: "Lower bumper graphics expose every grille slat and sensor. Here the dusty-rose face and pink-wrapped grille bars meet chrome trim and a color-matched parking sensor, detail work that separates a rushed bumper from a shop-standard finish.\n\nWrap grille faces with short sections, soft-roll into recesses, and cut sensors carefully so the bezel seats flush. Cast films from 3M, Avery Dennison, or BriteLine will telegraph dirt in these tight channels, so IPA the pockets before you commit.\n\nKeep hoses and scrap clear of the fascia while you work the outer corner, bumper film picks floor grit fast.",
       checklist: [
         "Detail-clean grille channels and sensor pockets before film",
         "Wrap grille bars in manageable sections; soft-roll recesses",
@@ -654,15 +654,15 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl20",
-      title: "Front bumper wrap caddy — lower intake & tools",
+      title: "Front bumper wrap caddy, lower intake & tools",
       image: "media/photos/gallery/front-bumper-wrap-caddy.jpg",
       module: "squeegee",
       jobType: "Fleet",
       visual: "Low angle of a dusty-rose wrapped lower front bumper with horizontal intake slats fully wrapped, three parking-sensor holes, blue tape on the black honeycomb grille, seam roller and red tuck tool on the concrete beside a blue hose.",
-      narration: "Complex bumper intakes need soft tools, not hero stretches. This caddy bumper shows wrapped horizontal fins, taped grille edges for a clean cut line, and the seam roller plus tuck tool staged on the floor — the real workflow after the main face is glassed.\n\nWork each slat: soft-roll, evacuate air, then trim. Blue tape on the honeycomb protects the grille while you define the edge on film from 3M, Avery Dennison, or BriteLine. Sensor holes get relief and tuck, not a single stabbed cut.\n\nPick up scrap before the next heat pass so nothing cooks to the fascia.",
+      narration: "Complex bumper intakes need soft tools, not hero stretches. This caddy bumper shows wrapped horizontal fins, taped grille edges for a clean cut line, and the seam roller plus tuck tool staged on the floor, the real workflow after the main face is glassed.\n\nWork each slat: soft-roll, evacuate air, then trim. Blue tape on the honeycomb protects the grille while you define the edge on film from 3M, Avery Dennison, or BriteLine. Sensor holes get relief and tuck, not a single stabbed cut.\n\nPick up scrap before the next heat pass so nothing cooks to the fascia.",
       checklist: [
         "Glass the bumper face before committing individual intake slats",
-        "Use a seam roller / soft tuck tool in deep fins — not hard smash only",
+        "Use a seam roller / soft tuck tool in deep fins, not hard smash only",
         "Tape-protect adjacent grille textures when cutting the bumper edge",
         "Relieve and tuck parking-sensor openings cleanly",
         "Clear vinyl scrap and hoses before any heat pass"
@@ -675,7 +675,7 @@ window.WRAP911_DATA = {
     },
         {
       id: "pl21",
-      title: "Black enclosed trailer — white slash down, nose still taped",
+      title: "Black enclosed trailer, white slash down, nose still taped",
       image: "media/photos/gallery/trailer-spot-graphics.jpg",
       module: "post-heat",
       jobType: "Vehicles",
@@ -697,12 +697,12 @@ window.WRAP911_DATA = {
     },
     {
       id: "pl22",
-      title: "Kiosk box — multi-panel face with cutouts",
+      title: "Kiosk box, multi-panel face with cutouts",
       image: "media/photos/gallery/kiosk-box.jpg",
       module: "cutting",
       jobType: "Storefront/Architectural",
       visual: "Lavender/purple wrapped kiosk box with rounded top edges. Front face is pastel lined graphic with icons, orange band and QR near the bottom, four circular cutouts showing plywood core. Mounted on a metal post; pink VW bus in the shop background.",
-      narration: "Kiosk faces are judged at arm’s length. This box combines solid lavender body film with a printed front, an orange band, QR callout, and four clean circular cutouts into plywood — blade discipline plus edge wrap.\n\nStar-cut the holes, warm only as your 3M, Avery Dennison, or BriteLine TDS allows, and roll tabs inward so raw wood does not become a peel line. Keep face-to-side seams straight; a wandering cut reads as amateur next to a QR code.\n\nSeal or sand porous edges when the carcass needs it, and felt-squeegee the print so you do not scratch the laminate.",
+      narration: "Kiosk faces are judged at arm’s length. This box combines solid lavender body film with a printed front, an orange band, QR callout, and four clean circular cutouts into plywood, blade discipline plus edge wrap.\n\nStar-cut the holes, warm only as your 3M, Avery Dennison, or BriteLine TDS allows, and roll tabs inward so raw wood does not become a peel line. Keep face-to-side seams straight; a wandering cut reads as amateur next to a QR code.\n\nSeal or sand porous edges when the carcass needs it, and felt-squeegee the print so you do not scratch the laminate.",
       checklist: [
         "Fresh sharp blade for every circular cutout",
         "Star-cut openings and wrap tabs inward for hold",
@@ -737,8 +737,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — this is the Escalade fender. The heat gun is staged on the floor, not a roller on rivets.",
-        wrong: "Wrong — there is no trailer and no rivet row in this still."
+        correct: "Correct, this is the Escalade fender. The heat gun is staged on the floor, not a roller on rivets.",
+        wrong: "Wrong, there is no trailer and no rivet row in this still."
       }
     },
     {
@@ -754,8 +754,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — smooth door and fender. Work the shut line and the rocker.",
-        wrong: "Wrong — this frame has no rivet heads and it is not a pickup."
+        correct: "Correct, smooth door and fender. Work the shut line and the rocker.",
+        wrong: "Wrong, this frame has no rivet heads and it is not a pickup."
       }
     },
     {
@@ -771,8 +771,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — satin Jeep nose. Openings and chrome are where the film stops.",
-        wrong: "Wrong — this is not an RV, and you do not bridge mesh."
+        correct: "Correct, satin Jeep nose. Openings and chrome are where the film stops.",
+        wrong: "Wrong, this is not an RV, and you do not bridge mesh."
       }
     },
     {
@@ -788,8 +788,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — seat the headlight pocket, then cut and tuck.",
-        wrong: "Wrong — do not cut the lens face first and do not score paint."
+        correct: "Correct. Seat the headlight pocket, then cut and tuck.",
+        wrong: "Wrong. Do not cut the lens face first and do not score paint."
       }
     },
     {
@@ -805,8 +805,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — the element in the picture is the lifted wood-grain seam.",
-        wrong: "Wrong — there is no conference room and the film is not magenta."
+        correct: "Correct, the element in the picture is the lifted wood-grain seam.",
+        wrong: "Wrong, there is no conference room and the film is not magenta."
       }
     },
     {
@@ -839,8 +839,8 @@ window.WRAP911_DATA.drills = {
       ],
       answer: 1,
       feedback: {
-        correct: "Correct — hex registration on the Escalade. No torch in this frame, no invented temperature.",
-        wrong: "Wrong — this is not an F-150 and you do not invent a heat number."
+        correct: "Correct, hex registration on the Escalade. No torch in this frame, no invented temperature.",
+        wrong: "Wrong, this is not an F-150 and you do not invent a heat number."
       }
     }
   ],
@@ -896,7 +896,7 @@ window.WRAP911_DATA.drills = {
       intro: "Tap the headlight-pocket sequence IN ORDER.",
       steps: [
         "Seat pink film around the Escalade headlight",
-        "Fresh blade — cut into the gap, not across paint",
+        "Fresh blade. Cut into the gap, not across paint",
         "Leave a small tuck behind the housing",
         "Heat-set only if the film TDS calls for it"
       ],
@@ -917,7 +917,7 @@ window.WRAP911_DATA.drills = {
         "Torch the whole roof until the film looks wet and glossy."
       ],
       answer: 1,
-      why: "Soft feed into recesses beats hard center strokes. Heat only as the product TDS allows — never melt."
+      why: "Soft feed into recesses beats hard center strokes. Heat only as the product TDS allows. Never melt."
     },
     {
       id: "sc02",
@@ -926,7 +926,7 @@ window.WRAP911_DATA.drills = {
       setup: "Green film tents over a heavy vertical weld packed with rivets on a commercial upper panel.",
       question: "Best first move?",
       choices: [
-        "Leave the bridge — it hides the weld with less film.",
+        "Leave the bridge, it hides the weld with less film.",
         "Warm per TDS, then work from the flat into the seam and set rivets one by one.",
         "Knife slits through every rivet head for air relief."
       ],
@@ -945,7 +945,7 @@ window.WRAP911_DATA.drills = {
         "Clear the foot zone, lock the ladder, stage/hinge the panel from the ground, then climb to squeegee."
       ],
       answer: 2,
-      why: "Safety before film — stable platform, clear debris, stage large panels; never top-cap."
+      why: "Safety before film, stable platform, clear debris, stage large panels; never top-cap."
     },
     {
       id: "sc04",
@@ -1147,14 +1147,14 @@ window.WRAP911_DATA.drills = {
   ],
 
   flashcards: [
-    { id: "fc01", moduleId: "safety", front: "Ladder rule of thumb", back: "Level ground, locked spreaders, three points of contact. Never stand on the top cap. Move the ladder — don’t overreach." },
+    { id: "fc01", moduleId: "safety", front: "Ladder rule of thumb", back: "Level ground, locked spreaders, three points of contact. Never stand on the top cap. Move the ladder, don’t overreach." },
     { id: "fc02", moduleId: "prep", front: "Final wipe before layout", back: "Two-cloth IPA wipe (mix per the film maker's guide): wet cloth, then dry cloth, until the microfiber comes away clean." },
-    { id: "fc03", moduleId: "film-types", front: "WRAP 911 brand families", back: "3M, Avery Dennison, and BriteLine only. Read the TDS for the exact product — no invented specs." },
-    { id: "fc04", moduleId: "squeegee", front: "Deep corrugated channels", back: "Glass highs first, walk fingers out, then foam roller / soft pad into each recess — don’t hard-squeegee tunnels flat." },
+    { id: "fc03", moduleId: "film-types", front: "WRAP 911 brand families", back: "3M, Avery Dennison, and BriteLine only. Read the TDS for the exact product, no invented specs." },
+    { id: "fc04", moduleId: "squeegee", front: "Deep corrugated channels", back: "Glass highs first, walk fingers out, then foam roller / soft pad into each recess, don’t hard-squeegee tunnels flat." },
     { id: "fc05", moduleId: "heat", front: "What temperature?", back: "Consult the film maker’s TDS for that exact 3M, Avery Dennison, or BriteLine product. Never invent a number." },
     { id: "fc06", moduleId: "cutting", front: "Headlight trim margin", back: "Seat into the gap, cut into the void, leave about 1–2 mm to tuck behind trim." },
-    { id: "fc07", moduleId: "seams-rivets", front: "Rivet setting", back: "Warm, press, and purge air around each rivet head — don’t force the whole seam in one stretch." },
-    { id: "fc08", moduleId: "post-heat", front: "After the field is down", back: "Post-heat per TDS and lock rivets/edges so the film remembers the shape — squeegee alone is not the finish line." },
+    { id: "fc07", moduleId: "seams-rivets", front: "Rivet setting", back: "Warm, press, and purge air around each rivet head, don’t force the whole seam in one stretch." },
+    { id: "fc08", moduleId: "post-heat", front: "After the field is down", back: "Post-heat per TDS and lock rivets/edges so the film remembers the shape. Squeegee alone is not the finish line." },
     { id: "fc09", moduleId: "architectural", front: "Removal pull angle", back: "Warm until pliable, pull low (~15–45°) so adhesive prefers the film over the substrate." },
     { id: "fc10", moduleId: "cutting", front: "Circular kiosk cutouts", back: "Fresh blade, star-cut from center, heat and roll tabs inward for edge hold." }
   ]

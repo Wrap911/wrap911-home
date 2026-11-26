@@ -43,17 +43,17 @@ window.WRAP911_DATA.certLevels = [
   {
     "id": "l1",
     "title": "L1 Installer Basics",
-    "note": "Internal WRAP 911 shop level only — not a brand certification."
+    "note": "Internal WRAP 911 shop level only, not a brand certification."
   },
   {
     "id": "l2",
     "title": "L2 Commercial Installer",
-    "note": "Internal WRAP 911 shop level only — not a brand certification."
+    "note": "Internal WRAP 911 shop level only, not a brand certification."
   },
   {
     "id": "l3",
     "title": "L3 Fleet Specialist",
-    "note": "Internal WRAP 911 shop level only — not a brand certification."
+    "note": "Internal WRAP 911 shop level only, not a brand certification."
   }
 ];
 window.WRAP911_DATA.brands = [
@@ -67,14 +67,14 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "box-truck",
     "title": "Rivet Mastery",
     "goal": "One rivet row seated head by head. No tents or silvering after cool-down.",
-    "timeBox": "30 min drill: one rivet row on a scrap panel (starting target — set your own)",
+    "timeBox": "30 min drill: one rivet row on a scrap panel (starting target. Set your own)",
     "badgeId": "badge-bt-rivet",
     "media": "media/photos/gallery/airstream-corner.jpg",
     "mediaType": "photo",
     "practiceId": "prac-rivet",
     "keyTechniques": [
       "Identify rivet/weld lines before final commitment",
-      "Warm film per product TDS — never invent a temperature",
+      "Warm film per product TDS. Never invent a temperature",
       "Set each rivet individually: press and purge air around the head",
       "Work from the flat into the seam; do not force a whole row in one stretch"
     ],
@@ -135,7 +135,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "box-truck",
     "title": "Oversized Panel Handling",
     "goal": "Hang one tall panel level with two people. Nobody stretches off a ladder.",
-    "timeBox": "45 min, two techs (starting target — set your own)",
+    "timeBox": "45 min, two techs (starting target. Set your own)",
     "badgeId": "badge-bt-panels",
     "media": "media/photos/gallery/magenta-box-corner-tuck-top-lip.jpg",
     "mediaType": "photo",
@@ -179,8 +179,8 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "When do you glass the main field on an oversized panel?",
         "choices": [
           "After all recesses and rivets are finished.",
-          "First — secure the main plane, then feed edges and hardware.",
-          "Never — only wet-install oversized panels."
+          "First, secure the main plane, then feed edges and hardware.",
+          "Never, only wet-install oversized panels."
         ],
         "answer": 1
       },
@@ -203,7 +203,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "rv-bus",
     "title": "Class C RV Panel Walkaround",
     "goal": "Walk a finished RV and log every lift, gap, and stripe break before it leaves.",
-    "timeBox": "20 min walkaround (starting target — set your own)",
+    "timeBox": "20 min walkaround (starting target. Set your own)",
     "badgeId": "badge-bt-rollup",
     "media": "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.jpg",
     "mediaType": "photo",
@@ -212,7 +212,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Walk the finished Class C for panel continuity and stripe registration",
       "Check over-cab, hood, and fender transitions for lift or silvering",
       "Confirm door/hinge cycles before release",
-      "Photo QC against shop standard — follow film TDS for any rework heat"
+      "Photo QC against shop standard, follow film TDS for any rework heat"
     ],
     "tools": [
       "QC checklist",
@@ -271,7 +271,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "box-truck",
     "title": "Swing Door Workflow",
     "goal": "Graphic lines up across both doors. Hinge cuts are clean. Doors slam without lift.",
-    "timeBox": "45 min per door pair (starting target — set your own)",
+    "timeBox": "45 min per door pair (starting target. Set your own)",
     "badgeId": "badge-bt-swing",
     "media": "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.jpg",
     "mediaType": "photo",
@@ -279,7 +279,7 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Map hinges and latch before layout",
       "Keep graphic continuous across paired doors when design requires",
-      "Cut hinge lines intentionally — don't tear at knuckles",
+      "Cut hinge lines intentionally, don't tear at knuckles",
       "Post-heat edges that see slam cycles"
     ],
     "tools": [
@@ -306,14 +306,14 @@ window.WRAP911_DATA.trainingLessons = [
         "choices": [
           "Hinges, latch, and whether graphics must read across both doors.",
           "Only the tire brand.",
-          "Nothing — swing doors are always solid color."
+          "Nothing, swing doors are always solid color."
         ],
         "answer": 0
       },
       {
         "q": "Best approach at hinge knuckles?",
         "choices": [
-          "Planned cut and tuck — do not tear film through the hinge.",
+          "Planned cut and tuck. Do not tear film through the hinge.",
           "Stretch film continuously through the hinge forever.",
           "Glue hinge shut so it never moves."
         ],
@@ -322,7 +322,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Why post-heat swing-door edges?",
         "choices": [
-          "Slam cycles stress edges — lock film per TDS to reduce peel.",
+          "Slam cycles stress edges, lock film per TDS to reduce peel.",
           "To change the pantone of the print.",
           "Post-heat is never used on doors."
         ],
@@ -336,9 +336,9 @@ window.WRAP911_DATA.trainingLessons = [
   {
     "id": "bt-prep-cleaning",
     "vehicleId": "rv-bus",
-    "title": "Prep & Cleaning — Dirt Traps",
+    "title": "Prep & Cleaning. Dirt Traps",
     "goal": "A fresh white towel comes back clean. No residue at rivets, seals, or hardware.",
-    "timeBox": "20–30 min per side (starting target — set your own)",
+    "timeBox": "20–30 min per side (starting target. Set your own)",
     "badgeId": "badge-bt-prep",
     "media": "media/videos/prep/grey-overlay-peel-magenta-base-stack.jpg",
     "mediaType": "photo",
@@ -406,14 +406,14 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "van",
     "title": "Deep Recess / Liftgate Tuck",
     "goal": "Liftgate recess fed and seated. No bridge over the plate pocket.",
-    "timeBox": "40 min per liftgate (starting target — set your own)",
+    "timeBox": "40 min per liftgate (starting target. Set your own)",
     "badgeId": "badge-van-recess",
     "media": "media/videos/van/rear-vehicle-gate-wrap.jpg",
     "mediaType": "photo",
     "practiceId": "prac-recess",
     "keyTechniques": [
       "Hang the liftgate field before committing the plate recess",
-      "Feed film into the license-plate / deep recess — don't leave a permanent bridge",
+      "Feed film into the license-plate / deep recess, don't leave a permanent bridge",
       "Use soft tools and controlled tension at the pocket",
       "Heat only to pliable per product TDS"
     ],
@@ -473,7 +473,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "van",
     "title": "Sliding Door Alignment",
     "goal": "Bands line up across the slider, door shut and open. Nothing binds in the track.",
-    "timeBox": "45 min per side (starting target — set your own)",
+    "timeBox": "45 min per side (starting target. Set your own)",
     "badgeId": "badge-van-slide",
     "media": "media/videos/fleet/pink-caddy-wrap3.jpg",
     "mediaType": "photo",
@@ -481,7 +481,7 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Keep horizontal bands continuous from fixed panel to slider",
       "Account for door travel gap and seals",
-      "Glass flat, redistribute fingers — don't crush print",
+      "Glass flat, redistribute fingers, don't crush print",
       "Cycle door before final edge lock"
     ],
     "tools": [
@@ -525,7 +525,7 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "When should you cycle the sliding door?",
         "choices": [
           "Before final edge lock / post-heat.",
-          "Never — cycling damages adhesive.",
+          "Never, cycling damages adhesive.",
           "Only after the customer drives away."
         ],
         "answer": 0
@@ -540,7 +540,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "rv-bus",
     "title": "RV/Bus Roof & Ladder Safety",
     "goal": "Tall work done from a locked platform, clear floor, two people. No top-cap standing.",
-    "timeBox": "10 min setup check before every high hang (starting target — set your own)",
+    "timeBox": "10 min setup check before every high hang (starting target. Set your own)",
     "badgeId": "badge-van-roof",
     "media": "media/photos/gallery/dusty-rose-gmc-c-pillar-ladder-tuck.jpg",
     "mediaType": "photo",
@@ -573,7 +573,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "On roof-height work, what comes first?",
         "choices": [
-          "Stable platform and clear foot zone — then film craft.",
+          "Stable platform and clear foot zone, then film craft.",
           "Maximum heat before climbing.",
           "Standing on the A-frame top cap."
         ],
@@ -607,7 +607,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "van",
     "title": "Rear Hinge Mapping",
     "goal": "Rear doors registered before the full liner comes off. Hinge cuts planned, not torn.",
-    "timeBox": "45 min per door pair (starting target — set your own)",
+    "timeBox": "45 min per door pair (starting target. Set your own)",
     "badgeId": "badge-van-hinge",
     "media": "",
     "mediaType": "photo",
@@ -641,7 +641,7 @@ window.WRAP911_DATA.trainingLessons = [
         "q": "When should you hinge/dry-fit a complex rear graphic?",
         "choices": [
           "Before full liner removal, to confirm registration.",
-          "Never — always peel full liner first.",
+          "Never, always peel full liner first.",
           "Only after post-heat has locked the film."
         ],
         "answer": 0
@@ -674,7 +674,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "storefront",
     "title": "Dry Soft-Seat Recess",
     "goal": "Recess soft-seated. No trapped air, grit, or edge lift.",
-    "timeBox": "30 min per recess (starting target — set your own)",
+    "timeBox": "30 min per recess (starting target. Set your own)",
     "badgeId": "badge-sf-wet",
     "media": "media/videos/architectural/gloss-recess-glass-out-yellow-squeegee.jpg",
     "mediaType": "photo",
@@ -683,7 +683,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Apply by the method in the exact film TDS. 3M Controltac/Comply and Avery Dennison Supreme Wrapping Film are dry-apply.",
       "Soft-seat magenta film into the architectural recess/cubby with a felt squeegee",
       "Chase air to open edges; don't trap air in corners",
-      "This is fixture/cubby soft seating — not storefront glass or silicone removal"
+      "This is fixture/cubby soft seating, not storefront glass or silicone removal"
     ],
     "tools": [
       "Air-release tool",
@@ -708,7 +708,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "What does this soft-seat recess lesson actually cover?",
         "choices": [
-          "Soft-seating film into an architectural cubby/recess — not storefront glass.",
+          "Soft-seating film into an architectural cubby/recess, not storefront glass.",
           "Silicone removal from plate glass only.",
           "Outdoor wind staging for tall curtainwall."
         ],
@@ -742,7 +742,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "storefront",
     "title": "Architectural Panel Hang",
     "goal": "Pattern lines match across panels. Returns seated before any trim.",
-    "timeBox": "45 min per panel (starting target — set your own)",
+    "timeBox": "45 min per panel (starting target. Set your own)",
     "badgeId": "badge-sf-perf",
     "media": "media/videos/architectural/architectural-wall-wrap.jpg",
     "mediaType": "photo",
@@ -751,7 +751,7 @@ window.WRAP911_DATA.trainingLessons = [
       "Stage large architectural sheets; peel liner in controlled sections",
       "Register brick/pattern lines across panel seams before glassing",
       "Glass the field, then seat corners and returns with soft tools",
-      "Knife-trim edges into reveals — never invent stretch percentages"
+      "Knife-trim edges into reveals. Never invent stretch percentages"
     ],
     "tools": [
       "Soft squeegee",
@@ -793,7 +793,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Best practice for sharp architectural returns?",
         "choices": [
-          "Seat film into the return with soft tools — don't leave a bridge",
+          "Seat film into the return with soft tools, don't leave a bridge",
           "Stretch drum-tight across the corner in one pull",
           "Skip returns; only wrap flat faces"
         ],
@@ -809,7 +809,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "storefront",
     "title": "Cubby / Recess Registration",
     "goal": "Every bay matches the next: same reveal, same edge, same baseline.",
-    "timeBox": "15 min survey, then 20 min per bay (starting target — set your own)",
+    "timeBox": "15 min survey, then 20 min per bay (starting target. Set your own)",
     "badgeId": "badge-sf-multipane",
     "media": "media/videos/architectural/cubbies-compare-magenta-vs-white-liners.jpg",
     "mediaType": "photo",
@@ -817,7 +817,7 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Compare adjacent cubby bays for liner color and edge consistency",
       "Register floor-to-wall returns bay-to-bay before final lock",
-      "Measure each recess — don't assume identical openings",
+      "Measure each recess, don't assume identical openings",
       "Step-back QC for continuity across the fixture run"
     ],
     "tools": [
@@ -836,13 +836,13 @@ window.WRAP911_DATA.trainingLessons = [
       "Mark shared baselines on returns and floors.",
       "Install bay-by-bay to registration marks.",
       "Trim edges consistently; keep reveals even.",
-      "Step-back QC across the fixture — not sidewalk pane claims."
+      "Step-back QC across the fixture, not sidewalk pane claims."
     ],
     "quiz": [
       {
         "q": "Why measure each cubby/recess individually?",
         "choices": [
-          "Bay sizes often differ — assumptions skew registration.",
+          "Bay sizes often differ, assumptions skew registration.",
           "All fixture cubbies are always identical.",
           "Measuring replaces cleaning."
         ],
@@ -876,7 +876,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "storefront",
     "title": "Corner Trim / Edge Finish",
     "goal": "Clean knife line in the crease. No chewed edge. No lift after cool-down.",
-    "timeBox": "15 min drill: five corners (starting target — set your own)",
+    "timeBox": "15 min drill: five corners (starting target. Set your own)",
     "badgeId": "badge-sf-weather",
     "media": "media/videos/prep/cutting-vinyl-6.jpg",
     "mediaType": "photo",
@@ -884,8 +884,8 @@ window.WRAP911_DATA.trainingLessons = [
     "keyTechniques": [
       "Hand-seat film fully into the interior corner before any knife work",
       "Knife-trim in the crease; remove curled scrap cleanly",
-      "Fresh blades — dull blades tear magenta film at corners",
-      "Follow product TDS for any post-trim heat lock — never invent temps"
+      "Fresh blades, dull blades tear magenta film at corners",
+      "Follow product TDS for any post-trim heat lock. Never invent temps"
     ],
     "tools": [
       "Fresh snap-off blades",
@@ -927,7 +927,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Heat after corner trim?",
         "choices": [
-          "Only if the film TDS calls for edge lock — never invent a temperature.",
+          "Only if the film TDS calls for edge lock. Never invent a temperature.",
           "Always max torch until the corner glosses.",
           "Heat replaces the need for a sharp blade."
         ],
@@ -943,7 +943,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "trailer",
     "title": "Trailer Rivet Rows",
     "goal": "Rivet rows seated after alignment. No scorched transfer tape. No tents.",
-    "timeBox": "30 min per row section (starting target — set your own)",
+    "timeBox": "30 min per row section (starting target. Set your own)",
     "badgeId": "badge-tr-rivets",
     "media": "media/photos/gallery/airstream-corner.jpg",
     "mediaType": "photo",
@@ -1010,7 +1010,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "trailer",
     "title": "Trailer Tall-Side Roofline",
     "goal": "Top edge runs straight the full length. Seams shed water.",
-    "timeBox": "20 min layout before the hang (starting target — set your own)",
+    "timeBox": "20 min layout before the hang (starting target. Set your own)",
     "badgeId": "badge-tr-roof",
     "media": "media/photos/gallery/trailer-spot-graphics.jpg",
     "mediaType": "photo",
@@ -1077,7 +1077,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "trailer",
     "title": "Door Hinge Cutting",
     "goal": "Hinge cuts land in the void. No paint scores. Door cycles clean.",
-    "timeBox": "20 min per hinge set (starting target — set your own)",
+    "timeBox": "20 min per hinge set (starting target. Set your own)",
     "badgeId": "badge-tr-hinge",
     "media": "media/videos/trailer/orange-side-door-recess-ladder-trim.jpg",
     "mediaType": "photo",
@@ -1128,7 +1128,7 @@ window.WRAP911_DATA.trainingLessons = [
       {
         "q": "Blade discipline at hinges?",
         "choices": [
-          "Fresh blade; cut into void — not across unprotected paint.",
+          "Fresh blade; cut into void, not across unprotected paint.",
           "Dull blade so it cannot cut paint.",
           "Always cut toward your body for control."
         ],
@@ -1144,7 +1144,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "trailer",
     "title": "Panel Segmentation",
     "goal": "Segments line up. No logo cut through a seam. QC between every segment.",
-    "timeBox": "15 min planning, then QC after each segment (starting target — set your own)",
+    "timeBox": "15 min planning, then QC after each segment (starting target. Set your own)",
     "badgeId": "badge-tr-seg",
     "media": "media/photos/gallery/trailer-spot-graphics.jpg",
     "mediaType": "photo",
@@ -1188,7 +1188,7 @@ window.WRAP911_DATA.trainingLessons = [
         "choices": [
           "After each segment before hanging the next.",
           "Only after the truck leaves.",
-          "Never — printers guarantee alignment."
+          "Never, printers guarantee alignment."
         ],
         "answer": 0
       },
@@ -1211,7 +1211,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "fleet",
     "title": "Fleet Alignment Rules",
     "goal": "Unit 2 matches unit 1 on your fleet sheet. Photo proof.",
-    "timeBox": "15 min measure card per unit (starting target — set your own)",
+    "timeBox": "15 min measure card per unit (starting target. Set your own)",
     "badgeId": "badge-fl-align",
     "media": "media/videos/fleet/pink-caddy-wrap5.jpg",
     "mediaType": "photo",
@@ -1278,7 +1278,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "fleet",
     "title": "Multi-Vehicle Workflow",
     "goal": "Every panel labeled by unit. Nothing leaves without QC sign-off.",
-    "timeBox": "10 min intake per vehicle (starting target — set your own)",
+    "timeBox": "10 min intake per vehicle (starting target. Set your own)",
     "badgeId": "badge-fl-multi",
     "media": "media/videos/fleet/seam-peel-rework-zest-life.jpg",
     "mediaType": "photo",
@@ -1345,7 +1345,7 @@ window.WRAP911_DATA.trainingLessons = [
     "vehicleId": "fleet",
     "title": "Fleet Quality Control",
     "goal": "Same checklist, same photos, every unit. Lead signs off.",
-    "timeBox": "15 min per unit (starting target — set your own)",
+    "timeBox": "15 min per unit (starting target. Set your own)",
     "badgeId": "badge-fl-qc",
     "media": "media/photos/gallery/pink-caddy-bumper-close-up.jpg",
     "mediaType": "photo",
@@ -1469,7 +1469,7 @@ window.WRAP911_DATA.workflowSteps = {
         "Stage from ground; don't climb wrestling loose film",
         "Clear liner under ladder"
       ],
-      "technique": "Platform first, then glass, then edges — never reverse that order on tall sides.",
+      "technique": "Platform first, then glass, then edges. Never reverse that order on tall sides.",
       "mistakes": [
         "Overreaching",
         "Crooked band lines"
@@ -1490,7 +1490,7 @@ window.WRAP911_DATA.workflowSteps = {
         "Torch on stable base when idle",
         "Liner away from flame"
       ],
-      "technique": "Follow TDS — never invent temperatures. Individual rivets beat one heroic stretch.",
+      "technique": "Follow TDS. Never invent temperatures. Individual rivets beat one heroic stretch.",
       "mistakes": [
         "Bridging rivet rows",
         "Held heat scorching film"
@@ -1531,7 +1531,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Clear scraps before heat pass"
       ],
-      "technique": "Post-heat is memory and adhesion — not color change or melting.",
+      "technique": "Post-heat is memory and adhesion, not color change or melting.",
       "mistakes": [
         "Skipping rivet lock-down",
         "No door cycle"
@@ -1576,7 +1576,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Keep hands clear of track pinch points"
       ],
-      "technique": "Pattern continuity across the gap sells the wrap — measure twice.",
+      "technique": "Pattern continuity across the gap sells the wrap, measure twice.",
       "mistakes": [
         "Binding in weatherstrip",
         "Crooked bands"
@@ -1597,7 +1597,7 @@ window.WRAP911_DATA.workflowSteps = {
         "Stable heat base",
         "Ventilation"
       ],
-      "technique": "Soft tools win in corrugations — hard center strokes crease and trap air.",
+      "technique": "Soft tools win in corrugations, hard center strokes crease and trap air.",
       "mistakes": [
         "Melting film into channels",
         "Hard squeegee down tunnel centers"
@@ -1725,7 +1725,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Locked ladder; no overreach"
       ],
-      "technique": "Long trailers expose every droop — use a reference line.",
+      "technique": "Long trailers expose every droop. Use a reference line.",
       "mistakes": [
         "Eyeballing a 20-foot top edge"
       ]
@@ -1781,7 +1781,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Cut into voids, not across paint"
       ],
-      "technique": "Seat before cut — always.",
+      "technique": "Seat before cut, always.",
       "mistakes": [
         "Flush-short edges that open after shrink"
       ]
@@ -1808,7 +1808,7 @@ window.WRAP911_DATA.workflowSteps = {
         "Level locked ladder; three points of contact",
         "Stage or hinge large panels from the ground when possible",
         "Keep liner scraps off ladder feet",
-        "Move the ladder — do not overreach"
+        "Move the ladder. Do not overreach"
       ]
     },
     {
@@ -1850,7 +1850,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Standard shop safety per unit"
       ],
-      "technique": "Fleet looks expensive when every unit matches — measure, don't eyeball.",
+      "technique": "Fleet looks expensive when every unit matches, measure, don't eyeball.",
       "mistakes": [
         "Each tech inventing logo height"
       ]
@@ -1887,7 +1887,7 @@ window.WRAP911_DATA.workflowSteps = {
       "safety": [
         "Chock wheels if needed during door cycles"
       ],
-      "technique": "Release only after shared QC — not vibes.",
+      "technique": "Release only after shared QC, not vibes.",
       "mistakes": [
         "Skipping photos",
         "Inconsistent standards"
@@ -1980,7 +1980,7 @@ window.WRAP911_DATA.practiceScenarios = [
     "checklist": [
       "Seat film into the gap first",
       "Snap a fresh blade",
-      "Cut into the void — not across paint",
+      "Cut into the void, not across paint",
       "Leave about 1–2 mm tuck margin when trim allows",
       "Heat-set edge only within TDS guidance"
     ],
@@ -2051,7 +2051,7 @@ window.WRAP911_DATA.practiceScenarios = [
       "Mark shared horizontal reference",
       "Dry-fit / hinge before full peel",
       "Check band continuity across gaps",
-      "Redistribute fingers — don't crush print",
+      "Redistribute fingers, don't crush print",
       "Step-back QC before final heat lock"
     ],
     "mistakes": [
@@ -2091,7 +2091,7 @@ window.WRAP911_DATA.practiceScenarios = [
         "choices": [
           "Lift and redistribute, then squeegee.",
           "Smash flat immediately.",
-          "Ignore — post-heat fixes creases."
+          "Ignore, post-heat fixes creases."
         ],
         "answer": 0
       },
@@ -2357,7 +2357,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7685",
     "access": "paid",
-    "title": "Box interior — edge knife trim",
+    "title": "Box interior, edge knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2367,12 +2367,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "prac-seam",
-    "note": "Shop clip (~14s). Shop POV of lining a plywood display/fixture box with glossy magenta (hot-pink) film. Installer knives excess at the top rim after the floor and one wall are already covered. Pre-cut magenta rectangles sit on the bench. 3M Controltac liner appears later in the same job series. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~14s). Shop POV of lining a plywood display/fixture box with glossy magenta (hot-pink) film. Installer knives excess at the top rim after the floor and one wall are already covered. Pre-cut magenta rectangles sit on the bench. 3M Controltac liner appears later in the same job series. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7688",
     "access": "paid",
-    "title": "Strip prep — alcohol wipe, ready to lay",
+    "title": "Strip prep, alcohol wipe, ready to lay",
     "category": "Prep",
     "subcategory": "Material Prep",
     "type": "clip",
@@ -2382,12 +2382,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "",
-    "note": "Shop clip (~12s). Installer handles a long glossy magenta strip over the bench with IPA spray bottle and white/yellow felt squeegee visible. Same plywood box job — preparing wall strips after floor work. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~12s). Installer handles a long glossy magenta strip over the bench with IPA spray bottle and white/yellow felt squeegee visible. Same plywood box job, preparing wall strips after floor work. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7689",
     "access": "paid",
-    "title": "Magenta box floor — 3M Controltac liner peel",
+    "title": "Magenta box floor. 3M Controltac liner peel",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2412,12 +2412,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~32s). Installer tucks glossy magenta film into a deep three-way interior corner of the fixture box using a white squeegee with yellow/tan felt buffer. Manages bridging/fingers at the vertex. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~32s). Installer tucks glossy magenta film into a deep three-way interior corner of the fixture box using a white squeegee with yellow/tan felt buffer. Manages bridging/fingers at the vertex. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7692",
     "access": "paid",
-    "title": "Inner wall squeegee — 3M Controltac",
+    "title": "Inner wall squeegee. 3M Controltac",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2427,7 +2427,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~18s). Squeegeeing magenta film up an interior wall/corner. Discarded liner clearly shows 3M Controltac. Yellow detail tool rests on the floor panel; plotter and vinyl racks in background. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~18s). Squeegeeing magenta film up an interior wall/corner. Discarded liner clearly shows 3M Controltac. Yellow detail tool rests on the floor panel; plotter and vinyl racks in background. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7694",
@@ -2442,12 +2442,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "",
-    "note": "Shop clip (~3s). Very short clip: hand peels a matte/satin grey film piece relative to glossy magenta sheets on the bench — accent/stack prep for the same fixture job. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~3s). Very short clip: hand peels a matte/satin grey film piece relative to glossy magenta sheets on the bench, accent/stack prep for the same fixture job. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7695",
     "access": "paid",
-    "title": "Strip handling — weeding stage",
+    "title": "Strip handling, weeding stage",
     "category": "Prep",
     "subcategory": "Material Prep",
     "type": "clip",
@@ -2457,12 +2457,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "",
-    "note": "Shop clip (~7s). Handling long glossy magenta strips and staging pre-cuts near the wide-format cutter. Mix of liner peel into the box and bench weeding/organization. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~7s). Handling long glossy magenta strips and staging pre-cuts near the wide-format cutter. Mix of liner peel into the box and bench weeding/organization. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-7696",
     "access": "paid",
-    "title": "Magenta box — glass out a deep recess",
+    "title": "Magenta box. Glass out a deep recess",
     "category": "Storefront/Architectural",
     "subcategory": "Recesses",
     "type": "clip",
@@ -2477,7 +2477,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7697",
     "access": "paid",
-    "title": "Magenta box — corner tuck and relief cut",
+    "title": "Magenta box, corner tuck and relief cut",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2492,7 +2492,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7699",
     "access": "paid",
-    "title": "Magenta box — hand-seat corner, knife trim",
+    "title": "Magenta box, hand-seat corner, knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Trim",
     "type": "clip",
@@ -2507,7 +2507,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-mid-7701",
     "access": "paid",
-    "title": "Cubbies — compare liners, finished",
+    "title": "Cubbies, compare liners, finished",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2517,12 +2517,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "sw-pane",
     "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~6s). Plywood cubby fixture on orange-edged bench: one bay lined glossy magenta, adjacent bay white/satin. Training/demo of multi-bay fixture lining consistency. Follow product TDS for any heat/post-heat — do not invent temperatures."
+    "note": "Shop clip (~6s). Plywood cubby fixture on orange-edged bench: one bay lined glossy magenta, adjacent bay white/satin. Training/demo of multi-bay fixture lining consistency. Follow product TDS for any heat/post-heat. Do not invent temperatures."
   },
   {
     "id": "v-mid-6788",
     "access": "paid",
-    "title": "Printed trailer — rivet field with magnet",
+    "title": "Printed trailer, rivet field with magnet",
     "category": "Trailer",
     "subcategory": "Rivets",
     "type": "clip",
@@ -2547,12 +2547,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "vw-hinge",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~34s). Installer tucks white film into the rear liftgate license-plate recess and around chrome trim on a white SUV. Shows mid-install finger work with loose edges still hanging. Follow product TDS for any heat — no invented temperatures."
+    "note": "Shop clip (~34s). Installer tucks white film into the rear liftgate license-plate recess and around chrome trim on a white SUV. Shows mid-install finger work with loose edges still hanging. Follow product TDS for any heat, no invented temperatures."
   },
   {
     "id": "v-mid-3884",
     "access": "paid",
-    "title": "Dusty-rose GMC — C-pillar tuck from the ladder",
+    "title": "Dusty-rose GMC. C-pillar tuck from the ladder",
     "category": "Fleet",
     "subcategory": "Doors",
     "type": "clip",
@@ -2577,7 +2577,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-qc",
     "recommendedWorkflow": "fw-qc",
     "recommendedPractice": "",
-    "note": "Shop clip (~26s). Close finish look at dusty-rose panels meeting horizontal/vertical chrome trim on GMC SUV. QC for tuck quality and reflection cleanliness. Same dusty-rose series. Follow product TDS — no invented temperatures."
+    "note": "Shop clip (~26s). Close finish look at dusty-rose panels meeting horizontal/vertical chrome trim on GMC SUV. QC for tuck quality and reflection cleanliness. Same dusty-rose series. Follow product TDS, no invented temperatures."
   },
   {
     "id": "v-mid-5540",
@@ -2592,7 +2592,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "van-deep-recess",
     "recommendedWorkflow": "vw-recess",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~31s). Gloss carbon-fiber–pattern vinyl seating into a rear bumper recess beside mesh vent; excess film still bunched. Texture film in a pocket/recess. Follow product TDS — no invented temperatures."
+    "note": "Shop clip (~31s). Gloss carbon-fiber–pattern vinyl seating into a rear bumper recess beside mesh vent; excess film still bunched. Texture film in a pocket/recess. Follow product TDS, no invented temperatures."
   },
   {
     "id": "v-mid-8962",
@@ -2607,12 +2607,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-roofline",
     "recommendedWorkflow": "tw-roof",
     "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~26s). Installer on A-frame ladder works tall orange graphic with white '99' / MONTH lettering; 3M liner/roll visible nearby. Tall-side ladder safety + large panel hang. Follow 3M product TDS — no invented temperatures."
+    "note": "Shop clip (~26s). Installer on A-frame ladder works tall orange graphic with white '99' / MONTH lettering; 3M liner/roll visible nearby. Tall-side ladder safety + large panel hang. Follow 3M product TDS, no invented temperatures."
   },
   {
     "id": "v-mid-8974",
     "access": "paid",
-    "title": "Side door recess — trim from the ladder",
+    "title": "Side door recess. Trim from the ladder",
     "category": "Trailer",
     "subcategory": "Doors",
     "type": "clip",
@@ -2622,12 +2622,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-door-hinge",
     "recommendedWorkflow": "tw-hinge",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~24s). Installer on ladder seats/trims orange/red film into a side door recess; heat gun staged on ladder; cart with tape/sealant nearby. Tall commercial door detail. Related to IMG_8962/8965 series. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~24s). Installer on ladder seats/trims orange/red film into a side door recess; heat gun staged on ladder; cart with tape/sealant nearby. Tall commercial door detail. Related to IMG_8962/8965 series. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-mid-1039",
     "access": "paid",
-    "title": "Class C RV — finished stripe walkaround",
+    "title": "Class C RV, finished stripe walkaround",
     "category": "RV/Bus",
     "subcategory": "QC",
     "type": "clip",
@@ -2652,7 +2652,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-door-hinge",
     "recommendedWorkflow": "tw-hinge",
     "recommendedPractice": "prac-recess",
-    "note": "Shop clip (~13s). Tight detail on glossy magenta/red film around a hardware cutout and brushed-metal trim; finger work at the recessed edge. Same magenta trailer series as IMG_6788–6797. Follow product TDS — no invented temperatures."
+    "note": "Shop clip (~13s). Tight detail on glossy magenta/red film around a hardware cutout and brushed-metal trim; finger work at the recessed edge. Same magenta trailer series as IMG_6788–6797. Follow product TDS, no invented temperatures."
   },
   {
     "id": "v-mid-8971",
@@ -2667,7 +2667,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-roofline",
     "recommendedWorkflow": "tw-roof",
     "recommendedPractice": "prac-panel-align",
-    "note": "Shop clip (~37s). Installer on step ladder seats the upper edge of the orange '99 MONTH' tall-side graphic; geometric black/grey graphics remain on the adjacent panel. Ladder height + upper-edge hang. Same series as IMG_8962. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~37s). Installer on step ladder seats the upper edge of the orange '99 MONTH' tall-side graphic; geometric black/grey graphics remain on the adjacent panel. Ladder height + upper-edge hang. Same series as IMG_8962. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-translucent-vinyl-1bidzr",
@@ -2682,7 +2682,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~25s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~25s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-vinyl-removal-1Wvo1G",
@@ -2697,7 +2697,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~44s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~44s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-rear-vehicle-gate-wrap-11EhrJ",
@@ -2712,7 +2712,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "van-rear-hinge",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~34s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~34s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-handling-vinyl-1riO1q",
@@ -2727,12 +2727,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~44s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~44s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-corngraphic-1_ycBu",
     "access": "free",
-    "title": "Corn graphic — QC check",
+    "title": "Corn graphic. QC check",
     "category": "QC",
     "subcategory": "Inspection",
     "type": "clip",
@@ -2742,7 +2742,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-qc",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-showing-rivets-1r6aYA",
@@ -2757,7 +2757,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~47s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~47s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-smith-field-food-truck-12d1m0",
@@ -2772,7 +2772,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~54s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~54s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-blue-rv-wrap-1Ckzyv",
@@ -2787,12 +2787,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~33s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~33s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-satin-wrap-cherokee-1y2x7R",
     "access": "paid",
-    "title": "Satin wrap — Cherokee",
+    "title": "Satin wrap. Cherokee",
     "category": "Fleet",
     "subcategory": "Panels",
     "type": "clip",
@@ -2802,7 +2802,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~36s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~36s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-cutting-vinyl-4-12OuH3",
@@ -2817,7 +2817,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~16s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~16s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-cabinet-done-1Shu3T",
@@ -2832,7 +2832,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~6s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~6s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-cutting-vinyl-6-1WQRED",
@@ -2847,7 +2847,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~23s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~23s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-vinyl-cabinet-installed-1kTrGV",
@@ -2862,12 +2862,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~1s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~1s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-vinyl-oncabinet8-18oCVi",
     "access": "paid",
-    "title": "Cabinet wrap — part 8",
+    "title": "Cabinet wrap, part 8",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -2877,7 +2877,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~5s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~5s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-torch-in-vinyl-3-1uAbFN",
@@ -2892,7 +2892,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~10s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~10s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-vinyl-cutting1-1SZrR5",
@@ -2907,7 +2907,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~9s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~9s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-stroke-of-the-squeegee-1xetub",
@@ -2922,7 +2922,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-trailer-rivets-and-marker-li-1WwwZf",
@@ -2937,7 +2937,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip. Gold Controltac over a round marker light. The light gets cut out. Not a rivet row. Follow film TDS — no invented temperatures."
+    "note": "Shop clip. Gold Controltac over a round marker light. The light gets cut out. Not a rivet row. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-torch-on-vinyl1-1NfBta",
@@ -2952,7 +2952,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~41s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~41s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-torch-on-vinyl2-1Tk1xt",
@@ -2967,7 +2967,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~36s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~36s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-vinyl-squeegee-sequence-1j5VJF",
@@ -2982,7 +2982,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~45s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~45s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-wrapping-around-trailer-mark-1Y3WJb",
@@ -2997,7 +2997,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "tr-panel-seg",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~52s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~52s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-pink-wrap-caddy-1-1G1W_l",
@@ -3012,7 +3012,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~0s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~0s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-pink-caddy-wrap5-1CBWZ0",
@@ -3027,7 +3027,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~14s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-dull-blade-cut-1RslTS",
@@ -3042,7 +3042,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~3s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~3s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-cutting-vinyl3-1GT3fB",
@@ -3057,7 +3057,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~9s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~9s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-cutting-vinyl-5-15wD6M",
@@ -3072,7 +3072,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "bt-prep-cleaning",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~3s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~3s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-pink-caddy-wrap3-1bs6tn",
@@ -3087,7 +3087,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~11s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~11s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-pink-caddy-wrap4-1A3qMJ",
@@ -3102,12 +3102,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "fl-alignment",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~13s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~13s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-wall-wrap-sque-14Wtby",
     "access": "free",
-    "title": "Wall wrap — squeegee sequence",
+    "title": "Wall wrap. Squeegee sequence",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3117,12 +3117,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~19s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~19s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-vinyl-panel-pr-13pihm",
     "access": "paid",
-    "title": "Wall panel — pre-install prep",
+    "title": "Wall panel, pre-install prep",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3132,12 +3132,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~31s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~31s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-panel-cutting--1bucxT",
     "access": "paid",
-    "title": "Wall panel — trim excess after install 1",
+    "title": "Wall panel. Trim excess after install 1",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3147,12 +3147,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~24s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~24s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-panel-cutting--1qn3lV",
     "access": "paid",
-    "title": "Wall panel — trim excess after install 2",
+    "title": "Wall panel. Trim excess after install 2",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3162,12 +3162,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~12s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~12s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-wall-vinyl-pan-1_jsQ7",
     "access": "paid",
-    "title": "Wall panel — heat out the fingers",
+    "title": "Wall panel. Heat out the fingers",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3177,12 +3177,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~40s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~40s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-wrap-cutting-a-1otK4E",
     "access": "paid",
-    "title": "Wood-grain panel — cut and tuck at piano hinge",
+    "title": "Wood-grain panel. Cut and tuck at piano hinge",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3197,7 +3197,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-panel-wra-1mdavr",
     "access": "paid",
-    "title": "Wall panel — post-heat 2",
+    "title": "Wall panel, post-heat 2",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3207,7 +3207,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~45s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~45s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-wall-wrap-18yx_q",
@@ -3222,12 +3222,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~20s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~20s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-named-architectural-post-heating-v-1FFpMa",
     "access": "paid",
-    "title": "Wood-grain wall — torch post-heat",
+    "title": "Wood-grain wall, torch post-heat",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3237,12 +3237,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~42s trimmed). Handheld propane torch post-heats grey wood-grain wall film across flat faces and recessed grooves. Follow the film TDS — do not invent temperatures."
+    "note": "Shop clip (~42s trimmed). Handheld propane torch post-heats grey wood-grain wall film across flat faces and recessed grooves. Follow the film TDS. Do not invent temperatures."
   },
   {
     "id": "v-named-post-heat-panel-1-10LIlU",
     "access": "paid",
-    "title": "Wood-grain wall — heat gun into plank grooves",
+    "title": "Wood-grain wall. Heat gun into plank grooves",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3252,12 +3252,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~30s). Heat gun softens distressed wood-grain film; blue squeegee presses film into vertical plank recesses. Follow the film TDS — do not invent temperatures."
+    "note": "Shop clip (~30s). Heat gun softens distressed wood-grain film; blue squeegee presses film into vertical plank recesses. Follow the film TDS. Do not invent temperatures."
   },
   {
     "id": "v-named-architectural-cutting-vinyl--1NXkcT",
     "access": "paid",
-    "title": "Wood-grain wall — knife trim into plank recess",
+    "title": "Wood-grain wall, knife trim into plank recess",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3267,12 +3267,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~38s). Distressed grey wood-grain architectural film. Installer knives a vertical cut into a recessed plank groove, then peels the narrow waste strip. Blue squeegee seats the edge. Follow the film TDS for any heat — do not invent temperatures."
+    "note": "Shop clip (~38s). Distressed grey wood-grain architectural film. Installer knives a vertical cut into a recessed plank groove, then peels the narrow waste strip. Blue squeegee seats the edge. Follow the film TDS for any heat. Do not invent temperatures."
   },
   {
     "id": "v-named-architectural-wall-wrap-pane-1dNBb4",
     "access": "paid",
-    "title": "Wood-grain wall — squeegee stroke sequence",
+    "title": "Wood-grain wall. Squeegee stroke sequence",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3287,7 +3287,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-named-architectural-wall-panel-ins-1V50KW",
     "access": "paid",
-    "title": "Wall panel — dust and tack",
+    "title": "Wall panel, dust and tack",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3297,12 +3297,12 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
     "recommendedModule": "sf-multipane",
     "recommendedWorkflow": "",
     "recommendedPractice": "",
-    "note": "Shop clip (~113s). Named Drive ingest 2026-09-22. Follow film TDS — no invented temperatures."
+    "note": "Shop clip (~113s). Named Drive ingest 2026-09-22. Follow film TDS, no invented temperatures."
   },
   {
     "id": "v-271-kiosk-brick",
     "access": "paid",
-    "title": "Kiosk panel — brick film hang, heat, knife trim",
+    "title": "Kiosk panel, brick film hang, heat, knife trim",
     "category": "Storefront/Architectural",
     "subcategory": "Panels",
     "type": "clip",
@@ -3317,7 +3317,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-271-corner-tool",
     "access": "paid",
-    "title": "Magenta box — yellow hard-card corner seat",
+    "title": "Magenta box, yellow hard-card corner seat",
     "category": "Storefront/Architectural",
     "subcategory": "Corners",
     "type": "clip",
@@ -3332,7 +3332,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-271-gmc-tailgate",
     "access": "paid",
-    "title": "Dusty-rose GMC — tailgate emblem bridge",
+    "title": "Dusty-rose GMC, tailgate emblem bridge",
     "category": "Fleet",
     "subcategory": "Emblems",
     "type": "clip",
@@ -3347,7 +3347,7 @@ window.WRAP911_DATA.VIDEO_CATALOG = [
   {
     "id": "v-271-blue-panel-e450",
     "access": "paid",
-    "title": "Ford E-450 cab door — blue panel hang",
+    "title": "Ford E-450 cab door, blue panel hang",
     "category": "Box Truck",
     "subcategory": "Cab door",
     "type": "clip",

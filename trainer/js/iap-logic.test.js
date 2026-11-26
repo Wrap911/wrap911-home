@@ -204,7 +204,8 @@ assert.ok(storekit.indexOf("com.wrap911.trainer.pass.7d") !== -1);
 assert.ok(storekit.indexOf("12.99") !== -1);
 var project = fs.readFileSync(path.join(__dirname, "../../ios/App/App.xcodeproj/project.pbxproj"), "utf8");
 assert.ok(project.indexOf("MARKETING_VERSION = 1.4;") !== -1);
-assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 37;") !== -1);
+assert.ok(project.indexOf("CURRENT_PROJECT_VERSION = 38;") !== -1);
+assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 37;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 36;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 35;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 34;"), -1);
@@ -222,7 +223,8 @@ assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 24;"), -1);
 assert.strictEqual(project.indexOf("CURRENT_PROJECT_VERSION = 22;"), -1);
 assert.strictEqual(project.indexOf("MARKETING_VERSION = 1.1;"), -1);
 var flight = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ios-testflight.yml"), "utf8");
-assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=37") !== -1);
+assert.ok(flight.indexOf("CURRENT_PROJECT_VERSION=38") !== -1);
+assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=37"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=36"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=35"), -1);
 assert.strictEqual(flight.indexOf("CURRENT_PROJECT_VERSION=34"), -1);
@@ -291,7 +293,7 @@ var fieldCss = fs.readFileSync(path.join(__dirname, "../css/field-bg.css"), "utf
 var indexHtml = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 var swJs = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
 assert.ok(indexHtml.indexOf('id="field-bg"') !== -1 && indexHtml.indexOf("css/field-bg.css") !== -1 && indexHtml.indexOf("js/field-bg.js") !== -1);
-assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.4-b37"') !== -1);
+assert.ok(swJs.indexOf('var CACHE = "wrap911-trainer-1.4-b38"') !== -1);
 assert.strictEqual(swJs.indexOf("bg-mock"), -1);
 Object.keys(BG_SHA).forEach(function (name) { assert.ok(swJs.indexOf("./media/bg/" + name + ".webp") !== -1, "sw precache " + name); });
 [fieldJs, fieldCss].forEach(function (src) {
@@ -351,7 +353,7 @@ var extraBlock = photos31.slice(photos31.indexOf("var EXTRA"), photos31.indexOf(
 assert.ok((extraBlock.match(/id: "bay-mustang-hood-tac"/g) || []).length === 1, "exactly one Mustang still in EXTRA");
 assert.ok((extraBlock.match(/mustang-/g) || []).length === 2, "EXTRA has only the kept hood still (id + image)");
 var sw31 = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
-assert.ok(sw31.indexOf("wrap911-trainer-1.4-b37") !== -1, "SW cache bumped");
+assert.ok(sw31.indexOf("wrap911-trainer-1.4-b38") !== -1, "SW cache bumped");
 
 
 /* Build 32: Weekly Challenge, offline Quick Fix, Shop Pack crew codes by email, header safe-area. */
@@ -387,6 +389,6 @@ var css32 = fs.readFileSync(path.join(__dirname, "../css/polish.css"), "utf8");
 assert.ok(css32.indexOf("safe-area-inset-top") !== -1, "header has top safe-area padding");
 var sw32 = fs.readFileSync(path.join(__dirname, "../sw.js"), "utf8");
 assert.ok(sw32.indexOf("./data/challenges.json") !== -1 && sw32.indexOf("./js/quick-fix-logic.js") !== -1);
-assert.ok(sw32.indexOf("wrap911-trainer-1.4-b37") !== -1);
+assert.ok(sw32.indexOf("wrap911-trainer-1.4-b38") !== -1);
 console.log("iap-logic tests including build 32 checks loaded");
 require("./job-logic.test.js");

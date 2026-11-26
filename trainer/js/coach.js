@@ -83,28 +83,28 @@
       keys: ["prep", "clean", "cleaning", "dirt", "degrease", "ipa", "contaminat", "residue", "soap", "silicone", "wash"],
       topic: "Commercial prep / cleaning",
       answer:
-        "Prep (commercial vehicle): wash the panel, degrease, then detail dirt traps before any film — seams, rivet bases, door bottoms, wheel-well lips, light pockets, awning rails. Work top to bottom so runoff does not re-contaminate lower paint. Finish with a two-cloth IPA wipe (wet then dry) until microfiber comes away clean. If silicone seals leave an oily feel, stop and address silicone with an appropriate remover before layout. Contaminants under wrap become lift lines and dirt nibs. Confirm cleaner compatibility with your 3M / Avery Dennison / BriteLine film TDS."
+        "Prep (commercial vehicle): wash the panel, degrease, then detail dirt traps before any film, seams, rivet bases, door bottoms, wheel-well lips, light pockets, awning rails. Work top to bottom so runoff does not re-contaminate lower paint. Finish with a two-cloth IPA wipe (wet then dry) until microfiber comes away clean. If silicone seals leave an oily feel, stop and address silicone with an appropriate remover before layout. Contaminants under wrap become lift lines and dirt nibs. Confirm cleaner compatibility with your 3M / Avery Dennison / BriteLine film TDS."
     },
     {
       id: "layout",
       keys: ["layout", "hinge", "dry fit", "dry-fit", "register", "registration", "measure", "pattern", "hang panel", "stage panel"],
       topic: "Layout & panel hang",
       answer:
-        "Layout: dry-fit or hinge large graphics with masking tape before committing adhesive. Mark centerlines and key landmarks (door gaps, body lines, rivet rows). Stage oversized panels from the ground when you can; two-person hang on tall sides with the ladder locked before you squeegee. Glass the main field first, then work excess toward edges and hardware. Plan seam placement for water shed on vertical overlaps. Brands: 3M · Avery Dennison · BriteLine — match construction to the job substrate."
+        "Layout: dry-fit or hinge large graphics with masking tape before committing adhesive. Mark centerlines and key landmarks (door gaps, body lines, rivet rows). Stage oversized panels from the ground when you can; two-person hang on tall sides with the ladder locked before you squeegee. Glass the main field first, then work excess toward edges and hardware. Plan seam placement for water shed on vertical overlaps. Brands: 3M · Avery Dennison · BriteLine. Match construction to the job substrate."
     },
     {
       id: "glass-first",
       keys: ["glass", "glassing", "flat first", "glass the", "main field", "bridge high", "high points"],
       topic: "Glass flats first",
       answer:
-        "Glass flats first: lay film across high points / open flats and seat that field with overlapping felt strokes before you chase recesses, rivets, or deep steps. Bridging highs gives you a stable reference and keeps air paths open. Do not dive into channels or weld lines while the flat is still loose — that traps fingers and creates tents. Walk long air fingers to an open edge; never smash them flat into a crease."
+        "Glass flats first: lay film across high points / open flats and seat that field with overlapping felt strokes before you chase recesses, rivets, or deep steps. Bridging highs gives you a stable reference and keeps air paths open. Do not dive into channels or weld lines while the flat is still loose, that traps fingers and creates tents. Walk long air fingers to an open edge; never smash them flat into a crease."
     },
     {
       id: "rivets",
       keys: ["rivet", "rivets", "tent", "tenting", "weld", "weld line", "nugget", "articulate"],
       topic: "Rivets & weld texture (no tenting)",
       answer:
-        "Rivets / weld texture: glass the flat first, then warm per the film maker’s TDS and set each head — press and purge air around the rivet. Bridging tents over rivets and weld texture; tents trap dirt and moisture and lift later. Soften, work from the flat into the seam, set individually — do not force a whole row in one stretch. Soft pad or rivet brush helps. Brands: 3M · Avery Dennison · BriteLine."
+        "Rivets / weld texture: glass the flat first, then warm per the film maker’s TDS and set each head. Press and purge air around the rivet. Bridging tents over rivets and weld texture; tents trap dirt and moisture and lift later. Soften, work from the flat into the seam, set individually. Do not force a whole row in one stretch. Soft pad or rivet brush helps. Brands: 3M · Avery Dennison · BriteLine."
     },
     {
       id: "rivet-wrinkle",
@@ -115,105 +115,105 @@
       ],
       topic: "Pressed wrinkle / locked crease on a rivet",
       answer:
-        "Pressed wrinkle on a rivet (process): a hard crease over a rivet head is usually a locked crease from bridging — film stretched across the head instead of set around it. Do not mash harder; that sets the crease and can stress or whiten the face. If adhesive will still release, lift a small area, re-lay on and around the head, purge air, and seat with a soft pad or rivet brush. Post-heat only as the film maker’s TDS / Application Guide allows for that SKU — never invent a temperature or dwell. If the film shows white stress marks, a sharp permanent crease, or stretched-thin face, stop fighting it: patch or replace that panel/section. Brands: 3M · Avery Dennison · BriteLine — open the exact TDS for heat and stretch limits."
+        "Pressed wrinkle on a rivet (process): a hard crease over a rivet head is usually a locked crease from bridging, film stretched across the head instead of set around it. Do not mash harder; that sets the crease and can stress or whiten the face. If adhesive will still release, lift a small area, re-lay on and around the head, purge air, and seat with a soft pad or rivet brush. Post-heat only as the film maker’s TDS / Application Guide allows for that SKU. Never invent a temperature or dwell. If the film shows white stress marks, a sharp permanent crease, or stretched-thin face, stop fighting it: patch or replace that panel/section. Brands: 3M · Avery Dennison · BriteLine. Open the exact TDS for heat and stretch limits."
     },
     {
       id: "corrugation",
       keys: ["corrugat", "channel", "rib", "ridges", "foam roller", "tunnel"],
       topic: "Corrugation / channels",
       answer:
-        "Corrugation / channels: glass across the ridges first, walk fingers out, then feed film into each recess with a foam roller or soft pad. Do not hard-squeegee tunnels flat or bridge-and-stretch across deep corrugation — pop-back and tenting follow. Keep channel paint clean before you lock film. Overlap roller strokes so air always has an escape path. Heat only as allowed by the product TDS."
+        "Corrugation / channels: glass across the ridges first, walk fingers out, then feed film into each recess with a foam roller or soft pad. Do not hard-squeegee tunnels flat or bridge-and-stretch across deep corrugation, pop-back and tenting follow. Keep channel paint clean before you lock film. Overlap roller strokes so air always has an escape path. Heat only as allowed by the product TDS."
     },
     {
       id: "recesses",
       keys: ["recess", "recesses", "deep recess", "pocket", "step", "compound", "inset"],
       topic: "Deep recesses",
       answer:
-        "Deep recesses: bridge across high points, then feed film into the pocket with foam roller / soft pad / fingers — redistribute excess before you commit. Do not yank the film thin across a deep step. Soften only as the TDS allows; scorching to “melt it in” wrecks gloss and memory. After the recess is seated, post-heat that geometry so the film remembers the shape (still per TDS)."
+        "Deep recesses: bridge across high points, then feed film into the pocket with foam roller / soft pad / fingers, redistribute excess before you commit. Do not yank the film thin across a deep step. Soften only as the TDS allows; scorching to “melt it in” wrecks gloss and memory. After the recess is seated, post-heat that geometry so the film remembers the shape (still per TDS)."
     },
     {
       id: "seams",
       keys: ["seam", "seams", "overlap", "butt", "butt seam", "joint", "panel joint", "overlap seam", "panel seam", "long seam"],
       topic: "Seams",
       answer:
-        "Seams: keep registration true across panels and doors. Manage overlaps per shop standard and the film TDS (direction for water shed on verticals). Avoid thin stretches at joints — redistribute before you lock. Post-heat seam edges so they stay put. On multipane or segmented commercial sides, dry-fit overlaps before you peel liner past the hinge point."
+        "Seams: keep registration true across panels and doors. Manage overlaps per shop standard and the film TDS (direction for water shed on verticals). Avoid thin stretches at joints, redistribute before you lock. Post-heat seam edges so they stay put. On multipane or segmented commercial sides, dry-fit overlaps before you peel liner past the hinge point."
     },
     {
       id: "postheat",
       keys: ["post-heat", "post heat", "postheat", "lock", "lock-down", "memory", "heat set", "torch", "heat gun"],
       topic: "Post-heat discipline",
       answer:
-        "Post-heat locks film into the new shape after the field is down — squeegee alone is not the finish line. Focus edges, rivets, corrugations, deep recesses, and seam lips with controlled heat. Never invent a target temperature or dwell time; open the exact 3M, Avery Dennison, or BriteLine TDS / Application Guide for that SKU. Keep the torch or gun on a stable base when idle. After post-heat, re-check tents and edge lift before release."
+        "Post-heat locks film into the new shape after the field is down. Squeegee alone is not the finish line. Focus edges, rivets, corrugations, deep recesses, and seam lips with controlled heat. Never invent a target temperature or dwell time; open the exact 3M, Avery Dennison, or BriteLine TDS / Application Guide for that SKU. Keep the torch or gun on a stable base when idle. After post-heat, re-check tents and edge lift before release."
     },
     {
       id: "edges-trim",
       keys: ["edge", "edges", "trim", "tuck", "cutout", "blade", "knifeless", "finish edge", "edge lift", "wrapping edge"],
       topic: "Edges & trim",
       answer:
-        "Edges / trim: seat film into gaps and body lines before you cut. Cut into voids — not across finished paint without a plan. Leave a small tuck margin behind trim where the design allows; flush face-only cuts look neat until weather peels them. Fresh blades; knifeless tape where it protects paint. Post-heat folded edges so they remember the wrap. Soft tools on print faces."
+        "Edges / trim: seat film into gaps and body lines before you cut. Cut into voids, not across finished paint without a plan. Leave a small tuck margin behind trim where the design allows; flush face-only cuts look neat until weather peels them. Fresh blades; knifeless tape where it protects paint. Post-heat folded edges so they remember the wrap. Soft tools on print faces."
     },
     {
       id: "rollup",
       keys: ["rollup", "roll-up", "roll up", "door", "doors", "swing door", "hinge", "latch", "hardware"],
       topic: "Doors (roll-up & swing)",
       answer:
-        "Doors: plan reliefs at hinges, latches, and hardware. Dry-fit graphics across gaps; hinge with masking tape when needed, then commit adhesive in sections. On roll-up doors, respect panel segmentation and moving edges — do not bridge film across sections that open. Trim after film is seated. Post-heat door edges and hardware pockets. Confirm any film-over-hardware guidance on the product TDS."
+        "Doors: plan reliefs at hinges, latches, and hardware. Dry-fit graphics across gaps; hinge with masking tape when needed, then commit adhesive in sections. On roll-up doors, respect panel segmentation and moving edges. Do not bridge film across sections that open. Trim after film is seated. Post-heat door edges and hardware pockets. Confirm any film-over-hardware guidance on the product TDS."
     },
     {
       id: "qc",
       keys: ["qc", "inspect", "walkaround", "walk around", "quality", "release", "checklist", "photo document"],
       topic: "QC walkaround",
       answer:
-        "QC walkaround: circle the vehicle (or storefront bay) in good light. Check tenting over rivets/channels, dirt nibs, silvering, edge lift, seam registration, trim quality, and door/hardware clearances. On fleets, compare alignment across units before release. Photo-document problem areas and fixes. Consistency across vehicles is the fleet deliverable — not a single heroic panel."
+        "QC walkaround: circle the vehicle (or storefront bay) in good light. Check tenting over rivets/channels, dirt nibs, silvering, edge lift, seam registration, trim quality, and door/hardware clearances. On fleets, compare alignment across units before release. Photo-document problem areas and fixes. Consistency across vehicles is the fleet deliverable, not a single heroic panel."
     },
     {
       id: "failures",
       keys: ["fail", "failure", "tenting", "lifting", "lift", "dirt nib", "nib", "solvent pop", "pop", "silvering", "bubble", "fish eye", "fisheye", "edge lift", "peel"],
       topic: "Failure modes",
       answer:
-        "Common failure modes (process view): tenting = film bridged over rivets/corrugation instead of set; edge lift = dirty or dry edges, thin stretch, or skipped post-heat; dirt nibs = prep miss under adhesive; solvent pop / fish-eyes = incompatible residue or fresh paint outgas — stop and revisit prep / substrate readiness; silvering = trapped air or contamination reflecting under film. Fix root cause (prep, glass-first, set geometry, post-heat per TDS) — do not just poke holes and hope."
+        "Common failure modes (process view): tenting = film bridged over rivets/corrugation instead of set; edge lift = dirty or dry edges, thin stretch, or skipped post-heat; dirt nibs = prep miss under adhesive; solvent pop / fish-eyes = incompatible residue or fresh paint outgas. Stop and revisit prep / substrate readiness; silvering = trapped air or contamination reflecting under film. Fix root cause (prep, glass-first, set geometry, post-heat per TDS). Do not just poke holes and hope."
     },
     {
       id: "arch-multipane",
       keys: ["storefront", "multipane", "multi-pane", "multi pane", "pane", "window graphic", "bay", "mullion", "architectural", "architecture"],
       topic: "Architectural / multipane",
       answer:
-        "Architectural / storefront multipane: survey lighting, mullions, and substrate before you cut. Align graphics across panes so logos and copy read continuous from the curb — dry-fit registration marks on each lite. Work one pane at a time; do not stretch a single sheet across mullions unless the design and film TDS support it. Plan cutouts and reliefs at hardware. Outdoor exposures need weather-minded edge finishing and product choice from 3M / Avery Dennison / BriteLine architectural or window lines."
+        "Architectural / storefront multipane: survey lighting, mullions, and substrate before you cut. Align graphics across panes so logos and copy read continuous from the curb, dry-fit registration marks on each lite. Work one pane at a time; do not stretch a single sheet across mullions unless the design and film TDS support it. Plan cutouts and reliefs at hardware. Outdoor exposures need weather-minded edge finishing and product choice from 3M / Avery Dennison / BriteLine architectural or window lines."
     },
     {
       id: "wet-dry",
       keys: ["wet", "wet install", "wet application", "dry install", "dry application", "slip", "application fluid", "soap solution"],
       topic: "Wet vs dry install (concepts)",
       answer:
-        "Wet vs dry (process concepts only): dry install is the default for most vehicle cast wraps with air-egress adhesives — glass, squeegee, set geometry. Wet / slip methods appear on some glass and architectural applications where the product Application Guide calls for an application fluid so you can position large panes before seating. Do not invent fluid recipes, solvent ratios, or dwell times — use only what the film maker’s current TDS / Application Guide lists for that SKU, and confirm wet vs dry for that exact product."
+        "Wet vs dry (process concepts only): dry install is the default for most vehicle cast wraps with air-egress adhesives. Glass, squeegee, set geometry. Wet / slip methods appear on some glass and architectural applications where the product Application Guide calls for an application fluid so you can position large panes before seating. Do not invent fluid recipes, solvent ratios, or dwell times. Use only what the film maker’s current TDS / Application Guide lists for that SKU, and confirm wet vs dry for that exact product."
     },
     {
       id: "arch-edge",
       keys: ["edge finish", "architectural edge", "window edge", "mullion edge", "gasket", "frame"],
       topic: "Architectural edge finishing",
       answer:
-        "Architectural edge finishing: seat to frames, gaskets, and mullions cleanly; avoid raw cuts that sit on porous or high-touch edges. Star-cut and tuck tabs into openings on fixtures/kiosks where design requires. Outdoor glass sees wind, wash, and thermal movement — post-finish edges per the product guide and re-check adhesion after install. Fresh blades; protect adjacent paint and sealants."
+        "Architectural edge finishing: seat to frames, gaskets, and mullions cleanly; avoid raw cuts that sit on porous or high-touch edges. Star-cut and tuck tabs into openings on fixtures/kiosks where design requires. Outdoor glass sees wind, wash, and thermal movement, post-finish edges per the product guide and re-check adhesion after install. Fresh blades; protect adjacent paint and sealants."
     },
     {
       id: "outdoor",
       keys: ["outdoor", "weather", "exposure", "sun", "uv", "rain", "wash bay", "fleet wash"],
       topic: "Outdoor exposure",
       answer:
-        "Outdoor exposure: choose film construction rated for the duty cycle (vehicle side vs storefront glass vs façade). Edge quality and post-heat discipline matter more outdoors — wind and wash attack weak edges first. Avoid tenting anywhere water can pool. Confirm outdoor / vertical / glass ratings on the 3M, Avery Dennison, or BriteLine TDS for that SKU — never assume one product’s outdoor rating transfers to another."
+        "Outdoor exposure: choose film construction rated for the duty cycle (vehicle side vs storefront glass vs façade). Edge quality and post-heat discipline matter more outdoors, wind and wash attack weak edges first. Avoid tenting anywhere water can pool. Confirm outdoor / vertical / glass ratings on the 3M, Avery Dennison, or BriteLine TDS for that SKU. Never assume one product’s outdoor rating transfers to another."
     },
     {
       id: "substrates",
       keys: ["substrate", "substrates", "painted metal", "acm", "aluminum composite", "powder coat", "laminate", "drywall", "fixture", "glass substrate"],
       topic: "Substrates (process level)",
       answer:
-        "Substrates (process level): glass — clean, inspect for sealant/silicone contamination, follow wet or dry rules from the product guide. Painted metal / commercial vehicle paint — full degrease + IPA; beware fresh paint outgas. ACM / aluminum composite — check coating type and edge condition; do not assume vehicle-wrap technique equals façade technique. Powder coat / laminate / fixtures — test adhesion in a small area and match to architectural-rated products in the 3M / Avery Dennison / BriteLine lines. Always confirm film-to-substrate approval on the current TDS."
+        "Substrates (process level): glass. Clean, inspect for sealant/silicone contamination, follow wet or dry rules from the product guide. Painted metal / commercial vehicle paint, full degrease + IPA; beware fresh paint outgas. ACM / aluminum composite. Check coating type and edge condition; do not assume vehicle-wrap technique equals façade technique. Powder coat / laminate / fixtures, test adhesion in a small area and match to architectural-rated products in the 3M / Avery Dennison / BriteLine lines. Always confirm film-to-substrate approval on the current TDS."
     },
     {
       id: "tooling",
       keys: ["squeegee", "roller", "finger", "air", "felt", "soft tool", "tooling", "magnet"],
       topic: "Tooling",
       answer:
-        "Tooling: felt-edge on print faces, foam roller / soft pad in deep channels and corrugation. Walk fingers to an open edge — never smash air into a crease. Overlap strokes so air always escapes. Magnets and hinge tape help stage large panels. Heat tools stay on a stable base when idle."
+        "Tooling: felt-edge on print faces, foam roller / soft pad in deep channels and corrugation. Walk fingers to an open edge. Never smash air into a crease. Overlap strokes so air always escapes. Magnets and hinge tape help stage large panels. Heat tools stay on a stable base when idle."
     },
     {
       id: "temp",
@@ -227,21 +227,21 @@
       keys: ["controltac", "control tac", "ij180", "cast", "calendared", "film type", "vinyl type", "air egress", "reposition"],
       topic: "Film choice",
       answer:
-        "Film choice belongs to the maker’s line (3M, Avery Dennison, BriteLine). Match product to substrate and job lifespan — cast for deep compound curves and long-term vehicle graphics; calendared where geometry and duty cycle allow; architectural products for walls, glass, and fixtures when specified. Confirm air-egress / repositionability and wet/dry method from the TDS — do not assume one brand’s behavior on another’s film."
+        "Film choice belongs to the maker’s line (3M, Avery Dennison, BriteLine). Match product to substrate and job lifespan, cast for deep compound curves and long-term vehicle graphics; calendared where geometry and duty cycle allow; architectural products for walls, glass, and fixtures when specified. Confirm air-egress / repositionability and wet/dry method from the TDS. Do not assume one brand’s behavior on another’s film."
     },
     {
       id: "fleet",
       keys: ["fleet", "multi vehicle", "multi-vehicle", "unit to unit", "alignment row", "brand consistency"],
       topic: "Fleet consistency",
       answer:
-        "Fleet work: lock a layout standard (heights, overlaps, door treatments) before the second unit. Align graphics unit-to-unit; photo the first as the reference. Same prep and post-heat discipline on every truck. QC walkaround each unit before release — fleets fail on inconsistency, not on one missed rivet."
+        "Fleet work: lock a layout standard (heights, overlaps, door treatments) before the second unit. Align graphics unit-to-unit; photo the first as the reference. Same prep and post-heat discipline on every truck. QC walkaround each unit before release, fleets fail on inconsistency, not on one missed rivet."
     },
     {
       id: "categorize",
       keys: ["categorize", "category", "sort media", "auto-categor", "auto categor", "library draft"],
       topic: "Media categorize",
       answer:
-        "Drop a clip or photo in the Media categorize panel (or pick a catalog item) and tap Auto-categorize. The local coach uses filename, title, notes, and duration heuristics — then you can save a library draft. VIDEO_CATALOG on disk is not mutated from the browser."
+        "Drop a clip or photo in the Media categorize panel (or pick a catalog item) and tap Auto-categorize. The local coach uses filename, title, notes, and duration heuristics, then you can save a library draft. VIDEO_CATALOG on disk is not mutated from the browser."
     },
     {
       id: "commercial-overview",
@@ -259,7 +259,7 @@
       ],
       topic: "Getting started",
       answer:
-        "Where to begin: pick the job type first — Box truck, Van, Trailer, or Storefront — then work the process in order: prep/clean → layout/hinge → glass flats → set rivets/channels → feed recesses → seams → edges/trim → doors & hardware → post-heat → QC walkaround. Tap Coach chips (Rivets, Prep, QC, Post-heat…) for focused answers, or ask about a vehicle part (bumper, door handle, recess, seam). This trainer covers commercial + architectural process with 3M · Avery Dennison · BriteLine only — open the film maker’s TDS for any number (temp, dwell, stretch)."
+        "Where to begin: pick the job type first. Box truck, Van, Trailer, or Storefront, then work the process in order: prep/clean → layout/hinge → glass flats → set rivets/channels → feed recesses → seams → edges/trim → doors & hardware → post-heat → QC walkaround. Tap Coach chips (Rivets, Prep, QC, Post-heat…) for focused answers, or ask about a vehicle part (bumper, door handle, recess, seam). This trainer covers commercial + architectural process with 3M · Avery Dennison · BriteLine only. Open the film maker’s TDS for any number (temp, dwell, stretch)."
     },
     {
       id: "bumper-fascia",
@@ -269,7 +269,7 @@
       ],
       topic: "Bumper / fascia / plastic parts",
       answer:
-        "Bumper / fascia / plastic: treat plastic bumpers as a different substrate than painted metal — clean thoroughly (dirt traps at vents, fog-light pockets, sensor holes, lower lips), then follow the film maker’s plastic / flexible-substrate guidance on the TDS. Glass the flatter face first; feed compound curves without yanking film thin. Plan reliefs at sensors, tow hooks, and parking aids. Soft tools on painted and textured plastic. Post-heat only as the product guide allows for that SKU on plastic — never invent a plastic-part temperature. Confirm adhesion promoters or primers only if the current TDS calls for them on that plastic."
+        "Bumper / fascia / plastic: treat plastic bumpers as a different substrate than painted metal. Clean thoroughly (dirt traps at vents, fog-light pockets, sensor holes, lower lips), then follow the film maker’s plastic / flexible-substrate guidance on the TDS. Glass the flatter face first; feed compound curves without yanking film thin. Plan reliefs at sensors, tow hooks, and parking aids. Soft tools on painted and textured plastic. Post-heat only as the product guide allows for that SKU on plastic. Never invent a plastic-part temperature. Confirm adhesion promoters or primers only if the current TDS calls for them on that plastic."
     },
     {
       id: "vinyl-removal",
@@ -283,7 +283,7 @@
       ],
       topic: "Vinyl removal / strip old film",
       answer:
-        "Vinyl removal (process): warm the film gently per the remover product / film maker guidance so adhesive softens — do not scorch paint. Peel at a low angle; keep a consistent pull so adhesive stays with the film when possible. Detail residue from seams, rivet bases, door jambs, and recess bottoms before any new prep. Watch fragile edges, fresh paint, and plastic trim. After strip, full wash + degrease + IPA as a new-install prep — contaminants left from old adhesive become dirt nibs and lift under the new wrap. Confirm heat and solvent limits on the film maker’s care / removal notes and the new film’s TDS before re-wrap."
+        "Vinyl removal (process): warm the film gently per the remover product / film maker guidance so adhesive softens. Do not scorch paint. Peel at a low angle; keep a consistent pull so adhesive stays with the film when possible. Detail residue from seams, rivet bases, door jambs, and recess bottoms before any new prep. Watch fragile edges, fresh paint, and plastic trim. After strip, full wash + degrease + IPA as a new-install prep, contaminants left from old adhesive become dirt nibs and lift under the new wrap. Confirm heat and solvent limits on the film maker’s care / removal notes and the new film’s TDS before re-wrap."
     },
     {
       id: "knifeless",
@@ -293,7 +293,7 @@
       ],
       topic: "Knifeless tape / cut line",
       answer:
-        "Knifeless / cut-line tape: lay the filament tape on the intended finish line before or as you wrap so you cut film — not paint. Seat film over the tape, then pull the filament to sever the vinyl cleanly. Useful on bumpers, pillars, door edges, and anywhere a blade risks OEM paint. Keep the tape path smooth and registered to body lines; burnish so it does not wander. After the cut, remove waste, tuck or finish the kept edge, then post-heat the finished edge per the film TDS. Fresh blades still matter for relief cuts where knifeless does not reach."
+        "Knifeless / cut-line tape: lay the filament tape on the intended finish line before or as you wrap so you cut film, not paint. Seat film over the tape, then pull the filament to sever the vinyl cleanly. Useful on bumpers, pillars, door edges, and anywhere a blade risks OEM paint. Keep the tape path smooth and registered to body lines; burnish so it does not wander. After the cut, remove waste, tuck or finish the kept edge, then post-heat the finished edge per the film TDS. Fresh blades still matter for relief cuts where knifeless does not reach."
     },
     {
       id: "chrome-delete",
@@ -304,7 +304,7 @@
       ],
       topic: "Chrome delete / window trim / pillars",
       answer:
-        "Chrome delete / pillars / window trim (process): clean chrome or plastic trim thoroughly — release agents and polish residue kill adhesion. Dry-fit strips; hinge long runs. Seat film to the trim face, relieve corners and ends without thin stretch, and finish edges so wash water cannot pry them. Pillars and surrounds often mix metal, plastic, and textured finishes — match film and any adhesion steps to each substrate on the product TDS (especially plastic). Soft tools; knifeless where a blade would mark adjacent paint or glass. Post-heat finished edges only as the TDS allows. This is process guidance — not a certification path."
+        "Chrome delete / pillars / window trim (process): clean chrome or plastic trim thoroughly, release agents and polish residue kill adhesion. Dry-fit strips; hinge long runs. Seat film to the trim face, relieve corners and ends without thin stretch, and finish edges so wash water cannot pry them. Pillars and surrounds often mix metal, plastic, and textured finishes. Match film and any adhesion steps to each substrate on the product TDS (especially plastic). Soft tools; knifeless where a blade would mark adjacent paint or glass. Post-heat finished edges only as the TDS allows. This is process guidance, not a certification path."
     },
     {
       id: "post-wash-cure",
@@ -315,7 +315,7 @@
       ],
       topic: "Wash / cure wait after install",
       answer:
-        "Wash / cure after install: do not invent a wait time in hours or days. Follow the film maker’s care guide / Application Guide for that SKU — it sets when automated washes, pressure washing, and harsh cleaners are allowed. Until then, keep edges dry and avoid high-pressure nozzles aimed at seams, recessed channels, and tucked edges. Hand-wash guidance and approved cleaners also come from the maker’s care sheet, not shop folklore. If the customer needs a release note, quote the care guide for the film on the vehicle."
+        "Wash / cure after install: do not invent a wait time in hours or days. Follow the film maker’s care guide / Application Guide for that SKU, it sets when automated washes, pressure washing, and harsh cleaners are allowed. Until then, keep edges dry and avoid high-pressure nozzles aimed at seams, recessed channels, and tucked edges. Hand-wash guidance and approved cleaners also come from the maker’s care sheet, not shop folklore. If the customer needs a release note, quote the care guide for the film on the vehicle."
     },
     {
       id: "weather-install",
@@ -326,7 +326,7 @@
       ],
       topic: "Cold / hot weather install",
       answer:
-        "Cold / hot weather install (process): bring film and substrate into the application temperature range published on the film maker’s TDS / Application Guide for that SKU — do not invent °F/°C targets. Cold substrate and cold film fight adhesion and conformability; hot panels can make adhesive grab early and trap fingers. Stage rolls and vehicle in a controlled space when you can; avoid installing over frost, condensation, or sun-baked sheet metal. Soften and post-heat only within the product guide. If conditions are outside the TDS window, pause the job rather than forcing film."
+        "Cold / hot weather install (process): bring film and substrate into the application temperature range published on the film maker’s TDS / Application Guide for that SKU. Do not invent °F/°C targets. Cold substrate and cold film fight adhesion and conformability; hot panels can make adhesive grab early and trap fingers. Stage rolls and vehicle in a controlled space when you can; avoid installing over frost, condensation, or sun-baked sheet metal. Soften and post-heat only within the product guide. If conditions are outside the TDS window, pause the job rather than forcing film."
     },
     {
       id: "boat-marine",
@@ -336,7 +336,7 @@
       ],
       topic: "Boat / marine (high-level)",
       answer:
-        "Boat / marine (high-level only): marine duty needs film construction rated for the exposure — confirm marine / exterior suitability on the 3M, Avery Dennison, or BriteLine TDS for that SKU. Expect gelcoat, fiberglass, and hardware that differ from fleet paint; prep and adhesion rules come from the maker’s guide for that substrate, not from vehicle-wrap shortcuts. Plan reliefs at fittings, rails, and through-hulls; edge finish matters where water and wash flow constantly. This coach is not a full marine course — use marine-grade product selection + the current TDS, and escalate complex hull geometry to experienced marine installers."
+        "Boat / marine (high-level only): marine duty needs film construction rated for the exposure. Confirm marine / exterior suitability on the 3M, Avery Dennison, or BriteLine TDS for that SKU. Expect gelcoat, fiberglass, and hardware that differ from fleet paint; prep and adhesion rules come from the maker’s guide for that substrate, not from vehicle-wrap shortcuts. Plan reliefs at fittings, rails, and through-hulls; edge finish matters where water and wash flow constantly. This coach is not a full marine course. Use marine-grade product selection + the current TDS, and escalate complex hull geometry to experienced marine installers."
     },
     {
       id: "handles-mirrors",
@@ -347,7 +347,7 @@
       ],
       topic: "Door handles / mirrors / hardware reliefs",
       answer:
-        "Handles / mirrors / hardware reliefs: dry-fit and mark cut lines before you commit. Bridge or hinge around the part, seat the surrounding field, then relieve film at handles, mirror sails, cameras, emblems, and charge ports so the part operates freely — do not stretch film thin to “cover” moving hardware. Soft tools near painted faces; knifeless where it protects OEM paint. Tuck or finish edges so they are not pry points. Post-heat relieved edges per the film TDS. Confirm any wrap-over-hardware notes on the product guide."
+        "Handles / mirrors / hardware reliefs: dry-fit and mark cut lines before you commit. Bridge or hinge around the part, seat the surrounding field, then relieve film at handles, mirror sails, cameras, emblems, and charge ports so the part operates freely. Do not stretch film thin to “cover” moving hardware. Soft tools near painted faces; knifeless where it protects OEM paint. Tuck or finish edges so they are not pry points. Post-heat relieved edges per the film TDS. Confirm any wrap-over-hardware notes on the product guide."
     },
     {
       id: "compound-curves",
@@ -358,7 +358,7 @@
       ],
       topic: "Compound curves / stretch discipline",
       answer:
-        "Compound curves / stretch discipline: glass highs first, then redistribute film into the curve — heat to soften only as the TDS allows, and avoid yanking local thin spots. Over-stretch shows as gloss change, color shift on prints, and later pop-back or edge lift. Prefer multiple small feeds and roller/soft-pad work over one hard pull. Cast films are chosen for deep geometry; still stay inside the maker’s stretch and heat guidance — never invent a stretch percentage. After the shape is seated, post-heat so the film remembers the geometry (per TDS), then re-check for bridging."
+        "Compound curves / stretch discipline: glass highs first, then redistribute film into the curve. Heat to soften only as the TDS allows, and avoid yanking local thin spots. Over-stretch shows as gloss change, color shift on prints, and later pop-back or edge lift. Prefer multiple small feeds and roller/soft-pad work over one hard pull. Cast films are chosen for deep geometry; still stay inside the maker’s stretch and heat guidance. Never invent a stretch percentage. After the shape is seated, post-heat so the film remembers the geometry (per TDS), then re-check for bridging."
     },
     {
       id: "long-box-seams",
@@ -369,7 +369,7 @@
       ],
       topic: "Overlaps / panel seams on long boxes",
       answer:
-        "Overlaps / long-box seams: plan seam placement on the layout — prefer body lines and water-shed direction on vertical overlaps per shop standard and the film TDS. Dry-fit registration across doors and panel breaks before peeling liner past the hinge. Keep overlaps consistent in width; avoid thin stretch at the joint. Glass each panel field, set texture, then lock the seam edge and post-heat the lip. On multi-panel box sides, match height and leading-edge direction unit-wide so the fleet reads clean. Confirm overlap recommendations on the product Application Guide."
+        "Overlaps / long-box seams: plan seam placement on the layout, prefer body lines and water-shed direction on vertical overlaps per shop standard and the film TDS. Dry-fit registration across doors and panel breaks before peeling liner past the hinge. Keep overlaps consistent in width; avoid thin stretch at the joint. Glass each panel field, set texture, then lock the seam edge and post-heat the lip. On multi-panel box sides, match height and leading-edge direction unit-wide so the fleet reads clean. Confirm overlap recommendations on the product Application Guide."
     },
     {
       id: "arch-walls",
@@ -380,7 +380,7 @@
       ],
       topic: "Architectural wall / ACM / painted metal",
       answer:
-        "Architectural walls / ACM / painted metal (beyond glass): survey substrate (painted drywall, painted metal, ACM / aluminum composite, cladding) and confirm the film is approved for that surface on the current TDS — vehicle-wrap habits do not automatically transfer. Prep: remove dust, silicone, and loose paint; follow maker cleaning notes for that substrate. Panel large graphics with registration marks; manage seams for sight lines from the entry. Edges at corners, base, and trim need clean finishes against wash and traffic. Outdoor façades need weather-rated construction and edge discipline. Test adhesion in a discreet area when the substrate is unknown."
+        "Architectural walls / ACM / painted metal (beyond glass): survey substrate (painted drywall, painted metal, ACM / aluminum composite, cladding) and confirm the film is approved for that surface on the current TDS, vehicle-wrap habits do not automatically transfer. Prep: remove dust, silicone, and loose paint; follow maker cleaning notes for that substrate. Panel large graphics with registration marks; manage seams for sight lines from the entry. Edges at corners, base, and trim need clean finishes against wash and traffic. Outdoor façades need weather-rated construction and edge discipline. Test adhesion in a discreet area when the substrate is unknown."
     }
   ];
 
@@ -645,10 +645,10 @@
   function helpfulMiniMenu() {
     return (
       "Pick a path:\n" +
-      "• Box truck — rivets, roll-up doors, long-panel seams\n" +
-      "• Van — deep recesses, corrugation, sliding doors\n" +
-      "• Trailer — rivet rows, roofline, seams\n" +
-      "• Storefront — multipane glass, wet vs dry, walls / ACM\n" +
+      "• Box truck, rivets, roll-up doors, long-panel seams\n" +
+      "• Van, deep recesses, corrugation, sliding doors\n" +
+      "• Trailer, rivet rows, roofline, seams\n" +
+      "• Storefront, multipane glass, wet vs dry, walls / ACM\n" +
       "• Or ask about prep · rivets · recess · post-heat · removal · chrome delete · bumpers\n" +
       "Name the vehicle part or job type and I’ll give a process answer + TDS reminder."
     );
@@ -680,7 +680,7 @@
       }
       if (weakBestEffort) {
         parts.push(
-          "Best-effort match from the local SOP library — if this isn’t your topic, " +
+          "Best-effort match from the local SOP library, if this isn’t your topic, " +
             "rephrase with the vehicle part (bumper, door, recess…) or job type."
         );
         parts.push(relatedJobTypesBlurb());
@@ -806,7 +806,7 @@
       subcategory = "Post-Heat";
       confidence = Math.min(0.92, confidence + 0.12);
       titleBits.push("post-heat");
-      narration = "Post-heat / torch cues — still follow TDS, no guessed temps.";
+      narration = "Post-heat / torch cues, still follow TDS, no guessed temps.";
     } else if (/\bprep|clean|degrease|squeegee|controltac/.test(n)) {
       if (category === "Prep" || /\bmaterial/.test(n)) subcategory = "Material Prep";
       else subcategory = "Prep";
@@ -825,13 +825,13 @@
     } else if (/\bladder|tall|roof/.test(n)) {
       subcategory = "Panels";
       confidence = Math.min(0.82, confidence + 0.06);
-      narration = "Height / ladder / roof cues — treat as panel work with safety first.";
+      narration = "Height / ladder / roof cues, treat as panel work with safety first.";
     }
 
     if (/^img[_\s]?\d+/i.test(String(blob || "")) || /\bimg_\d+/i.test(n)) {
       confidence = Math.max(0.4, confidence - 0.05);
       if (!titleBits.length) titleBits.push("Phone still/clip");
-      narration = (narration || "Camera roll filename.") + " IMG_ pattern — lean on keywords in the name.";
+      narration = (narration || "Camera roll filename.") + " IMG_ pattern, lean on keywords in the name.";
     }
 
     if (/\bmagenta|pink wrap|cast vinyl/.test(n)) {
@@ -850,15 +850,15 @@
     if (!isNaN(dur) && dur > 0) {
       if (dur < 15) {
         confidence = Math.min(0.95, confidence + 0.05);
-        narration += " Short clip — likely a technique close-up.";
+        narration += " Short clip, likely a technique close-up.";
       } else if (dur >= 15 && dur <= 90) {
         confidence = Math.min(0.95, confidence + 0.03);
-        narration += " Mid-length clip — workflow segment.";
+        narration += " Mid-length clip, workflow segment.";
       } else if (dur > 90) {
         if (subcategory === "Walkaround" || category === "Fleet" || category === "QC") {
           subcategory = "Walkaround";
         }
-        narration += " Longer clip — possible walkaround / full panel.";
+        narration += " Longer clip, possible walkaround / full panel.";
       }
     }
 
@@ -953,7 +953,7 @@
       recommendedModule: suggestion.recommendedModule || "",
       recommendedWorkflow: suggestion.recommendedWorkflow || "",
       recommendedPractice: suggestion.recommendedPractice || "",
-      note: suggestion.narration || suggestion.note || "Coach draft — review before promoting to VIDEO_CATALOG.",
+      note: suggestion.narration || suggestion.note || "Coach draft, review before promoting to VIDEO_CATALOG.",
       confidence: suggestion.confidence,
       draftedAt: new Date().toISOString()
     };
@@ -995,7 +995,7 @@
       else screen.appendChild(log);
     } else {
       try {
-        alert("Coach chat area missing — reload the trainer page.");
+        alert("Coach chat area missing, reload the trainer page.");
       } catch (e) {}
       return null;
     }
@@ -1079,7 +1079,7 @@
     var sel = $("coach-catalog-pick");
     if (!sel) return;
     var items = data().VIDEO_CATALOG || [];
-    var html = '<option value="">— Pick catalog item —</option>';
+    var html = '<option value="">,  Pick catalog item , </option>';
     for (var i = 0; i < items.length; i++) {
       var v = items[i];
       html +=
@@ -1215,10 +1215,10 @@
       }
 
       /* Prefer live cloud when endpoint is set. On cloud error/empty, keep a visible
-         fallback prefix so the tech knows they are on local SOP — do not silently swap. */
+         fallback prefix so the tech knows they are on local SOP. Do not silently swap. */
       function finishLocal(reason) {
         var localReply = answer(q);
-        var header = "— Local SOP fallback —";
+        var header = ",  Local SOP fallback , ";
         var prefix = reason
           ? reason + "\n\n" + header + "\n\n"
           : header + "\n\n";

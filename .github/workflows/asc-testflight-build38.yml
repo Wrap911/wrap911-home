@@ -1,0 +1,25 @@
+name: TestFlight build 38 internal access
+# Runs only on the 1.4 branch. Internal Wrap911 Test Team only.
+# Does not create an App Store version, submit review, or add an external group.
+on:
+  push:
+    branches: [cursor/ios-1.4-job-manager-5bbf]
+    paths:
+      - .github/workflows/asc-testflight-build38.yml
+      - scripts/asc-testflight-build38.py
+jobs:
+  access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Wait for build 38 and open internal testing
+        run: python3 scripts/asc-testflight-build38.py
