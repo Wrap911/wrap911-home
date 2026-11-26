@@ -1,0 +1,25 @@
+name: Create one ongoing analytics request
+# One POST, and only if the app has no analytics report request yet.
+# Does not read Sales and Trends and does not edit the app, version, or purchases.
+on:
+  push:
+    branches: [cursor/asc-sales-readonly-23b0]
+    paths:
+      - .github/workflows/asc-analytics-request.yml
+      - scripts/asc-analytics-request.py
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      RAW: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pyjwt cryptography requests
+      - name: Create the ongoing analytics request
+        run: python3 scripts/asc-analytics-request.py
