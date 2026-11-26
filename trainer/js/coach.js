@@ -1342,7 +1342,8 @@
 
   var COACH_GREETING =
     "Ask anything about commercial or architectural wrap installs. " +
-    "Tap a topic below or name a vehicle part. Covers 3M · Avery Dennison · BriteLine films. " +
+    "Tap a topic below or name a vehicle part. Covers 3M, Avery Dennison, and BriteLine films.\n" +
+    "WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films. " +
     TDS_FOOTER;
 
   function renderCoach() {

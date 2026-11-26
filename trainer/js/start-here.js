@@ -109,6 +109,7 @@
       '<section id="screen-more" class="screen" aria-label="More">' +
       '<button type="button" class="back-link" id="btn-back-more">← Back to home</button>' +
       '<h1>More</h1>' +
+      '<p>WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films.</p>' +
       '<button type="button" class="secondary" id="more-replay-start">Replay Start here</button>' +
       '<div id="screen-more-body"></div>' +
       '</section>';

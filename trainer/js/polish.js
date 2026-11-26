@@ -587,12 +587,13 @@
       '<div class="w9-list"><h2>Legal</h2>' +
       '<a class="w9-row" href="' + PRIVACY + '" target="_blank" rel="noopener"><span>Privacy policy</span><span class="w9-chev" aria-hidden="true">\u2197</span></a>' +
       (ios ? '<a class="w9-row" href="' + EULA + '" target="_blank" rel="noopener"><span>Terms of Use (Apple EULA)</span><span class="w9-chev" aria-hidden="true">\u2197</span></a>' : "") +
+      '<p class="w9-fine">WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films.</p>' +
       "</div>" +
       '<div class="w9-list"><h2>About</h2>' +
       '<div class="w9-row"><span>Version</span><span class="w9-val" id="w9-version">Trainer ' + esc(appVersion()) + "</span></div>" +
       '<div class="w9-row"><span>Films covered</span><span class="w9-val">' + esc((cfg().brands || ["3M", "Avery Dennison", "BriteLine"]).join(", ")) + "</span></div>" +
       "</div>" +
-      '<p class="w9-fine">WRAP 911 is an independent trainer. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute. Levels in the app are internal shop levels, not a brand certification.</p>';
+      '<p class="w9-fine">Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute, and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Levels in the app are internal shop levels, not a brand certification.</p>';
     $("w9-settings-body").innerHTML = body;
     if (!s.getAttribute("data-w9-wired")) {
       s.setAttribute("data-w9-wired", "1");

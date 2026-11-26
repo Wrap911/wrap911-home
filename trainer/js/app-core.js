@@ -1483,7 +1483,7 @@
   }
 
   function renderContact() {
-    var name = cfg.contactName || "Gerry";
+    var name = cfg.contactName || "Gerardo";
     var email = (cfg.contactEmail || "").trim();
     $("contact-name").textContent = name;
     var emailEl = $("contact-email");
