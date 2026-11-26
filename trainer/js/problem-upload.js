@@ -73,7 +73,7 @@
     wrap.innerHTML =
       '<div class="passion-note">' +
         '<strong>Show the mistake</strong>' +
-        '<p>Shops post the perfect before-and-after. This is where the lifted edge, the cooked film, and the redo live — so the next hire learns from it.</p>' +
+        '<p>Shops post the perfect before-and-after. This is where the lifted edge, the cooked film, and the redo live, so the next hire learns from it.</p>' +
       '</div>' +
       '<form id="problem-upload-form" class="job-form" onsubmit="return false;">' +
         '<label>What failed<textarea id="pu-what" rows="2" placeholder="e.g. Rivet tented after heat, film lifted at sensor"></textarea></label>' +
@@ -149,7 +149,7 @@
     var file = fileInput && fileInput.files && fileInput.files[0];
 
     if (!what) {
-      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Tell us what failed — even one line helps."; }
+      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Tell us what failed. Even one line helps."; }
       return;
     }
 
@@ -175,7 +175,7 @@
         if (err) {
           q.unshift(item);
           saveQueue(q);
-          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Saved to your device queue. (Backend not reachable — will sync later.)"; }
+          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Saved to your device queue. The server is not reachable. It will sync later."; }
         } else if (res && res.queued) {
           q.unshift(item);
           saveQueue(q);

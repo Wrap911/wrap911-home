@@ -118,7 +118,7 @@
     ["Overstretch", "Film pulled past its limit. It thins, changes color or gloss, and tends to lift."],
     ["Film memory", "Film wants to return to its flat shape. Post-heat per the TDS sets it in the new shape."],
     ["Edge lift", "Film edge coming up off the surface. Usually dirt, overstretch, or no post-heat at the edge."],
-    ["PPF", "Paint protection film — the clear film. If an edge will not stick, clean, reseat, and heat only as that film's TDS says."],
+    ["PPF", "Paint protection film, the clear film. 3M and Avery Dennison make it. BriteLine does not. If an edge will not stick, clean, reseat, and heat only as that film's TDS says."],
     ["Tuck", "Wrapping film around a panel edge into a gap so the cut edge is hidden."],
     ["Overlaminate", "Clear film over printed vinyl to protect the print. Use the laminate the film maker pairs with that film."],
     ["Dwell time", "Time the adhesive needs to build bond before washing or stress. It is on the TDS."],
@@ -684,7 +684,7 @@
     var df = c.doctorFreePerDay || 1, dp = c.doctorPaidPerDay || 15;
     var html = "" +
       '<div class="w9-list w9-faq"><h2>Get started</h2><ol class="w9-steps">' +
-      "<li>Tap <strong>Learn a job</strong> and pick the vehicle or surface you are wrapping.</li>" +
+      "<li>Tap <strong>Learn</strong> and pick the vehicle or surface you are wrapping.</li>" +
       "<li>Open a lesson: techniques, tools, common mistakes, then the steps.</li>" +
       "<li>Stuck on a job? Send a photo to <strong>Problem Doctor</strong>, or search the problem.</li>" +
       "<li>Lock it in with <strong>Practice</strong> and drills.</li></ol></div>" +
@@ -806,7 +806,7 @@
     var jl = $("jobs-list");
     if (jl && jl.children.length === 1 && /No jobs yet/i.test(jl.textContent || "") && !jl.querySelector(".w9-empty")) {
       jl.innerHTML = '<div class="w9-empty"><div class="w9-empty-icon" aria-hidden="true">\uD83D\uDCCB</div><h3>No jobs yet</h3>' +
-        "<p>Tap + New job to keep the job type, film brand, coverage, and notes on this phone.</p></div>";
+        "<p>Tap + New job. The estimate, photos, film log, and notes stay on this phone.</p></div>";
     }
     var vl = $("video-list");
     if (vl && vl.children.length === 1 && /No clips in this category/i.test(vl.textContent || "")) {

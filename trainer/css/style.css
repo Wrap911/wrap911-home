@@ -561,15 +561,27 @@ input, select, textarea {
   font-size: 0.95rem;
   line-height: 1.35;
 }
+.job-form .check-inline,
+.accept-row {
+  min-height: 44px;
+}
 .job-form .check-inline {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   color: var(--text);
   margin: 1rem 0;
 }
-.job-form .check-inline input { width: auto; accent-color: var(--accent); }
+.accept-row input[type="checkbox"],
+.job-form .check-inline input[type="checkbox"] {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  flex: 0 0 28px;
+}
+.job-form .check-inline input { width: 28px; min-width: 28px; accent-color: var(--accent); }
 
 #calc-form {
   display: grid;

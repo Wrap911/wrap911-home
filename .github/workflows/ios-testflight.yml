@@ -24,6 +24,7 @@ name: iOS build and upload to App Store Connect
 # Version 1.4 build 34 adds the job manager tools. Upload only from cursor/ios-1.4-job-manager-5bbf.
 # Version 1.4 build 35 fixes the Coach screen so the back link no longer covers Problem Doctor. Same branch-only upload. Internal team only. No App Review.
 # Version 1.4 build 36 adds the independence line. Same branch-only upload. Internal team only. No App Review.
+# Version 1.4 build 37 is the screen QC pass. Same branch-only upload. Internal team only. No App Review.
 # Do not push this file to ios-capacitor or main.
 on:
   workflow_dispatch:
@@ -84,7 +85,7 @@ jobs:
         run: |
           xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
             -destination 'generic/platform=iOS' -archivePath $RUNNER_TEMP/App.xcarchive \
-            DEVELOPMENT_TEAM=$TEAM_ID CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= MARKETING_VERSION=1.4 CURRENT_PROJECT_VERSION=36 \
+            DEVELOPMENT_TEAM=$TEAM_ID CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= MARKETING_VERSION=1.4 CURRENT_PROJECT_VERSION=37 \
             -allowProvisioningUpdates -authenticationKeyPath "$KEY_PATH" \
             -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" archive
       - name: Export IPA
