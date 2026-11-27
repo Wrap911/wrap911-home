@@ -108,6 +108,7 @@
     /* Hotfix 2.6.4: the one final dedupe, after photos-pack.js and photos-boost.js have both run. */
     try { if (window.WRAP911_CAPTIONS_APPLY) window.WRAP911_CAPTIONS_APPLY(); } catch (e00) {}
     try { if (window.WRAP911_PHOTOS_DEDUPE) window.WRAP911_PHOTOS_DEDUPE(); } catch (e0) {}
+    try { if (window.WRAP911_MEDIA_PASS) window.WRAP911_MEDIA_PASS(); } catch (ePass) {}
     window.WRAP911_PHOTOS_READY = true;
     var core = window.WRAP911_APP && window.WRAP911_APP.core;
     if (core && core.renderPhotosList) {
@@ -256,9 +257,15 @@
       for (var a = 0; a < cards.length; a++) cards[a].style.display = "";
       return;
     }
+    var flagged = false;
+    var i;
+    for (i = 0; i < cards.length; i++) if (cards[i].getAttribute("data-free")) flagged = true;
     var kept = 0;
-    for (var i = 0; i < cards.length; i++) {
-      if (kept < TEASER_PHOTO_MAX) {
+    for (i = 0; i < cards.length; i++) {
+      if (flagged) {
+        cards[i].style.display = cards[i].getAttribute("data-free") === "1" ? "" : "none";
+        if (cards[i].style.display !== "none") kept++;
+      } else if (kept < TEASER_PHOTO_MAX) {
         cards[i].style.display = "";
         kept++;
       } else {

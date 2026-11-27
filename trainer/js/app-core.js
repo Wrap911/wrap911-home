@@ -233,10 +233,19 @@
   /* Hotfix 2.6.1: free photo set = first cfg.freePhotoSamples photos of the full list, whatever filter chip is on. */
   function freePhotoIds() {
     if (paidNow()) return null;
-    var n = cfg.freePhotoSamples || 14;
     var ids = {};
     var all = (data && data.photoLessons) || [];
-    for (var i = 0; i < all.length && i < n; i++) ids[all[i].id] = true;
+    var marked = false;
+    var i;
+    for (i = 0; i < all.length; i++) {
+      if (all[i].freeSample === true || all[i].freeSample === false) marked = true;
+    }
+    if (!marked) {
+      var n = cfg.freePhotoSamples || 14;
+      for (i = 0; i < all.length && i < n; i++) ids[all[i].id] = true;
+      return ids;
+    }
+    for (i = 0; i < all.length; i++) if (all[i].freeSample === true) ids[all[i].id] = true;
     return ids;
   }
 
@@ -1335,21 +1344,34 @@
     var p = loadProgress();
     var shown = 0;
     var freeIds = freePhotoIds();
+    var lastHead = "";
     for (var i = 0; i < data.photoLessons.length; i++) {
       var pl = data.photoLessons[i];
       var jt = pl.jobType || "";
       if (photoJobFilter && jt !== photoJobFilter) continue;
       if (freeIds && !freeIds[pl.id]) continue;
+      var head = jt + "|" + (pl.subgroup || "");
+      if (head !== lastHead) {
+        lastHead = head;
+        var sec = document.createElement("div");
+        sec.className = "photo-section";
+        sec.innerHTML = "<h2>" + escapeHtml(jt || "Photos") + "</h2>" +
+          (pl.subgroup ? "<p>" + escapeHtml(pl.subgroup) + "</p>" : "");
+        list.appendChild(sec);
+      }
       shown++;
       var done = p.photos[pl.id] && p.photos[pl.id].passed;
       var card = document.createElement("div");
       card.className = "card tap thumb-card";
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
+      card.setAttribute("data-free", freeIds ? "1" : (pl.freeSample === false ? "0" : "1"));
       card.innerHTML =
         '<img class="thumb" src="' + escapeHtml(pl.image) + '" alt="' + escapeHtml(pl.title) + '" loading="lazy" decoding="async">' +
         '<div class="photo-caption">' + escapeHtml(pl.title) + '</div>' +
-        '<div class="photo-meta">' + escapeHtml(jt || "Shop photo") +
+        (pl.visual ? '<div class="photo-meta">What this shows: ' + escapeHtml(String(pl.visual).split("\n")[0].slice(0, 140)) + '</div>' : '') +
+        (pl.narration ? '<div class="photo-meta">What to learn: ' + escapeHtml(String(pl.narration).split("\n")[0].slice(0, 140)) + '</div>' : '') +
+        '<div class="photo-meta">' + escapeHtml((pl.subgroup ? jt + " · " + pl.subgroup : jt) || "Shop photo") +
         (done ? " · Quiz passed" : " · Tap to open") + '</div>';
       (function (id) {
         card.addEventListener("click", function () { openPhoto(id); });
@@ -1409,8 +1431,8 @@
     var img = $("photo-image");
     img.src = pl.image;
     img.alt = pl.title;
-    $("photo-visual").textContent = pl.visual;
-    $("photo-narration").textContent = pl.narration;
+    $("photo-visual").textContent = pl.visual ? ("What this shows: " + pl.visual) : "";
+    $("photo-narration").textContent = pl.narration ? ("What to learn: " + pl.narration) : "";
 
     var cl = $("photo-checklist");
     cl.innerHTML = "";

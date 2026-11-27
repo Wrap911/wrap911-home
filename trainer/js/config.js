@@ -11,7 +11,7 @@ window.WRAP911_CONFIG = {
   contactName: "Gerardo",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "BriteLine"],
-  version: "1.4-b38",
+  version: "1.4-b39",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",

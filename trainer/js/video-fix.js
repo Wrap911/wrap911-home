@@ -207,6 +207,7 @@
     "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.mp4": 1,
     "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4": 1,
     "media/videos/trailer/magenta-rivet-field-tented-heads.mp4": 1,
+    "media/videos/architectural/purple-wall-liner-peel-squeegee.mp4": 1,
   };
   /* 2.9.2: Search (polish.js) lists only clips that can play. */
   window.WRAP911_VIDEO_REAL = REAL;
@@ -232,6 +233,7 @@
 
   function bucket(cat) {
     cat = String(cat || "").toLowerCase();
+    if (cat.indexOf("problem") >= 0) return "Problems";
     if (cat.indexOf("arch") >= 0 || cat.indexOf("store") >= 0 || cat.indexOf("interior") >= 0 || cat.indexOf("prep") >= 0 || cat.indexOf("cabinet") >= 0) return "Interior";
     return "Vehicles";
   }
@@ -285,12 +287,15 @@
       item = rows[i];
       src = String(item.src || "").replace(/^\.\//, "");
       var still = item.still || "";
+      var sub = item.subgroup || item.subcategory || "";
       html += '<article class="card video-card" data-access="' + (item.access === "free" ? "free" : "paid") + '">' +
         '<div class="video-player-host" data-video-src="' + esc(src) + '" data-video-still="' + esc(still) + '">' +
         (still ? '<img class="video-still" alt="" loading="lazy" decoding="async" width="720" height="1280" src="' + esc(still) + '">' : '') +
         '<button type="button" class="video-play-btn">Play clip</button></div>' +
         '<div class="card-title">' + esc(item.title) + '</div>' +
-        '<div class="card-sub">' + esc(bucket(item.category)) + (!paid && item.access === "free" ? ' · Free sample' : '') + '</div></article>';
+        (item.shows ? '<div class="card-sub">What this shows: ' + esc(item.shows) + '</div>' : '') +
+        (item.learn ? '<div class="card-sub">What to learn: ' + esc(item.learn) + '</div>' : '') +
+        '<div class="card-sub">' + esc(bucket(item.category)) + (sub ? " · " + esc(sub) : "") + (!paid && item.access === "free" ? " · Free sample" : "") + '</div></article>';
     }
     if (!paid) {
       html += (window.WRAP911_NATIVE && window.WRAP911_NATIVE())

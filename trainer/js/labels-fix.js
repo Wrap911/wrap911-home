@@ -49,6 +49,7 @@
     "media/videos/box-truck/blue-panel-hang-ford-e-450-cab-door.mp4": 1,
     "media/videos/rv-bus/class-c-rv-stripe-walkaround-ford-e-350.mp4": 1,
     "media/videos/trailer/magenta-rivet-field-tented-heads.mp4": 1,
+    "media/videos/architectural/purple-wall-liner-peel-squeegee.mp4": 1,
   };
 
   /* 2.6.5: real repo stills under media/videos/ that have no mp4 but are used as photo lessons.
@@ -62,14 +63,16 @@
      counts as the name it points to, here and in photos-unique.js, so only the first copy in list order can show. */
   var SAME_FRAME = {
     "trailer-rivets.jpg": "trailer-spot-graphics.jpg",
-    "front-bumper-wrap.jpg": "edge-detail.jpg",
+    "edge-detail.jpg": "front-bumper-wrap.jpg",
     "multipane_office_glass_partitions.jpg": "architectural.jpg"
   };
   /* 2.6.6: not real shop photos (stock photo, social-media screenshot). Never shown on Photos, never a pool pick. */
   var NOT_SHOP = {
     "architectural.jpg": 1,
     "multipane_office_glass_partitions.jpg": 1,
-    "vinyl-removal.jpg": 1
+    "vinyl-removal.jpg": 1,
+    "pickup-panels.jpg": 1,
+    "pickup-bottle-quarter.jpg": 1
   };
   window.WRAP911_SAME_FRAME = SAME_FRAME;
   window.WRAP911_NOT_SHOP = NOT_SHOP;
@@ -193,6 +196,7 @@
     if (/media\/photos\//.test(path)) return false;
     if (/media\/stock\//.test(path)) return false;
     if (/assets\//.test(path)) return false;
+    if (/\/posters\//.test(path)) return false;
     if (/media\/videos\//.test(path) && /\.(jpg|jpeg|png|webp)$/i.test(path)) {
       var stem = path.replace(/\.(jpg|jpeg|png|webp)$/i, ".mp4");
       return !REAL[stem];
@@ -221,25 +225,22 @@
     return want[0] || COVER;
   }
 
-  function uniquePhotos(swapDupes) {
+  function uniquePhotos() {
     var d = window.WRAP911_DATA;
     if (!d || !d.photoLessons) return;
     var used = {};
+    var out = [];
     var list = d.photoLessons;
     for (var i = 0; i < list.length; i++) {
       var item = list[i];
       var img = item.image || item.still || "";
       var bn = frameKey(img);
-      var bad = missingStill(img) || isCover(img) || (swapDupes && bn && used[bn]);
-      if (bad) {
-        img = pickByTitle(item, used);
-        item.image = img;
-        item.still = img;
-        item.thumb = img;
-        item.poster = img;
-      }
-      used[frameKey(item.image)] = 1;
+      var base = basename(img);
+      if (!img || missingStill(img) || /trailer-rivets\.jpg$/i.test(base) || NOT_SHOP[base] || (bn && used[bn])) continue;
+      used[bn] = 1;
+      out.push(item);
     }
+    d.photoLessons = out;
   }
 
   var runs = 0;
@@ -277,11 +278,7 @@
         if (/\.mp4$/i.test(src) && !REAL[src]) {
           list[i].src = "";
           list[i].stillOnly = true;
-        }
-        if (allowCover) {
-          KEYS.forEach(function (k) {
-            if (missingStill(list[i][k])) list[i][k] = COVER;
-          });
+          list[i].still = "";
         }
       }
     }

@@ -56,6 +56,7 @@
     if (vwrap) {
       vwrap.innerHTML =
         '<button type="button" class="chip" data-video-cat="">All</button>' +
+        '<button type="button" class="chip" data-video-cat="Problems">Problems</button>' +
         '<button type="button" class="chip" data-video-cat="Vehicles">Vehicles</button>' +
         '<button type="button" class="chip" data-video-cat="Interior">Interior</button>';
     }

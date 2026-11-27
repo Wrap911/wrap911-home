@@ -224,6 +224,9 @@ button.chip:hover {
   gap: 0.85rem;
   grid-template-columns: 1fr;
 }
+.photo-section { grid-column: 1 / -1; margin: 0.35rem 0 0; }
+.photo-section h2 { font-size: 1.05rem; margin: 0; letter-spacing: 0.04em; }
+.photo-section p { margin: 0.15rem 0 0; color: var(--text-muted); font-size: 0.85rem; }
 .thumb-card {
   display: flex;
   flex-direction: column;
@@ -231,8 +234,8 @@ button.chip:hover {
 }
 .thumb-card .thumb {
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 210px;
+  object-fit: cover;
   margin-bottom: 0.55rem;
   border-radius: 10px;
   background: var(--bg-elevated);
