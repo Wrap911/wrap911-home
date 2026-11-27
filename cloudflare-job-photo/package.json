@@ -1,0 +1,8 @@
+{
+  "name": "wrap911-job-photo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node check.test.mjs"
+  }
+}

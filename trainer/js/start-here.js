@@ -109,6 +109,7 @@
       '<section id="screen-more" class="screen" aria-label="More">' +
       '<button type="button" class="back-link" id="btn-back-more">← Back to home</button>' +
       '<h1>More</h1>' +
+      '<p>WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films.</p>' +
       '<button type="button" class="secondary" id="more-replay-start">Replay Start here</button>' +
       '<div id="screen-more-body"></div>' +
       '</section>';
@@ -228,7 +229,10 @@
       jobs.setAttribute("role", "button");
       jobs.tabIndex = 0;
       jobs.innerHTML = '<div class="card-body"><div class="card-title">My Jobs</div><div class="card-sub">Notes for this phone</div></div>';
-      jobs.addEventListener("click", function () { show("jobs"); });
+      jobs.addEventListener("click", function () {
+        if (window.WRAP911_APP && window.WRAP911_APP.renderJobs) window.WRAP911_APP.renderJobs();
+        show("jobs");
+      });
       learn.parentNode.appendChild(jobs);
       var more = document.createElement("button");
       more.type = "button";

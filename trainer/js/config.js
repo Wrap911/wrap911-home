@@ -8,10 +8,10 @@
    (fieldSkuLive false, 2026-09-27). Do not print owner codes. */
 window.WRAP911_CONFIG = {
   shopName: "WRAP 911",
-  contactName: "Gerry",
+  contactName: "Gerardo",
   contactEmail: "info@wrap911.com", /* same address as the live sales page footer */
   brands: ["3M", "Avery Dennison", "BriteLine"],
-  version: "2.9.3-b32",
+  version: "1.4-b39",
   defaultSku: "W911-PACK",
   proPriceUsd: 149,
   proPriceLabel: "W911-PACK $149",

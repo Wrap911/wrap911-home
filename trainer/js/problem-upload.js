@@ -73,13 +73,13 @@
     wrap.innerHTML =
       '<div class="passion-note">' +
         '<strong>Show the mistake</strong>' +
-        '<p>Shops post the perfect before-and-after. This is where the lifted edge, the cooked film, and the redo live — so the next hire learns from it.</p>' +
+        '<p>Shops post the perfect before-and-after. This is where the lifted edge, the cooked film, and the redo live, so the next hire learns from it.</p>' +
       '</div>' +
       '<form id="problem-upload-form" class="job-form" onsubmit="return false;">' +
         '<label>What failed<textarea id="pu-what" rows="2" placeholder="e.g. Rivet tented after heat, film lifted at sensor"></textarea></label>' +
         '<label>What you did to fix it<textarea id="pu-fix" rows="2" placeholder="e.g. Lifted, warmed to TDS, reseated ring then dome"></textarea></label>' +
         '<label>Vehicle / area (optional)<input type="text" id="pu-area" placeholder="e.g. Pickup rear bumper, headlight pocket"></label>' +
-        '<label>Your name or shop (optional)<input type="text" id="pu-by" placeholder="e.g. Gerry / Rivera Wraps"></label>' +
+        '<label>Your name or shop (optional)<input type="text" id="pu-by" placeholder="e.g. Gerardo"></label>' +
         '<label>Photo<input type="file" id="pu-file" accept="image/*"></label>' +
         '<div id="pu-preview" class="pu-preview hidden"></div>' +
         '<p class="muted" style="font-size:0.82rem">Photos stay on this device until a backend is wired. Max 6 MB.</p>' +
@@ -149,7 +149,7 @@
     var file = fileInput && fileInput.files && fileInput.files[0];
 
     if (!what) {
-      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Tell us what failed — even one line helps."; }
+      if (fb) { fb.className = "quiz-feedback show bad"; fb.textContent = "Tell us what failed. Even one line helps."; }
       return;
     }
 
@@ -175,7 +175,7 @@
         if (err) {
           q.unshift(item);
           saveQueue(q);
-          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Saved to your device queue. (Backend not reachable — will sync later.)"; }
+          if (fb) { fb.className = "quiz-feedback show ok"; fb.textContent = "Saved to your device queue. The server is not reachable. It will sync later."; }
         } else if (res && res.queued) {
           q.unshift(item);
           saveQueue(q);

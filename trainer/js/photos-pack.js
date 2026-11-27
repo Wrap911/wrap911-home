@@ -5,7 +5,9 @@
   if (!d) return;
 
   /* 2.6.5: nothing maps to ../assets/sales/pickup-panels.jpg any more (sage-green film; no green wraps on Photos). */
-  var MAP = {
+  /* Build 39: do not point a missing poster at a neighbor still. */
+  var MAP = {};
+  var MAP_UNUSED = {
     "media/videos/trailer/magenta-trailer-rivet-row-channel-detail.jpg": "media/videos/trailer/trailer-rivets-and-marker-lights.jpg",
     "media/videos/trailer/magenta-rivet-field-tented-heads.jpg": "media/videos/trailer/wrapping-around-trailer-marking-light.jpg",
     "media/videos/fleet/dusty-rose-gmc-rear-quarter-hang.jpg": "media/videos/fleet/pink-caddy-wrap4.jpg",

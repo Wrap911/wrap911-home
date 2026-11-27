@@ -42,6 +42,7 @@
       '<p>Photos and clips from real jobs.</p>' +
       '<h2>Shop rules baked in</h2>' +
       '<ul><li>Brands: ' + esc(brands()) + '.</li><li>Follow the TDS. The trainer never gives you a heat number.</li></ul>' +
+      '<p>WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films.</p>' +
       '<h2>On the phone</h2>' +
       '<p>Add it to the home screen. Lesson text and photos you already opened work offline. Videos need signal.</p>' +
       '<p><button type="button" data-about-go="samples">See the free samples</button></p>';
@@ -103,7 +104,7 @@
         ? "Open Settings, then Restore purchases. It reads your Apple purchases on this phone."
         : "The unlock lives on the phone. Contact " + contactLine() + " with your receipt."],
       ["Is this a certification?", "No. It is shop training. It is not a 3M, Avery Dennison or BriteLine certification, and it does not replace one."],
-      ["Are you affiliated with anyone?", "No. Not affiliated with Wrap Technologies, Wrap Campus or The Wrap Institute. Not endorsed by 3M, Avery Dennison or BriteLine."],
+      ["Are you affiliated with anyone?", "No. WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute. Not endorsed by 3M, Avery Dennison, or BriteLine."],
       ["Does it give heat or temperature numbers?", "No. Heat, post-heat and cleaning come from the film's TDS. Read the sheet for the film on the job."],
       ["Does it work offline?", "Lesson text and photos you already opened work offline. Videos need signal."]
     ];

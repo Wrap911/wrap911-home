@@ -628,7 +628,7 @@
   function renderOrder() {
     var r = S.round, P = S.play;
     var n = P.order.length;
-    var h = '<p class="gm-note">' + esc(r.src.title) + ' — tap a step, then tap another to swap. ▲ ▼ move one place.</p><ol class="gm-order" id="gm-order">';
+    var h = '<p class="gm-note">' + esc(r.src.title) + '. Tap a step, then tap another to swap. ▲ ▼ move one place.</p><ol class="gm-order" id="gm-order">';
     P.order.forEach(function (itemIdx, pos) {
       var cls = "gm-row" + (P.sel === pos ? " sel" : "") + (P.marks ? (P.marks[pos] ? " ok" : " bad") : "");
       var flag = P.marks ? '<span class="gm-flag">' + (P.marks[pos] ? "In place" : "Out of place") + '</span>' : "";
@@ -991,7 +991,7 @@
       else {
         b.classList.add("wrong");
         fb.className = "gm-fb bad"; fb.textContent = "Not what this photo supports.";
-        P.missed.push({ text: p.title + " — " + p.quiz.q, right: p.quiz.correct, src: { type: "photo", id: p.id, title: p.title } });
+        P.missed.push({ text: p.title + ". " + p.quiz.q, right: p.quiz.correct, src: { type: "photo", id: p.id, title: p.title } });
       }
       $("gm-spot-score").textContent = String(P.score);
       if (p.visual) $("gm-spot-visual").innerHTML = '<div class="gm-visual"><b>In the photo:</b> ' + esc(p.visual) + '</div>';

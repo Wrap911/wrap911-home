@@ -37,3 +37,17 @@ npm test
 npx wrangler secret put RESEND_API_KEY        # once, for email restore
 npx wrangler deploy
 ```
+
+## Job photo check (1.4)
+
+`POST /job/photo-check` reads one job photo and returns a likely cause. The photo is not stored. Seat and Shop Pack only. The daily cap is a count in `LICENSES` (`jobphoto:<device>:<day>`).
+
+Secret name: `JOB_PHOTO_API_KEY`. Do not commit it.
+
+```bash
+npx wrangler secret put JOB_PHOTO_API_KEY
+npm test
+npx wrangler deploy
+```
+
+If that secret is missing, the route returns 503 and the job screen says the check is not available. Details: `../cloudflare-job-photo/README.md`.

@@ -52,8 +52,18 @@
     .about-panel summary { cursor:pointer; font-weight:600; }
     .lesson-meta-box { margin:.6rem 0; }
     img, video { max-width:100%; }
-    /* Hotfix 2.6.1: Coach screen was 434px wide on a 390px phone (file input + catalog select). */
-    #screen-coach { max-width:100%; overflow-x:hidden; }
+    /* Hotfix 2.6.1: Coach screen was 434px wide on a 390px phone (file input + catalog select).
+       overflow-x:hidden forces overflow-y to auto, which made this screen its own scroll box.
+       The sticky back link then sat on top of the Problem Doctor row. clip keeps the width
+       limit without that scroll box. The back link stays in normal flow above the title. */
+    #screen-coach { max-width:100%; overflow-x:clip; overflow-y:visible; }
+    #screen-coach .back-link { position:static; top:auto; z-index:auto; margin:0 0 .55rem; }
+    #screen-coach .doctor-entry {
+      display:flex; flex-direction:column; align-items:stretch; gap:.45rem;
+      margin:.35rem 0 .9rem; clear:both;
+    }
+    #screen-coach .doctor-entry button { width:100%; margin:0; }
+    #screen-coach .coach-chat { margin-top:.15rem; clear:both; }
     #screen-coach .coach-media-panel, #screen-coach .coach-compose { max-width:100%; min-width:0; box-sizing:border-box; }
     #screen-coach .coach-media-panel input, #screen-coach .coach-media-panel select,
     #screen-coach .coach-compose textarea, #coach-file-input, #coach-catalog-pick {
@@ -266,9 +276,97 @@
   <section id="screen-practice-hub" class="screen"><button type="button" class="back-link" id="btn-back-practice-hub">← Back to home</button><h1>Practice mode</h1><div id="practice-hub-list"></div></section>
   <section id="screen-practice" class="screen"><button type="button" class="back-link" id="btn-back-practice">← Practice hub</button><h1 id="prac-title">Practice</h1><img class="photo-hero" id="prac-image" src="" alt="" decoding="async"><p class="lead" id="prac-desc"></p><div id="prac-checklist" class="cl-steps"></div><div id="prac-mistakes"></div><div class="quiz-box" id="prac-quiz"></div><div class="quiz-nav"><button type="button" class="secondary" id="prac-redo">Redo</button><button type="button" id="prac-finish">Score & save</button></div><div class="quiz-feedback" id="prac-fb"></div></section>
   <section id="screen-jobs" class="screen"><button type="button" class="back-link" id="btn-back-jobs">← Back to home</button><h1>Job manager</h1><button type="button" id="btn-new-job">+ New job</button><div id="jobs-list" class="jobs-list"></div></section>
-  <section id="screen-job-edit" class="screen"><button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button><h1 id="job-edit-title">Job</h1><form id="job-form" class="job-form" onsubmit="return false;"><label>Job type<select id="job-type"></select></label><label>Coverage<input type="text" id="job-coverage"></label><label>Brand<select id="job-brand"><option>3M</option><option>Avery Dennison</option><option>BriteLine</option></select></label><label>Notes<textarea id="job-notes" rows="3"></textarea></label><div id="job-workflow" class="cl-steps"></div><button type="button" id="btn-save-job">Save job</button><button type="button" class="secondary" id="btn-delete-job">Delete</button><div class="quiz-feedback" id="job-fb"></div></form></section>
+  <section id="screen-job-edit" class="screen">
+    <button type="button" class="back-link" id="btn-back-job-edit">← Jobs</button>
+    <h1 id="job-edit-title">Job</h1>
+    <form id="job-form" class="job-form" onsubmit="return false;">
+      <label>Job type<select id="job-type"></select></label>
+      <label>Coverage<input type="text" id="job-coverage" maxlength="80" placeholder="Partial sides, full trailer, one door" autocomplete="off"></label>
+      <div class="job-block" id="job-film">
+        <h2>Film log</h2>
+        <p class="muted">Brand, product line, and lot from the box. 3M, Avery Dennison, or BriteLine.</p>
+        <label>Brand
+          <select id="job-brand">
+            <option>3M</option>
+            <option>Avery Dennison</option>
+            <option>BriteLine</option>
+          </select>
+        </label>
+        <p class="muted" id="job-briteline-note" hidden>BriteLine is wrap film. It does not make PPF.</p>
+        <label>Product line<input type="text" id="job-film-line" maxlength="80" placeholder="Name on the box" autocomplete="off"></label>
+        <label>Lot number<input type="text" id="job-film-lot" maxlength="40" placeholder="Lot number" autocomplete="off"></label>
+      </div>
+      <div class="job-block" id="job-material">
+        <h2>Material calculator</h2>
+        <p class="muted">Same math as the Material calculator. Rolls are 54 or 60 inches. Waste stays between 10 and 20 percent. This is an estimate, not a quote.</p>
+        <label>Width (in)<input type="number" id="job-calc-w" value="96" min="0" step="any" inputmode="decimal"></label>
+        <label>Height (in)<input type="number" id="job-calc-h" value="48" min="0" step="any" inputmode="decimal"></label>
+        <label>Panels<input type="number" id="job-calc-n" value="1" min="1" step="1" inputmode="numeric"></label>
+        <label>Roll width (in)
+          <select id="job-calc-roll">
+            <option value="54" selected>54</option>
+            <option value="60">60</option>
+          </select>
+        </label>
+        <label>Rivet multiplier<input type="number" id="job-calc-rivet" value="1.15" min="0" step="any" inputmode="decimal"></label>
+        <label>Recess multiplier<input type="number" id="job-calc-recess" value="1.1" min="0" step="any" inputmode="decimal"></label>
+        <label>Waste (%)<input type="number" id="job-calc-waste" value="15" min="10" max="20" step="1" inputmode="numeric"></label>
+        <button type="button" id="job-calc-go">Calculate material</button>
+        <div id="job-calc-results" class="calc-results muted"></div>
+      </div>
+      <div class="job-block" id="job-time">
+        <h2>Time estimate</h2>
+        <p class="muted" id="job-hours-note"></p>
+        <label>Hours<input type="number" id="job-hours" min="0" max="24" step="0.5" inputmode="decimal"></label>
+      </div>
+      <div class="job-block" id="job-photos">
+        <h2>Photos</h2>
+        <p class="muted">Before and after stay on this device.</p>
+        <h3>Before</h3>
+        <div id="job-before-list" class="job-photos"></div>
+        <button type="button" id="job-before-cam">Take before photo</button>
+        <button type="button" class="secondary" id="job-before-lib">Choose before photo</button>
+        <input type="file" id="job-before-cam-file" accept="image/*" capture="environment" hidden>
+        <input type="file" id="job-before-lib-file" accept="image/*" hidden>
+        <h3>After</h3>
+        <div id="job-after-list" class="job-photos"></div>
+        <button type="button" id="job-after-cam">Take after photo</button>
+        <button type="button" class="secondary" id="job-after-lib">Choose after photo</button>
+        <input type="file" id="job-after-cam-file" accept="image/*" capture="environment" hidden>
+        <input type="file" id="job-after-lib-file" accept="image/*" hidden>
+      </div>
+      <div class="job-block">
+        <h2>Checklist</h2>
+        <p class="muted">Tick a step when it is done. The timer saves each practice run on this phone.</p>
+        <div id="job-workflow" class="cl-steps"></div>
+      </div>
+      <label>Notes<textarea id="job-notes" rows="3" maxlength="2000" placeholder="What you want to remember. No customer names."></textarea></label>
+      <label class="check-inline"><input type="checkbox" id="job-completed"> Job is finished</label>
+      <div class="job-block" id="job-tools">
+        <h2>Finish</h2>
+        <button type="button" class="secondary" id="job-fix">Fix a Problem</button>
+        <p class="muted">Opens Problem Doctor for this job.</p>
+        <button type="button" id="job-export">Share finished job</button>
+        <p class="muted" id="job-export-note">Share or save a PDF of the checklist, notes, and photos.</p>
+      </div>
+      <div class="job-block" id="job-check">
+        <h2>Photo check</h2>
+        <p class="muted">Pick a job photo. You get a likely cause and a fix. This is a likely cause, not a guaranteed diagnosis.</p>
+        <p class="muted">A photo check sends that one photo so the app can suggest a likely cause. The photo is only used for the check. It is not stored.</p>
+        <div id="job-check-picker"></div>
+        <label class="check-inline"><input type="checkbox" id="job-check-consent"> I agree to send this photo for the check. It is not stored.</label>
+        <button type="button" id="job-check-go">Check this photo</button>
+        <p class="muted" id="job-check-gate" hidden></p>
+        <div id="job-check-result"></div>
+        <div class="quiz-feedback" id="job-check-fb"></div>
+      </div>
+      <button type="button" id="btn-save-job">Save job</button>
+      <button type="button" class="secondary" id="btn-delete-job">Delete</button>
+      <div class="quiz-feedback" id="job-fb"></div>
+    </form>
+  </section>
   <section id="screen-badges" class="screen"><button type="button" class="back-link" id="btn-back-badges">← Back to home</button><h1>Progress</h1><p id="badges-summary" class="lead"></p><p id="badges-next" class="muted"></p><div id="cert-levels-badges" class="cert-row"></div><div id="badge-grid" class="badge-grid"></div></section>
-  <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
+  <section id="screen-videos" class="screen"><button type="button" class="back-link" id="btn-back-videos">← Back to home</button><h1>Videos</h1><div class="filter-row" hidden><label>Category<select id="video-filter-cat"><option value="">All</option><option value="Problems">Problems</option><option value="Vehicles">Vehicles</option><option value="Interior">Interior</option></select></label></div><div class="filter-chips" id="video-filter-chips"></div><p class="example-banner video-paywall-banner" id="video-paywall-banner" hidden></p><div id="video-list"></div></section>
   <section id="screen-calc" class="screen">
     <button type="button" class="back-link" id="btn-back-calc">← Back to home</button>
     <h1>Material calculator</h1>
@@ -336,6 +434,7 @@
   <section id="screen-about" class="screen" aria-label="About WRAP 911">
     <button type="button" class="back-link" id="btn-back-about">← Back to home</button>
     <h1>About WRAP 911</h1>
+    <p class="muted">WRAP 911 is independent and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine. Brand names are used only to identify films.</p>
     <div class="about-tabs" role="tablist" id="about-tabs">
       <button type="button" data-about-tab="why" class="active">Why</button>
       <button type="button" data-about-tab="pricing">Pricing</button>
@@ -345,7 +444,7 @@
     </div>
     <div class="about-panel" id="about-panel"></div>
   </section>
-  <section id="screen-contact" class="screen"><button type="button" class="back-link" id="btn-back-contact">← Back to home</button><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerry</strong></p><p id="contact-email"></p><p class="muted">Brands we train on: <span id="contact-brands">3M, Avery Dennison, BriteLine</span>. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute.</p></div></section>
+  <section id="screen-contact" class="screen"><button type="button" class="back-link" id="btn-back-contact">← Back to home</button><h1>Contact</h1><div class="card contact-card"><p><strong id="contact-name">Gerardo</strong></p><p id="contact-email"></p><p class="muted">Brands we train on: <span id="contact-brands">3M, Avery Dennison, BriteLine</span>. Not affiliated with Wrap Technologies, Wrap Campus, or The Wrap Institute, and not sponsored by or affiliated with 3M, Avery Dennison or BriteLine.</p></div></section>
   <div id="xp-modal" class="modal hidden" role="dialog"><div class="modal-card"><div class="modal-emoji" id="xp-modal-emoji">🎉</div><h2 id="xp-modal-title">Drill complete!</h2><p id="xp-modal-msg">+25 XP</p><button type="button" id="xp-modal-ok">Nice</button></div></div>
   <nav class="bottom-nav hidden" id="bottom-nav">
     <button type="button" data-nav="home">Home</button>
@@ -402,7 +501,9 @@
   <script src="js/data_extra.js?v=32story"></script>
   <script src="js/problems-db.js?v=271"></script>
   <script src="js/labels-fix.js?v=32story"></script>
-  <script src="js/app_extra.js?v=31teaser"></script>
+  <script src="js/job-logic.js?v=14jobs"></script>
+  <script src="js/job-pdf.js?v=14jobs"></script>
+  <script src="js/app_extra.js?v=14jobs"></script>
   <script src="js/problem-upload.js?v=293polish"></script>
   <script src="js/appstore.js?v=272"></script>
   <script src="js/coach.js?v=271"></script>
@@ -416,6 +517,7 @@
   <script src="js/about.js?v=32story"></script>
   <script src="js/games.js?v=276"></script>
   <script src="js/problem-doctor.js?v=31quota"></script>
+  <script src="js/jobs-plus.js?v=14jobs"></script>
   <script src="js/field-bg.js?v=bg1"></script>
   <script src="js/search-logic.js?v=31search"></script>
   <script src="js/weekly-challenge.js?v=32feat"></script>
@@ -424,5 +526,7 @@
   <script src="js/crew-email.js?v=32feat"></script>
   <script src="js/polish.js?v=32story"></script>
   <script src="js/start-here.js?v=33start"></script>
+  <script src="js/caption-data.js?v=39"></script>
+  <script src="js/media-pass.js?v=39"></script>
 </body>
 </html>

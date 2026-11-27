@@ -233,10 +233,19 @@
   /* Hotfix 2.6.1: free photo set = first cfg.freePhotoSamples photos of the full list, whatever filter chip is on. */
   function freePhotoIds() {
     if (paidNow()) return null;
-    var n = cfg.freePhotoSamples || 14;
     var ids = {};
     var all = (data && data.photoLessons) || [];
-    for (var i = 0; i < all.length && i < n; i++) ids[all[i].id] = true;
+    var marked = false;
+    var i;
+    for (i = 0; i < all.length; i++) {
+      if (all[i].freeSample === true || all[i].freeSample === false) marked = true;
+    }
+    if (!marked) {
+      var n = cfg.freePhotoSamples || 14;
+      for (i = 0; i < all.length && i < n; i++) ids[all[i].id] = true;
+      return ids;
+    }
+    for (i = 0; i < all.length; i++) if (all[i].freeSample === true) ids[all[i].id] = true;
     return ids;
   }
 
@@ -477,8 +486,8 @@
     if (el) {
       if (!lic) {
         el.textContent = iosApp()
-          ? "No license — training is locked. 7-Day Pass (this phone, 7 days), Shop Pack (5 phones, 12 months), or Seat (this phone, 12 months). Buy with Apple on this screen."
-          : "No license — training is locked. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone, 12 months). Buy on this same phone.";
+          ? "No license. Training is locked. 7-Day Pass (this phone, 7 days), Shop Pack (5 phones, 12 months), or Seat (this phone, 12 months). Buy with Apple on this screen."
+          : "No license. Training is locked. Shop pack $149 (5 phones, 12 months) or seat $49 (this phone, 12 months). Buy on this same phone.";
       } else if (lic.expired) {
         el.textContent = "License expired (" + lic.code + "). Buy again on this phone.";
       } else {
@@ -502,11 +511,11 @@
     var modeBanner = $("pricing-mode-banner");
     if (modeBanner) {
       if (iosApp()) {
-        modeBanner.innerHTML = "<strong>Apple</strong> — 7-Day Pass (this phone, 7 days), Shop Pack (5 seats, 12 months), or Seat (1 tech, 12 months). One-time. The App Store shows the price. It does not auto-renew.";
+        modeBanner.innerHTML = "<strong>Apple</strong>. 7-Day Pass (this phone, 7 days), Shop Pack (5 seats, 12 months), or Seat (1 tech, 12 months). One-time. The App Store shows the price. It does not auto-renew.";
       } else if (cfg.stripeTestMode) {
-        modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong> — live checkout is off here. Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months).";
+        modeBanner.innerHTML = "<strong>SANDBOX / TEST MODE</strong>. Live checkout is off here. Pack $149 (5 seats, 12 months). Seat $49 (1 tech, 12 months).";
       } else {
-        modeBanner.innerHTML = "<strong>Checkout</strong> — Pack $149 (5 seats, 12 months) · Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? " · Field $29/mo" : "") + ". One-time for Pack and Seat.";
+        modeBanner.innerHTML = "<strong>Checkout</strong>. Pack $149 (5 seats, 12 months). Seat $49 (1 tech, 12 months)" + (cfg.fieldSkuLive ? ". Field is off unless a new photo pack ships." : "") + ". One-time for Pack and Seat.";
       }
     }
     var stripeWrap = $("stripe-link-wrap");
@@ -533,7 +542,7 @@
     }
     var note = $("stripe-link-note");
     if (note && link) {
-      note.textContent = (cfg.stripeTestMode ? "TEST checkout — sandbox cards only, no live charges. " : "") +
+      note.textContent = (cfg.stripeTestMode ? "TEST checkout. Sandbox cards only, no live charges. " : "") +
         "After Stripe, you land back here and this phone unlocks for 12 months (365 days).";
     }
   }
@@ -885,7 +894,7 @@
           fb.textContent = "Correct.";
         } else {
           fb.className = "quiz-feedback show bad";
-          fb.textContent = "Not quite — review the highlighted answer.";
+          fb.textContent = "Not quite. Review the highlighted answer.";
         }
         $("mod-quiz-next").disabled = false;
       });
@@ -1162,7 +1171,7 @@
         $("cl-hint").textContent = "Sequence complete.";
         var fb = $("cl-fb");
         fb.className = "quiz-feedback show ok";
-        fb.textContent = "Correct order — glass → walk fingers → foam feed → lock (or the job sequence for this drill).";
+        fb.textContent = "Correct order. Glass, then walk fingers, then foam feed, then lock (or the job sequence for this drill).";
         $("cl-done").classList.remove("hidden");
         awardDrillXp("checklist", cl.id, cl.xp || drills.xpPerDrill || 25);
       }
@@ -1172,7 +1181,7 @@
       btn.classList.add("shake");
       var fb2 = $("cl-fb");
       fb2.className = "quiz-feedback show bad";
-      fb2.textContent = "Wrong order — tap the next step in sequence (look for step " + (state.checklistNext + 1) + ").";
+      fb2.textContent = "Wrong order. Tap the next step in sequence (look for step " + (state.checklistNext + 1) + ").";
       setTimeout(function () { btn.classList.remove("shake"); }, 450);
     }
   }
@@ -1335,21 +1344,34 @@
     var p = loadProgress();
     var shown = 0;
     var freeIds = freePhotoIds();
+    var lastHead = "";
     for (var i = 0; i < data.photoLessons.length; i++) {
       var pl = data.photoLessons[i];
       var jt = pl.jobType || "";
       if (photoJobFilter && jt !== photoJobFilter) continue;
       if (freeIds && !freeIds[pl.id]) continue;
+      var head = jt + "|" + (pl.subgroup || "");
+      if (head !== lastHead) {
+        lastHead = head;
+        var sec = document.createElement("div");
+        sec.className = "photo-section";
+        sec.innerHTML = "<h2>" + escapeHtml(jt || "Photos") + "</h2>" +
+          (pl.subgroup ? "<p>" + escapeHtml(pl.subgroup) + "</p>" : "");
+        list.appendChild(sec);
+      }
       shown++;
       var done = p.photos[pl.id] && p.photos[pl.id].passed;
       var card = document.createElement("div");
       card.className = "card tap thumb-card";
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
+      card.setAttribute("data-free", freeIds ? "1" : (pl.freeSample === false ? "0" : "1"));
       card.innerHTML =
         '<img class="thumb" src="' + escapeHtml(pl.image) + '" alt="' + escapeHtml(pl.title) + '" loading="lazy" decoding="async">' +
         '<div class="photo-caption">' + escapeHtml(pl.title) + '</div>' +
-        '<div class="photo-meta">' + escapeHtml(jt || "Shop photo") +
+        (pl.visual ? '<div class="photo-meta">What this shows: ' + escapeHtml(String(pl.visual).split("\n")[0].slice(0, 140)) + '</div>' : '') +
+        (pl.narration ? '<div class="photo-meta">What to learn: ' + escapeHtml(String(pl.narration).split("\n")[0].slice(0, 140)) + '</div>' : '') +
+        '<div class="photo-meta">' + escapeHtml((pl.subgroup ? jt + " · " + pl.subgroup : jt) || "Shop photo") +
         (done ? " · Quiz passed" : " · Tap to open") + '</div>';
       (function (id) {
         card.addEventListener("click", function () { openPhoto(id); });
@@ -1366,7 +1388,7 @@
           "<strong>" + escapeHtml(photoJobFilter || "These") + " photos are in the pack</strong>" +
           "Tap <em>All</em> for the free photos, or unlock with the pack or a seat." :
           "<strong>No photos for " + escapeHtml(photoJobFilter || "this filter") + "</strong>" +
-          "Tap <em>All</em> or another job type chip — or Home → Browse photos.";
+          "Tap <em>All</em> or another job type chip, or go Home and open Browse photos.";
       }
     }
     /* Hotfix 2.6.5: the heading carries the count, from the same final deduped list as the Home line
@@ -1409,8 +1431,8 @@
     var img = $("photo-image");
     img.src = pl.image;
     img.alt = pl.title;
-    $("photo-visual").textContent = pl.visual;
-    $("photo-narration").textContent = pl.narration;
+    $("photo-visual").textContent = pl.visual ? ("What this shows: " + pl.visual) : "";
+    $("photo-narration").textContent = pl.narration ? ("What to learn: " + pl.narration) : "";
 
     var cl = $("photo-checklist");
     cl.innerHTML = "";
@@ -1483,7 +1505,7 @@
   }
 
   function renderContact() {
-    var name = cfg.contactName || "Gerry";
+    var name = cfg.contactName || "Gerardo";
     var email = (cfg.contactEmail || "").trim();
     $("contact-name").textContent = name;
     var emailEl = $("contact-email");

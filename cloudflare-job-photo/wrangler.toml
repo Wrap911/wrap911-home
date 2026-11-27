@@ -1,0 +1,17 @@
+name = "wrap911-job-photo"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+
+# Plain settings. The API key is NOT here.
+# Set it once with: npx wrangler secret put JOB_PHOTO_API_KEY
+[vars]
+JOB_PHOTO_BASE_URL = "https://api.x.ai/v1"
+JOB_PHOTO_MODEL = "grok-4.7"
+JOB_PHOTO_PER_DAY = "10"
+
+# Counts only. No photos. Create the namespace, then paste its id:
+#   npx wrangler kv namespace create JOB_CAPS
+# [[kv_namespaces]]
+# binding = "JOB_CAPS"
+# id = "paste-namespace-id"

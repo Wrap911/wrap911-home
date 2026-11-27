@@ -23,11 +23,11 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>WRAP 911 uses the camera so you can photograph a vinyl problem for Problem Doctor. The photo is sent to xAI only after you agree, and it is not saved.</string>
+	<string>WRAP 911 uses the camera so you can save before and after photos on a job, and so you can photograph a vinyl problem. Job photos stay on this device. A photo is sent for a photo check or Problem Doctor only after you agree, and that copy is not stored.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>WRAP 911 uses the microphone only while you record a short clip of a vinyl problem. The video file is not uploaded. A few still frames are sent to xAI after you agree.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>WRAP 911 uses your photo library so you can choose a photo or video of a vinyl problem. Frames are sent to xAI only after you agree, and they are not saved.</string>
+	<string>WRAP 911 uses your photo library so you can add before and after photos to a job, and so you can choose a photo or video of a vinyl problem. Job photos stay on this device. A photo is sent for a photo check or Problem Doctor only after you agree, and that copy is not stored.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
